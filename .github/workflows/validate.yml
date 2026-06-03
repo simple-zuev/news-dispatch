@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Render static site
+        run: python tools/render_site.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
@@ -35,3 +38,8 @@ jobs:
           test -f templates/dispatch.md
           test -f templates/privacy-check.md
           test -f data/taxonomy.yml
+          test -f tools/render_site.py
+          test -f tools/privacy_scan.py
+          test -f site/index.html
+          test -f site/dispatches.html
+          test -d site/dispatches
