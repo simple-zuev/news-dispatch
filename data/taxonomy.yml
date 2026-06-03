@@ -1,35 +1,47 @@
 streams:
   general:
     title: General Dispatch
-    sensitivity: medium
+    review_level: standard_public_review
+    public_safe_after_review: true
   work:
     title: Work Dispatch
-    sensitivity: high
+    review_level: strict_publication_review
+    public_safe_after_review: true
+    source_mode: public_sources_only
   finance:
     title: Finance Dispatch
-    sensitivity: high
+    review_level: strict_publication_review
+    public_safe_after_review: true
+    investment_advice: false
+    legal_advice: false
+    source_mode: public_sources_only
   digital-assets-infrastructure:
     title: Digital Assets Infrastructure Dispatch
-    sensitivity: high
+    review_level: strict_publication_review
     public_safe_after_review: true
     investment_advice: false
     legal_advice: false
     source_mode: public_sources_only
   home-environment:
     title: Home & Environment Dispatch
-    sensitivity: high
+    review_level: strict_publication_review
+    public_safe_after_review: true
   gear:
     title: Gear & Material Culture Dispatch
-    sensitivity: medium
+    review_level: standard_public_review
+    public_safe_after_review: true
   city-culture:
     title: City & Culture Dispatch
-    sensitivity: low-medium
+    review_level: standard_public_review
+    public_safe_after_review: true
   audio-creative:
     title: Audio & Creative Tech Dispatch
-    sensitivity: low-medium
+    review_level: standard_public_review
+    public_safe_after_review: true
   horizon:
     title: Horizon Notes
-    sensitivity: low
+    review_level: standard_public_review
+    public_safe_after_review: true
 
 tags:
   domains:
@@ -46,10 +58,11 @@ tags:
     - consumer-economics
     - digital-assets
     - crypto-assets
-    - crypto-exchange
-    - crypto-conversion
+    - trading-infrastructure
+    - conversion-services
     - custody
-    - depository-models
+    - safeguarding
+    - rights-accounting
     - regulation
     - aml-cft
     - sanctions
@@ -107,6 +120,10 @@ confidence:
   - medium
   - low
   - unknown
+
+review_level:
+  - standard_public_review
+  - strict_publication_review
 
 status:
   - draft
