@@ -45,6 +45,9 @@ jobs:
           test -f site/rss.xml
           test -f site/sitemap.xml
           test -d site/dispatches
+          test -f site/streams/index.html
+          test -f site/streams/general.html
+          test -f site/streams/digital-assets-infrastructure.html
 
       - name: Upload rendered site artifact
         uses: actions/upload-artifact@v4
