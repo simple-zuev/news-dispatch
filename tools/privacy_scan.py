@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Basic public-safety scanner for News Dispatch.
 
-This is not a complete DLP system. It is a lightweight guardrail for obvious leaks.
+This is not a complete DLP system. It is a lightweight guardrail for obvious leaks
+in publishable content, templates, data, and site files.
 """
 
 from __future__ import annotations
@@ -14,6 +15,19 @@ ROOT = Path(__file__).resolve().parents[1]
 
 EXCLUDE_DIRS = {".git", ".github", "node_modules", "public", "dist", "build"}
 TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts", ".py"}
+
+# Policy files intentionally contain words like token/password/secret as examples.
+# They are still reviewed manually, but the automated scanner focuses on publishable content.
+EXCLUDE_FILES = {
+    "PRIVACY.md",
+    "SECURITY.md",
+    "PUBLICATION_BOUNDARY.md",
+    "SOURCE_POLICY.md",
+    "EDITORIAL_STANDARD.md",
+    "STYLE_GUIDE.md",
+    "PUBLISHING.md",
+    "tools/privacy_scan.py",
+}
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("possible_secret_keyword", re.compile(r"(?i)(api[_-]?key|token|secret|password|passwd|private[_-]?key|oauth|cookie|bearer)")),
@@ -28,10 +42,15 @@ PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 ALLOWLIST_PATTERNS = [
     re.compile(r"example\.com", re.IGNORECASE),
     re.compile(r"YYYY-MM-DD", re.IGNORECASE),
+    re.compile(r"127\.0\.0\.1"),
+    re.compile(r"0\.0\.0\.0"),
 ]
 
 
-def is_text_file(path: Path) -> bool:
+def should_scan(path: Path) -> bool:
+    rel = path.relative_to(ROOT).as_posix()
+    if rel in EXCLUDE_FILES:
+        return False
     if path.suffix.lower() not in TEXT_EXTENSIONS:
         return False
     if any(part in EXCLUDE_DIRS for part in path.parts):
@@ -62,7 +81,7 @@ def scan_file(path: Path) -> list[str]:
 def main() -> int:
     findings: list[str] = []
     for path in ROOT.rglob("*"):
-        if path.is_file() and is_text_file(path):
+        if path.is_file() and should_scan(path):
             findings.extend(scan_file(path))
 
     if findings:
