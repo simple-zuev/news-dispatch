@@ -42,6 +42,8 @@ jobs:
           test -f tools/privacy_scan.py
           test -f site/index.html
           test -f site/dispatches.html
+          test -f site/rss.xml
+          test -f site/sitemap.xml
           test -d site/dispatches
 
       - name: Upload rendered site artifact
