@@ -1,0 +1,82 @@
+streams:
+  general:
+    title: General Dispatch
+    sensitivity: medium
+  work:
+    title: Work Dispatch
+    sensitivity: high
+  finance:
+    title: Finance Dispatch
+    sensitivity: high
+  home-environment:
+    title: Home & Environment Dispatch
+    sensitivity: high
+  gear:
+    title: Gear & Material Culture Dispatch
+    sensitivity: medium
+  city-culture:
+    title: City & Culture Dispatch
+    sensitivity: low-medium
+  audio-creative:
+    title: Audio & Creative Tech Dispatch
+    sensitivity: low-medium
+  horizon:
+    title: Horizon Notes
+    sensitivity: low
+
+tags:
+  domains:
+    - ai
+    - software
+    - hardware
+    - cybersecurity
+    - privacy
+    - product
+    - ux
+    - finance
+    - banking
+    - consumer-economics
+    - home
+    - smart-home
+    - energy
+    - edc
+    - bags
+    - watches
+    - tools
+    - audio
+    - dj
+    - creative-tech
+    - city
+    - culture
+    - science
+    - robotics
+    - materials
+    - biotech
+    - hci
+
+source_types:
+  - official
+  - release-notes
+  - documentation
+  - research
+  - review
+  - benchmark
+  - media
+  - community
+  - forum
+  - marketplace
+  - expert-commentary
+  - marketing
+
+confidence:
+  - high
+  - medium
+  - low
+  - unknown
+
+status:
+  - draft
+  - privacy-check
+  - editorial-review
+  - publishable
+  - archived
