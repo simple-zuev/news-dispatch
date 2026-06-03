@@ -4,7 +4,7 @@
 No external dependencies. This renderer is intentionally conservative:
 - reads public-safe Markdown dispatches from dispatches/**/*.md;
 - writes HTML pages to site/dispatches/;
-- writes a dynamic homepage and dispatch archive;
+- writes a dynamic homepage, dispatch archive, and stream pages;
 - writes RSS and sitemap files;
 - does not fetch remote resources;
 - does not inject tracking scripts.
@@ -22,7 +22,89 @@ ROOT = Path(__file__).resolve().parents[1]
 DISPATCH_DIR = ROOT / "dispatches"
 SITE_DIR = ROOT / "site"
 OUTPUT_DIR = SITE_DIR / "dispatches"
+STREAM_DIR = SITE_DIR / "streams"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
+
+
+@dataclass(frozen=True)
+class StreamInfo:
+    slug: str
+    title: str
+    review_label: str
+    description: str
+    strict: bool = False
+
+    @property
+    def relative_url(self) -> str:
+        return f"streams/{self.slug}.html"
+
+    @property
+    def url(self) -> str:
+        return f"{BASE_URL}/{self.relative_url}"
+
+
+STREAMS: list[StreamInfo] = [
+    StreamInfo(
+        "general",
+        "General Dispatch",
+        "Editorial review",
+        "Multi-domain analysis across technology, finance, gear, culture, cities, science, and adjacent fields.",
+    ),
+    StreamInfo(
+        "digital-assets-infrastructure",
+        "Digital Assets Infrastructure",
+        "Strict review",
+        "Public-source analysis of regulation, restrictions, technology, market structure, public competitors, vendor landscape, security, trust, and infrastructure resilience.",
+        strict=True,
+    ),
+    StreamInfo(
+        "work",
+        "Work Dispatch",
+        "Strict review",
+        "Public market and product signals, AI, UX, operating models, and organizational implications without internal company or product data.",
+        strict=True,
+    ),
+    StreamInfo(
+        "finance",
+        "Finance Dispatch",
+        "Strict review",
+        "Rates, banking products, consumer economics, liquidity, subscriptions, and large-purchase context in educational framing.",
+        strict=True,
+    ),
+    StreamInfo(
+        "home-environment",
+        "Home & Environment",
+        "Strict review",
+        "Home, smart home, energy, safety, infrastructure patterns, comfort, and practical systems.",
+        strict=True,
+    ),
+    StreamInfo(
+        "gear",
+        "Gear & Material Culture",
+        "Editorial review",
+        "EDC, bags, watches, tools, apparel, materials, repairability, ownership, and everyday-use criteria.",
+    ),
+    StreamInfo(
+        "city-culture",
+        "City & Culture",
+        "Editorial review",
+        "City life, culture, media, events, urban services, and lifestyle signals.",
+    ),
+    StreamInfo(
+        "audio-creative",
+        "Audio & Creative Tech",
+        "Editorial review",
+        "DJ gear, audio, MIDI, music production, performance interfaces, and creator tools.",
+    ),
+    StreamInfo(
+        "horizon",
+        "Horizon Notes",
+        "Editorial review",
+        "Science, systems, materials, robotics, biotech, cognition, HCI, and futures.",
+    ),
+]
+
+STREAM_BY_SLUG = {stream.slug: stream for stream in STREAMS}
 
 
 @dataclass
@@ -197,11 +279,21 @@ def head(title: str, description: str, css_href: str = "styles/main.css") -> str
 </head>"""
 
 
-def card(dispatch: Dispatch, prefix: str = "") -> str:
+def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
     return f"""<article class=\"card\">
   <p class=\"label\">{html.escape(dispatch.stream)} · {html.escape(dispatch.date)}</p>
   <h3><a href=\"{prefix}{html.escape(dispatch.relative_url)}\">{html.escape(dispatch.title)}</a></h3>
   <p>{html.escape(dispatch.summary)}</p>
+</article>"""
+
+
+def stream_card(stream: StreamInfo, prefix: str = "", count: int | None = None) -> str:
+    count_label = "" if count is None else f" · {count} dispatches"
+    strict_class = " strict" if stream.strict else ""
+    return f"""<article class=\"card{strict_class}\">
+  <p class=\"label\">{html.escape(stream.review_label)}{html.escape(count_label)}</p>
+  <h3><a href=\"{prefix}{html.escape(stream.relative_url)}\">{html.escape(stream.title)}</a></h3>
+  <p>{html.escape(stream.description)}</p>
 </article>"""
 
 
@@ -230,7 +322,8 @@ def page_template(dispatch: Dispatch, body_html: str) -> str:
 
 def homepage_template(dispatches: list[Dispatch]) -> str:
     latest = ordered_dispatches(dispatches)[:6]
-    latest_cards = "\n".join(card(dispatch) for dispatch in latest)
+    latest_cards = "\n".join(dispatch_card(dispatch) for dispatch in latest)
+    stream_cards = "\n".join(stream_card(stream) for stream in STREAMS[:8])
     return f"""<!doctype html>
 <html lang=\"ru\">
 {head("News Dispatch", "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.")}
@@ -239,7 +332,7 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
     <p class=\"eyebrow\">Public-safe editorial briefing system</p>
     <h1>News Dispatch</h1>
     <p class=\"lede\">Аналитический хаб для обезличенных выпусков о технологиях, рынках, инфраструктуре, вещах, городе, культуре и научном горизонте.</p>
-    <p class=\"hero-actions\"><a href=\"dispatches.html\">Open dispatch archive</a><a href=\"rss.xml\">RSS</a></p>
+    <p class=\"hero-actions\"><a href=\"dispatches.html\">Open dispatch archive</a><a href=\"streams/index.html\">Streams</a><a href=\"rss.xml\">RSS</a></p>
   </header>
 
   <main>
@@ -253,34 +346,12 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
     </section>
 
     <section class=\"panel\">
-      <h2>Editorial model</h2>
-      <p>Each dispatch turns public external signals into structured analysis: signal, verification, context, mechanism, second-order effects, decision criteria, and new knowledge.</p>
+      <h2>Streams</h2>
+      <p>Потоки помогают разделять разные типы аналитики, review level и источниковую модель.</p>
     </section>
 
     <section class=\"grid\" aria-label=\"Dispatch streams\">
-      <article class=\"card strict\">
-        <p class=\"label\">Strict review</p>
-        <h3>Digital Assets Infrastructure</h3>
-        <p>Public-source analysis of regulation, restrictions, technology, market structure, public competitors, vendor landscape, security, trust, and infrastructure resilience.</p>
-      </article>
-
-      <article class=\"card strict\">
-        <p class=\"label\">Strict review</p>
-        <h3>Work Dispatch</h3>
-        <p>Public market and product signals, AI, UX, operating models, and organizational implications without internal company or product data.</p>
-      </article>
-
-      <article class=\"card\">
-        <p class=\"label\">Editorial review</p>
-        <h3>General Dispatch</h3>
-        <p>Multi-domain analysis across technology, finance, gear, culture, cities, science, and adjacent fields.</p>
-      </article>
-
-      <article class=\"card\">
-        <p class=\"label\">Editorial review</p>
-        <h3>Gear & Material Culture</h3>
-        <p>EDC, bags, watches, tools, apparel, materials, repairability, ownership, and everyday-use criteria.</p>
-      </article>
+      {stream_cards}
     </section>
 
     <section class=\"panel boundary\">
@@ -294,7 +365,7 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
 
 
 def archive_template(dispatches: list[Dispatch]) -> str:
-    cards = "\n".join(card(dispatch) for dispatch in ordered_dispatches(dispatches))
+    cards = "\n".join(dispatch_card(dispatch) for dispatch in ordered_dispatches(dispatches))
     return f"""<!doctype html>
 <html lang=\"ru\">
 {head("News Dispatch — Dispatches", "Public-safe dispatch archive.")}
@@ -309,6 +380,56 @@ def archive_template(dispatches: list[Dispatch]) -> str:
     <section class=\"grid\">
       {cards}
     </section>
+  </main>
+</body>
+</html>
+"""
+
+
+def stream_index_template(dispatches: list[Dispatch]) -> str:
+    counts = {stream.slug: 0 for stream in STREAMS}
+    for dispatch in dispatches:
+        counts[dispatch.stream] = counts.get(dispatch.stream, 0) + 1
+    cards = "\n".join(stream_card(stream, prefix="../", count=counts.get(stream.slug, 0)) for stream in STREAMS)
+    return f"""<!doctype html>
+<html lang=\"ru\">
+{head("News Dispatch — Streams", "Editorial stream index.", css_href="../styles/main.css")}
+<body>
+  <header class=\"masthead compact\">
+    <a class=\"backlink\" href=\"../index.html\">News Dispatch</a>
+    <p class=\"eyebrow\">Streams</p>
+    <h1>Streams</h1>
+    <p class=\"lede\">Потоки разделяют темы, уровни проверки и правила публикации.</p>
+  </header>
+  <main>
+    <section class=\"grid\">
+      {cards}
+    </section>
+  </main>
+</body>
+</html>
+"""
+
+
+def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch]) -> str:
+    stream_dispatches = [dispatch for dispatch in ordered_dispatches(dispatches) if dispatch.stream == stream.slug]
+    cards = "\n".join(dispatch_card(dispatch, prefix="../") for dispatch in stream_dispatches)
+    empty = "" if cards else "<p>No dispatches in this stream yet.</p>"
+    return f"""<!doctype html>
+<html lang=\"ru\">
+{head(f"News Dispatch — {stream.title}", stream.description, css_href="../styles/main.css")}
+<body>
+  <header class=\"masthead compact\">
+    <a class=\"backlink\" href=\"../index.html\">News Dispatch</a>
+    <p class=\"eyebrow\">{html.escape(stream.review_label)}</p>
+    <h1>{html.escape(stream.title)}</h1>
+    <p class=\"lede\">{html.escape(stream.description)}</p>
+  </header>
+  <main>
+    <section class=\"grid\">
+      {cards}
+    </section>
+    {empty}
   </main>
 </body>
 </html>
@@ -341,7 +462,8 @@ def rss_template(dispatches: list[Dispatch]) -> str:
 
 
 def sitemap_template(dispatches: list[Dispatch]) -> str:
-    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml"]
+    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html"]
+    urls.extend(stream.url for stream in STREAMS)
     urls.extend(dispatch.url for dispatch in ordered_dispatches(dispatches))
     entries = "\n".join(f"  <url><loc>{html.escape(url)}</loc></url>" for url in urls)
     return f"""<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -353,10 +475,14 @@ def sitemap_template(dispatches: list[Dispatch]) -> str:
 
 def render() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    STREAM_DIR.mkdir(parents=True, exist_ok=True)
     dispatches = [load_dispatch(path) for path in sorted(DISPATCH_DIR.rglob("*.md"))]
     for dispatch in dispatches:
         body_html = markdown_to_html(dispatch.body)
         (OUTPUT_DIR / dispatch.output_name).write_text(page_template(dispatch, body_html), encoding="utf-8")
+    for stream in STREAMS:
+        (STREAM_DIR / f"{stream.slug}.html").write_text(stream_page_template(stream, dispatches), encoding="utf-8")
+    (STREAM_DIR / "index.html").write_text(stream_index_template(dispatches), encoding="utf-8")
     (SITE_DIR / "index.html").write_text(homepage_template(dispatches), encoding="utf-8")
     (SITE_DIR / "dispatches.html").write_text(archive_template(dispatches), encoding="utf-8")
     (SITE_DIR / "rss.xml").write_text(rss_template(dispatches), encoding="utf-8")
