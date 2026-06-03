@@ -8,6 +8,13 @@ streams:
   finance:
     title: Finance Dispatch
     sensitivity: high
+  digital-assets-infrastructure:
+    title: Digital Assets Infrastructure Dispatch
+    sensitivity: high
+    public_safe_after_review: true
+    investment_advice: false
+    legal_advice: false
+    source_mode: public_sources_only
   home-environment:
     title: Home & Environment Dispatch
     sensitivity: high
@@ -34,8 +41,26 @@ tags:
     - product
     - ux
     - finance
+    - fintech
     - banking
     - consumer-economics
+    - digital-assets
+    - crypto-assets
+    - crypto-exchange
+    - crypto-conversion
+    - custody
+    - depository-models
+    - regulation
+    - aml-cft
+    - sanctions
+    - taxation
+    - licensing
+    - market-structure
+    - liquidity
+    - competitors
+    - partners
+    - vendors
+    - contractors
     - home
     - smart-home
     - energy
@@ -56,15 +81,24 @@ tags:
 
 source_types:
   - official
+  - regulator
+  - law
+  - draft-law
   - release-notes
   - documentation
   - research
   - review
   - benchmark
-  - media
+  - business-media
+  - industry-media
   - community
   - forum
   - marketplace
+  - public-vendor-docs
+  - public-tender
+  - public-hiring-signal
+  - public-github-signal
+  - on-chain-public-data
   - expert-commentary
   - marketing
 
