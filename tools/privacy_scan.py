@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 EXCLUDE_DIRS = {".git", ".github", "node_modules", "public", "dist", "build"}
-TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts"}
+TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts", ".xml"}
 
 # Automated scanning focuses on areas that may later be published.
 # Policy and style files intentionally contain prohibited examples and are reviewed manually.
