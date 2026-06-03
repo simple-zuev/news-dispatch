@@ -43,3 +43,10 @@ jobs:
           test -f site/index.html
           test -f site/dispatches.html
           test -d site/dispatches
+
+      - name: Upload rendered site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-dispatch-site
+          path: site/
+          retention-days: 7
