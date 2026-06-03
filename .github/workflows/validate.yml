@@ -1,0 +1,37 @@
+name: Validate News Dispatch
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  privacy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run privacy scan
+        run: python tools/privacy_scan.py
+
+      - name: Check required files
+        run: |
+          test -f README.md
+          test -f PUBLICATION_BOUNDARY.md
+          test -f PRIVACY.md
+          test -f EDITORIAL_STANDARD.md
+          test -f SOURCE_POLICY.md
+          test -f SECURITY.md
+          test -f STYLE_GUIDE.md
+          test -f PUBLISHING.md
+          test -f STREAMS.md
+          test -f templates/dispatch.md
+          test -f templates/privacy-check.md
+          test -f data/taxonomy.yml
