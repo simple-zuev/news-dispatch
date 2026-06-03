@@ -2,7 +2,7 @@
 """Basic public-safety scanner for News Dispatch.
 
 This is not a complete DLP system. It is a lightweight guardrail for obvious leaks
-in publishable content, templates, data, and site files.
+in publishable content and site output.
 """
 
 from __future__ import annotations
@@ -14,19 +14,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 EXCLUDE_DIRS = {".git", ".github", "node_modules", "public", "dist", "build"}
-TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts", ".py"}
+TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts"}
 
-# Policy files intentionally contain words like token/password/secret as examples.
-# They are still reviewed manually, but the automated scanner focuses on publishable content.
-EXCLUDE_FILES = {
-    "PRIVACY.md",
-    "SECURITY.md",
-    "PUBLICATION_BOUNDARY.md",
-    "SOURCE_POLICY.md",
-    "EDITORIAL_STANDARD.md",
-    "STYLE_GUIDE.md",
-    "PUBLISHING.md",
-    "tools/privacy_scan.py",
+# Automated scanning focuses on areas that may later be published.
+# Policy and style files intentionally contain prohibited examples and are reviewed manually.
+SCAN_PREFIXES = (
+    "dispatches/",
+    "issues/",
+    "site/",
+    "validation/",
+    "streams/",
+)
+
+POLICY_LIKE_FILES = {
+    "README.md",
 }
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
@@ -49,7 +50,9 @@ ALLOWLIST_PATTERNS = [
 
 def should_scan(path: Path) -> bool:
     rel = path.relative_to(ROOT).as_posix()
-    if rel in EXCLUDE_FILES:
+    if path.name in POLICY_LIKE_FILES and rel.startswith("streams/"):
+        return False
+    if not rel.startswith(SCAN_PREFIXES):
         return False
     if path.suffix.lower() not in TEXT_EXTENSIONS:
         return False
