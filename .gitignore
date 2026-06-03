@@ -1,0 +1,32 @@
+# Private material must not enter this repository.
+# Keep raw calibration, private notes, and unredacted context outside Git.
+
+/private/
+/draft-private/
+/notes-private/
+/raw-private/
+/inbox-private/
+/calibration-private/
+/context-private/
+
+*.secret.*
+*.local.*
+*.private.*
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example
+
+# Generated output
+/public/
+/dist/
+/build/
+/.cache/
+
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/
