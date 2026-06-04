@@ -27,6 +27,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Validate dispatch front matter
+        run: python tools/validate_front_matter.py
+
       - name: Render static site
         run: python tools/render_site.py
 
