@@ -30,6 +30,9 @@ jobs:
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
 
+      - name: Validate published editorial content
+        run: python tools/validate_published.py
+
       - name: Render static site
         run: python tools/render_site.py
 
