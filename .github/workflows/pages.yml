@@ -33,6 +33,9 @@ jobs:
       - name: Render static site
         run: python tools/render_site.py
 
+      - name: Enhance static site
+        run: python tools/enhance_site.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
