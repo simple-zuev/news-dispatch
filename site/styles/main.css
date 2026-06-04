@@ -35,13 +35,18 @@ main {
   border-bottom: 1px solid var(--line);
 }
 
+.homepage-hero {
+  padding-bottom: 38px;
+}
+
 .masthead.compact {
   padding-bottom: 30px;
 }
 
 .eyebrow,
 .label,
-.backlink {
+.backlink,
+.section-kicker {
   margin: 0 0 12px;
   color: var(--accent);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -98,6 +103,8 @@ main {
 
 .hero-actions a:focus-visible,
 .card a:focus-visible,
+.stream-card a:focus-visible,
+.featured-card a:focus-visible,
 .backlink:focus-visible {
   outline: 3px solid rgba(155, 77, 34, 0.28);
   outline-offset: 3px;
@@ -141,6 +148,89 @@ main {
   font-size: 1.08rem;
 }
 
+.section-header {
+  margin-top: 28px;
+}
+
+.featured-section {
+  padding: 36px 0 8px;
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: 34px;
+  align-items: end;
+  padding: clamp(26px, 4vw, 42px);
+  background: var(--ink);
+  color: var(--card);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+}
+
+.featured-card .meta-row,
+.card .meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.featured-card .label {
+  color: rgba(255, 253, 248, 0.72);
+  margin: 0;
+}
+
+.featured-card h3 {
+  grid-column: 1;
+  margin: 0;
+  font-size: clamp(2.1rem, 4.2vw, 4.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.featured-card h3 a,
+.featured-card h3 a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.featured-card p:last-child {
+  grid-column: 2;
+  margin: 0;
+  color: rgba(255, 253, 248, 0.72);
+  font-size: clamp(1.02rem, 1.6vw, 1.24rem);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-issue {
+  color: var(--card);
+  background: var(--accent);
+}
+
+.badge-sample {
+  color: var(--ink);
+  background: rgba(21, 21, 21, 0.08);
+}
+
+.featured-card .badge-sample {
+  color: var(--ink);
+  background: var(--card);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -148,7 +238,8 @@ main {
   padding: 28px 0;
 }
 
-.card {
+.card,
+.stream-card {
   min-height: 260px;
   padding: 22px;
   background: var(--card);
@@ -157,32 +248,70 @@ main {
   box-shadow: var(--shadow);
 }
 
-.card.strict .label {
+.card.is-sample {
+  background: rgba(255, 253, 248, 0.62);
+}
+
+.card.strict .label,
+.stream-card.strict .label {
   color: var(--strict);
 }
 
-.card h3 {
+.card .label {
+  margin: 0;
+}
+
+.card h3,
+.stream-card h3 {
   margin: 0 0 14px;
   font-size: 1.45rem;
   line-height: 1.05;
   letter-spacing: -0.04em;
 }
 
-.card h3 a {
+.card h3 a,
+.stream-card h3 a {
   color: inherit;
   text-decoration: none;
 }
 
-.card h3 a:hover {
+.card h3 a:hover,
+.stream-card h3 a:hover {
   text-decoration: underline;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.12em;
 }
 
-.card p:last-child {
+.card p:last-child,
+.stream-card p:last-child {
   margin: 0;
   color: var(--muted);
   font-size: 0.98rem;
+}
+
+.stream-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 28px 0;
+}
+
+.stream-card {
+  min-height: 210px;
+  box-shadow: none;
+}
+
+.quiet-footer {
+  margin-top: 38px;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.quiet-footer p {
+  max-width: 760px;
+  margin: 0;
+  font-size: 0.96rem;
 }
 
 .boundary {
@@ -288,8 +417,17 @@ main {
 }
 
 @media (max-width: 900px) {
-  .grid {
+  .grid,
+  .stream-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .featured-card {
+    display: block;
+  }
+
+  .featured-card p:last-child {
+    margin-top: 18px;
   }
 
   .article-body {
@@ -327,11 +465,17 @@ main {
     padding: 0 15px;
   }
 
-  .grid {
+  .grid,
+  .stream-grid {
     grid-template-columns: 1fr;
   }
 
-  .card {
+  .card,
+  .stream-card {
     min-height: auto;
+  }
+
+  .featured-card {
+    border-radius: 20px;
   }
 }
