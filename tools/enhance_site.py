@@ -2,6 +2,7 @@
 """Enhance rendered News Dispatch site.
 
 Adds:
+- Russian public-facing copy normalization;
 - OpenGraph and Twitter meta tags to rendered HTML;
 - robots.txt;
 - dispatches.json machine-readable index.
@@ -20,6 +21,47 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 DISPATCH_DIR = ROOT / "dispatches"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
+
+PUBLIC_COPY_REPLACEMENTS = {
+    "Public-safe editorial briefing system": "Публичная редакционная система",
+    "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.",
+    "Аналитический хаб для обезличенных выпусков о технологиях, рынках, инфраструктуре, вещах, городе, культуре и научном горизонте.": "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.",
+    "Open dispatch archive": "Архив выпусков",
+    "Latest dispatches": "Последние выпуски",
+    "Editorial model": "Редакционная модель",
+    "Each dispatch turns public external signals into structured analysis: signal, verification, context, mechanism, second-order effects, decision criteria, and new knowledge.": "Каждый выпуск превращает публичные внешние сигналы в структурированную аналитику: сигнал, проверка, контекст, механизм влияния, вторичные эффекты, критерии оценки и новое знание.",
+    "Streams": "Потоки",
+    "Потоки помогают разделять разные типы аналитики, review level и источниковую модель.": "Потоки разделяют темы, уровень проверки, источниковую модель и правила публикации.",
+    "Publication boundary": "Граница публикации",
+    "Everything committed to the repository is treated as public. Private context may calibrate selection, but never appears as disclosure.": "Всё, что попадает в репозиторий, считается публичным. Личный или рабочий контекст может влиять на отбор тем, но не раскрывается в тексте.",
+    "Archive": "Архив",
+    "Dispatches": "Выпуски",
+    "Public-safe dispatch archive.": "Архив публично-безопасных выпусков.",
+    "Обезличенный архив public-safe выпусков.": "Архив публично-безопасных выпусков.",
+    "Editorial stream index.": "Индекс редакционных потоков.",
+    "Потоки разделяют темы, уровни проверки и правила публикации.": "Потоки разделяют темы, уровень проверки и правила публикации.",
+    "Strict review": "Строгая проверка",
+    "Editorial review": "Редакционная проверка",
+    "General Dispatch": "Общий выпуск",
+    "Digital Assets Infrastructure": "Инфраструктура цифровых активов",
+    "Work Dispatch": "Рабочий выпуск",
+    "Finance Dispatch": "Финансовая среда",
+    "Home & Environment": "Дом и среда",
+    "Gear & Material Culture": "Вещи и материальная культура",
+    "City & Culture": "Город и культура",
+    "Audio & Creative Tech": "Аудио и креативные технологии",
+    "Horizon Notes": "Горизонт знаний",
+    "Multi-domain analysis across technology, finance, gear, culture, cities, science, and adjacent fields.": "Междисциплинарная аналитика о технологиях, рынках, вещах, культуре, городе, науке и смежных областях.",
+    "Public-source analysis of regulation, restrictions, technology, market structure, public competitors, vendor landscape, security, trust, and infrastructure resilience.": "Аналитика по публичным источникам о регулировании, ограничениях, технологиях, рыночной структуре, публичных конкурентах, поставщиках, безопасности, доверии и устойчивости инфраструктуры.",
+    "Public market and product signals, AI, UX, operating models, and organizational implications without internal company or product data.": "Публичные рыночные и продуктовые сигналы, ИИ, UX, операционные модели и организационные эффекты без внутренних данных компаний и продуктов.",
+    "Rates, banking products, consumer economics, liquidity, subscriptions, and large-purchase context in educational framing.": "Ставки, банковские продукты, потребительская экономика, ликвидность, подписки и крупные покупки в образовательной рамке.",
+    "Home, smart home, energy, safety, infrastructure patterns, comfort, and practical systems.": "Дом, умная среда, энергия, безопасность, инфраструктурные паттерны, комфорт и практические системы.",
+    "EDC, bags, watches, tools, apparel, materials, repairability, ownership, and everyday-use criteria.": "EDC, сумки, часы, инструменты, одежда, материалы, ремонтопригодность, владение и критерии повседневного использования.",
+    "City life, culture, media, events, urban services, and lifestyle signals.": "Городская жизнь, культура, медиа, события, городские сервисы и повседневные сигналы.",
+    "DJ gear, audio, MIDI, music production, performance interfaces, and creator tools.": "DJ-оборудование, аудио, MIDI, музыкальное производство, исполнительские интерфейсы и инструменты создателей.",
+    "Science, systems, materials, robotics, biotech, cognition, HCI, and futures.": "Наука, системы, материалы, робототехника, биотех, когнитивные науки, HCI и сценарии будущего.",
+    "No dispatches in this stream yet.": "В этом потоке пока нет выпусков.",
+}
 
 
 def parse_front_matter(text: str) -> tuple[dict[str, str], str]:
@@ -57,6 +99,12 @@ def parse_front_matter(text: str) -> tuple[dict[str, str], str]:
     return meta, body
 
 
+def localize_public_copy(text: str) -> str:
+    for source, target in PUBLIC_COPY_REPLACEMENTS.items():
+        text = text.replace(source, target)
+    return text
+
+
 def page_url(path: Path) -> str:
     rel = path.relative_to(SITE_DIR).as_posix()
     if rel == "index.html":
@@ -71,12 +119,14 @@ def extract_title(text: str) -> str:
 
 def extract_description(text: str) -> str:
     match = re.search(r'<meta name="description" content="(.*?)">', text, flags=re.IGNORECASE | re.DOTALL)
-    return html.unescape(match.group(1).strip()) if match else "Public-safe editorial dispatches."
+    return html.unescape(match.group(1).strip()) if match else "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке."
 
 
 def enhance_html(path: Path) -> None:
     text = path.read_text(encoding="utf-8")
+    text = localize_public_copy(text)
     if 'property="og:title"' in text:
+        path.write_text(text, encoding="utf-8")
         return
     title = extract_title(text)
     description = extract_description(text)
