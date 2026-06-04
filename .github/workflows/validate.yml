@@ -21,6 +21,9 @@ jobs:
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
 
+      - name: Validate published editorial content
+        run: python tools/validate_published.py
+
       - name: Render static site
         run: python tools/render_site.py
 
@@ -41,13 +44,20 @@ jobs:
           test -f STYLE_GUIDE.md
           test -f PUBLISHING.md
           test -f STREAMS.md
+          test -f PUBLICATION_CHECKLIST.md
+          test -f REDACTION_GUIDE.md
+          test -f ANTI_ADVERTISING_POLICY.md
           test -f templates/dispatch.md
           test -f templates/privacy-check.md
+          test -f templates/published-dispatch.md
+          test -f templates/signal.md
+          test -f sources/registry.yml
           test -f data/taxonomy.yml
           test -f tools/render_site.py
           test -f tools/enhance_site.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
+          test -f tools/validate_published.py
           test -f site/index.html
           test -f site/dispatches.html
           test -f site/rss.xml
