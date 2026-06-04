@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Validate dispatch front matter
+        run: python tools/validate_front_matter.py
+
       - name: Render static site
         run: python tools/render_site.py
 
@@ -40,6 +43,7 @@ jobs:
           test -f data/taxonomy.yml
           test -f tools/render_site.py
           test -f tools/privacy_scan.py
+          test -f tools/validate_front_matter.py
           test -f site/index.html
           test -f site/dispatches.html
           test -f site/rss.xml
