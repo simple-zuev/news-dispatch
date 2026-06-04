@@ -24,6 +24,9 @@ jobs:
       - name: Render static site
         run: python tools/render_site.py
 
+      - name: Enhance static site
+        run: python tools/enhance_site.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
@@ -42,12 +45,15 @@ jobs:
           test -f templates/privacy-check.md
           test -f data/taxonomy.yml
           test -f tools/render_site.py
+          test -f tools/enhance_site.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
           test -f site/index.html
           test -f site/dispatches.html
           test -f site/rss.xml
           test -f site/sitemap.xml
+          test -f site/robots.txt
+          test -f site/dispatches.json
           test -d site/dispatches
           test -f site/streams/index.html
           test -f site/streams/general.html
