@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
-"""Enhance rendered News Dispatch site.
-
-This step turns the generated HTML into a clean reader-facing site:
-- hides sample dispatches from public pages;
-- renders the homepage as a publication, not an internal system page;
-- adds source sections to real articles;
-- adds OpenGraph and Twitter meta tags;
-- writes robots.txt and dispatches.json.
-"""
+"""Enhance rendered News Dispatch site for reader-facing publication."""
 
 from __future__ import annotations
 
 import html
 import json
 import re
+from email.utils import formatdate
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,17 +25,14 @@ STREAMS = [
 
 STREAM_BY_SLUG = {stream["slug"]: stream for stream in STREAMS}
 
-REPLACEMENTS = {
+TEXT_REPLACEMENTS = {
     "Public-safe editorial briefing system": "Редакционный журнал",
     "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.",
-    "Аналитический хаб для обезличенных выпусков о технологиях, рынках, инфраструктуре, вещах, городе, культуре и научном горизонте.": "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.",
     "Open dispatch archive": "Архив выпусков",
     "Latest dispatches": "Последние выпуски",
     "Streams": "Потоки",
     "Archive": "Архив",
     "Dispatches": "Выпуски",
-    "Public-safe dispatch archive.": "Архив выпусков.",
-    "Обезличенный архив public-safe выпусков.": "Архив выпусков.",
     "Strict review": "Строгая проверка",
     "Editorial review": "Редакционная проверка",
     "General Dispatch": "Общий выпуск",
@@ -51,6 +41,8 @@ REPLACEMENTS = {
     "Finance Dispatch": "Финансовая среда",
     "Gear & Material Culture": "Вещи и материальная культура",
     "No dispatches in this stream yet.": "В этом потоке пока нет выпусков.",
+    "Public-safe dispatch archive.": "Архив выпусков.",
+    "Обезличенный архив public-safe выпусков.": "Архив выпусков.",
 }
 
 
@@ -94,6 +86,15 @@ def is_sample(item: dict[str, object]) -> bool:
     return item.get("period") == "sample" or "sample" in str(item.get("path", ""))
 
 
+def list_value(meta: dict[str, object], key: str) -> list[str]:
+    value = meta.get(key, [])
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    if value:
+        return [str(value)]
+    return []
+
+
 def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     real: list[dict[str, object]] = []
     samples: list[dict[str, object]] = []
@@ -101,14 +102,19 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
         meta, _body = parse_front_matter(path.read_text(encoding="utf-8"))
         output_name = f"{slugify(path)}.html"
         item: dict[str, object] = {
-            "title": meta.get("title", path.stem),
-            "date": meta.get("date", ""),
-            "period": meta.get("period", ""),
-            "stream": meta.get("stream", "general"),
-            "type": meta.get("type", "daily"),
-            "review_level": meta.get("review_level", ""),
-            "summary": meta.get("summary", ""),
-            "sources": meta.get("sources", []),
+            "title": str(meta.get("title", path.stem)),
+            "date": str(meta.get("date", "")),
+            "period": str(meta.get("period", "")),
+            "stream": str(meta.get("stream", "general")),
+            "type": str(meta.get("type", "daily")),
+            "review_level": str(meta.get("review_level", "")),
+            "summary": str(meta.get("summary", "")),
+            "sources": list_value(meta, "sources"),
+            "source_titles": list_value(meta, "source_titles"),
+            "source_types": list_value(meta, "source_types"),
+            "media": list_value(meta, "media"),
+            "media_titles": list_value(meta, "media_titles"),
+            "media_types": list_value(meta, "media_types"),
             "url": f"{BASE_URL}/dispatches/{output_name}",
             "path": f"dispatches/{output_name}",
             "source_path": path.relative_to(ROOT).as_posix(),
@@ -120,11 +126,11 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
 
 
 def stream_title(slug: object) -> str:
-    return STREAM_BY_SLUG.get(str(slug), {"title": str(slug)})["title"]
+    return str(STREAM_BY_SLUG.get(str(slug), {"title": str(slug)})["title"])
 
 
 def clean_copy(text: str) -> str:
-    for source, target in REPLACEMENTS.items():
+    for source, target in TEXT_REPLACEMENTS.items():
         text = text.replace(source, target)
     text = text.replace("Sample", "")
     text = text.replace("Issue", "")
@@ -214,7 +220,7 @@ def render_stream_pages(items: list[dict[str, object]]) -> None:
     for stream in STREAMS:
         stream_items = [item for item in items if item.get("stream") == stream["slug"]]
         index_cards.append(stream_card(stream, len(stream_items)))
-        cards = "\n".join(dispatch_card(item, css_class="card") for item in stream_items)
+        cards = "\n".join(dispatch_card(item) for item in stream_items)
         empty = "<p>В этом потоке пока нет выпусков.</p>" if not stream_items else ""
         page = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — {html.escape(str(stream['title']))}</title><meta name=\"description\" content=\"{html.escape(str(stream['description']))}\"><link rel=\"stylesheet\" href=\"../styles/main.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{cards}</section>{empty}</main></body></html>"""
         (stream_dir / f"{stream['slug']}.html").write_text(page, encoding="utf-8")
@@ -224,28 +230,51 @@ def render_stream_pages(items: list[dict[str, object]]) -> None:
 
 def remove_sample_pages(samples: list[dict[str, object]]) -> None:
     for item in samples:
-        rel = str(item["path"])
-        target = SITE_DIR / rel
+        target = SITE_DIR / str(item["path"])
         if target.exists():
             target.unlink()
 
 
-def add_sources_to_articles(items: list[dict[str, object]]) -> None:
-    by_path = {str(item["path"]): item for item in items}
-    for rel, item in by_path.items():
-        page = SITE_DIR / rel
+def source_cards(item: dict[str, object]) -> str:
+    urls = item.get("sources", [])
+    titles = item.get("source_titles", [])
+    types = item.get("source_types", [])
+    if not isinstance(urls, list) or not urls:
+        return ""
+    cards = []
+    for index, url in enumerate(urls):
+        title = titles[index] if isinstance(titles, list) and index < len(titles) else str(url)
+        source_type = types[index] if isinstance(types, list) and index < len(types) else "Источник"
+        cards.append(f"""<article class=\"source-card\"><p class=\"label\">{html.escape(str(source_type))}</p><h3><a href=\"{html.escape(str(url))}\">{html.escape(str(title))}</a></h3></article>""")
+    return f"""<section class=\"sources-block\"><h2>Источники</h2><div class=\"source-grid\">{''.join(cards)}</div></section>"""
+
+
+def media_cards(item: dict[str, object]) -> str:
+    urls = item.get("media", [])
+    titles = item.get("media_titles", [])
+    types = item.get("media_types", [])
+    if not isinstance(urls, list) or not urls:
+        return ""
+    cards = []
+    for index, url in enumerate(urls):
+        title = titles[index] if isinstance(titles, list) and index < len(titles) else str(url)
+        media_type = types[index] if isinstance(types, list) and index < len(types) else "Материал"
+        cards.append(f"""<article class=\"source-card media-card\"><p class=\"label\">{html.escape(str(media_type))}</p><h3><a href=\"{html.escape(str(url))}\">{html.escape(str(title))}</a></h3></article>""")
+    return f"""<section class=\"sources-block\"><h2>Материалы и медиа</h2><div class=\"source-grid\">{''.join(cards)}</div></section>"""
+
+
+def add_reader_blocks(items: list[dict[str, object]]) -> None:
+    for item in items:
+        page = SITE_DIR / str(item["path"])
         if not page.exists():
             continue
-        sources = item.get("sources")
-        if not isinstance(sources, list) or not sources:
-            continue
         text = page.read_text(encoding="utf-8")
-        if "<h2>Источники</h2>" in text:
+        if "<section class=\"sources-block\"" in text:
             continue
-        links = "\n".join(f'<li><a href="{html.escape(str(url))}">{html.escape(str(url))}</a></li>' for url in sources)
-        block = f"""<section class=\"sources-block\"><h2>Источники</h2><ul>{links}</ul></section>"""
-        text = text.replace("  </main>", f"    {block}\n  </main>", 1)
-        page.write_text(text, encoding="utf-8")
+        blocks = media_cards(item) + source_cards(item)
+        if blocks:
+            text = text.replace("  </main>", f"    {blocks}\n  </main>", 1)
+            page.write_text(text, encoding="utf-8")
 
 
 def page_url(path: Path) -> str:
@@ -256,7 +285,8 @@ def page_url(path: Path) -> str:
 def enhance_html(path: Path) -> None:
     text = clean_copy(path.read_text(encoding="utf-8"))
     if 'property="og:title"' not in text:
-        title = html.unescape(re.search(r"<title>(.*?)</title>", text, re.S).group(1)) if re.search(r"<title>(.*?)</title>", text, re.S) else "News Dispatch"
+        title_match = re.search(r"<title>(.*?)</title>", text, re.S)
+        title = html.unescape(title_match.group(1)) if title_match else "News Dispatch"
         description_match = re.search(r'<meta name="description" content="(.*?)">', text, re.S)
         description = html.unescape(description_match.group(1)) if description_match else "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке."
         meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\">
@@ -273,6 +303,21 @@ def enhance_html(path: Path) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def write_rss(items: list[dict[str, object]]) -> None:
+    rss_items = []
+    for item in items[:20]:
+        rss_items.append(f"""    <item><title>{html.escape(str(item['title']))}</title><link>{html.escape(str(item['url']))}</link><guid>{html.escape(str(item['url']))}</guid><pubDate>{formatdate(usegmt=True)}</pubDate><description>{html.escape(str(item['summary']))}</description></item>""")
+    (SITE_DIR / "rss.xml").write_text(f"""<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>News Dispatch</title><link>{BASE_URL}/</link><description>Редакционный журнал.</description><language>ru</language>{''.join(rss_items)}</channel></rss>""", encoding="utf-8")
+
+
+def write_sitemap(items: list[dict[str, object]]) -> None:
+    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html"]
+    urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(str(item["url"]) for item in items)
+    entries = "".join(f"<url><loc>{html.escape(url)}</loc></url>" for url in urls)
+    (SITE_DIR / "sitemap.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{entries}</urlset>", encoding="utf-8")
+
+
 def write_robots() -> None:
     (SITE_DIR / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {BASE_URL}/sitemap.xml\n", encoding="utf-8")
 
@@ -287,9 +332,11 @@ def main() -> int:
     render_homepage(items)
     render_archive(items)
     render_stream_pages(items)
-    add_sources_to_articles(items)
+    add_reader_blocks(items)
     for html_path in SITE_DIR.rglob("*.html"):
         enhance_html(html_path)
+    write_rss(items)
+    write_sitemap(items)
     write_robots()
     write_dispatches_json(items)
     print("Enhanced News Dispatch site.")
