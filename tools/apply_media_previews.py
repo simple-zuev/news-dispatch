@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import html
 import json
-import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,22 +31,38 @@ def prefix_for(page: Path) -> str:
     return ""
 
 
+def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
+    preview = item.get("preview", "")
+    title = item.get("title", "Материал")
+    return (
+        f'<a class="reader-preview-link" href="{html.escape(url)}">'
+        f'<img class="reader-thumb" src="{html.escape(prefix + preview)}" '
+        f'alt="{html.escape(title)}" loading="lazy"></a>'
+    )
+
+
+def insert_preview_before_media_link(text: str, url: str, item: dict[str, str], prefix: str) -> str:
+    preview = item.get("preview", "")
+    if not preview or url not in text or preview in text:
+        return text
+    escaped_url = html.escape(url)
+    marker = f'<h3><a href="{escaped_url}"'
+    position = text.find(marker)
+    if position == -1:
+        return text
+    article_start = text.rfind('<article class="source-card media-card"', 0, position)
+    article_end = text.find("</article>", position)
+    if article_start == -1 or article_end == -1:
+        return text
+    article = text[article_start:article_end]
+    if "reader-thumb" in article:
+        return text
+    return text[:article_start] + preview_html(url, item, prefix) + text[article_start:]
+
+
 def enrich_html(text: str, registry: dict[str, dict[str, str]], prefix: str) -> str:
     for url, item in registry.items():
-        preview = item.get("preview", "")
-        if not preview:
-            continue
-        if url not in text:
-            continue
-        if preview in text:
-            continue
-        escaped_url = html.escape(url)
-        escaped_preview = html.escape(prefix + preview)
-        title = html.escape(item.get("title", "Материал"))
-        image_html = f'<a class="reader-preview-link" href="{escaped_url}"><img class="reader-thumb" src="{escaped_preview}" alt="{title}" loading="lazy"></a>'
-        pattern = f'(<article class="source-card media-card">)(<p class="label">[^<]*</p><h3><a href="{re.escape(escaped_url)}")'
-        replacement = r"\1" + image_html + r"\2"
-        text = re.sub(pattern, replacement, text)
+        text = insert_preview_before_media_link(text, url, item, prefix)
     return text
 
 
