@@ -1,0 +1,120 @@
+{
+  "defaults": {
+    "max_items": 18,
+    "min_items": 4,
+    "per_source": 3,
+    "lookback_hours": 36
+  },
+  "feeds": [
+    {
+      "id": "the-verge",
+      "title": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "stream": "work",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.92,
+      "tags": ["technology", "platforms", "consumer-tech"]
+    },
+    {
+      "id": "ars-technica",
+      "title": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "stream": "work",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.9,
+      "tags": ["technology", "science", "policy"]
+    },
+    {
+      "id": "techcrunch",
+      "title": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "stream": "work",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.82,
+      "tags": ["startups", "technology", "markets"]
+    },
+    {
+      "id": "github-blog",
+      "title": "GitHub Blog",
+      "url": "https://github.blog/feed/",
+      "stream": "work",
+      "source_type": "Официальный блог / developer platform",
+      "source_class": "official_source",
+      "priority": 0.86,
+      "tags": ["developer-tools", "software", "ai"]
+    },
+    {
+      "id": "apple-newsroom",
+      "title": "Apple Newsroom",
+      "url": "https://www.apple.com/newsroom/rss-feed.rss",
+      "stream": "gear",
+      "source_type": "Официальный источник",
+      "source_class": "official_source",
+      "priority": 0.85,
+      "tags": ["apple", "platforms", "hardware"]
+    },
+    {
+      "id": "microsoft-blog",
+      "title": "Microsoft Blog",
+      "url": "https://blogs.microsoft.com/feed/",
+      "stream": "work",
+      "source_type": "Официальный блог",
+      "source_class": "official_source",
+      "priority": 0.8,
+      "tags": ["microsoft", "ai", "cloud"]
+    },
+    {
+      "id": "nvidia-blog",
+      "title": "NVIDIA Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "stream": "gear",
+      "source_type": "Официальный блог",
+      "source_class": "official_source",
+      "priority": 0.82,
+      "tags": ["nvidia", "ai", "chips", "hardware"]
+    },
+    {
+      "id": "mit-technology-review",
+      "title": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/feed/",
+      "stream": "horizon",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.84,
+      "tags": ["technology", "science", "ai", "horizon"]
+    },
+    {
+      "id": "rbc-news",
+      "title": "РБК",
+      "url": "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
+      "stream": "finance",
+      "source_type": "Деловое медиа",
+      "source_class": "public_media",
+      "priority": 0.78,
+      "tags": ["russia", "finance", "business"]
+    },
+    {
+      "id": "kommersant-news",
+      "title": "Коммерсантъ",
+      "url": "https://www.kommersant.ru/RSS/news.xml",
+      "stream": "general",
+      "source_type": "Деловое медиа",
+      "source_class": "public_media",
+      "priority": 0.78,
+      "tags": ["russia", "business", "policy"]
+    },
+    {
+      "id": "cbr-news",
+      "title": "Банк России",
+      "url": "https://www.cbr.ru/rss/RssNews",
+      "stream": "finance",
+      "source_type": "Официальный источник",
+      "source_class": "official_source",
+      "priority": 0.9,
+      "tags": ["finance", "rates", "regulation", "russia"]
+    }
+  ]
+}
