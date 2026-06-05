@@ -114,9 +114,12 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
             "sources": list_value(meta, "sources"),
             "source_titles": list_value(meta, "source_titles"),
             "source_types": list_value(meta, "source_types"),
+            "source_notes": list_value(meta, "source_notes"),
             "media": list_value(meta, "media"),
             "media_titles": list_value(meta, "media_titles"),
             "media_types": list_value(meta, "media_types"),
+            "media_notes": list_value(meta, "media_notes"),
+            "media_images": list_value(meta, "media_images"),
             "visuals": list_value(meta, "visuals"),
             "visual_titles": list_value(meta, "visual_titles"),
             "visual_types": list_value(meta, "visual_types"),
@@ -174,14 +177,14 @@ def render_homepage(items: list[dict[str, object]]) -> None:
         main_content = empty_notice()
     text = f"""<!doctype html>
 <html lang=\"ru\">
-<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch</title><meta name=\"description\" content=\"Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.\"><link rel=\"alternate\" type=\"application/rss+xml\" title=\"News Dispatch RSS\" href=\"{BASE_URL}/rss.xml\"><link rel=\"stylesheet\" href=\"styles/main.css\"></head>
+<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch</title><meta name=\"description\" content=\"Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.\"><link rel=\"alternate\" type=\"application/rss+xml\" title=\"News Dispatch RSS\" href=\"{BASE_URL}/rss.xml\"><link rel=\"stylesheet\" href=\"styles/main.css\"><link rel=\"stylesheet\" href=\"styles/reader.css\"></head>
 <body><header class=\"masthead homepage-hero\"><p class=\"eyebrow\">Редакционный журнал</p><h1>News Dispatch</h1><p class=\"lede\">Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.</p><nav class=\"hero-actions\" aria-label=\"Основная навигация\"><a href=\"dispatches.html\">Архив выпусков</a><a href=\"streams/index.html\">Потоки</a><a href=\"rss.xml\">RSS</a></nav></header><main>{main_content}<section class=\"panel section-header\"><h2>Потоки</h2><p>Темы, форматы и направления редакционной аналитики.</p></section><section class=\"stream-grid\" aria-label=\"Редакционные потоки\">{stream_cards}</section></main></body></html>"""
     (SITE_DIR / "index.html").write_text(text, encoding="utf-8")
 
 
 def render_archive(items: list[dict[str, object]]) -> None:
     cards = "\n".join(dispatch_card(item) for item in items) if items else empty_notice()
-    text = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Выпуски</title><meta name=\"description\" content=\"Архив выпусков.\"><link rel=\"stylesheet\" href=\"styles/main.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">News Dispatch</a><p class=\"eyebrow\">Архив</p><h1>Выпуски</h1><p class=\"lede\">Архив опубликованных материалов.</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
+    text = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Выпуски</title><meta name=\"description\" content=\"Архив выпусков.\"><link rel=\"stylesheet\" href=\"styles/main.css\"><link rel=\"stylesheet\" href=\"styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">News Dispatch</a><p class=\"eyebrow\">Архив</p><h1>Выпуски</h1><p class=\"lede\">Архив опубликованных материалов.</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
     (SITE_DIR / "dispatches.html").write_text(text, encoding="utf-8")
 
 
@@ -193,9 +196,9 @@ def render_stream_pages(items: list[dict[str, object]]) -> None:
         stream_items = [item for item in items if item.get("stream") == stream["slug"]]
         index_cards.append(stream_card(stream, len(stream_items)))
         cards = "\n".join(dispatch_card(item) for item in stream_items) if stream_items else "<p>В этом потоке пока нет выпусков.</p>"
-        page = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — {html.escape(str(stream['title']))}</title><meta name=\"description\" content=\"{html.escape(str(stream['description']))}\"><link rel=\"stylesheet\" href=\"../styles/main.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
+        page = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — {html.escape(str(stream['title']))}</title><meta name=\"description\" content=\"{html.escape(str(stream['description']))}\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
         (stream_dir / f"{stream['slug']}.html").write_text(page, encoding="utf-8")
-    index = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Потоки</title><meta name=\"description\" content=\"Редакционные потоки.\"><link rel=\"stylesheet\" href=\"../styles/main.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Потоки</h1><p class=\"lede\">Темы, форматы и направления редакционной аналитики.</p></header><main><section class=\"grid\">{''.join(index_cards)}</section></main></body></html>"""
+    index = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Потоки</title><meta name=\"description\" content=\"Редакционные потоки.\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Потоки</h1><p class=\"lede\">Темы, форматы и направления редакционной аналитики.</p></header><main><section class=\"grid\">{''.join(index_cards)}</section></main></body></html>"""
     (stream_dir / "index.html").write_text(index, encoding="utf-8")
 
 
@@ -206,12 +209,22 @@ def remove_hidden_pages(items: list[dict[str, object]]) -> None:
             target.unlink()
 
 
-def cards_from_parallel_lists(urls: list[str], titles: list[str], types: list[str], css_extra: str = "") -> str:
+def at(values: list[str], index: int, default: str = "") -> str:
+    return values[index] if index < len(values) else default
+
+
+def cards_from_parallel_lists(urls: list[str], titles: list[str], types: list[str], notes: list[str] | None = None, images: list[str] | None = None, css_extra: str = "") -> str:
+    notes = notes or []
+    images = images or []
     cards = []
     for index, url in enumerate(urls):
-        title = titles[index] if index < len(titles) else url
-        source_type = types[index] if index < len(types) else "Источник"
-        cards.append(f"""<article class=\"source-card {css_extra}\"><p class=\"label\">{html.escape(source_type)}</p><h3><a href=\"{html.escape(url)}\">{html.escape(title)}</a></h3></article>""")
+        title = at(titles, index, url)
+        source_type = at(types, index, "Источник")
+        note = at(notes, index, "")
+        image = at(images, index, "")
+        image_html = f'<a href="{html.escape(url)}"><img class="reader-thumb" src="{html.escape(image)}" alt="{html.escape(title)}" loading="lazy" referrerpolicy="no-referrer"></a>' if image else ""
+        note_html = f"<p>{html.escape(note)}</p>" if note else ""
+        cards.append(f"""<article class=\"source-card {css_extra}\">{image_html}<p class=\"label\">{html.escape(source_type)}</p><h3><a href=\"{html.escape(url)}\">{html.escape(title)}</a></h3>{note_html}</article>""")
     return "".join(cards)
 
 
@@ -222,15 +235,15 @@ def add_reader_blocks(items: list[dict[str, object]]) -> None:
             continue
         text = page.read_text(encoding="utf-8")
         if "<section class=\"sources-block\"" in text:
-            continue
+            text = re.sub(r'<section class="sources-block">.*?</section>', '', text, flags=re.S)
         blocks = []
-        media_cards = cards_from_parallel_lists(list(item["media"]), list(item["media_titles"]), list(item["media_types"]), "media-card")
-        source_cards = cards_from_parallel_lists(list(item["sources"]), list(item["source_titles"]), list(item["source_types"]))
+        media_cards = cards_from_parallel_lists(list(item["media"]), list(item["media_titles"]), list(item["media_types"]), notes=list(item["media_notes"]), images=list(item["media_images"]), css_extra="media-card")
+        source_cards = cards_from_parallel_lists(list(item["sources"]), list(item["source_titles"]), list(item["source_types"]), notes=list(item["source_notes"]))
         if media_cards:
-            blocks.append(f"<section class=\"sources-block\"><h2>Материалы и медиа</h2><div class=\"source-grid\">{media_cards}</div></section>")
+            blocks.append(f"<section class=\"sources-block reader-assets\"><h2>Материалы и медиа</h2><div class=\"source-grid reader-grid\">{media_cards}</div></section>")
         if source_cards:
-            blocks.append(f"<section class=\"sources-block\"><h2>Источники</h2><div class=\"source-grid\">{source_cards}</div></section>")
-        if blocks:
+            blocks.append(f"<section class=\"sources-block reader-assets\"><h2>Источники</h2><div class=\"source-grid reader-grid\">{source_cards}</div></section>")
+        if blocks and "reader-assets" not in text:
             text = text.replace("  </main>", f"    {''.join(blocks)}\n  </main>", 1)
             page.write_text(text, encoding="utf-8")
 
@@ -238,6 +251,15 @@ def add_reader_blocks(items: list[dict[str, object]]) -> None:
 def page_url(path: Path) -> str:
     rel = path.relative_to(SITE_DIR).as_posix()
     return f"{BASE_URL}/" if rel == "index.html" else f"{BASE_URL}/{rel}"
+
+
+def add_reader_css(text: str, path: Path) -> str:
+    rel = path.relative_to(SITE_DIR).as_posix()
+    prefix = "../" if rel.startswith("streams/") or rel.startswith("dispatches/") else ""
+    href = f"{prefix}styles/reader.css"
+    if href in text:
+        return text
+    return text.replace("</head>", f'<link rel="stylesheet" href="{href}"></head>', 1)
 
 
 def enhance_html(path: Path) -> None:
@@ -249,6 +271,7 @@ def enhance_html(path: Path) -> None:
         description = html.unescape(description_match.group(1)) if description_match else "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке."
         meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"News Dispatch\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
         text = text.replace("<link rel=\"stylesheet\"", meta + "<link rel=\"stylesheet\"", 1)
+    text = add_reader_css(text, path)
     path.write_text(text, encoding="utf-8")
 
 
