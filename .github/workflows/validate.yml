@@ -52,12 +52,14 @@ jobs:
           test -f templates/published-dispatch.md
           test -f templates/signal.md
           test -f sources/registry.yml
+          test -f media/registry.yml
           test -f data/taxonomy.yml
           test -f tools/render_site.py
           test -f tools/enhance_site.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
+          test -f site/styles/reader.css
           test -f site/index.html
           test -f site/dispatches.html
           test -f site/rss.xml
