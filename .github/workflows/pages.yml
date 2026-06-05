@@ -45,6 +45,9 @@ jobs:
       - name: Apply reader sections
         run: python tools/apply_reader_sections.py
 
+      - name: Validate reader output
+        run: python tools/validate_reader_output.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
