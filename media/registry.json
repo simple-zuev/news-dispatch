@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "id": "apple-wwdc26",
+      "title": "WWDC26: Apple Developer",
+      "type": "Официальный материал",
+      "url": "https://developer.apple.com/wwdc26/",
+      "preview": "assets/previews/wwdc26.svg",
+      "note": "Официальная страница события, расписание и материалы для разработчиков."
+    },
+    {
+      "id": "verge-rtx-spark",
+      "title": "The Verge: материал о RTX Spark и будущих поколениях AI PC",
+      "type": "Технологический разбор",
+      "url": "https://www.theverge.com/tech/942588/nvidia-rtx-spark-n2x-n3x-r2-d2-star-trek-star-wars-plan",
+      "preview": "assets/previews/rtx-spark.svg",
+      "note": "Помогает понять, как технологические медиа описывают переход к локальным AI PC-сценариям."
+    }
+  ]
+}
