@@ -30,6 +30,9 @@ jobs:
       - name: Enhance static site
         run: python tools/enhance_site.py
 
+      - name: Apply media previews
+        run: python tools/apply_media_previews.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
@@ -53,13 +56,17 @@ jobs:
           test -f templates/signal.md
           test -f sources/registry.yml
           test -f media/registry.yml
+          test -f media/registry.json
           test -f data/taxonomy.yml
           test -f tools/render_site.py
           test -f tools/enhance_site.py
+          test -f tools/apply_media_previews.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
           test -f site/styles/reader.css
+          test -f site/assets/previews/wwdc26.svg
+          test -f site/assets/previews/rtx-spark.svg
           test -f site/index.html
           test -f site/dispatches.html
           test -f site/rss.xml
