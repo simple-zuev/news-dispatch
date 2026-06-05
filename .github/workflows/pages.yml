@@ -39,6 +39,9 @@ jobs:
       - name: Enhance static site
         run: python tools/enhance_site.py
 
+      - name: Apply media previews
+        run: python tools/apply_media_previews.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
