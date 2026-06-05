@@ -33,6 +33,9 @@ jobs:
       - name: Apply media previews
         run: python tools/apply_media_previews.py
 
+      - name: Apply reader sections
+        run: python tools/apply_reader_sections.py
+
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
@@ -61,6 +64,7 @@ jobs:
           test -f tools/render_site.py
           test -f tools/enhance_site.py
           test -f tools/apply_media_previews.py
+          test -f tools/apply_reader_sections.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
