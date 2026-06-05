@@ -1,0 +1,14 @@
+items:
+  apple-wwdc26:
+    title: "WWDC26: Apple Developer"
+    type: "official-page"
+    url: "https://developer.apple.com/wwdc26/"
+    preview: ""
+    note: "Официальная страница события, расписание и материалы для разработчиков."
+
+  verge-rtx-spark:
+    title: "The Verge: RTX Spark and AI PC direction"
+    type: "tech-analysis"
+    url: "https://www.theverge.com/tech/942588/nvidia-rtx-spark-n2x-n3x-r2-d2-star-trek-star-wars-plan"
+    preview: ""
+    note: "Технологический разбор направления RTX Spark и локальных AI PC-сценариев."
