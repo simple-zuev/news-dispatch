@@ -27,6 +27,49 @@
   column-gap: 56px;
 }
 
+.reader-map {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 30px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.reader-map span {
+  margin-right: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.reader-map a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: rgba(21, 21, 21, 0.045);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.reader-map a:hover {
+  border-color: var(--line);
+  background: var(--soft);
+}
+
 .article-body h1 {
   font-size: clamp(1.8rem, 4vw, 3.2rem);
 }
@@ -48,6 +91,70 @@
 
 .article-body table {
   max-width: 100%;
+}
+
+.reader-section-block {
+  grid-column: 1 / -1;
+  margin: 28px 0;
+  padding: clamp(20px, 3vw, 30px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+}
+
+.reader-section-block h2 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.reader-section-block > * {
+  max-width: var(--reader-max);
+}
+
+.reader-section-main {
+  background: #fffaf1;
+}
+
+.reader-section-main ol {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.reader-section-main li {
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.reader-section-rumors {
+  background: rgba(155, 77, 34, 0.08);
+}
+
+.reader-section-people {
+  background: rgba(31, 78, 95, 0.08);
+}
+
+.reader-section-watch {
+  background: rgba(21, 21, 21, 0.045);
+}
+
+.reader-section-watch ul {
+  display: grid;
+  gap: 9px;
+}
+
+.reader-section-summary {
+  background: var(--ink);
+  color: var(--card);
+}
+
+.reader-section-summary p,
+.reader-section-summary h2 {
+  color: var(--card);
 }
 
 .reader-assets {
@@ -152,5 +259,18 @@
   .article-body p,
   .article-body li {
     font-size: 1rem;
+  }
+
+  .reader-map {
+    align-items: stretch;
+  }
+
+  .reader-map a {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .reader-section-block {
+    padding: 18px;
   }
 }
