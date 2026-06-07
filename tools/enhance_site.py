@@ -143,19 +143,21 @@ def clean_copy(text: str) -> str:
     return text
 
 
-def dispatch_card(item: dict[str, object], css_class: str = "card") -> str:
+def dispatch_card(item: dict[str, object], css_class: str = "card", prefix: str = "") -> str:
+    href = f"{prefix}{html.escape(str(item['path']))}"
     return f"""<article class=\"{css_class}\">
   <p class=\"label\">{html.escape(stream_title(item['stream']))} · {html.escape(str(item['date']))}</p>
-  <h3><a href=\"{html.escape(str(item['path']))}\">{html.escape(str(item['title']))}</a></h3>
+  <h3><a href=\"{href}\">{html.escape(str(item['title']))}</a></h3>
   <p>{html.escape(str(item['summary']))}</p>
 </article>"""
 
 
-def stream_card(stream: dict[str, object], count: int) -> str:
+def stream_card(stream: dict[str, object], count: int, prefix: str = "") -> str:
     strict_class = " strict" if stream.get("strict") else ""
+    href = f"{prefix}streams/{html.escape(str(stream['slug']))}.html"
     return f"""<article class=\"stream-card{strict_class}\">
   <p class=\"label\">{html.escape(str(stream['label']))} · {count} выпусков</p>
-  <h3><a href=\"streams/{html.escape(str(stream['slug']))}.html\">{html.escape(str(stream['title']))}</a></h3>
+  <h3><a href=\"{href}\">{html.escape(str(stream['title']))}</a></h3>
   <p>{html.escape(str(stream['description']))}</p>
 </article>"""
 
@@ -194,8 +196,8 @@ def render_stream_pages(items: list[dict[str, object]]) -> None:
     index_cards = []
     for stream in STREAMS:
         stream_items = [item for item in items if item.get("stream") == stream["slug"]]
-        index_cards.append(stream_card(stream, len(stream_items)))
-        cards = "\n".join(dispatch_card(item) for item in stream_items) if stream_items else "<p>В этом потоке пока нет выпусков.</p>"
+        index_cards.append(stream_card(stream, len(stream_items), prefix="../"))
+        cards = "\n".join(dispatch_card(item, prefix="../") for item in stream_items) if stream_items else "<p>В этом потоке пока нет выпусков.</p>"
         page = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — {html.escape(str(stream['title']))}</title><meta name=\"description\" content=\"{html.escape(str(stream['description']))}\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
         (stream_dir / f"{stream['slug']}.html").write_text(page, encoding="utf-8")
     index = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Потоки</title><meta name=\"description\" content=\"Редакционные потоки.\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Потоки</h1><p class=\"lede\">Темы, форматы и направления редакционной аналитики.</p></header><main><section class=\"grid\">{''.join(index_cards)}</section></main></body></html>"""
