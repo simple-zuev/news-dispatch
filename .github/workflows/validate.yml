@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Check Daily Radar builder syntax
-        run: python -m py_compile tools/daily_radar.py
+        run: python -m py_compile tools/daily_radar.py tools/apply_topic_streams.py
 
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
@@ -32,6 +32,9 @@ jobs:
 
       - name: Enhance static site
         run: python tools/enhance_site.py
+
+      - name: Apply topic stream pages
+        run: python tools/apply_topic_streams.py
 
       - name: Apply media previews
         run: python tools/apply_media_previews.py
@@ -72,6 +75,7 @@ jobs:
           test -f tools/enhance_site.py
           test -f tools/apply_media_previews.py
           test -f tools/apply_reader_sections.py
+          test -f tools/apply_topic_streams.py
           test -f tools/validate_reader_output.py
           test -f tools/daily_radar.py
           test -f tools/privacy_scan.py
@@ -90,7 +94,6 @@ jobs:
           test -d site/dispatches
           test -f site/streams/index.html
           test -f site/streams/general.html
-          test -f site/streams/digital-assets-infrastructure.html
 
       - name: Upload rendered site artifact
         uses: actions/upload-artifact@v4
