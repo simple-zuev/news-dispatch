@@ -134,12 +134,27 @@ def normalize_topic_labels() -> None:
             page.write_text(new_text, encoding="utf-8")
 
 
+def write_sitemap(items: list[dict[str, str]]) -> None:
+    urls = [
+        f"{BASE_URL}/",
+        f"{BASE_URL}/dispatches.html",
+        f"{BASE_URL}/rss.xml",
+        f"{BASE_URL}/sitemap.xml",
+        f"{BASE_URL}/streams/index.html",
+    ]
+    urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(item["url"] for item in items)
+    entries = "".join(f"<url><loc>{html.escape(url)}</loc></url>" for url in dict.fromkeys(urls))
+    (SITE_DIR / "sitemap.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{entries}</urlset>", encoding="utf-8")
+
+
 def main() -> int:
     items = collect_dispatches()
     render_stream_index(items)
     render_stream_pages(items)
     patch_homepage(items)
     normalize_topic_labels()
+    write_sitemap(items)
     print("Applied topic stream pages.")
     return 0
 
