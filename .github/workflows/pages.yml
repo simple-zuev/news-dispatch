@@ -39,6 +39,9 @@ jobs:
       - name: Enhance static site
         run: python tools/enhance_site.py
 
+      - name: Apply topic stream pages
+        run: python tools/apply_topic_streams.py
+
       - name: Apply media previews
         run: python tools/apply_media_previews.py
 
