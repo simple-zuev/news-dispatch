@@ -21,7 +21,6 @@ STATE_PATH = ROOT / "data" / "hourly-radar-seen.json"
 REPORT_PATH = ROOT / "data" / "hourly-radar-latest.json"
 LOG_PATH = ROOT / "data" / "hourly-radar-log.json"
 RADAR_DIR = ROOT / "site" / "radar"
-BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 MAX_LOG_ITEMS = 300
 
 
@@ -83,7 +82,7 @@ def card(record: dict[str, Any]) -> str:
     source_type = html.escape(str(record.get("source_type", "Источник")))
     title = html.escape(str(record.get("title", "Сигнал")))
     url = html.escape(str(record.get("url", "#")), quote=True)
-    stream = html.escape(str(record.get("stream_title", stream_title(str(record.get("stream", "general"))))) )
+    stream = html.escape(str(record.get("stream_title", stream_title(str(record.get("stream", "general"))))))
     summary = html.escape(str(record.get("summary", "Сводка в RSS/Atom не указана.")))
     published = str(record.get("published", ""))
     timestamp = html.escape(published.replace("T", " ").replace("+00:00", " UTC")[:20])
@@ -124,6 +123,12 @@ def render_stream_pages(groups: dict[str, list[dict[str, Any]]]) -> None:
         (RADAR_DIR / f"{slug}.html").write_text(text, encoding="utf-8")
 
 
+def render_pages(records: list[dict[str, Any]], new_count: int) -> None:
+    groups = group_records(records)
+    render_index(groups, new_count)
+    render_stream_pages(groups)
+
+
 def write_report(day: date, selected: list, fetch_errors: list[str], records: list[dict[str, Any]]) -> None:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     data = {
@@ -138,6 +143,13 @@ def write_report(day: date, selected: list, fetch_errors: list[str], records: li
 
 def build(args: argparse.Namespace) -> int:
     day = date.fromisoformat(args.date) if args.date else date.today()
+    existing_records = load_log()
+    if args.render_only:
+        if not args.dry_run:
+            render_pages(existing_records, 0)
+        log(f"rendered radar pages from {len(existing_records)} stored signal(s)")
+        return 0
+
     feeds, defaults = load_config(CONFIG_PATH)
     max_items = int(args.max_items or defaults.get("hourly_max_items", 36))
     per_source = int(args.per_source or defaults.get("per_source", 3))
@@ -146,16 +158,14 @@ def build(args: argparse.Namespace) -> int:
     seen = set() if args.no_state else load_seen(STATE_PATH)
     selected = select_items(raw_items, seen, max_items=max_items, per_source=per_source, lookback_hours=lookback)
     new_records = [record_from_item(item) for item in selected]
-    records = merge_records(load_log(), new_records)
-    groups = group_records(records)
+    records = merge_records(existing_records, new_records)
     if selected:
         for item in selected:
             write_signal(day, item, dry_run=args.dry_run)
         save_seen(STATE_PATH, seen, [item.key for item in selected], dry_run=args.dry_run or args.no_state)
     if not args.dry_run:
         save_log(records)
-        render_index(groups, len(selected))
-        render_stream_pages(groups)
+        render_pages(records, len(selected))
         write_report(day, selected, fetch_errors, records)
     log(f"selected {len(selected)} signal(s); stored {len(records)}; feed warnings={len(fetch_errors)}")
     return 0
@@ -170,6 +180,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--timeout", type=int, default=int(os.getenv("HOURLY_RADAR_TIMEOUT", "20")))
     parser.add_argument("--dry-run", action="store_true", default=os.getenv("HOURLY_RADAR_DRY_RUN", "") == "1")
     parser.add_argument("--no-state", action="store_true", default=os.getenv("HOURLY_RADAR_NO_STATE", "") == "1")
+    parser.add_argument("--render-only", action="store_true", default=os.getenv("HOURLY_RADAR_RENDER_ONLY", "") == "1")
     return parser.parse_args(argv)
 
 
