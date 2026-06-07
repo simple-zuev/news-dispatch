@@ -49,8 +49,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check Daily Radar builder syntax
-        run: python -m py_compile tools/daily_radar.py tools/apply_topic_streams.py
+      - name: Check automation syntax
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
+
+      - name: Validate stream registry
+        run: python tools/validate_stream_registry.py
 
       - name: Build Daily Radar dispatches
         run: python tools/daily_radar.py
