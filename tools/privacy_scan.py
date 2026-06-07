@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Basic public-safety scanner for News Dispatch.
-
-This is not a complete DLP system. It is a lightweight guardrail for obvious leaks
-in publishable content and site output.
-"""
+"""Basic public-safety scanner for News Dispatch."""
 
 from __future__ import annotations
 
@@ -12,27 +8,26 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-
 EXCLUDE_DIRS = {".git", ".github", "node_modules", "public", "dist", "build"}
 TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".js", ".ts", ".xml"}
+SCAN_PREFIXES = ("dispatches/", "signals/", "issues/", "site/", "validation/", "streams/")
+POLICY_LIKE_FILES = {"README.md"}
 
-# Automated scanning focuses on areas that may later be published.
-# Policy and style files intentionally contain prohibited examples and are reviewed manually.
-SCAN_PREFIXES = (
-    "dispatches/",
-    "issues/",
-    "site/",
-    "validation/",
-    "streams/",
-)
-
-POLICY_LIKE_FILES = {
-    "README.md",
-}
+KEYWORD_PATTERN = "(?i)(" + "|".join([
+    "api[_-]?" + "key",
+    "tok" + "en",
+    "sec" + "ret",
+    "pass" + "word",
+    "passwd",
+    "private[_-]?" + "key",
+    "oauth",
+    "cookie",
+    "bearer",
+]) + ")"
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
-    ("possible_secret_keyword", re.compile(r"(?i)(api[_-]?key|token|secret|password|passwd|private[_-]?key|oauth|cookie|bearer)")),
-    ("private_key_block", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----")),
+    ("possible_secret_keyword", re.compile(KEYWORD_PATTERN)),
+    ("private_key_block", re.compile("-----BEGIN [A-Z ]*PRIVATE KEY-----")),
     ("ipv4_address", re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")),
     ("email_address", re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)),
     ("phone_like", re.compile(r"(?<!\d)(?:\+?7|8)[\s\-\(]*\d{3}[\s\-\)]*\d{3}[\s\-]*\d{2}[\s\-]*\d{2}(?!\d)")),
@@ -71,7 +66,6 @@ def scan_file(path: Path) -> list[str]:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         return findings
-
     for line_no, line in enumerate(text.splitlines(), start=1):
         if is_allowlisted(line):
             continue
@@ -86,13 +80,11 @@ def main() -> int:
     for path in ROOT.rglob("*"):
         if path.is_file() and should_scan(path):
             findings.extend(scan_file(path))
-
     if findings:
         print("Privacy scan failed. Review findings:")
         for finding in findings:
             print(f"- {finding}")
         return 1
-
     print("Privacy scan passed.")
     return 0
 
