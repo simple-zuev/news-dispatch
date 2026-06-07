@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Render topic-first stream index and stream pages.
-
-This post-process keeps the product model from collapsing into one mixed digest.
-It runs after enhance_site.py and overwrites site/streams/*.html with the topic
-taxonomy used by the automatic radar.
-"""
+"""Render topic-first stream index and stream pages from the shared registry."""
 
 from __future__ import annotations
 
@@ -12,23 +7,14 @@ import html
 import re
 from pathlib import Path
 
+from stream_registry import stream_by_slug, streams
+
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 DISPATCH_DIR = ROOT / "dispatches"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
-
-STREAMS = [
-    {"slug": "finance", "title": "Финансы — РФ и мир", "label": "Строгая проверка", "description": "Ставки, банки, карты, вклады, кредиты, рубль, мировые рынки, регуляторы и потребительская финансовая среда.", "strict": True},
-    {"slug": "crypto-finance", "title": "Криптофинансы — РФ и мир", "label": "Строгая проверка", "description": "Крипторынки, регулирование, биржи, stablecoins, custody, tokenization, P2P, цифровой рубль и рыночная инфраструктура.", "strict": True},
-    {"slug": "ai", "title": "AI — железо, софт и исследования", "label": "Редакционная проверка", "description": "Модели, агенты, AI-поиск, coding tools, AI PC, GPU/NPU, инфраструктура, safety, исследования и регулирование."},
-    {"slug": "tech-hardware-software", "title": "Железо и софт", "label": "Редакционная проверка", "description": "ПК, комплектующие, смартфоны, ОС, приложения, бенчмарки, безопасность, consumer software и 3DNews-подобная техповестка."},
-    {"slug": "gear-style-edc", "title": "EDC, кроссовки и одежда", "label": "Редакционная проверка", "description": "EDC, сумки, инструменты, часы, кроссовки, одежда, материалы, ремонтопригодность, опыт владельцев и стиль без рекламы."},
-    {"slug": "moscow-city", "title": "Москва — события и места", "label": "Редакционная проверка", "description": "События, выставки, концерты, бары, рестораны, клубы, городские сервисы, транспорт и практический московский контекст."},
-    {"slug": "dj-audio-creative", "title": "DJ, аудио и creative tech", "label": "Редакционная проверка", "description": "DJ-оборудование, контроллеры, микшеры, CDJ, Rekordbox, Serato, Ableton, плагины, MIDI, аудио и performance workflows."},
-    {"slug": "science-discovery", "title": "Наука и открытия", "label": "Редакционная проверка", "description": "Исследования, открытия, космос, физика, биология, медицина, климат, материалы, робототехника, HCI, Россия и мир."},
-    {"slug": "general", "title": "Общий радар", "label": "Редакционная проверка", "description": "Кросс-доменный обзор только для специальных выпусков, когда важна связь между несколькими темами."},
-]
-STREAM_BY_SLUG = {stream["slug"]: stream for stream in STREAMS}
+STREAMS = streams()
+STREAM_BY_SLUG = stream_by_slug()
 
 
 def parse_front_matter(text: str) -> dict[str, object]:
@@ -100,10 +86,15 @@ def head(title: str, description: str, prefix: str = "") -> str:
     return f"""<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>{html.escape(title)}</title><meta name=\"description\" content=\"{html.escape(description)}\"><link rel=\"stylesheet\" href=\"{prefix}styles/main.css\"><link rel=\"stylesheet\" href=\"{prefix}styles/reader.css\"></head>"""
 
 
-def render_stream_index(items: list[dict[str, str]]) -> None:
+def counts_by_stream(items: list[dict[str, str]]) -> dict[str, int]:
     counts = {str(stream["slug"]): 0 for stream in STREAMS}
     for item in items:
         counts[item["stream"]] = counts.get(item["stream"], 0) + 1
+    return counts
+
+
+def render_stream_index(items: list[dict[str, str]]) -> None:
+    counts = counts_by_stream(items)
     cards = "".join(stream_card(stream, counts.get(str(stream["slug"]), 0), prefix="../") for stream in STREAMS)
     text = f"""<!doctype html><html lang=\"ru\">{head('News Dispatch — Потоки', 'Тематические дайджесты личного reader/radar.', prefix='../')}<body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Тематические дайджесты</h1><p class=\"lede\">Новости разделены по самостоятельным полкам: финансы, криптофинансы, AI, железо и софт, EDC, Москва, DJ/audio и наука. Общий поток остаётся только для специальных кросс-доменных выпусков.</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
     stream_dir = SITE_DIR / "streams"
@@ -125,9 +116,7 @@ def patch_homepage(items: list[dict[str, str]]) -> None:
     page = SITE_DIR / "index.html"
     if not page.exists():
         return
-    counts = {str(stream["slug"]): 0 for stream in STREAMS}
-    for item in items:
-        counts[item["stream"]] = counts.get(item["stream"], 0) + 1
+    counts = counts_by_stream(items)
     cards = "".join(stream_card(stream, counts.get(str(stream["slug"]), 0)) for stream in STREAMS)
     text = page.read_text(encoding="utf-8")
     replacement = f'<section class="stream-grid" aria-label="Редакционные потоки">{cards}</section>'
