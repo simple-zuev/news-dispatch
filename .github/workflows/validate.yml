@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  privacy-scan:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,8 +18,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check Daily Radar builder syntax
-        run: python -m py_compile tools/daily_radar.py tools/apply_topic_streams.py
+      - name: Check automation syntax
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
+
+      - name: Validate stream registry
+        run: python tools/validate_stream_registry.py
 
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
@@ -45,55 +48,25 @@ jobs:
       - name: Validate reader output
         run: python tools/validate_reader_output.py
 
-      - name: Run privacy scan
+      - name: Run public safety scan
         run: python tools/privacy_scan.py
 
-      - name: Check required files
+      - name: Check required project files
         run: |
-          test -f README.md
-          test -f PUBLICATION_BOUNDARY.md
-          test -f PRIVACY.md
-          test -f EDITORIAL_STANDARD.md
-          test -f SOURCE_POLICY.md
-          test -f SECURITY.md
-          test -f STYLE_GUIDE.md
-          test -f PUBLISHING.md
-          test -f STREAMS.md
-          test -f PUBLICATION_CHECKLIST.md
-          test -f REDACTION_GUIDE.md
-          test -f ANTI_ADVERTISING_POLICY.md
-          test -f templates/dispatch.md
-          test -f templates/privacy-check.md
-          test -f templates/published-dispatch.md
-          test -f templates/signal.md
-          test -f sources/registry.yml
+          test -f docs/ai-editorial-operating-standard.md
+          test -f docs/topic-taxonomy.md
+          test -f data/streams.json
           test -f sources/feeds.json
-          test -f media/registry.yml
-          test -f media/registry.json
-          test -f data/taxonomy.yml
-          test -f tools/render_site.py
-          test -f tools/enhance_site.py
-          test -f tools/apply_media_previews.py
-          test -f tools/apply_reader_sections.py
-          test -f tools/apply_topic_streams.py
-          test -f tools/validate_reader_output.py
+          test -f tools/stream_registry.py
+          test -f tools/validate_stream_registry.py
           test -f tools/daily_radar.py
-          test -f tools/privacy_scan.py
+          test -f tools/apply_topic_streams.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
-          test -f .github/workflows/daily-radar.yml
+          test -f tools/validate_reader_output.py
+          test -f tools/privacy_scan.py
+          test -f templates/crypto-finance-daily.md
           test -f site/styles/reader.css
-          test -f site/assets/previews/wwdc26.svg
-          test -f site/assets/previews/rtx-spark.svg
-          test -f site/index.html
-          test -f site/dispatches.html
-          test -f site/rss.xml
-          test -f site/sitemap.xml
-          test -f site/robots.txt
-          test -f site/dispatches.json
-          test -d site/dispatches
-          test -f site/streams/index.html
-          test -f site/streams/general.html
 
       - name: Upload rendered site artifact
         uses: actions/upload-artifact@v4
