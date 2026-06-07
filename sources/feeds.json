@@ -1,110 +1,30 @@
 {
   "defaults": {
-    "max_items": 18,
-    "min_items": 4,
+    "max_items": 56,
+    "min_items": 2,
     "per_source": 3,
     "lookback_hours": 36
   },
   "feeds": [
     {
-      "id": "the-verge",
-      "title": "The Verge",
-      "url": "https://www.theverge.com/rss/index.xml",
-      "stream": "work",
-      "source_type": "Технологическое медиа",
-      "source_class": "public_media",
-      "priority": 0.92,
-      "tags": ["technology", "platforms", "consumer-tech"]
-    },
-    {
-      "id": "ars-technica",
-      "title": "Ars Technica",
-      "url": "https://feeds.arstechnica.com/arstechnica/index",
-      "stream": "work",
-      "source_type": "Технологическое медиа",
-      "source_class": "public_media",
-      "priority": 0.9,
-      "tags": ["technology", "science", "policy"]
-    },
-    {
-      "id": "techcrunch",
-      "title": "TechCrunch",
-      "url": "https://techcrunch.com/feed/",
-      "stream": "work",
-      "source_type": "Технологическое медиа",
-      "source_class": "public_media",
-      "priority": 0.82,
-      "tags": ["startups", "technology", "markets"]
-    },
-    {
-      "id": "github-blog",
-      "title": "GitHub Blog",
-      "url": "https://github.blog/feed/",
-      "stream": "work",
-      "source_type": "Официальный блог / developer platform",
-      "source_class": "official_source",
-      "priority": 0.86,
-      "tags": ["developer-tools", "software", "ai"]
-    },
-    {
-      "id": "apple-newsroom",
-      "title": "Apple Newsroom",
-      "url": "https://www.apple.com/newsroom/rss-feed.rss",
-      "stream": "gear",
-      "source_type": "Официальный источник",
-      "source_class": "official_source",
-      "priority": 0.85,
-      "tags": ["apple", "platforms", "hardware"]
-    },
-    {
-      "id": "microsoft-blog",
-      "title": "Microsoft Blog",
-      "url": "https://blogs.microsoft.com/feed/",
-      "stream": "work",
-      "source_type": "Официальный блог",
-      "source_class": "official_source",
-      "priority": 0.8,
-      "tags": ["microsoft", "ai", "cloud"]
-    },
-    {
-      "id": "nvidia-blog",
-      "title": "NVIDIA Blog",
-      "url": "https://blogs.nvidia.com/feed/",
-      "stream": "gear",
-      "source_type": "Официальный блог",
-      "source_class": "official_source",
-      "priority": 0.82,
-      "tags": ["nvidia", "ai", "chips", "hardware"]
-    },
-    {
-      "id": "mit-technology-review",
-      "title": "MIT Technology Review",
-      "url": "https://www.technologyreview.com/feed/",
-      "stream": "horizon",
-      "source_type": "Технологическое медиа",
-      "source_class": "public_media",
-      "priority": 0.84,
-      "tags": ["technology", "science", "ai", "horizon"]
-    },
-    {
-      "id": "rbc-news",
+      "id": "rbc-finance",
       "title": "РБК",
       "url": "https://rssexport.rbc.ru/rbcnews/news/30/full.rss",
       "stream": "finance",
       "source_type": "Деловое медиа",
       "source_class": "public_media",
       "priority": 0.78,
-      "tags": ["russia", "finance", "business"]
+      "tags": ["russia", "finance", "business", "banks", "markets"]
     },
     {
-      "id": "kommersant-news",
+      "id": "kommersant-finance",
       "title": "Коммерсантъ",
       "url": "https://www.kommersant.ru/RSS/news.xml",
-      "stream": "general",
+      "stream": "finance",
       "source_type": "Деловое медиа",
       "source_class": "public_media",
-      "priority": 0.78,
-      "tags": ["russia", "business", "policy"]
+      "priority": 0.76,
+      "tags": ["russia", "finance", "business", "policy"]
     },
     {
       "id": "cbr-news",
@@ -113,8 +33,218 @@
       "stream": "finance",
       "source_type": "Официальный источник",
       "source_class": "official_source",
-      "priority": 0.9,
-      "tags": ["finance", "rates", "regulation", "russia"]
+      "priority": 0.94,
+      "tags": ["russia", "finance", "rates", "regulation", "banks"]
+    },
+    {
+      "id": "coindesk",
+      "title": "CoinDesk",
+      "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+      "stream": "crypto-finance",
+      "source_type": "Криптофинансовое медиа",
+      "source_class": "specialized_media",
+      "priority": 0.82,
+      "tags": ["crypto", "bitcoin", "ethereum", "markets", "regulation"]
+    },
+    {
+      "id": "cointelegraph",
+      "title": "Cointelegraph",
+      "url": "https://cointelegraph.com/rss",
+      "stream": "crypto-finance",
+      "source_type": "Криптофинансовое медиа",
+      "source_class": "specialized_media",
+      "priority": 0.72,
+      "tags": ["crypto", "bitcoin", "ethereum", "blockchain", "markets"]
+    },
+    {
+      "id": "the-block",
+      "title": "The Block",
+      "url": "https://www.theblock.co/rss.xml",
+      "stream": "crypto-finance",
+      "source_type": "Криптофинансовое медиа",
+      "source_class": "specialized_media",
+      "priority": 0.78,
+      "tags": ["crypto", "market-structure", "exchanges", "stablecoins", "regulation"]
+    },
+    {
+      "id": "the-verge-ai",
+      "title": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "stream": "ai",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.86,
+      "tags": ["ai", "platforms", "search", "agents", "consumer-tech"]
+    },
+    {
+      "id": "github-blog-ai",
+      "title": "GitHub Blog",
+      "url": "https://github.blog/feed/",
+      "stream": "ai",
+      "source_type": "Официальный блог / developer platform",
+      "source_class": "official_source",
+      "priority": 0.84,
+      "tags": ["ai", "developer-tools", "coding", "software"]
+    },
+    {
+      "id": "microsoft-blog-ai",
+      "title": "Microsoft Blog",
+      "url": "https://blogs.microsoft.com/feed/",
+      "stream": "ai",
+      "source_type": "Официальный блог",
+      "source_class": "official_source",
+      "priority": 0.8,
+      "tags": ["ai", "microsoft", "cloud", "agents"]
+    },
+    {
+      "id": "mit-tech-review-ai",
+      "title": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/feed/",
+      "stream": "ai",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.82,
+      "tags": ["ai", "research", "safety", "horizon"]
+    },
+    {
+      "id": "ars-technica-tech",
+      "title": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "stream": "tech-hardware-software",
+      "source_type": "Технологическое медиа",
+      "source_class": "public_media",
+      "priority": 0.86,
+      "tags": ["hardware", "software", "science", "policy", "security"]
+    },
+    {
+      "id": "3dnews",
+      "title": "3DNews",
+      "url": "https://3dnews.ru/news/rss/",
+      "stream": "tech-hardware-software",
+      "source_type": "Технологическое медиа",
+      "source_class": "specialized_media",
+      "priority": 0.84,
+      "tags": ["hardware", "software", "pc", "components", "reviews", "russia"]
+    },
+    {
+      "id": "tomshardware",
+      "title": "Tom's Hardware",
+      "url": "https://www.tomshardware.com/feeds/all",
+      "stream": "tech-hardware-software",
+      "source_type": "Технологическое медиа",
+      "source_class": "specialized_media",
+      "priority": 0.78,
+      "tags": ["hardware", "pc", "components", "benchmarks"]
+    },
+    {
+      "id": "apple-newsroom-tech",
+      "title": "Apple Newsroom",
+      "url": "https://www.apple.com/newsroom/rss-feed.rss",
+      "stream": "tech-hardware-software",
+      "source_type": "Официальный источник",
+      "source_class": "official_source",
+      "priority": 0.78,
+      "tags": ["apple", "platforms", "hardware", "software"]
+    },
+    {
+      "id": "nvidia-blog-tech",
+      "title": "NVIDIA Blog",
+      "url": "https://blogs.nvidia.com/feed/",
+      "stream": "tech-hardware-software",
+      "source_type": "Официальный блог",
+      "source_class": "official_source",
+      "priority": 0.78,
+      "tags": ["nvidia", "hardware", "chips", "gpu", "ai"]
+    },
+    {
+      "id": "sneaker-news",
+      "title": "Sneaker News",
+      "url": "https://sneakernews.com/feed/",
+      "stream": "gear-style-edc",
+      "source_type": "Специализированное медиа",
+      "source_class": "specialized_media",
+      "priority": 0.68,
+      "tags": ["sneakers", "footwear", "style"]
+    },
+    {
+      "id": "hypebeast",
+      "title": "Hypebeast",
+      "url": "https://hypebeast.com/feed",
+      "stream": "gear-style-edc",
+      "source_type": "Культура / стиль",
+      "source_class": "public_media",
+      "priority": 0.62,
+      "tags": ["style", "sneakers", "apparel", "culture"]
+    },
+    {
+      "id": "mos-ru-news",
+      "title": "mos.ru",
+      "url": "https://www.mos.ru/rss/news/",
+      "stream": "moscow-city",
+      "source_type": "Официальный городской источник",
+      "source_class": "official_source",
+      "priority": 0.76,
+      "tags": ["moscow", "city", "transport", "services", "events"]
+    },
+    {
+      "id": "the-village",
+      "title": "The Village",
+      "url": "https://www.the-village.ru/rss",
+      "stream": "moscow-city",
+      "source_type": "Городское медиа",
+      "source_class": "public_media",
+      "priority": 0.68,
+      "tags": ["moscow", "city", "venues", "food", "culture"]
+    },
+    {
+      "id": "dj-techtools",
+      "title": "DJ TechTools",
+      "url": "https://djtechtools.com/feed/",
+      "stream": "dj-audio-creative",
+      "source_type": "Специализированное медиа",
+      "source_class": "specialized_media",
+      "priority": 0.78,
+      "tags": ["dj", "controllers", "software", "performance", "audio"]
+    },
+    {
+      "id": "create-digital-music",
+      "title": "Create Digital Music",
+      "url": "https://cdm.link/feed/",
+      "stream": "dj-audio-creative",
+      "source_type": "Специализированное медиа",
+      "source_class": "specialized_media",
+      "priority": 0.76,
+      "tags": ["audio", "music-production", "synth", "plugins", "creative-tech"]
+    },
+    {
+      "id": "nature-news",
+      "title": "Nature",
+      "url": "https://www.nature.com/nature.rss",
+      "stream": "science-discovery",
+      "source_type": "Научный журнал",
+      "source_class": "research_media",
+      "priority": 0.88,
+      "tags": ["science", "research", "biology", "medicine", "physics"]
+    },
+    {
+      "id": "science-daily",
+      "title": "ScienceDaily",
+      "url": "https://www.sciencedaily.com/rss/top.xml",
+      "stream": "science-discovery",
+      "source_type": "Научное медиа",
+      "source_class": "research_media",
+      "priority": 0.72,
+      "tags": ["science", "research", "discoveries", "medicine", "space"]
+    },
+    {
+      "id": "nplus1",
+      "title": "N+1",
+      "url": "https://nplus1.ru/rss",
+      "stream": "science-discovery",
+      "source_type": "Научное медиа",
+      "source_class": "specialized_media",
+      "priority": 0.76,
+      "tags": ["science", "research", "russia", "space", "biology"]
     }
   ]
 }
