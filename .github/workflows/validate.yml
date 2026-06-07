@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/hourly_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
 
       - name: Validate stream registry
         run: python tools/validate_stream_registry.py
@@ -45,6 +45,9 @@ jobs:
       - name: Apply reader sections
         run: python tools/apply_reader_sections.py
 
+      - name: Render live radar pages
+        run: python tools/hourly_radar.py --render-only
+
       - name: Validate reader output
         run: python tools/validate_reader_output.py
 
@@ -55,11 +58,13 @@ jobs:
         run: |
           test -f docs/ai-editorial-operating-standard.md
           test -f docs/topic-taxonomy.md
+          test -f docs/hourly-radar-model.md
           test -f data/streams.json
           test -f sources/feeds.json
           test -f tools/stream_registry.py
           test -f tools/validate_stream_registry.py
           test -f tools/daily_radar.py
+          test -f tools/hourly_radar.py
           test -f tools/apply_topic_streams.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
@@ -67,6 +72,8 @@ jobs:
           test -f tools/privacy_scan.py
           test -f templates/crypto-finance-daily.md
           test -f site/styles/reader.css
+          test -f site/styles/radar.css
+          test -f .github/workflows/hourly-radar.yml
 
       - name: Upload rendered site artifact
         uses: actions/upload-artifact@v4
