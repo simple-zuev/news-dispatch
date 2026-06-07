@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Check Daily Radar builder syntax
+        run: python -m py_compile tools/daily_radar.py
+
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
 
@@ -61,6 +64,7 @@ jobs:
           test -f templates/published-dispatch.md
           test -f templates/signal.md
           test -f sources/registry.yml
+          test -f sources/feeds.json
           test -f media/registry.yml
           test -f media/registry.json
           test -f data/taxonomy.yml
@@ -69,9 +73,11 @@ jobs:
           test -f tools/apply_media_previews.py
           test -f tools/apply_reader_sections.py
           test -f tools/validate_reader_output.py
+          test -f tools/daily_radar.py
           test -f tools/privacy_scan.py
           test -f tools/validate_front_matter.py
           test -f tools/validate_published.py
+          test -f .github/workflows/daily-radar.yml
           test -f site/styles/reader.css
           test -f site/assets/previews/wwdc26.svg
           test -f site/assets/previews/rtx-spark.svg
