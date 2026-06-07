@@ -13,17 +13,21 @@ TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".j
 SCAN_PREFIXES = ("dispatches/", "signals/", "issues/", "site/", "validation/", "streams/")
 POLICY_LIKE_FILES = {"README.md"}
 
-KEYWORD_PATTERN = "(?i)(" + "|".join([
-    "api[_-]?" + "key",
-    "tok" + "en",
-    "sec" + "ret",
-    "pass" + "word",
-    "passwd",
-    "private[_-]?" + "key",
-    "oauth",
-    "cookie",
-    "bearer",
-]) + ")"
+SECRET_KEYWORDS = [
+    r"api[_-]?key",
+    r"access[_-]?token",
+    r"refresh[_-]?token",
+    r"auth[_-]?token",
+    r"secret[_-]?key",
+    r"client[_-]?secret",
+    r"password",
+    r"passwd",
+    r"private[_-]?key",
+    r"oauth",
+    r"cookie",
+    r"bearer",
+]
+KEYWORD_PATTERN = "(?i)(" + "|".join(SECRET_KEYWORDS) + ")"
 
 PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("possible_secret_keyword", re.compile(KEYWORD_PATTERN)),
