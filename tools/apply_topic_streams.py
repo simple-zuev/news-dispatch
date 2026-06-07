@@ -96,7 +96,7 @@ def counts_by_stream(items: list[dict[str, str]]) -> dict[str, int]:
 def render_stream_index(items: list[dict[str, str]]) -> None:
     counts = counts_by_stream(items)
     cards = "".join(stream_card(stream, counts.get(str(stream["slug"]), 0), prefix="../") for stream in STREAMS)
-    text = f"""<!doctype html><html lang=\"ru\">{head('News Dispatch — Потоки', 'Тематические дайджесты личного reader/radar.', prefix='../')}<body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Тематические дайджесты</h1><p class=\"lede\">Новости разделены по самостоятельным полкам: финансы, криптофинансы, AI, железо и софт, EDC, Москва, DJ/audio и наука. Общий поток остаётся только для специальных кросс-доменных выпусков.</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
+    text = f"""<!doctype html><html lang=\"ru\">{head('News Dispatch — Потоки', 'Тематические дайджесты личного reader/radar.', prefix='../')}<body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Тематические дайджесты</h1><p class=\"lede\">Новости разделены по самостоятельным полкам: финансы, криптофинансы, AI, железо и софт, EDC, Москва, DJ/audio и наука. Общий поток остаётся только для специальных кросс-доменных выпусков.</p><nav class=\"hero-actions\" aria-label=\"Навигация\"><a href=\"../radar/index.html\">Live Radar</a><a href=\"../dispatches.html\">Выпуски</a></nav></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
     stream_dir = SITE_DIR / "streams"
     stream_dir.mkdir(parents=True, exist_ok=True)
     (stream_dir / "index.html").write_text(text, encoding="utf-8")
@@ -108,7 +108,7 @@ def render_stream_pages(items: list[dict[str, str]]) -> None:
     for stream in STREAMS:
         stream_items = [item for item in items if item["stream"] == stream["slug"]]
         content = "".join(card(item, prefix="../") for item in stream_items) or "<p>В этом потоке пока нет опубликованных выпусков.</p>"
-        text = f"""<!doctype html><html lang=\"ru\">{head('News Dispatch — ' + str(stream['title']), str(stream['description']), prefix='../')}<body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../streams/index.html\">Потоки</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{content}</section></main></body></html>"""
+        text = f"""<!doctype html><html lang=\"ru\">{head('News Dispatch — ' + str(stream['title']), str(stream['description']), prefix='../')}<body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../streams/index.html\">Потоки</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p><nav class=\"hero-actions\" aria-label=\"Навигация\"><a href=\"../radar/{html.escape(str(stream['slug']))}.html\">Live Radar</a><a href=\"../dispatches.html\">Выпуски</a></nav></header><main><section class=\"grid\">{content}</section></main></body></html>"""
         (stream_dir / f"{stream['slug']}.html").write_text(text, encoding="utf-8")
 
 
@@ -121,6 +121,8 @@ def patch_homepage(items: list[dict[str, str]]) -> None:
     text = page.read_text(encoding="utf-8")
     replacement = f'<section class="stream-grid" aria-label="Редакционные потоки">{cards}</section>'
     text = re.sub(r'<section class="stream-grid" aria-label="Редакционные потоки">.*?</section>', replacement, text, flags=re.S)
+    if 'href="radar/index.html"' not in text:
+        text = text.replace('<a href="streams/index.html">Потоки</a>', '<a href="radar/index.html">Live Radar</a><a href="streams/index.html">Потоки</a>', 1)
     page.write_text(text, encoding="utf-8")
 
 
@@ -141,8 +143,10 @@ def write_sitemap(items: list[dict[str, str]]) -> None:
         f"{BASE_URL}/rss.xml",
         f"{BASE_URL}/sitemap.xml",
         f"{BASE_URL}/streams/index.html",
+        f"{BASE_URL}/radar/index.html",
     ]
     urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(f"{BASE_URL}/radar/{stream['slug']}.html" for stream in STREAMS)
     urls.extend(item["url"] for item in items)
     entries = "".join(f"<url><loc>{html.escape(url)}</loc></url>" for url in dict.fromkeys(urls))
     (SITE_DIR / "sitemap.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{entries}</urlset>", encoding="utf-8")
