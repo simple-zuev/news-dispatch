@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
-"""Validate public-safe front matter for News Dispatch dispatch files.
-
-The validator checks only committed dispatches under `dispatches/**/*.md`.
-It does not inspect templates or policy files.
-"""
+"""Validate public-safe front matter for News Dispatch dispatch files."""
 
 from __future__ import annotations
 
 import sys
 from pathlib import Path
+
+from stream_registry import allowed_stream_slugs
 
 ROOT = Path(__file__).resolve().parents[1]
 DISPATCH_DIR = ROOT / "dispatches"
@@ -37,27 +35,6 @@ REQUIRED_KEYS = {
     "sources",
     "privacy_review",
     "editorial_review",
-}
-
-ALLOWED_STREAMS = {
-    # Topic-first digest streams.
-    "finance",
-    "crypto-finance",
-    "ai",
-    "tech-hardware-software",
-    "gear-style-edc",
-    "moscow-city",
-    "dj-audio-creative",
-    "science-discovery",
-    # Legacy / cross-domain streams kept for old dispatches and overview issues.
-    "general",
-    "work",
-    "digital-assets-infrastructure",
-    "home-environment",
-    "gear",
-    "city-culture",
-    "audio-creative",
-    "horizon",
 }
 
 ALLOWED_REVIEW_LEVELS = {
@@ -127,7 +104,7 @@ def validate_file(path: Path) -> list[str]:
     if meta.get("source_mode") != "public_sources_only":
         findings.append(f"{path.relative_to(ROOT)}: source_mode must be public_sources_only")
 
-    if meta.get("stream") not in ALLOWED_STREAMS:
+    if meta.get("stream") not in allowed_stream_slugs():
         findings.append(f"{path.relative_to(ROOT)}: unknown stream {meta.get('stream')!r}")
 
     if meta.get("review_level") not in ALLOWED_REVIEW_LEVELS:
@@ -135,9 +112,6 @@ def validate_file(path: Path) -> list[str]:
 
     if meta.get("language") not in {"ru", "en"}:
         findings.append(f"{path.relative_to(ROOT)}: language must be ru or en")
-
-    if not text.strip().endswith("."):
-        pass
 
     return findings
 
