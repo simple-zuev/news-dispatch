@@ -40,9 +40,18 @@ REQUIRED_KEYS = {
 }
 
 ALLOWED_STREAMS = {
+    # Topic-first digest streams.
+    "finance",
+    "crypto-finance",
+    "ai",
+    "tech-hardware-software",
+    "gear-style-edc",
+    "moscow-city",
+    "dj-audio-creative",
+    "science-discovery",
+    # Legacy / cross-domain streams kept for old dispatches and overview issues.
     "general",
     "work",
-    "finance",
     "digital-assets-infrastructure",
     "home-environment",
     "gear",
@@ -128,7 +137,6 @@ def validate_file(path: Path) -> list[str]:
         findings.append(f"{path.relative_to(ROOT)}: language must be ru or en")
 
     if not text.strip().endswith("."):
-        # Non-blocking style check would be better later; keep validator strict only for metadata.
         pass
 
     return findings
