@@ -1,0 +1,74 @@
+.radar-hero {
+  padding-bottom: 22px;
+}
+
+.radar-status {
+  margin-top: 18px;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.radar-layout {
+  padding-top: 18px;
+}
+
+.radar-stream-block h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.radar-stream-block h2 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.radar-grid {
+  align-items: stretch;
+}
+
+.radar-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 190px;
+  border-radius: 18px;
+}
+
+.radar-card h3 {
+  font-size: 1.02rem;
+  line-height: 1.22;
+}
+
+.radar-card p {
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.radar-label {
+  color: var(--accent);
+}
+
+.radar-meta {
+  margin-top: auto !important;
+  padding-top: 8px;
+  border-top: 1px solid var(--reader-soft-line);
+  color: var(--muted) !important;
+  font-size: 0.8rem !important;
+}
+
+.radar-empty {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 620px) {
+  .radar-card {
+    min-height: auto;
+  }
+
+  .radar-status {
+    font-size: 0.84rem;
+  }
+}
