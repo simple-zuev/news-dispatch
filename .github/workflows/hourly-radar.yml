@@ -44,7 +44,7 @@ jobs:
           python-version: '3.12'
 
       - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/hourly_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/hourly_radar.py tools/source_health.py tools/apply_topic_streams.py tools/validate_stream_registry.py
 
       - name: Validate stream registry
         run: python tools/validate_stream_registry.py
@@ -72,6 +72,9 @@ jobs:
 
       - name: Build hourly live radar
         run: python tools/hourly_radar.py
+
+      - name: Build source health report
+        run: python tools/source_health.py
 
       - name: Validate reader output
         run: python tools/validate_reader_output.py
