@@ -17,39 +17,17 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+from stream_registry import stream_keywords, stream_min_publish_items, stream_review_level, stream_slugs, stream_title
+
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "sources" / "feeds.json"
 STATE_PATH = ROOT / "data" / "daily-radar-seen.json"
 DISPATCH_ROOT = ROOT / "dispatches"
 SIGNALS_DIR = ROOT / "signals"
 REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.2 (+https://simple-zuev.github.io/news-dispatch/)"
-
-STREAM_TITLES = {
-    "finance": "Финансы — РФ и мир",
-    "crypto-finance": "Криптофинансы — РФ и мир",
-    "ai": "AI — железо, софт и исследования",
-    "tech-hardware-software": "Железо и софт",
-    "gear-style-edc": "EDC, кроссовки и одежда",
-    "moscow-city": "Москва — события и места",
-    "dj-audio-creative": "DJ, аудио и creative tech",
-    "science-discovery": "Наука и открытия",
-    "general": "Общий радар",
-}
-
-STREAMS = set(STREAM_TITLES)
-STRICT_STREAMS = {"finance", "crypto-finance"}
-
-KEYWORDS = {
-    "finance": ["rate", "inflation", "central bank", "bank", "market", "economy", "mortgage", "credit", "deposit", "рубль", "банк", "цб", "ставк", "инфляц", "кредит", "ипотек", "вклад", "эконом"],
-    "crypto-finance": ["crypto", "bitcoin", "ethereum", "stablecoin", "tokenization", "defi", "exchange", "custody", "blockchain", "крипт", "биткоин", "эфир", "стейбл", "токен", "блокчейн", "цифровой рубль"],
-    "ai": ["ai", "artificial intelligence", "model", "llm", "agent", "openai", "anthropic", "gemini", "copilot", "neural", "gpu", "npu", "ии", "нейросет", "модель", "агент", "чатбот"],
-    "tech-hardware-software": ["hardware", "software", "chip", "cpu", "gpu", "pc", "laptop", "smartphone", "windows", "linux", "android", "ios", "benchmark", "security", "желез", "софт", "процессор", "видеокарт", "смартфон", "ноутбук", "уязвим"],
-    "gear-style-edc": ["edc", "sneaker", "shoe", "apparel", "jacket", "bag", "watch", "knife", "tool", "wear", "кроссов", "одежд", "куртк", "рюкзак", "сумк", "часы", "материал"],
-    "moscow-city": ["moscow", "москва", "restaurant", "bar", "club", "exhibition", "concert", "venue", "metro", "transport", "афиша", "выстав", "концерт", "бар", "ресторан", "клуб", "транспорт"],
-    "dj-audio-creative": ["dj", "mixer", "controller", "cdj", "turntable", "rekordbox", "serato", "traktor", "ableton", "plugin", "synth", "audio", "midi", "микшер", "контроллер", "синтезатор", "плагин", "аудио"],
-    "science-discovery": ["science", "research", "paper", "space", "physics", "biology", "medicine", "climate", "robot", "materials", "biotech", "наук", "исслед", "космос", "физик", "биолог", "медицин", "климат", "робот", "материал"],
-}
+USER_AGENT = "NewsDispatchDailyRadar/0.3 (+https://simple-zuev.github.io/news-dispatch/)"
+STREAMS = stream_slugs()
+KEYWORDS = stream_keywords()
 
 
 @dataclass(frozen=True)
@@ -180,9 +158,9 @@ def link_of(node: ET.Element) -> str:
 
 def classify(feed: Feed, title: str, summary: str) -> str:
     haystack = f"{title} {summary} {' '.join(feed.tags)}".lower()
-    scores: dict[str, int] = {}
-    for stream, words in KEYWORDS.items():
-        scores[stream] = sum(1 for word in words if word in haystack)
+    scores = {stream: sum(1 for word in words if word in haystack) for stream, words in KEYWORDS.items()}
+    if not scores:
+        return feed.stream
     best_stream, best_score = max(scores.items(), key=lambda pair: pair[1])
     return best_stream if best_score > 0 else feed.stream
 
@@ -288,10 +266,10 @@ def source_lists(items: list[Item]) -> tuple[list[str], list[str], list[str], li
 
 def front_matter(day: date, status: str, stream: str, items: list[Item]) -> str:
     urls, source_titles, source_types, source_notes = source_lists(items)
-    title = f"{STREAM_TITLES.get(stream, stream)} — {day.isoformat()}"
+    title = f"{stream_title(stream)} — {day.isoformat()}"
     summary = f"Автоматический тематический дайджест из {len(items)} публичных RSS/Atom-сигналов."
     tags = sorted({"daily-radar", "public-sources", stream, *[tag for item in items for tag in item.feed.tags]})[:16]
-    review = "strict_publication_review" if stream in STRICT_STREAMS else "standard_public_review"
+    review = stream_review_level(stream)
     return "\n".join([
         "---",
         f"title: {yaml_quote(title)}",
@@ -337,7 +315,7 @@ def front_matter(day: date, status: str, stream: str, items: list[Item]) -> str:
 def main_points(stream: str, items: list[Item]) -> str:
     points = [f"{item.feed.title}: {item.title}." for item in items[:5]]
     while len(points) < 5:
-        points.append(f"В потоке {STREAM_TITLES.get(stream, stream)} пока мало свежих сильных сигналов; слабый выпуск не нужно читать как полную картину дня.")
+        points.append(f"В потоке {stream_title(stream)} пока мало свежих сильных сигналов; слабый выпуск не нужно читать как полную картину дня.")
     return "\n".join(f"{idx}. {point}" for idx, point in enumerate(points[:5], 1))
 
 
@@ -346,7 +324,7 @@ def facts(items: list[Item]) -> str:
 
 
 def body(day: date, stream: str, items: list[Item]) -> str:
-    title = STREAM_TITLES.get(stream, stream)
+    title = stream_title(stream)
     return f"""# {title}
 ## {day.isoformat()}
 
@@ -521,12 +499,13 @@ def build(args: argparse.Namespace) -> int:
         if not stream_items:
             continue
         status = requested_status
-        if requested_status == "published" and len(stream_items) < min_items:
+        required_items = max(min_items, stream_min_publish_items(stream, min_items))
+        if requested_status == "published" and len(stream_items) < required_items:
             status = "draft"
         signal_paths = [write_signal(day, item, args.dry_run) for item in stream_items]
         dispatch_path = write_dispatch(day, stream, status, stream_items, args.dry_run)
         new_keys.extend(item.key for item in stream_items)
-        generated.append({"stream": stream, "status": status, "count": len(stream_items), "dispatch_path": dispatch_path.as_posix(), "signals": [path.as_posix() for path in signal_paths]})
+        generated.append({"stream": stream, "status": status, "count": len(stream_items), "required_items": required_items, "dispatch_path": dispatch_path.as_posix(), "signals": [path.as_posix() for path in signal_paths]})
         log(f"{stream}: {len(stream_items)} item(s), status={status}")
     save_seen(STATE_PATH, seen, new_keys, args.dry_run or args.no_state)
     write_report(day, generated, fetch_errors, args.dry_run)
