@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Build an automatic daily News Dispatch from public RSS/Atom feeds.
-
-Dependency-free by design: GitHub Actions can run it with stdlib Python only.
-The script writes public-source signals plus one daily dispatch. It does not
-scrape full article bodies, use private context, or call an LLM from CI.
-"""
+"""Build topic-separated daily News Dispatch digests from public RSS/Atom feeds."""
 
 from __future__ import annotations
 
@@ -25,29 +20,35 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "sources" / "feeds.json"
 STATE_PATH = ROOT / "data" / "daily-radar-seen.json"
-DISPATCH_DIR = ROOT / "dispatches" / "general"
+DISPATCH_ROOT = ROOT / "dispatches"
 SIGNALS_DIR = ROOT / "signals"
 REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.1 (+https://simple-zuev.github.io/news-dispatch/)"
-STREAMS = {
-    "general",
-    "work",
-    "finance",
-    "digital-assets-infrastructure",
-    "home-environment",
-    "gear",
-    "city-culture",
-    "audio-creative",
-    "horizon",
+USER_AGENT = "NewsDispatchDailyRadar/0.2 (+https://simple-zuev.github.io/news-dispatch/)"
+
+STREAM_TITLES = {
+    "finance": "Финансы — РФ и мир",
+    "crypto-finance": "Криптофинансы — РФ и мир",
+    "ai": "AI — железо, софт и исследования",
+    "tech-hardware-software": "Железо и софт",
+    "gear-style-edc": "EDC, кроссовки и одежда",
+    "moscow-city": "Москва — события и места",
+    "dj-audio-creative": "DJ, аудио и creative tech",
+    "science-discovery": "Наука и открытия",
+    "general": "Общий радар",
 }
 
+STREAMS = set(STREAM_TITLES)
+STRICT_STREAMS = {"finance", "crypto-finance"}
+
 KEYWORDS = {
-    "finance": ["rate", "inflation", "central bank", "bank", "market", "economy", "банк", "цб", "ставк", "инфляц", "эконом"],
-    "work": ["ai", "model", "openai", "google", "microsoft", "platform", "developer", "search", "product", "ии", "модель", "платформ", "поиск"],
-    "gear": ["nvidia", "chip", "gpu", "hardware", "pc", "laptop", "iphone", "mac", "device", "устройств", "желез"],
-    "digital-assets-infrastructure": ["crypto", "bitcoin", "ethereum", "stablecoin", "token", "blockchain", "крипт", "биткоин", "стейбл"],
-    "city-culture": ["moscow", "москва", "city", "город", "transport", "транспорт", "culture", "культур"],
-    "horizon": ["science", "research", "space", "robot", "biotech", "climate", "наук", "космос", "робот", "биотех"],
+    "finance": ["rate", "inflation", "central bank", "bank", "market", "economy", "mortgage", "credit", "deposit", "рубль", "банк", "цб", "ставк", "инфляц", "кредит", "ипотек", "вклад", "эконом"],
+    "crypto-finance": ["crypto", "bitcoin", "ethereum", "stablecoin", "tokenization", "defi", "exchange", "custody", "blockchain", "крипт", "биткоин", "эфир", "стейбл", "токен", "блокчейн", "цифровой рубль"],
+    "ai": ["ai", "artificial intelligence", "model", "llm", "agent", "openai", "anthropic", "gemini", "copilot", "neural", "gpu", "npu", "ии", "нейросет", "модель", "агент", "чатбот"],
+    "tech-hardware-software": ["hardware", "software", "chip", "cpu", "gpu", "pc", "laptop", "smartphone", "windows", "linux", "android", "ios", "benchmark", "security", "желез", "софт", "процессор", "видеокарт", "смартфон", "ноутбук", "уязвим"],
+    "gear-style-edc": ["edc", "sneaker", "shoe", "apparel", "jacket", "bag", "watch", "knife", "tool", "wear", "кроссов", "одежд", "куртк", "рюкзак", "сумк", "часы", "материал"],
+    "moscow-city": ["moscow", "москва", "restaurant", "bar", "club", "exhibition", "concert", "venue", "metro", "transport", "афиша", "выстав", "концерт", "бар", "ресторан", "клуб", "транспорт"],
+    "dj-audio-creative": ["dj", "mixer", "controller", "cdj", "turntable", "rekordbox", "serato", "traktor", "ableton", "plugin", "synth", "audio", "midi", "микшер", "контроллер", "синтезатор", "плагин", "аудио"],
+    "science-discovery": ["science", "research", "paper", "space", "physics", "biology", "medicine", "climate", "robot", "materials", "biotech", "наук", "исслед", "космос", "физик", "биолог", "медицин", "климат", "робот", "материал"],
 }
 
 
@@ -88,9 +89,7 @@ def clean_text(value: str, max_len: int = 280) -> str:
     text = html.unescape(value or "")
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
-    if len(text) <= max_len:
-        return text
-    return text[: max_len - 1].rstrip() + "…"
+    return text if len(text) <= max_len else text[: max_len - 1].rstrip() + "…"
 
 
 def yaml_quote(value: str) -> str:
@@ -181,14 +180,11 @@ def link_of(node: ET.Element) -> str:
 
 def classify(feed: Feed, title: str, summary: str) -> str:
     haystack = f"{title} {summary} {' '.join(feed.tags)}".lower()
-    best_stream = feed.stream
-    best_score = 0
+    scores: dict[str, int] = {}
     for stream, words in KEYWORDS.items():
-        score = sum(1 for word in words if word in haystack)
-        if score > best_score:
-            best_stream = stream
-            best_score = score
-    return best_stream
+        scores[stream] = sum(1 for word in words if word in haystack)
+    best_stream, best_score = max(scores.items(), key=lambda pair: pair[1])
+    return best_stream if best_score > 0 else feed.stream
 
 
 def item_score(feed: Feed, title: str, summary: str, published: datetime, now: datetime) -> float:
@@ -210,8 +206,7 @@ def parse_feed(feed: Feed, payload: bytes, now: datetime) -> list[Item]:
             continue
         summary = clean_text(text_of(node, ("description", "summary", "content")))
         guid = clean_text(text_of(node, ("guid", "id")), 500) or url
-        raw_date = text_of(node, ("pubDate", "published", "updated", "date"))
-        published = parse_date(raw_date, now)
+        published = parse_date(text_of(node, ("pubDate", "published", "updated", "date")), now)
         stream = classify(feed, title, summary)
         score = item_score(feed, title, summary, published, now)
         items.append(Item(feed, title, url, published, summary, guid, stream, score))
@@ -244,7 +239,7 @@ def save_seen(path: Path, old: set[str], new_keys: list[str], dry_run: bool) -> 
     if dry_run:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
-    merged = list(dict.fromkeys([*new_keys, *sorted(old)]))[:2000]
+    merged = list(dict.fromkeys([*new_keys, *sorted(old)]))[:3000]
     path.write_text(json.dumps({"seen": merged}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -269,17 +264,11 @@ def select_items(items: list[Item], seen: set[str], max_items: int, per_source: 
     return selected
 
 
-def source_lists(items: list[Item]) -> tuple[list[str], list[str], list[str], list[str]]:
-    urls: list[str] = []
-    titles: list[str] = []
-    types: list[str] = []
-    notes: list[str] = []
+def group_by_stream(items: list[Item]) -> dict[str, list[Item]]:
+    groups: dict[str, list[Item]] = {}
     for item in items:
-        urls.append(item.url)
-        titles.append(f"{item.feed.title}: {item.title}")
-        types.append(item.feed.source_type)
-        notes.append("Автоматически собранный публичный RSS/Atom-сигнал; требует чтения первичного материала перед сильными выводами.")
-    return urls, titles, types, notes
+        groups.setdefault(item.stream, []).append(item)
+    return {stream: sorted(values, key=lambda item: item.score, reverse=True) for stream, values in groups.items()}
 
 
 def yaml_list(key: str, values: list[str]) -> str:
@@ -288,19 +277,31 @@ def yaml_list(key: str, values: list[str]) -> str:
     return key + ":\n" + "\n".join(f"  - {yaml_quote(value)}" for value in values)
 
 
-def front_matter(day: date, status: str, title: str, summary: str, items: list[Item]) -> str:
+def source_lists(items: list[Item]) -> tuple[list[str], list[str], list[str], list[str]]:
+    return (
+        [item.url for item in items],
+        [f"{item.feed.title}: {item.title}" for item in items],
+        [item.feed.source_type for item in items],
+        ["Автоматически собранный публичный RSS/Atom-сигнал; требует чтения первичного материала перед сильными выводами." for _ in items],
+    )
+
+
+def front_matter(day: date, status: str, stream: str, items: list[Item]) -> str:
     urls, source_titles, source_types, source_notes = source_lists(items)
-    tags = sorted({"daily-radar", "news", "public-sources", *[item.stream for item in items]})
-    fields = [
+    title = f"{STREAM_TITLES.get(stream, stream)} — {day.isoformat()}"
+    summary = f"Автоматический тематический дайджест из {len(items)} публичных RSS/Atom-сигналов."
+    tags = sorted({"daily-radar", "public-sources", stream, *[tag for item in items for tag in item.feed.tags]})[:16]
+    review = "strict_publication_review" if stream in STRICT_STREAMS else "standard_public_review"
+    return "\n".join([
         "---",
         f"title: {yaml_quote(title)}",
         f"date: {yaml_quote(day.isoformat())}",
         f"period: {yaml_quote(day.isoformat())}",
-        'stream: "general"',
+        f"stream: {yaml_quote(stream)}",
         'type: "daily"',
         'language: "ru"',
         f"status: {yaml_quote(status)}",
-        'review_level: "standard_public_review"',
+        f"review_level: {yaml_quote(review)}",
         'publication_scope: "public"',
         "public_safe: true",
         "private_context_used: false",
@@ -327,71 +328,35 @@ def front_matter(day: date, status: str, title: str, summary: str, items: list[I
         "visual_titles: []",
         "visual_types: []",
         'privacy_review: "automated_public_safe_scan_pending"',
-        'editorial_review: "automated_source_collection"',
+        'editorial_review: "automated_topic_radar"',
         "---",
         "",
-    ]
-    return "\n".join(fields)
+    ])
 
 
-def grouped(items: list[Item]) -> dict[str, list[Item]]:
-    groups: dict[str, list[Item]] = {}
-    for item in items:
-        groups.setdefault(item.stream, []).append(item)
-    return groups
-
-
-def lead(items: list[Item]) -> str:
-    groups = grouped(items)
-    streams = ", ".join(sorted(groups))
-    return (
-        f"Автоматический радар собрал {len(items)} публичных сигналов из RSS/Atom-источников. "
-        f"Главная польза выпуска — быстро увидеть свежие материалы по потокам: {streams}. "
-        "Это не финальная расследовательская статья: сильные выводы требуют чтения первичных материалов, но выпуск уже даёт карту того, что стоит открыть и проверить."
-    )
-
-
-def main_points(items: list[Item]) -> str:
-    groups = grouped(items)
-    points: list[str] = []
-    for stream, stream_items in sorted(groups.items(), key=lambda pair: len(pair[1]), reverse=True)[:5]:
-        first = stream_items[0]
-        points.append(f"{stream}: {len(stream_items)} сигнал(ов); самый сильный — {first.feed.title}: {first.title}.")
+def main_points(stream: str, items: list[Item]) -> str:
+    points = [f"{item.feed.title}: {item.title}." for item in items[:5]]
     while len(points) < 5:
-        points.append("Радар продолжает накапливать источники; если сигналов мало, выпуск стоит читать как короткий список ссылок, а не как полную картину дня.")
+        points.append(f"В потоке {STREAM_TITLES.get(stream, stream)} пока мало свежих сильных сигналов; слабый выпуск не нужно читать как полную картину дня.")
     return "\n".join(f"{idx}. {point}" for idx, point in enumerate(points[:5], 1))
 
 
 def facts(items: list[Item]) -> str:
-    lines = []
-    for item in items:
-        date_label = item.published.date().isoformat()
-        lines.append(f"- {item.feed.title} опубликовал материал: {item.title}. Дата в ленте: {date_label}. Поток: {item.stream}.")
-    return "\n".join(lines)
+    return "\n".join(f"- {item.feed.title} опубликовал материал: {item.title}. Дата в ленте: {item.published.date().isoformat()}." for item in items)
 
 
-def analysis(items: list[Item]) -> str:
-    groups = grouped(items)
-    ranked = sorted(groups.items(), key=lambda pair: len(pair[1]), reverse=True)
-    first = ranked[0][0] if ranked else "general"
-    return (
-        f"Самый плотный поток в этом автосборе — {first}. Это не означает, что он объективно важнее других тем: RSS-ленты имеют разную частоту публикаций. "
-        "Практическая ценность такого выпуска в другом: он быстро показывает, какие источники дали новые поводы для чтения, где нужен первичный документ, а где достаточно короткого просмотра. "
-        "Автоматический радар не повышает пресс-релизы, слухи или мнения до уровня фактов. Он фиксирует публикацию и даёт маршрут проверки."
-    )
-
-
-def body(day: date, items: list[Item]) -> str:
-    return f"""# Автоматический ежедневный радар
+def body(day: date, stream: str, items: list[Item]) -> str:
+    title = STREAM_TITLES.get(stream, stream)
+    return f"""# {title}
 ## {day.isoformat()}
 
 ## Лид
 
-{lead(items)}
+Это автоматический тематический дайджест потока «{title}». Он не смешивает разные домены в один общий выпуск: сюда попадают только сигналы, классифицированные как `{stream}`. Выпуск нужен как карта чтения на день, а не как окончательная редакционная позиция.
 
 ## Главное
 
-{main_points(items)}
+{main_points(stream, items)}
 
 ## Что произошло
 
@@ -399,44 +364,44 @@ def body(day: date, items: list[Item]) -> str:
 
 ## Почему это важно
 
-Ежедневный reader должен экономить время: вместо ручного обхода десятков сайтов он собирает свежие публичные сигналы в одну карту выпуска. Для личного радара важны не только отдельные новости, но и распределение тем по источникам, повторяемость сигналов и появление первичных материалов.
+Разделение по темам уменьшает шум. Финансы, криптофинансы, AI, железо, EDC, Москва, DJ/audio и наука требуют разных источников, разной проверки и разной скорости реакции. Поэтому автоматический радар публикует отдельные дайджесты только там, где набралось достаточно сигналов.
 
 ## Анализ
 
-{analysis(items)}
+Сильные выводы по одному RSS-сигналу делать нельзя. В этом выпуске важно смотреть на повторяемость тем, тип источника и наличие первичных материалов. Официальные источники и исследования сильнее пересказов; community-сигналы и мнения остаются слабым слоем до проверки.
 
 ## Слухи и мнения
 
-Автоматический сбор не подтверждает слухи, инсайды или прогнозы. Если источник публикует мнение, колонку, утечку или ожидание, такой материал остаётся слабым сигналом до проверки первичными данными, официальными документами или независимыми подтверждениями.
+Автоматический сбор не подтверждает слухи, инсайды или прогнозы. Если источник публикует ожидание, колонку, утечку или мнение, такой материал остаётся слабым сигналом до независимого подтверждения.
 
 ## Мнение людей
 
-Публичная реакция в этой версии не оценивается автоматически. Для пользовательского чтения это означает, что комментарии, социальные сети и обсуждения нужно добавлять отдельным слоем, чтобы не смешивать факты публикации с настроениями аудитории.
+Публичная реакция в этой версии не оценивается автоматически. Для такого слоя нужны отдельные источники: комментарии, форумы, Telegram, Reddit, YouTube, профильные сообщества и отзывы владельцев.
 
 ## Медиа и материалы
 
-В этом автоматическом выпуске медиа-карточки не добавляются отдельно. Ссылки на материалы доступны через карточки источников ниже.
+Отдельные media preview для этого автоматического выпуска не добавлялись. Карточки источников ниже ведут к исходным материалам.
 
 ## Источники
 
-Источники выпуска — публичные RSS/Atom-ленты из `sources/feeds.json`. Каждая карточка ниже ведёт на исходный материал. Перед сильными выводами нужно открыть первоисточник и проверить контекст.
+Источники выпуска — публичные RSS/Atom-ленты из `sources/feeds.json`. Перед сильными выводами нужно открыть первичный материал и проверить контекст.
 
 ## Что наблюдать дальше
 
 - Какие темы повторяются в нескольких независимых источниках.
-- Где появляется первичный документ, а не только пересказ или пресс-релиз.
-- Какие сигналы требуют отдельного выпуска с фактчекингом.
-- Какие источники дают слишком много шума и нуждаются в снижении веса.
-- Какие темы стоит добавить в личный radar как постоянные.
+- Где появляется первичный документ, а не только пересказ.
+- Какие сигналы требуют отдельного аналитического выпуска.
+- Какие источники дают шум и требуют снижения веса.
+- Какие подтемы внутри потока нужно вынести в отдельные постоянные фильтры.
 
 ## Итог
 
-Автоматический радар — это ежедневная карта чтения, а не окончательная редакционная позиция. Он показывает, что появилось в публичных источниках, какие темы сгруппировались в потоки и где нужен следующий шаг: открыть первичный материал, проверить слабый сигнал или собрать отдельный аналитический выпуск.
+Этот дайджест — отдельная тематическая полка личного reader/radar. Его задача — быстро показать, что появилось в публичных источниках по теме «{title}», и отделить этот поток от остальных тем.
 """
 
 
 def write_signal(day: date, item: Item, dry_run: bool) -> Path:
-    directory = SIGNALS_DIR / day.isoformat()
+    directory = SIGNALS_DIR / day.isoformat() / item.stream
     path = directory / f"{item.key}-{slugify(item.title, item.feed.id)}.md"
     content = f"""---
 title: {yaml_quote(item.title)}
@@ -475,17 +440,16 @@ visual_types: []
 
 ## Что произошло
 
-{item.feed.title} опубликовал материал в публичной RSS/Atom-ленте. Этот файл — атомарный сигнал для будущей редакционной сборки.
+{item.feed.title} опубликовал материал в публичной RSS/Atom-ленте.
 
 ## Статус проверки
 
 - Подтверждено: факт появления материала в публичной ленте.
 - Не подтверждено: полнота контекста, последствия и интерпретации.
-- Следующий шаг: открыть первичный материал и проверить детали.
 
 ## Почему это важно
 
-Сигнал попал в поток `{item.stream}` и может быть полезен для ежедневного личного радара.
+Сигнал попал в поток `{item.stream}` и может быть полезен для тематического дайджеста.
 
 ## Факты
 
@@ -495,7 +459,7 @@ visual_types: []
 
 ## Интерпретация
 
-Автоматический сбор не делает сильных выводов по одному материалу. Сигнал нужен для маршрутизации внимания.
+Автоматический сбор не делает сильных выводов по одному материалу.
 
 ## Слухи и мнения
 
@@ -521,60 +485,53 @@ visual_types: []
     return path
 
 
-def write_dispatch(day: date, status: str, items: list[Item], dry_run: bool) -> Path:
-    title = f"Автоматический ежедневный радар — {day.isoformat()}"
-    summary = f"Автоматический выпуск из {len(items)} публичных RSS/Atom-сигналов: технологии, рынки, платформы, Россия и смежные темы."
-    path = DISPATCH_DIR / f"{day.isoformat()}-auto-daily-radar.md"
-    content = front_matter(day, status, title, summary, items) + body(day, items)
+def write_dispatch(day: date, stream: str, status: str, items: list[Item], dry_run: bool) -> Path:
+    directory = DISPATCH_ROOT / stream
+    path = directory / f"{day.isoformat()}-{stream}-daily-radar.md"
+    content = front_matter(day, status, stream, items) + body(day, stream, items)
     if not dry_run:
-        DISPATCH_DIR.mkdir(parents=True, exist_ok=True)
+        directory.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
     return path
 
 
-def write_report(day: date, status: str, selected: list[Item], errors: list[str], dispatch_path: Path, signal_paths: list[Path], dry_run: bool) -> None:
+def write_report(day: date, generated: list[dict[str, object]], errors: list[str], dry_run: bool) -> None:
     if dry_run:
         return
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    data = {
-        "date": day.isoformat(),
-        "status": status,
-        "selected_count": len(selected),
-        "dispatch_path": dispatch_path.as_posix(),
-        "signal_paths": [path.as_posix() for path in signal_paths],
-        "fetch_errors": errors,
-        "items": [
-            {"title": item.title, "url": item.url, "source": item.feed.title, "stream": item.stream, "score": item.score}
-            for item in selected
-        ],
-    }
-    REPORT_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    REPORT_PATH.write_text(json.dumps({"date": day.isoformat(), "generated": generated, "fetch_errors": errors}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def build(args: argparse.Namespace) -> int:
     day = date.fromisoformat(args.date) if args.date else date.today()
-    status = args.status if args.status in {"draft", "published"} else "draft"
+    requested_status = args.status if args.status in {"draft", "published"} else "draft"
     feeds, defaults = load_config(CONFIG_PATH)
-    max_items = int(args.max_items or defaults.get("max_items", 18))
-    min_items = int(args.min_items or defaults.get("min_items", 4))
+    max_items = int(args.max_items or defaults.get("max_items", 40))
+    min_items = int(args.min_items or defaults.get("min_items", 2))
     per_source = int(args.per_source or defaults.get("per_source", 3))
     lookback = int(args.lookback_hours or defaults.get("lookback_hours", 36))
-    log(f"loaded {len(feeds)} feed(s); day={day}; status={status}; dry_run={args.dry_run}")
+    log(f"loaded {len(feeds)} feed(s); day={day}; status={requested_status}; dry_run={args.dry_run}")
     raw_items, fetch_errors = fetch_items(feeds, timeout=args.timeout)
     seen = set() if args.no_state else load_seen(STATE_PATH)
     selected = select_items(raw_items, seen, max_items=max_items, per_source=per_source, lookback_hours=lookback)
-    if len(selected) < min_items and status == "published":
-        log(f"only {len(selected)} item(s) selected; downgrading to draft")
-        status = "draft"
-    if not selected:
-        log("no new items selected")
-        write_report(day, status, [], fetch_errors, DISPATCH_DIR / f"{day.isoformat()}-auto-daily-radar.md", [], args.dry_run)
-        return 0
-    signal_paths = [write_signal(day, item, args.dry_run) for item in selected]
-    dispatch_path = write_dispatch(day, status, selected, args.dry_run)
-    save_seen(STATE_PATH, seen, [item.key for item in selected], args.dry_run or args.no_state)
-    write_report(day, status, selected, fetch_errors, dispatch_path, signal_paths, args.dry_run)
-    log(f"wrote {len(signal_paths)} signal(s) and dispatch {dispatch_path.relative_to(ROOT)}")
+    groups = group_by_stream(selected)
+    generated: list[dict[str, object]] = []
+    new_keys: list[str] = []
+    for stream, stream_items in sorted(groups.items()):
+        if not stream_items:
+            continue
+        status = requested_status
+        if requested_status == "published" and len(stream_items) < min_items:
+            status = "draft"
+        signal_paths = [write_signal(day, item, args.dry_run) for item in stream_items]
+        dispatch_path = write_dispatch(day, stream, status, stream_items, args.dry_run)
+        new_keys.extend(item.key for item in stream_items)
+        generated.append({"stream": stream, "status": status, "count": len(stream_items), "dispatch_path": dispatch_path.as_posix(), "signals": [path.as_posix() for path in signal_paths]})
+        log(f"{stream}: {len(stream_items)} item(s), status={status}")
+    save_seen(STATE_PATH, seen, new_keys, args.dry_run or args.no_state)
+    write_report(day, generated, fetch_errors, args.dry_run)
+    if not generated:
+        log("no new topic digests generated")
     if fetch_errors:
         log(f"feed warnings: {len(fetch_errors)}")
     return 0
