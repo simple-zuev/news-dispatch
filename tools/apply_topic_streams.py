@@ -9,7 +9,6 @@ taxonomy used by the automatic radar.
 from __future__ import annotations
 
 import html
-import json
 import re
 from pathlib import Path
 
@@ -136,11 +135,22 @@ def patch_homepage(items: list[dict[str, str]]) -> None:
     page.write_text(text, encoding="utf-8")
 
 
+def normalize_topic_labels() -> None:
+    for page in SITE_DIR.rglob("*.html"):
+        text = page.read_text(encoding="utf-8")
+        new_text = text
+        for slug, stream in STREAM_BY_SLUG.items():
+            new_text = new_text.replace(f">{html.escape(slug)} ·", f">{html.escape(str(stream['title']))} ·")
+        if new_text != text:
+            page.write_text(new_text, encoding="utf-8")
+
+
 def main() -> int:
     items = collect_dispatches()
     render_stream_index(items)
     render_stream_pages(items)
     patch_homepage(items)
+    normalize_topic_labels()
     print("Applied topic stream pages.")
     return 0
 
