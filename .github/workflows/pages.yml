@@ -27,11 +27,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/apply_topic_streams.py tools/daily_radar.py tools/hourly_radar.py tools/source_health.py tools/validate_stream_registry.py
-
-      - name: Validate stream registry
-        run: python tools/validate_stream_registry.py
+      - name: Check core syntax
+        run: python -m py_compile tools/stream_registry.py tools/render_site.py tools/enhance_site.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/privacy_scan.py
 
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
@@ -45,20 +42,11 @@ jobs:
       - name: Enhance static site
         run: python tools/enhance_site.py
 
-      - name: Apply topic stream pages
-        run: python tools/apply_topic_streams.py
-
       - name: Apply media previews
         run: python tools/apply_media_previews.py
 
       - name: Apply reader sections
         run: python tools/apply_reader_sections.py
-
-      - name: Render live radar pages
-        run: python tools/hourly_radar.py --render-only
-
-      - name: Build source health report
-        run: python tools/source_health.py
 
       - name: Validate reader output
         run: python tools/validate_reader_output.py
