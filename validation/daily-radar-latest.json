@@ -2,82 +2,73 @@
   "date": "2026-06-19",
   "generated": [
     {
-      "stream": "ai",
-      "status": "draft",
-      "count": 1,
-      "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-19-ai-daily-radar.md",
-      "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/9fe7ea0f4d00cad8-openai--anthropic------llm.md"
-      ],
-      "media_count": 1
-    },
-    {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 7,
+      "count": 3,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/2a7b4831588975ae-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/29f945102cfca76a-andrew-tate-loses-nearly-86-000-longing-and-shorting-bitcoin.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/49f41de48649b2c7-most-difficult-day-in-the-history-of-digital-credit-strive-ceo-says-leve.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/c64fe46abacd829c-aave-survived-8-45b-in-withdrawals-but-risk-questions-remain.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/98a64dc66b1e87b4-charles-schwab-to-enter-prediction-markets-with-s-p-500-wagers-wsj.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f3355c2ae39dd2d3-ethereum-could-face-core-development-funding-crisis-within-nine-months-s.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/2ea03d4cab273105-franklin-templeton-files-for-etfs-that-reinvest-stock-dividends-into-bit.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/11de0ac12abd231a-fidelity-launches-genius-aligned-money-market-fund-for-stablecoin-issuer.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/ab3e16c55866eabd-franklin-templeton-files-etfs-that-turn-stock-dividends-into-bitcoin-exp.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/4984489e8f3bb6c5-what-happens-when-bitcoin-reaches-21-million-supply.md"
       ],
-      "media_count": 4
+      "media_count": 3
     },
     {
       "stream": "finance",
       "status": "draft",
-      "count": 7,
+      "count": 9,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8872d83ce1fc3984-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/38844dc0b8001d13-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/f35d55e8171988a3-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ce0675ad7f22bb48-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/170861bc2f4e2e51-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9e698d6da55ce18c-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/05285b4cf6ee4dce-rbc-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/467fd75fc58caf3a-c.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9182beacb658a58e-miacr.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/36a46aef86f1dae9-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/dcda30b75e2dcead-14-25.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/e39902423db740c4-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9831a7482074772e-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/4becbc238efd1a6e-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/234be58902b8cfdc-50.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/0de222bd68a660a8-2026.md"
       ],
       "media_count": 4
     },
     {
-      "stream": "science-discovery",
+      "stream": "gear-style-edc",
       "status": "draft",
-      "count": 1,
+      "count": 2,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/science-discovery/2026-06-19-science-discovery-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/gear-style-edc/2026-06-19-gear-style-edc-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/c7649afca3d4d21a-kommersant-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/319cf383e64a98d3-the-reebok-angel-reese-1-poison-angel-drops-on-june-25th.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/1c761ad97dde3379-vans-charmed-life-continues-with-these-cardigan-slip-ons.md"
       ],
-      "media_count": 1
+      "media_count": 2
     },
     {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 8,
+      "count": 10,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/f1f44c1b64ebe66c-spacex------20-------xai.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/d3bc05ecea6dd938-nothing---cmf-phone-3-pro.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/daea2d9a2f8eef60-mini-football-legends-family-feud-pocket-and-seven-more-hits-join-apple.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/33f026684317888f-app-store-ecosystem-reaches-1-4-trillion-as-developers-thrive-globally.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/ca3aeac980bf07b8-apple-reveals-winners-of-the-2026-apple-design-awards.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/390c409a8e97ab82-bernie-sanders-files-bill-proposing-50-public-ownership-of-us-ai-firms-a.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/ea8dc0a560c3a5d9-epic-games-unveils-launcher-v2-in-re-attempt-to-topple-steam-says-redesi.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/19d6285f0f3b30d1-post-silicon-era-gets-closer-as-industry-giants-crack-the-2d-transistor.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/eb6f62d2e62988bd-solarpunk.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/22d61746233c00f9-google.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/308ecd79382ee2ba-windows-11------office.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/bb8e8fe99d9de16f-detroit-s-rising-developers-are-supported-by-the-apple-developer-academy.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/3e2be4f837294c43-cherokee-language-learners-bridge-generations-with-ipad-and-mac.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/fe35fe7cfed97e95-after-the-whistle-with-brendan-hunt-and-rebecca-lowe-returns.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/37f7cbe04152d222-viewsonic-vx2730d-4k-27-inch-4k-dual-refresh-gaming-monitor-review-deliv.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/d8445a5d52d5a289-woot-slashes-up-to-46-off-these-wd-black-sn850p-ssds-for-pc-and-ps5-1tb.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/8a3d6b4993201fdf-a-bold-satellite-rescue-mission-came-together-in-record-time-but-will-it.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/ed4d2066322d1902-fda-advisors-unanimously-vote-to-approve-moderna-s-mrna-after-agency-dra.md"
       ],
       "media_count": 4
     }
   ],
   "fetch_errors": [
     "mos-ru-news: URLError: <urlopen error timed out>",
-    "the-village: URLError: <urlopen error timed out>"
+    "the-village: URLError: <urlopen error timed out>",
+    "nature-news: ParseError: not well-formed (invalid token): line 14, column 4"
   ]
 }
