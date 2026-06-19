@@ -1,0 +1,132 @@
+{
+  "date": "2026-06-19",
+  "generated": [
+    {
+      "stream": "ai",
+      "status": "draft",
+      "count": 10,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-19-ai-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/3c538b4fb66edae9-how-we-built-an-internal-data-analytics-agent.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/b98b96efdd669128-the-film-about-sam-altman-has-been-dropped-by-amazon-mgm.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/e1579b10df51950e-nasa-selects-eric-schmidt-s-rocket-company-for-a-2028-mission-to-mars.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/8ad2b1d3c2a8e540-barret-zoph-is-out-at-openai-again-after-just-five-months.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/c4ca8e0aa53fabe8-ceo-of-chinese-anthropic-rival-tells-elon-musk-that-china-will-have-a-fa.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/bd056869a29bf635-a-startup-claims-it-broke-through-a-bottleneck-that-s-holding-back-llms.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/10eda58bf9716143-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/318a0fd588898a88-the-download-ai-bottleneck-debates-and-bci-trials-take-off.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/2037d03343c5a303-brain-computer-interface-trials-are-taking-off.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/cfc389705fb4ffe7-how-pull-request-limits-are-cutting-down-the-noise.md"
+      ],
+      "media_count": 4
+    },
+    {
+      "stream": "crypto-finance",
+      "status": "draft",
+      "count": 9,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/8fa1d6d8043b9499-smart-contract-and-defi-coins-lead-losses-as-bitcoin-wilts-for-4th-strai.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/ba8760e2fe6cbb69-crypto-biz-is-ai-the-exit-strategy-for-miners.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/c889177ee359c7ec-microsoft-found-malware-that-hijacks-crypto-wallets-and-spreads-through.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/58a75507a61c79fe-here-s-what-happened-in-crypto-today.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/0b73acb470154f07-binance-s-mica-fight-raises-questions-over-ecb-influence.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/a241dae157716821-gomining-challenges-jack-dorsey-s-square-with-payments-system-designed-a.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/81807e29c2f01371-td-cowen-says-cme-has-the-upper-hand-in-lawsuit-against-cftc-over-crypto.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/0e2fdbc26a3159b5-what-is-the-clarity-act-the-crypto-market-structure-bill-explained.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/23b6aa6f88d4b569-kalshi-holds-early-ipo-talks-with-investment-banks-report.md"
+      ],
+      "media_count": 4
+    },
+    {
+      "stream": "dj-audio-creative",
+      "status": "draft",
+      "count": 2,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/dj-audio-creative/2026-06-19-dj-audio-creative-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/dj-audio-creative/358dcc3fa1a33d10-juneteenth-lineup-round-up-and-black-techno-matters-scorchers.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/dj-audio-creative/412085fe1c999e37-pac-man-befaco-random8-and-more-free-modules-of-vcv-rack.md"
+      ],
+      "media_count": 2
+    },
+    {
+      "stream": "finance",
+      "status": "draft",
+      "count": 8,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/7e3e0ca5f2f6b5a3-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/322879133a52943f-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/999f13a2a69e1675-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/e319a59eca4ea02b-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ae7681c722cb6bac-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/b1c0ffa528c4b005-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8452e685ce96d8f9-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/a14e60c6eb847625-rbc-finance.md"
+      ],
+      "media_count": 4
+    },
+    {
+      "stream": "gear-style-edc",
+      "status": "draft",
+      "count": 6,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/gear-style-edc/2026-06-19-gear-style-edc-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/22afffd94eb4a6a8-the-adidas-harden-vol-10-wears-candy-paint-finishes-in-red-and-black.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/aa28bfa03bfbe81a-cade-cunningham-has-another-nike-s-t-charge-detroit-tough-pe.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/ec6bac6a0c82ec40-patent-leather-stays-in-play-on-the-nike-air-max-95.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/c14a31985d08c7d9-closer-look-at-the-dsm-kei-ninomiya-x-vans-collaboration-from-pitti-uomo.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/3eb978e4beda0700-our-inside-look-at-the-ultimate-sneaker-archive-and-world-cup-boot-test.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/062e05413e74862e-the-grinch-live-action-sequel-in-development-with-jim-carrey-and-ron-how.md"
+      ],
+      "media_count": 4
+    },
+    {
+      "stream": "science-discovery",
+      "status": "draft",
+      "count": 6,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/science-discovery/2026-06-19-science-discovery-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/694d1b32ceb09af9-researchers-found-a-wordle-strategy-that-wins-99-of-the-time.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/fb6c6e5d5be05f64-scientists-reprogram-brain-immune-cells-to-fight-alzheimer-s.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/a1d87d9c03f62cf3-einstein-s-biggest-blunder-may-finally-have-an-explanation.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/2cef14044d8116c2-13.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/b61ea153439bfbf1-2.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/df011329f59b753d-nplus1.md"
+      ],
+      "media_count": 4
+    },
+    {
+      "stream": "tech-hardware-software",
+      "status": "draft",
+      "count": 11,
+      "required_items": 2,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/dd5d2c6c728e8abb-apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/68a0ac33ab6a4ed6-due-to-dma-siri-ai-delayed-in-eu-for-ios-27-and-ipados-27.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/8e56f9f17ceacfaa-your-15-inch-daily-driver-is-now-250-off-dell-15-laptop-with-hexa-core-c.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/082bd0f22af565fd-asml-denies-us-government-report-that-its-euv-chipmaking-tool-was-shippe.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/9b7d1957c58cd518-apple-aids-app-development-with-new-intelligence-frameworks-and-advanced.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/8323a57936093919-as-global-warming-threatens-corals-scientists-search-for-reefs-that-can.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/e8509f947adf09a1-rocket-report-rebuild-begins-at-blue-origin-launch-pad-relativity-target.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cbb337a8001f0957-microsoft-discovers-new-lightweight-backdoor-that-steals-cryptocurrency.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/efa6761cda1472ce-how-ferc-s-large-load-interconnection-actions-help-address-grid-stress-i.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/c7e0934b3133134d-at-cannes-lions-nvidia-partners-reshape-advertising-and-marketing-with-a.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/f050902ea17e1cb0-sync-and-stream-geforce-now-connects-to-members-game-libraries-across-de.md"
+      ],
+      "media_count": 4
+    }
+  ],
+  "fetch_errors": [
+    "3dnews: ParseError: no element found: line 1, column 0",
+    "mos-ru-news: URLError: <urlopen error timed out>",
+    "the-village: URLError: <urlopen error timed out>"
+  ]
+}
