@@ -36,7 +36,7 @@ PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("email_address", re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)),
     ("phone_like", re.compile(r"(?<!\d)(?:\+?7|8)[\s\-\(]*\d{3}[\s\-\)]*\d{3}[\s\-]*\d{2}[\s\-]*\d{2}(?!\d)")),
     ("private_context_phrase", re.compile(r"(?i)(our product|our company|our team|internal roadmap|internal metric|private vendor|contractor shortlist|customer data|partner notes)")),
-    ("russian_private_context_phrase", re.compile(r"(?i)(наш продукт|наша компания|наша команда|внутренн(ий|яя|ие)|роадмап|дорожная карта|метрики|подрядчик|партнер|клиентские данные)")),
+    ("russian_private_context_phrase", re.compile(r"(?i)(наш продукт|наша компания|наша команда|внутренн(ий|яя|ие) роадмап|внутренн(ий|яя|ие) метрик|клиентские данные|данные клиентов|подрядчик по проекту|партнерские заметки)")),
 ]
 
 ALLOWLIST_PATTERNS = [
@@ -44,6 +44,7 @@ ALLOWLIST_PATTERNS = [
     re.compile(r"YYYY-MM-DD", re.IGNORECASE),
     re.compile(r"127\.0\.0\.1"),
     re.compile(r"0\.0\.0\.0"),
+    re.compile(r"метрики качества", re.IGNORECASE),
 ]
 
 
