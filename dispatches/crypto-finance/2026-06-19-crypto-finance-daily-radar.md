@@ -19,7 +19,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматический тематический радар по потоку «Криптофинансы — РФ и мир»: 9 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
+summary: "Автоматический тематический радар по потоку «Криптофинансы — РФ и мир»: 6 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
 tags:
   - "bitcoin"
   - "blockchain"
@@ -27,36 +27,24 @@ tags:
   - "crypto-finance"
   - "daily-radar"
   - "ethereum"
-  - "exchanges"
-  - "market-structure"
   - "markets"
   - "public-sources"
   - "regulation"
-  - "stablecoins"
 sources:
-  - "https://www.coindesk.com/markets/2026/06/19/smart-contract-and-defi-coins-lead-losses-as-bitcoin-wilts-for-4th-straight-day"
-  - "https://cointelegraph.com/news/crypto-biz-ai-exit-strategy-bitcoin-miners?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://www.coindesk.com/tech/2026/06/19/microsoft-found-malware-that-hijacks-crypto-wallets-and-spreads-through-usb-sticks"
-  - "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://cointelegraph.com/news/mica-rules-questions-ecb-role-binance-licensing?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://www.coindesk.com/business/2026/06/19/gomining-challenges-jack-dorsey-s-square-with-payments-system-designed-around-bitcoin"
-  - "https://www.theblock.co/post/405446/td-cowen-cme-upper-hand-cftc-lawsuit-crypto-perpetual-futures?utm_source=rss&utm_medium=rss"
-  - "https://www.theblock.co/learn/404536/what-is-the-clarity-act?utm_source=rss&utm_medium=rss"
-  - "https://www.theblock.co/post/405369/kalshi-early-ipo-talks?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/markets/2026/06/19/schwab-to-join-prediction-markets-race-with-s-and-p-500-event-based-options-wsj"
+  - "https://www.coindesk.com/daybook-us/2026/06/19/franklin-templeton-proposes-new-funds-that-turn-corporate-dividends-into-bitcoin"
+  - "https://www.coindesk.com/markets/2026/06/19/bitcoin-falls-below-usd63-000-as-risk-assets-sell-off-and-the-week-s-bounce-fades"
+  - "https://cointelegraph.com/markets/13b-bitcoin-options-expiry-looms-will-bulls-endure-more-pain-in-june?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://cointelegraph.com/markets/bitcoin-eyes-new-yearly-lows-as-traders-warn-not-to-get-too-bearish-here?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://cointelegraph.com/markets/bitcoin-taps-63k-on-juneteenth-as-july-fed-rate-hike-odds-near-40?utm_source=rss&utm_medium=rss&utm_campaign=rss"
 source_titles:
-  - "CoinDesk: Smart-contract and DeFi coins lead losses as bitcoin wilts for 4th straight day"
-  - "Cointelegraph: Crypto Biz: Is AI the exit strategy for miners?"
-  - "CoinDesk: Microsoft found malware that hijacks crypto wallets and spreads through USB sticks"
-  - "Cointelegraph: Here’s what happened in crypto today"
-  - "Cointelegraph: Binance’s MiCA fight raises questions over ECB influence"
-  - "CoinDesk: GoMining challenges Jack Dorsey's Square with payments system designed around bitcoin"
-  - "The Block: TD Cowen says CME has the upper hand in lawsuit against CFTC over crypto perpetual futures"
-  - "The Block: What Is the CLARITY Act? The Crypto Market Structure Bill Explained"
-  - "The Block: Kalshi holds early IPO talks with investment banks: report"
+  - "CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ"
+  - "CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin"
+  - "CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades"
+  - "Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?"
+  - "Cointelegraph: Bitcoin traders expect new lows but data cautions against overly bearish bias"
+  - "Cointelegraph: Bitcoin taps $63K on Juneteenth as July Fed rate-hike odds near 40%"
 source_types:
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -70,19 +58,16 @@ source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
 media:
-  - "https://www.coindesk.com/markets/2026/06/19/smart-contract-and-defi-coins-lead-losses-as-bitcoin-wilts-for-4th-straight-day"
-  - "https://cointelegraph.com/news/crypto-biz-ai-exit-strategy-bitcoin-miners?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://www.coindesk.com/tech/2026/06/19/microsoft-found-malware-that-hijacks-crypto-wallets-and-spreads-through-usb-sticks"
-  - "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://www.coindesk.com/markets/2026/06/19/schwab-to-join-prediction-markets-race-with-s-and-p-500-event-based-options-wsj"
+  - "https://www.coindesk.com/daybook-us/2026/06/19/franklin-templeton-proposes-new-funds-that-turn-corporate-dividends-into-bitcoin"
+  - "https://www.coindesk.com/markets/2026/06/19/bitcoin-falls-below-usd63-000-as-risk-assets-sell-off-and-the-week-s-bounce-fades"
+  - "https://cointelegraph.com/markets/13b-bitcoin-options-expiry-looms-will-bulls-endure-more-pain-in-june?utm_source=rss&utm_medium=rss&utm_campaign=rss"
 media_titles:
-  - "CoinDesk: Smart-contract and DeFi coins lead losses as bitcoin wilts for 4th straight day"
-  - "Cointelegraph: Crypto Biz: Is AI the exit strategy for miners?"
-  - "CoinDesk: Microsoft found malware that hijacks crypto wallets and spreads through USB sticks"
-  - "Cointelegraph: Here’s what happened in crypto today"
+  - "CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ"
+  - "CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin"
+  - "CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades"
+  - "Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -108,23 +93,20 @@ editorial_review: "automated_topic_radar_v2"
 
 ## Главное
 
-1. CoinDesk: Smart-contract and DeFi coins lead losses as bitcoin wilts for 4th straight day.
-2. Cointelegraph: Crypto Biz: Is AI the exit strategy for miners?.
-3. CoinDesk: Microsoft found malware that hijacks crypto wallets and spreads through USB sticks.
-4. Cointelegraph: Here’s what happened in crypto today.
-5. Cointelegraph: Binance’s MiCA fight raises questions over ECB influence.
+1. CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ.
+2. CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin.
+3. CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades.
+4. Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?.
+5. Cointelegraph: Bitcoin traders expect new lows but data cautions against overly bearish bias.
 
 ## Что произошло
 
-- CoinDesk опубликовал материал: Smart-contract and DeFi coins lead losses as bitcoin wilts for 4th straight day. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: Crypto Biz: Is AI the exit strategy for miners?. Дата в ленте: 2026-06-19.
-- CoinDesk опубликовал материал: Microsoft found malware that hijacks crypto wallets and spreads through USB sticks. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: Here’s what happened in crypto today. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: Binance’s MiCA fight raises questions over ECB influence. Дата в ленте: 2026-06-19.
-- CoinDesk опубликовал материал: GoMining challenges Jack Dorsey's Square with payments system designed around bitcoin. Дата в ленте: 2026-06-19.
-- The Block опубликовал материал: TD Cowen says CME has the upper hand in lawsuit against CFTC over crypto perpetual futures. Дата в ленте: 2026-06-19.
-- The Block опубликовал материал: What Is the CLARITY Act? The Crypto Market Structure Bill Explained. Дата в ленте: 2026-06-19.
-- The Block опубликовал материал: Kalshi holds early IPO talks with investment banks: report. Дата в ленте: 2026-06-19.
+- CoinDesk опубликовал материал: Schwab to join prediction markets race with S&P 500 event-based options: WSJ. Дата в ленте: 2026-06-19.
+- CoinDesk опубликовал материал: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin. Дата в ленте: 2026-06-19.
+- CoinDesk опубликовал материал: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades. Дата в ленте: 2026-06-19.
+- Cointelegraph опубликовал материал: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?. Дата в ленте: 2026-06-19.
+- Cointelegraph опубликовал материал: Bitcoin traders expect new lows but data cautions against overly bearish bias. Дата в ленте: 2026-06-19.
+- Cointelegraph опубликовал материал: Bitcoin taps $63K on Juneteenth as July Fed rate-hike odds near 40%. Дата в ленте: 2026-06-19.
 
 ## Почему это важно
 
@@ -149,10 +131,10 @@ editorial_review: "automated_topic_radar_v2"
 ## Медиа и материалы
 
 В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией.
-- CoinDesk: Smart-contract and DeFi coins lead losses as bitcoin wilts for 4th straight day.
-- Cointelegraph: Crypto Biz: Is AI the exit strategy for miners?.
-- CoinDesk: Microsoft found malware that hijacks crypto wallets and spreads through USB sticks.
-- Cointelegraph: Here’s what happened in crypto today.
+- CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ.
+- CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin.
+- CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades.
+- Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?.
 
 ## Источники
 

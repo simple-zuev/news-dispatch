@@ -19,60 +19,39 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматический тематический радар по потоку «Железо и софт»: 11 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
+summary: "Автоматический тематический радар по потоку «Железо и софт»: 6 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
 tags:
-  - "ai"
   - "apple"
   - "benchmarks"
-  - "chips"
   - "components"
   - "daily-radar"
-  - "gpu"
   - "hardware"
-  - "nvidia"
   - "pc"
   - "platforms"
-  - "policy"
   - "public-sources"
-  - "science"
-  - "security"
   - "software"
+  - "tech-hardware-software"
 sources:
-  - "https://www.apple.com/newsroom/2026/06/apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more/"
-  - "https://www.apple.com/newsroom/2026/06/due-to-dma-siri-ai-delayed-in-eu-for-ios-27-and-ipados-27/"
-  - "https://www.tomshardware.com/laptops/your-15-inch-daily-driver-is-now-usd250-off-dell-15-laptop-with-hexa-core-cpu-8gb-ram-dips-to-usd349"
-  - "https://www.tomshardware.com/tech-industry/semiconductors/asml-denies-us-government-report-that-its-euv-chipmaking-tool-was-shipped-to-china-says-rumors-are-inaccurate-and-damaging-to-our-reputation"
-  - "https://www.apple.com/newsroom/2026/06/apple-aids-app-development-with-new-intelligence-frameworks-and-advanced-tools/"
-  - "https://arstechnica.com/science/2026/06/as-global-warming-threatens-corals-scientists-search-for-reefs-that-can-take-the-heat/"
-  - "https://arstechnica.com/space/2026/06/rocket-report-rebuild-begins-at-blue-origin-launch-pad-relativity-targets-mars/"
-  - "https://arstechnica.com/security/2026/06/microsoft-spots-new-self-propagating-malware-for-stealing-cryptocurrency/"
-  - "https://blogs.nvidia.com/blog/ferc-large-load-interconnection/"
-  - "https://blogs.nvidia.com/blog/nvidia-ai-marketing-advertising-cannes-lions/"
-  - "https://blogs.nvidia.com/blog/geforce-now-thursday-game-stores/"
+  - "https://www.apple.com/newsroom/2026/05/apple-sports-expands-to-more-than-90-new-countries-and-regions/"
+  - "https://www.tomshardware.com/pc-components/cpus/amd-will-reinstate-memory-encryption-on-ryzen-9000-cpus-through-a-bios-update-in-july-tsme-is-coming-back-after-valuable-community-feedback"
+  - "https://www.tomshardware.com/desktops/servers/tesco-uk-supermarket-chain-removes-40-000-servers-from-vmware-infrastructure-mass-exodus-continues-due-to-broadcoms-aggressive-subscription-model"
+  - "https://www.apple.com/newsroom/2026/06/apple-announces-changes-to-ios-in-brazil/"
+  - "https://www.apple.com/newsroom/2026/06/apple-unveils-innovative-features-and-intelligence-experiences-across-services/"
+  - "https://www.tomshardware.com/peripherals/usb/best-usb-charger-deals"
 source_titles:
-  - "Apple Newsroom: Apple unveils next generation of Apple Intelligence, Siri AI, and more"
-  - "Apple Newsroom: Due to DMA, Siri AI delayed in EU for iOS 27 and iPadOS 27"
-  - "Tom's Hardware: Your 15-inch daily driver is now $250 off — Dell 15 laptop with hexa-core CPU, 8GB RAM dips to $349"
-  - "Tom's Hardware: ASML denies US government report that its EUV chipmaking tool was shipped to China — says 'rumors' are 'inaccurate and damaging to our reputation'"
-  - "Apple Newsroom: Apple aids app development with new intelligence frameworks and advanced tools"
-  - "Ars Technica: As global warming threatens corals, scientists search for reefs that can take the heat"
-  - "Ars Technica: Rocket Report: Rebuild begins at Blue Origin launch pad; Relativity targets Mars"
-  - "Ars Technica: Microsoft discovers new lightweight backdoor that steals cryptocurrency"
-  - "NVIDIA Blog: How FERC’s Large-Load Interconnection Actions Help Address Grid Stress, Improve Affordability"
-  - "NVIDIA Blog: At Cannes Lions, NVIDIA Partners Reshape Advertising and Marketing With AI"
-  - "NVIDIA Blog: Sync and Stream: GeForce NOW Connects to Members’ Game Libraries Across Devices"
+  - "Apple Newsroom: Apple Sports expands to more than 90 new countries and regions"
+  - "Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'"
+  - "Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model"
+  - "Apple Newsroom: Apple announces changes to iOS in Brazil"
+  - "Apple Newsroom: Apple unveils innovative features and intelligence experiences across services"
+  - "Tom's Hardware: Best USB charger deals 2026 – from tiny single-port smartphone chargers to large multi-port laptop chargers, we've found the best deals"
 source_types:
   - "Официальный источник"
-  - "Официальный источник"
   - "Технологическое медиа"
   - "Технологическое медиа"
   - "Официальный источник"
+  - "Официальный источник"
   - "Технологическое медиа"
-  - "Технологическое медиа"
-  - "Технологическое медиа"
-  - "Официальный блог"
-  - "Официальный блог"
-  - "Официальный блог"
 source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
@@ -80,26 +59,21 @@ source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
 media:
-  - "https://www.apple.com/newsroom/2026/06/apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more/"
-  - "https://www.apple.com/newsroom/2026/06/due-to-dma-siri-ai-delayed-in-eu-for-ios-27-and-ipados-27/"
-  - "https://www.tomshardware.com/laptops/your-15-inch-daily-driver-is-now-usd250-off-dell-15-laptop-with-hexa-core-cpu-8gb-ram-dips-to-usd349"
-  - "https://www.tomshardware.com/tech-industry/semiconductors/asml-denies-us-government-report-that-its-euv-chipmaking-tool-was-shipped-to-china-says-rumors-are-inaccurate-and-damaging-to-our-reputation"
+  - "https://www.apple.com/newsroom/2026/05/apple-sports-expands-to-more-than-90-new-countries-and-regions/"
+  - "https://www.tomshardware.com/pc-components/cpus/amd-will-reinstate-memory-encryption-on-ryzen-9000-cpus-through-a-bios-update-in-july-tsme-is-coming-back-after-valuable-community-feedback"
+  - "https://www.tomshardware.com/desktops/servers/tesco-uk-supermarket-chain-removes-40-000-servers-from-vmware-infrastructure-mass-exodus-continues-due-to-broadcoms-aggressive-subscription-model"
+  - "https://www.apple.com/newsroom/2026/06/apple-announces-changes-to-ios-in-brazil/"
 media_titles:
-  - "Apple Newsroom: Apple unveils next generation of Apple Intelligence, Siri AI, and more"
-  - "Apple Newsroom: Due to DMA, Siri AI delayed in EU for iOS 27 and iPadOS 27"
-  - "Tom's Hardware: Your 15-inch daily driver is now $250 off — Dell 15 laptop with hexa-core CPU, 8GB RAM dips to $349"
-  - "Tom's Hardware: ASML denies US government report that its EUV chipmaking tool was shipped to China — says 'rumors' are 'inaccurate and damaging to our reputation'"
+  - "Apple Newsroom: Apple Sports expands to more than 90 new countries and regions"
+  - "Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'"
+  - "Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model"
+  - "Apple Newsroom: Apple announces changes to iOS in Brazil"
 media_types:
   - "Официальный источник"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
   - "Официальный источник"
-  - "Технологическое медиа"
-  - "Технологическое медиа"
 media_notes:
   - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
   - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
@@ -120,24 +94,20 @@ editorial_review: "automated_topic_radar_v2"
 
 ## Главное
 
-1. Apple Newsroom: Apple unveils next generation of Apple Intelligence, Siri AI, and more.
-2. Apple Newsroom: Due to DMA, Siri AI delayed in EU for iOS 27 and iPadOS 27.
-3. Tom's Hardware: Your 15-inch daily driver is now $250 off — Dell 15 laptop with hexa-core CPU, 8GB RAM dips to $349.
-4. Tom's Hardware: ASML denies US government report that its EUV chipmaking tool was shipped to China — says 'rumors' are 'inaccurate and damaging to our reputation'.
-5. Apple Newsroom: Apple aids app development with new intelligence frameworks and advanced tools.
+1. Apple Newsroom: Apple Sports expands to more than 90 new countries and regions.
+2. Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'.
+3. Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model.
+4. Apple Newsroom: Apple announces changes to iOS in Brazil.
+5. Apple Newsroom: Apple unveils innovative features and intelligence experiences across services.
 
 ## Что произошло
 
-- Apple Newsroom опубликовал материал: Apple unveils next generation of Apple Intelligence, Siri AI, and more. Дата в ленте: 2026-06-19.
-- Apple Newsroom опубликовал материал: Due to DMA, Siri AI delayed in EU for iOS 27 and iPadOS 27. Дата в ленте: 2026-06-19.
-- Tom's Hardware опубликовал материал: Your 15-inch daily driver is now $250 off — Dell 15 laptop with hexa-core CPU, 8GB RAM dips to $349. Дата в ленте: 2026-06-19.
-- Tom's Hardware опубликовал материал: ASML denies US government report that its EUV chipmaking tool was shipped to China — says 'rumors' are 'inaccurate and damaging to our reputation'. Дата в ленте: 2026-06-19.
-- Apple Newsroom опубликовал материал: Apple aids app development with new intelligence frameworks and advanced tools. Дата в ленте: 2026-06-19.
-- Ars Technica опубликовал материал: As global warming threatens corals, scientists search for reefs that can take the heat. Дата в ленте: 2026-06-19.
-- Ars Technica опубликовал материал: Rocket Report: Rebuild begins at Blue Origin launch pad; Relativity targets Mars. Дата в ленте: 2026-06-19.
-- Ars Technica опубликовал материал: Microsoft discovers new lightweight backdoor that steals cryptocurrency. Дата в ленте: 2026-06-18.
-- NVIDIA Blog опубликовал материал: How FERC’s Large-Load Interconnection Actions Help Address Grid Stress, Improve Affordability. Дата в ленте: 2026-06-18.
-- NVIDIA Blog опубликовал материал: At Cannes Lions, NVIDIA Partners Reshape Advertising and Marketing With AI. Дата в ленте: 2026-06-18.
+- Apple Newsroom опубликовал материал: Apple Sports expands to more than 90 new countries and regions. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model. Дата в ленте: 2026-06-19.
+- Apple Newsroom опубликовал материал: Apple announces changes to iOS in Brazil. Дата в ленте: 2026-06-19.
+- Apple Newsroom опубликовал материал: Apple unveils innovative features and intelligence experiences across services. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: Best USB charger deals 2026 – from tiny single-port smartphone chargers to large multi-port laptop chargers, we've found the best deals. Дата в ленте: 2026-06-19.
 
 ## Почему это важно
 
@@ -162,10 +132,10 @@ editorial_review: "automated_topic_radar_v2"
 ## Медиа и материалы
 
 В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией.
-- Apple Newsroom: Apple unveils next generation of Apple Intelligence, Siri AI, and more.
-- Apple Newsroom: Due to DMA, Siri AI delayed in EU for iOS 27 and iPadOS 27.
-- Tom's Hardware: Your 15-inch daily driver is now $250 off — Dell 15 laptop with hexa-core CPU, 8GB RAM dips to $349.
-- Tom's Hardware: ASML denies US government report that its EUV chipmaking tool was shipped to China — says 'rumors' are 'inaccurate and damaging to our reputation'.
+- Apple Newsroom: Apple Sports expands to more than 90 new countries and regions.
+- Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'.
+- Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model.
+- Apple Newsroom: Apple announces changes to iOS in Brazil.
 
 ## Источники
 
