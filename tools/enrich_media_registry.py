@@ -3,8 +3,9 @@
 
 The script is intentionally conservative:
 - reads published dispatches and their media/sources URLs;
-- fetches only the source page itself, not random image search results;
-- extracts publisher-provided metadata such as og:image and twitter:image;
+- fetches only the source page itself, not random image or video search results;
+- extracts publisher-provided metadata such as og:image, twitter:image,
+  og:video, and twitter:player;
 - writes a generated registry file used during static site rendering;
 - never fails the build because one source blocks metadata fetching.
 """
@@ -175,6 +176,25 @@ def clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", html.unescape(value)).strip()
 
 
+def absolute_url(base_url: str, value: str) -> str:
+    value = clean_text(value)
+    if not value:
+        return ""
+    return urljoin(base_url, value)
+
+
+def metadata_video(meta: dict[str, str], url: str) -> tuple[str, str, str]:
+    embed = absolute_url(url, meta.get("twitter:player") or meta.get("og:video:url") or meta.get("og:video:secure_url") or "")
+    video = absolute_url(url, meta.get("og:video") or meta.get("video") or "")
+    video_type = clean_text(meta.get("og:video:type") or "")
+    if embed and embed == video:
+        # Keep direct video files in video_url; iframe-like players in embed_url.
+        parsed = urlparse(embed)
+        if parsed.path.lower().endswith((".mp4", ".webm", ".ogg", ".mov")):
+            return "", embed, video_type
+    return embed, video, video_type
+
+
 def fetch_metadata(url: str) -> dict[str, str]:
     request = Request(
         url,
@@ -197,14 +217,11 @@ def fetch_metadata(url: str) -> dict[str, str]:
     meta = parser.meta
     title = clean_text(meta.get("og:title") or meta.get("twitter:title") or parser.title)
     description = clean_text(meta.get("og:description") or meta.get("twitter:description") or meta.get("description") or "")
-    image = clean_text(meta.get("og:image:secure_url") or meta.get("og:image") or meta.get("twitter:image") or meta.get("twitter:image:src") or "")
+    image = absolute_url(url, meta.get("og:image:secure_url") or meta.get("og:image") or meta.get("twitter:image") or meta.get("twitter:image:src") or "")
     site_name = clean_text(meta.get("og:site_name") or urlparse(url).netloc.replace("www.", ""))
-    canonical = clean_text(meta.get("og:url") or parser.canonical or url)
-    if image:
-        image = urljoin(url, image)
-    if canonical:
-        canonical = urljoin(url, canonical)
-    return {
+    canonical = absolute_url(url, meta.get("og:url") or parser.canonical or url)
+    embed_url, video_url, video_type = metadata_video(meta, url)
+    result = {
         "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "metadata_source": "open_graph",
         "site_name": site_name,
@@ -214,6 +231,15 @@ def fetch_metadata(url: str) -> dict[str, str]:
         "image_url": image,
         "image_source": site_name,
     }
+    if embed_url:
+        result["embed_url"] = embed_url
+        result["video_source"] = site_name
+    if video_url:
+        result["video_url"] = video_url
+        result["video_source"] = site_name
+    if video_type:
+        result["video_type"] = video_type
+    return result
 
 
 def enrich_item(row: dict[str, str], manual: dict[str, dict[str, str]]) -> dict[str, str]:
