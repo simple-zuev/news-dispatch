@@ -15,6 +15,38 @@
       "url": "https://www.theverge.com/tech/942588/nvidia-rtx-spark-n2x-n3x-r2-d2-star-trek-star-wars-plan",
       "preview": "assets/previews/rtx-spark.svg",
       "note": "Помогает понять, как технологические медиа описывают переход к локальным AI PC-сценариям."
+    },
+    {
+      "id": "wired-wwdc-2026",
+      "title": "WIRED: как смотреть WWDC 2026 и чего ждать",
+      "type": "Технологическое медиа",
+      "url": "https://www.wired.com/story/how-to-watch-apple-wwdc-2026",
+      "preview": "assets/previews/wired-wwdc-2026.svg",
+      "note": "Контекст перед WWDC: платформы, системный ИИ и ожидания от Apple."
+    },
+    {
+      "id": "verge-siri-wwdc-2026",
+      "title": "The Verge: ожидания вокруг нового Siri",
+      "type": "Технологическое медиа",
+      "url": "https://www.theverge.com/tech/944245/apple-wwdc-2026-ai-siri-gemini",
+      "preview": "assets/previews/verge-siri-wwdc-2026.svg",
+      "note": "Публичный сигнал о том, как медиа оценивают ожидания вокруг Siri и Apple Intelligence."
+    },
+    {
+      "id": "verge-solara-agent-devices",
+      "title": "The Verge: Project Solara и агентные устройства Microsoft",
+      "type": "Технологическое медиа",
+      "url": "https://www.theverge.com/news/941830/microsoft-project-solara-os-ai-agent-gadgets",
+      "preview": "assets/previews/verge-solara-agent-devices.svg",
+      "note": "Сигнал о переходе от приложений к агентным устройствам и OS-подобному AI-слою."
+    },
+    {
+      "id": "arxiv-apple-intelligence-token-theft",
+      "title": "arXiv: Practical Token Theft Attacks on Apple Intelligence",
+      "type": "Исследование / preprint",
+      "url": "https://arxiv.org/abs/2604.15637",
+      "preview": "assets/previews/arxiv-apple-intelligence-token-theft.svg",
+      "note": "Технический материал о рисках токенов, привязки устройств и replay-атак."
     }
   ]
 }
