@@ -50,6 +50,20 @@ jobs:
       - name: Check automation syntax
         run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/render_site.py tools/enhance_site.py tools/enrich_media_registry.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/privacy_scan.py
 
+      - name: Disable broad feeds for daily generation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("sources/feeds.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+          disabled = {"the-verge-ai"}
+          for feed in data.get("feeds", []):
+              if feed.get("id") in disabled:
+                  feed["enabled"] = False
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          PY
+
       - name: Build Daily Radar dispatches
         run: python tools/daily_radar.py
 
