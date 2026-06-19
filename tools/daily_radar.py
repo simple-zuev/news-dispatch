@@ -25,9 +25,11 @@ STATE_PATH = ROOT / "data" / "daily-radar-seen.json"
 DISPATCH_ROOT = ROOT / "dispatches"
 SIGNALS_DIR = ROOT / "signals"
 REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.3 (+https://simple-zuev.github.io/news-dispatch/)"
+USER_AGENT = "NewsDispatchDailyRadar/0.4 (+https://simple-zuev.github.io/news-dispatch/)"
 STREAMS = stream_slugs()
 KEYWORDS = stream_keywords()
+MEDIA_LIMIT = 4
+SOURCE_LIMIT = 12
 
 
 @dataclass(frozen=True)
@@ -255,19 +257,35 @@ def yaml_list(key: str, values: list[str]) -> str:
     return key + ":\n" + "\n".join(f"  - {yaml_quote(value)}" for value in values)
 
 
+def top_items(items: list[Item], limit: int) -> list[Item]:
+    return sorted(items, key=lambda item: (item.score, item.published), reverse=True)[:limit]
+
+
 def source_lists(items: list[Item]) -> tuple[list[str], list[str], list[str], list[str]]:
+    selected = top_items(items, SOURCE_LIMIT)
     return (
-        [item.url for item in items],
-        [f"{item.feed.title}: {item.title}" for item in items],
-        [item.feed.source_type for item in items],
-        ["Автоматически собранный публичный RSS/Atom-сигнал; требует чтения первичного материала перед сильными выводами." for _ in items],
+        [item.url for item in selected],
+        [f"{item.feed.title}: {item.title}" for item in selected],
+        [item.feed.source_type for item in selected],
+        ["Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст." for _ in selected],
+    )
+
+
+def media_lists(items: list[Item]) -> tuple[list[str], list[str], list[str], list[str]]:
+    selected = top_items(items, min(MEDIA_LIMIT, len(items)))
+    return (
+        [item.url for item in selected],
+        [f"{item.feed.title}: {item.title}" for item in selected],
+        [item.feed.source_type for item in selected],
+        ["Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment." for _ in selected],
     )
 
 
 def front_matter(day: date, status: str, stream: str, items: list[Item]) -> str:
     urls, source_titles, source_types, source_notes = source_lists(items)
+    media, media_titles, media_types, media_notes = media_lists(items)
     title = f"{stream_title(stream)} — {day.isoformat()}"
-    summary = f"Автоматический тематический дайджест из {len(items)} публичных RSS/Atom-сигналов."
+    summary = f"Автоматический тематический радар по потоку «{stream_title(stream)}»: {len(items)} публичных сигналов, ключевые материалы, источники и зоны наблюдения."
     tags = sorted({"daily-radar", "public-sources", stream, *[tag for item in items for tag in item.feed.tags]})[:16]
     review = stream_review_level(stream)
     return "\n".join([
@@ -298,29 +316,44 @@ def front_matter(day: date, status: str, stream: str, items: list[Item]) -> str:
         yaml_list("source_titles", source_titles),
         yaml_list("source_types", source_types),
         yaml_list("source_notes", source_notes),
-        "media: []",
-        "media_titles: []",
-        "media_types: []",
-        "media_notes: []",
+        yaml_list("media", media),
+        yaml_list("media_titles", media_titles),
+        yaml_list("media_types", media_types),
+        yaml_list("media_notes", media_notes),
         "visuals: []",
         "visual_titles: []",
         "visual_types: []",
         'privacy_review: "automated_public_safe_scan_pending"',
-        'editorial_review: "automated_topic_radar"',
+        'editorial_review: "automated_topic_radar_v2"',
         "---",
         "",
     ])
 
 
 def main_points(stream: str, items: list[Item]) -> str:
-    points = [f"{item.feed.title}: {item.title}." for item in items[:5]]
+    points = [f"{item.feed.title}: {item.title}." for item in top_items(items, 5)]
     while len(points) < 5:
-        points.append(f"В потоке {stream_title(stream)} пока мало свежих сильных сигналов; слабый выпуск не нужно читать как полную картину дня.")
+        points.append(f"В потоке «{stream_title(stream)}» пока мало свежих сильных сигналов; такой выпуск следует читать как неполную карту дня.")
     return "\n".join(f"{idx}. {point}" for idx, point in enumerate(points[:5], 1))
 
 
 def facts(items: list[Item]) -> str:
-    return "\n".join(f"- {item.feed.title} опубликовал материал: {item.title}. Дата в ленте: {item.published.date().isoformat()}." for item in items)
+    return "\n".join(
+        f"- {item.feed.title} опубликовал материал: {item.title}. Дата в ленте: {item.published.date().isoformat()}."
+        for item in top_items(items, 10)
+    )
+
+
+def media_text(items: list[Item]) -> str:
+    selected = top_items(items, min(MEDIA_LIMIT, len(items)))
+    if not selected:
+        return "Ключевые media-материалы для этого выпуска не определены. Карточки источников ниже остаются основным слоем проверки."
+    lines = [
+        "В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией."
+    ]
+    for item in selected:
+        lines.append(f"- {item.feed.title}: {item.title}.")
+    return "\n".join(lines)
 
 
 def body(day: date, stream: str, items: list[Item]) -> str:
@@ -330,7 +363,7 @@ def body(day: date, stream: str, items: list[Item]) -> str:
 
 ## Лид
 
-Это автоматический тематический дайджест потока «{title}». Он не смешивает разные домены в один общий выпуск: сюда попадают только сигналы, классифицированные как `{stream}`. Выпуск нужен как карта чтения на день, а не как окончательная редакционная позиция.
+Это автоматический тематический радар потока «{title}». Он показывает свежие публичные сигналы, выделяет ключевые материалы для проверки и отделяет наблюдения от сильных выводов. Выпуск нужен как карта чтения на день, а не как окончательная редакционная позиция.
 
 ## Главное
 
@@ -342,11 +375,15 @@ def body(day: date, stream: str, items: list[Item]) -> str:
 
 ## Почему это важно
 
-Разделение по темам уменьшает шум. Финансы, криптофинансы, AI, железо, EDC, Москва, DJ/audio и наука требуют разных источников, разной проверки и разной скорости реакции. Поэтому автоматический радар публикует отдельные дайджесты только там, где набралось достаточно сигналов.
+Разделение по темам уменьшает шум. У разных потоков разные источники, темп проверки и цена ошибки. Поэтому такой радар полезен не как список ссылок, а как первичная карта: где появились новые сигналы, какие источники повторяются и какие сюжеты требуют отдельного анализа.
 
 ## Анализ
 
-Сильные выводы по одному RSS-сигналу делать нельзя. В этом выпуске важно смотреть на повторяемость тем, тип источника и наличие первичных материалов. Официальные источники и исследования сильнее пересказов; community-сигналы и мнения остаются слабым слоем до проверки.
+Сильные выводы по одному RSS-сигналу делать нельзя. В этом выпуске важно смотреть на повторяемость тем, тип источника и наличие первичных материалов. Официальные источники и исследования сильнее пересказов; мнения и ожидания остаются слабым слоем до независимого подтверждения.
+
+## Скрытые и косвенные сигналы
+
+Отдельно стоит смотреть не только на факт публикации, но и на направление сдвига: усиливается ли роль платформы, меняется ли стоимость действия, появляется ли новый риск зависимости, становится ли источник менее проверяемым, повторяется ли тема в нескольких независимых каналах. Эти признаки могут быть важнее одиночного анонса.
 
 ## Слухи и мнения
 
@@ -354,15 +391,15 @@ def body(day: date, stream: str, items: list[Item]) -> str:
 
 ## Мнение людей
 
-Публичная реакция в этой версии не оценивается автоматически. Для такого слоя нужны отдельные источники: комментарии, форумы, Telegram, Reddit, YouTube, профильные сообщества и отзывы владельцев.
+Публичная реакция в этой версии не оценивается автоматически. Для такого слоя нужны отдельные источники: комментарии, форумы, Telegram, Reddit, YouTube, профильные сообщества и отзывы пользователей. До подключения такого слоя этот раздел фиксирует ограничение метода.
 
 ## Медиа и материалы
 
-Отдельные media preview для этого автоматического выпуска не добавлялись. Карточки источников ниже ведут к исходным материалам.
+{media_text(items)}
 
 ## Источники
 
-Источники выпуска — публичные RSS/Atom-ленты из `sources/feeds.json`. Перед сильными выводами нужно открыть первичный материал и проверить контекст.
+Источники выпуска — публичные RSS/Atom-ленты из файла источников проекта. Перед сильными выводами нужно открыть первичный материал и проверить контекст, дату, автора, тип источника и наличие независимых подтверждений.
 
 ## Что наблюдать дальше
 
@@ -374,7 +411,7 @@ def body(day: date, stream: str, items: list[Item]) -> str:
 
 ## Итог
 
-Этот дайджест — отдельная тематическая полка личного reader/radar. Его задача — быстро показать, что появилось в публичных источниках по теме «{title}», и отделить этот поток от остальных тем.
+Этот дайджест — тематическая полка личного reader/radar. Его задача — быстро показать, что появилось в публичных источниках по теме «{title}», где есть проверяемые материалы и какие сигналы могут повлиять на продукт, команду, организацию или рынок косвенно, а не только напрямую.
 """
 
 
@@ -406,9 +443,12 @@ source_titles:
   - {yaml_quote(item.feed.title + ': ' + item.title)}
 source_types:
   - {yaml_quote(item.feed.source_type)}
-media: []
-media_titles: []
-media_types: []
+media:
+  - {yaml_quote(item.url)}
+media_titles:
+  - {yaml_quote(item.feed.title + ': ' + item.title)}
+media_types:
+  - {yaml_quote(item.feed.source_type)}
 visuals: []
 visual_titles: []
 visual_types: []
@@ -427,7 +467,7 @@ visual_types: []
 
 ## Почему это важно
 
-Сигнал попал в поток `{item.stream}` и может быть полезен для тематического дайджеста.
+Сигнал попал в поток «{stream_title(item.stream)}» и может быть полезен для тематического дайджеста.
 
 ## Факты
 
@@ -449,7 +489,7 @@ visual_types: []
 
 ## Источники и материалы
 
-Источник указан в front matter.
+Источник указан в метаданных сигнала.
 
 ## Что наблюдать дальше
 
@@ -477,7 +517,10 @@ def write_report(day: date, generated: list[dict[str, object]], errors: list[str
     if dry_run:
         return
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.write_text(json.dumps({"date": day.isoformat(), "generated": generated, "fetch_errors": errors}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    REPORT_PATH.write_text(
+        json.dumps({"date": day.isoformat(), "generated": generated, "fetch_errors": errors}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def build(args: argparse.Namespace) -> int:
@@ -505,7 +548,17 @@ def build(args: argparse.Namespace) -> int:
         signal_paths = [write_signal(day, item, args.dry_run) for item in stream_items]
         dispatch_path = write_dispatch(day, stream, status, stream_items, args.dry_run)
         new_keys.extend(item.key for item in stream_items)
-        generated.append({"stream": stream, "status": status, "count": len(stream_items), "required_items": required_items, "dispatch_path": dispatch_path.as_posix(), "signals": [path.as_posix() for path in signal_paths]})
+        generated.append(
+            {
+                "stream": stream,
+                "status": status,
+                "count": len(stream_items),
+                "required_items": required_items,
+                "dispatch_path": dispatch_path.as_posix(),
+                "signals": [path.as_posix() for path in signal_paths],
+                "media_count": min(MEDIA_LIMIT, len(stream_items)),
+            }
+        )
         log(f"{stream}: {len(stream_items)} item(s), status={status}")
     save_seen(STATE_PATH, seen, new_keys, args.dry_run or args.no_state)
     write_report(day, generated, fetch_errors, args.dry_run)
