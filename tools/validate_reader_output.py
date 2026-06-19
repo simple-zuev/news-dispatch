@@ -22,7 +22,6 @@ SECTIONS = {
     "Что произошло": ("reader-section-facts", "facts"),
     "Почему это важно": ("reader-section-why", "why"),
     "Анализ": ("reader-section-analysis", "analysis"),
-    "Скрытые и косвенные сигналы": ("reader-section-signals", "signals"),
     "Слухи и мнения": ("reader-section-rumors", "rumors"),
     "Мнение людей": ("reader-section-people", "people"),
     "Медиа и материалы": ("reader-section-media", "media"),
