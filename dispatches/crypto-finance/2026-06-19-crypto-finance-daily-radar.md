@@ -19,7 +19,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматический тематический радар по потоку «Криптофинансы — РФ и мир»: 6 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
+summary: "Автоматический тематический радар по потоку «Криптофинансы — РФ и мир»: 4 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
 tags:
   - "bitcoin"
   - "blockchain"
@@ -31,22 +31,16 @@ tags:
   - "public-sources"
   - "regulation"
 sources:
-  - "https://www.coindesk.com/markets/2026/06/19/schwab-to-join-prediction-markets-race-with-s-and-p-500-event-based-options-wsj"
-  - "https://www.coindesk.com/daybook-us/2026/06/19/franklin-templeton-proposes-new-funds-that-turn-corporate-dividends-into-bitcoin"
-  - "https://www.coindesk.com/markets/2026/06/19/bitcoin-falls-below-usd63-000-as-risk-assets-sell-off-and-the-week-s-bounce-fades"
-  - "https://cointelegraph.com/markets/13b-bitcoin-options-expiry-looms-will-bulls-endure-more-pain-in-june?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://cointelegraph.com/markets/bitcoin-eyes-new-yearly-lows-as-traders-warn-not-to-get-too-bearish-here?utm_source=rss&utm_medium=rss&utm_campaign=rss"
-  - "https://cointelegraph.com/markets/bitcoin-taps-63k-on-juneteenth-as-july-fed-rate-hike-odds-near-40?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://www.coindesk.com/markets/2026/06/19/digital-credit-market-hit-by-record-selloff-as-strive-ceo-blames-leverage-liquidations"
+  - "https://www.coindesk.com/markets/2026/06/19/live-markets-bitcoin-has-traded-below-its-mining-cost-for-five-months-squeezing-miners"
+  - "https://cointelegraph.com/news/whitebit-secures-mica-license-austria-gains-access-eu-crypto-market?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://cointelegraph.com/news/kalshi-early-ipo-talks-investment-banks-report?utm_source=rss&utm_medium=rss&utm_campaign=rss"
 source_titles:
-  - "CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ"
-  - "CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin"
-  - "CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades"
-  - "Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?"
-  - "Cointelegraph: Bitcoin traders expect new lows but data cautions against overly bearish bias"
-  - "Cointelegraph: Bitcoin taps $63K on Juneteenth as July Fed rate-hike odds near 40%"
+  - "CoinDesk: Digital credit market hit by huge selloff as Strive CEO blames leverage liquidations"
+  - "CoinDesk: Live markets: Bitcoin under pressure as Saylor comments on STRC selloff"
+  - "Cointelegraph: WhiteBIT secures MiCA license in Austria ahead of July 1 EU deadline"
+  - "Cointelegraph: Kalshi in early IPO talks with investment banks: Report"
 source_types:
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -56,18 +50,16 @@ source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
 media:
-  - "https://www.coindesk.com/markets/2026/06/19/schwab-to-join-prediction-markets-race-with-s-and-p-500-event-based-options-wsj"
-  - "https://www.coindesk.com/daybook-us/2026/06/19/franklin-templeton-proposes-new-funds-that-turn-corporate-dividends-into-bitcoin"
-  - "https://www.coindesk.com/markets/2026/06/19/bitcoin-falls-below-usd63-000-as-risk-assets-sell-off-and-the-week-s-bounce-fades"
-  - "https://cointelegraph.com/markets/13b-bitcoin-options-expiry-looms-will-bulls-endure-more-pain-in-june?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://www.coindesk.com/markets/2026/06/19/digital-credit-market-hit-by-record-selloff-as-strive-ceo-blames-leverage-liquidations"
+  - "https://www.coindesk.com/markets/2026/06/19/live-markets-bitcoin-has-traded-below-its-mining-cost-for-five-months-squeezing-miners"
+  - "https://cointelegraph.com/news/whitebit-secures-mica-license-austria-gains-access-eu-crypto-market?utm_source=rss&utm_medium=rss&utm_campaign=rss"
+  - "https://cointelegraph.com/news/kalshi-early-ipo-talks-investment-banks-report?utm_source=rss&utm_medium=rss&utm_campaign=rss"
 media_titles:
-  - "CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ"
-  - "CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin"
-  - "CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades"
-  - "Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?"
+  - "CoinDesk: Digital credit market hit by huge selloff as Strive CEO blames leverage liquidations"
+  - "CoinDesk: Live markets: Bitcoin under pressure as Saylor comments on STRC selloff"
+  - "Cointelegraph: WhiteBIT secures MiCA license in Austria ahead of July 1 EU deadline"
+  - "Cointelegraph: Kalshi in early IPO talks with investment banks: Report"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -93,20 +85,18 @@ editorial_review: "automated_topic_radar_v2"
 
 ## Главное
 
-1. CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ.
-2. CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin.
-3. CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades.
-4. Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?.
-5. Cointelegraph: Bitcoin traders expect new lows but data cautions against overly bearish bias.
+1. CoinDesk: Digital credit market hit by huge selloff as Strive CEO blames leverage liquidations.
+2. CoinDesk: Live markets: Bitcoin under pressure as Saylor comments on STRC selloff.
+3. Cointelegraph: WhiteBIT secures MiCA license in Austria ahead of July 1 EU deadline.
+4. Cointelegraph: Kalshi in early IPO talks with investment banks: Report.
+5. В потоке «Криптофинансы — РФ и мир» пока мало свежих сильных сигналов; такой выпуск следует читать как неполную карту дня.
 
 ## Что произошло
 
-- CoinDesk опубликовал материал: Schwab to join prediction markets race with S&P 500 event-based options: WSJ. Дата в ленте: 2026-06-19.
-- CoinDesk опубликовал материал: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin. Дата в ленте: 2026-06-19.
-- CoinDesk опубликовал материал: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: Bitcoin traders expect new lows but data cautions against overly bearish bias. Дата в ленте: 2026-06-19.
-- Cointelegraph опубликовал материал: Bitcoin taps $63K on Juneteenth as July Fed rate-hike odds near 40%. Дата в ленте: 2026-06-19.
+- CoinDesk опубликовал материал: Digital credit market hit by huge selloff as Strive CEO blames leverage liquidations. Дата в ленте: 2026-06-19.
+- CoinDesk опубликовал материал: Live markets: Bitcoin under pressure as Saylor comments on STRC selloff. Дата в ленте: 2026-06-19.
+- Cointelegraph опубликовал материал: WhiteBIT secures MiCA license in Austria ahead of July 1 EU deadline. Дата в ленте: 2026-06-19.
+- Cointelegraph опубликовал материал: Kalshi in early IPO talks with investment banks: Report. Дата в ленте: 2026-06-19.
 
 ## Почему это важно
 
@@ -131,10 +121,10 @@ editorial_review: "automated_topic_radar_v2"
 ## Медиа и материалы
 
 В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией.
-- CoinDesk: Schwab to join prediction markets race with S&P 500 event-based options: WSJ.
-- CoinDesk: Franklin Templeton proposes new ETFs that turn corporate dividends into bitcoin.
-- CoinDesk: Bitcoin falls below $63,000 as risk assets sell off and the week's bounce fades.
-- Cointelegraph: $13B Bitcoin options expiry looms: Will bulls endure more pain in June?.
+- CoinDesk: Digital credit market hit by huge selloff as Strive CEO blames leverage liquidations.
+- CoinDesk: Live markets: Bitcoin under pressure as Saylor comments on STRC selloff.
+- Cointelegraph: WhiteBIT secures MiCA license in Austria ahead of July 1 EU deadline.
+- Cointelegraph: Kalshi in early IPO talks with investment banks: Report.
 
 ## Источники
 

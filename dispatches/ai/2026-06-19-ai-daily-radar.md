@@ -19,57 +19,40 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматический тематический радар по потоку «AI — железо, софт и исследования»: 4 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
+summary: "Автоматический тематический радар по потоку «AI — железо, софт и исследования»: 2 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
 tags:
   - "agents"
   - "ai"
-  - "business"
   - "consumer-tech"
   - "daily-radar"
-  - "finance"
+  - "horizon"
   - "platforms"
-  - "policy"
   - "public-sources"
-  - "russia"
+  - "research"
+  - "safety"
   - "search"
 sources:
-  - "https://www.theverge.com/entertainment/952910/nts-radio-player-atonemo-music-streaming"
-  - "https://www.kommersant.ru/doc/8760291"
-  - "https://www.theverge.com/tech/952953/phillips-hue-wired-wall-module-play-lamp-candle-bulb"
-  - "https://www.theverge.com/column/952744/optimizer-sunscreen-bemotrizinol-fda-health"
+  - "https://www.theverge.com/tech/951718/kaleidescape-strato-e-review"
+  - "https://www.technologyreview.com/2026/06/19/1138778/inevitable-weakness-metrics-quantified-life-book-review/"
 source_titles:
-  - "The Verge: The NTS Radio Player brings the best of internet radio to your hi-fi"
-  - "Коммерсантъ: «Сбер» представит роботов ростом 180 см для ритейла и производства"
-  - "The Verge: Hue’s wired wall modules bring non-smart lights into its ecosystem"
-  - "The Verge: Our long national sunscreen nightmare is almost over"
+  - "The Verge: Kaleidescape’s movie player blows streaming, and your wallet, away"
+  - "MIT Technology Review: The inevitable weakness of metrics"
 source_types:
-  - "Технологическое медиа"
-  - "Деловое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
 source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
-  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
 media:
-  - "https://www.theverge.com/entertainment/952910/nts-radio-player-atonemo-music-streaming"
-  - "https://www.kommersant.ru/doc/8760291"
-  - "https://www.theverge.com/tech/952953/phillips-hue-wired-wall-module-play-lamp-candle-bulb"
-  - "https://www.theverge.com/column/952744/optimizer-sunscreen-bemotrizinol-fda-health"
+  - "https://www.theverge.com/tech/951718/kaleidescape-strato-e-review"
+  - "https://www.technologyreview.com/2026/06/19/1138778/inevitable-weakness-metrics-quantified-life-book-review/"
 media_titles:
-  - "The Verge: The NTS Radio Player brings the best of internet radio to your hi-fi"
-  - "Коммерсантъ: «Сбер» представит роботов ростом 180 см для ритейла и производства"
-  - "The Verge: Hue’s wired wall modules bring non-smart lights into its ecosystem"
-  - "The Verge: Our long national sunscreen nightmare is almost over"
+  - "The Verge: Kaleidescape’s movie player blows streaming, and your wallet, away"
+  - "MIT Technology Review: The inevitable weakness of metrics"
 media_types:
-  - "Технологическое медиа"
-  - "Деловое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
 media_notes:
-  - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
-  - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
   - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
   - "Ключевой материал выпуска: используется для media-карточки и последующего Open Graph/Twitter preview enrichment."
 visuals: []
@@ -87,18 +70,16 @@ editorial_review: "automated_topic_radar_v2"
 
 ## Главное
 
-1. The Verge: The NTS Radio Player brings the best of internet radio to your hi-fi.
-2. Коммерсантъ: «Сбер» представит роботов ростом 180 см для ритейла и производства.
-3. The Verge: Hue’s wired wall modules bring non-smart lights into its ecosystem.
-4. The Verge: Our long national sunscreen nightmare is almost over.
+1. The Verge: Kaleidescape’s movie player blows streaming, and your wallet, away.
+2. MIT Technology Review: The inevitable weakness of metrics.
+3. В потоке «AI — железо, софт и исследования» пока мало свежих сильных сигналов; такой выпуск следует читать как неполную карту дня.
+4. В потоке «AI — железо, софт и исследования» пока мало свежих сильных сигналов; такой выпуск следует читать как неполную карту дня.
 5. В потоке «AI — железо, софт и исследования» пока мало свежих сильных сигналов; такой выпуск следует читать как неполную карту дня.
 
 ## Что произошло
 
-- The Verge опубликовал материал: The NTS Radio Player brings the best of internet radio to your hi-fi. Дата в ленте: 2026-06-19.
-- Коммерсантъ опубликовал материал: «Сбер» представит роботов ростом 180 см для ритейла и производства. Дата в ленте: 2026-06-19.
-- The Verge опубликовал материал: Hue’s wired wall modules bring non-smart lights into its ecosystem. Дата в ленте: 2026-06-19.
-- The Verge опубликовал материал: Our long national sunscreen nightmare is almost over. Дата в ленте: 2026-06-19.
+- The Verge опубликовал материал: Kaleidescape’s movie player blows streaming, and your wallet, away. Дата в ленте: 2026-06-18.
+- MIT Technology Review опубликовал материал: The inevitable weakness of metrics. Дата в ленте: 2026-06-19.
 
 ## Почему это важно
 
@@ -123,10 +104,8 @@ editorial_review: "automated_topic_radar_v2"
 ## Медиа и материалы
 
 В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией.
-- The Verge: The NTS Radio Player brings the best of internet radio to your hi-fi.
-- Коммерсантъ: «Сбер» представит роботов ростом 180 см для ритейла и производства.
-- The Verge: Hue’s wired wall modules bring non-smart lights into its ecosystem.
-- The Verge: Our long national sunscreen nightmare is almost over.
+- The Verge: Kaleidescape’s movie player blows streaming, and your wallet, away.
+- MIT Technology Review: The inevitable weakness of metrics.
 
 ## Источники
 

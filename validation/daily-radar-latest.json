@@ -4,70 +4,69 @@
     {
       "stream": "ai",
       "status": "draft",
-      "count": 4,
+      "count": 2,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-19-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/a6d6647c047b66e7-the-nts-radio-player-brings-the-best-of-internet-radio-to-your-hi-fi.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/657db9b4d32bddc2-180.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/38e722156ca99393-hue-s-wired-wall-modules-bring-non-smart-lights-into-its-ecosystem.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/05efbc0876972d49-our-long-national-sunscreen-nightmare-is-almost-over.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/ec5d5bdcea575d2f-kaleidescape-s-movie-player-blows-streaming-and-your-wallet-away.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/203ae823286ea440-the-inevitable-weakness-of-metrics.md"
       ],
-      "media_count": 4
+      "media_count": 2
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 6,
+      "count": 4,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/dd63fc7770fea24c-schwab-to-join-prediction-markets-race-with-s-p-500-event-based-options.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/8b6df89f03bff53c-franklin-templeton-proposes-new-etfs-that-turn-corporate-dividends-into.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/a0ef5fbc35c9fb78-bitcoin-falls-below-63-000-as-risk-assets-sell-off-and-the-week-s-bounce.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/49b4f3571f810603-13b-bitcoin-options-expiry-looms-will-bulls-endure-more-pain-in-june.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/2744a34de40ab3da-bitcoin-traders-expect-new-lows-but-data-cautions-against-overly-bearish.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/62ee1c46a7a4182c-bitcoin-taps-63k-on-juneteenth-as-july-fed-rate-hike-odds-near-40.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/d823c8e8b4bc11c6-digital-credit-market-hit-by-huge-selloff-as-strive-ceo-blames-leverage.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/6e5f7d3cfa12ae5e-live-markets-bitcoin-under-pressure-as-saylor-comments-on-strc-selloff.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/8e61d5a932eab018-whitebit-secures-mica-license-in-austria-ahead-of-july-1-eu-deadline.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/61d06db593874692-kalshi-in-early-ipo-talks-with-investment-banks-report.md"
       ],
       "media_count": 4
     },
     {
       "stream": "finance",
       "status": "draft",
-      "count": 8,
+      "count": 9,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9de6a15e78588a80-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/144f46a37fdf2530-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/6a00af3f71d001fd-xsd---------16-08-2017-181.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/fa55aa6a72816419-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/4a0a601ea27cd562-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9b11e14ac192bd68-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/78f6c1b847fb1b56-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/6bde8fd4f0cc320a-8.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ff2d582cf2c146f6-16-08-2017-181.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/70c982d6ff367792-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/e13b787df679c6ee-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/964236974424f579-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/b0664f85185cd828-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/a2f9aa514336f1ff-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/73b6fb548dda69b6-14-25.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8349e2cb4877a41c-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/324aaa535aae9df1-rbc-finance.md"
       ],
       "media_count": 4
     },
     {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 6,
+      "count": 9,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/2067e0dee7696611-apple-sports-expands-to-more-than-90-new-countries-and-regions.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/52c67fec3caafcd7-amd-will-reinstate-memory-encryption-on-ryzen-9000-cpus-through-a-bios-u.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/0d798f50c053922a-tesco-uk-supermarket-chain-removes-40-000-servers-from-vmware-infrastruc.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/0bc79ff79fa92669-apple-announces-changes-to-ios-in-brazil.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/16c8ac9c9808756f-apple-unveils-innovative-features-and-intelligence-experiences-across-se.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/e4f00385386037c6-best-usb-charger-deals-2026-from-tiny-single-port-smartphone-chargers-to.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/b16c829e8a7a89a3-hyundai---boston-dynamics--softbank.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/904dad59c50611d6-google-deepmind----------anthropic.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/9a2922f06f6174c1-3dnews.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/3fa5dc0be21ed69f-apple-intelligence-brings-powerful-ai-capabilities-into-everyday-experie.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/0562324b96a1b9df-apple-introduces-siri-ai-a-profoundly-more-capable-and-personal-assistan.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/06d9cd9df6587d78-apple-expands-app-store-capabilities-to-help-developers-grow-and-reach-n.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/720c0a120ab13136-sk-telecom-named-as-the-korean-carrier-at-the-center-of-anthropic-s-myth.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/3697524a7e764317-the-best-thunderbolt-and-usb-c-docks-in-2026-up-to-140w-power-delivery-1.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/524523f9317f1136-save-a-massive-1-390-on-this-rtx-5080-alienware-gaming-pc-now-just-3-159.md"
       ],
       "media_count": 4
     }
   ],
   "fetch_errors": [
-    "3dnews: ParseError: no element found: line 1, column 0",
     "mos-ru-news: URLError: <urlopen error timed out>",
     "the-village: URLError: <urlopen error timed out>"
   ]

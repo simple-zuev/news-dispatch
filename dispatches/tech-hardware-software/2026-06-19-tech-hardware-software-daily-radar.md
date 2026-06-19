@@ -19,7 +19,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматический тематический радар по потоку «Железо и софт»: 6 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
+summary: "Автоматический тематический радар по потоку «Железо и софт»: 9 публичных сигналов, ключевые материалы, источники и зоны наблюдения."
 tags:
   - "apple"
   - "benchmarks"
@@ -29,28 +29,39 @@ tags:
   - "pc"
   - "platforms"
   - "public-sources"
+  - "reviews"
+  - "russia"
   - "software"
   - "tech-hardware-software"
 sources:
-  - "https://www.apple.com/newsroom/2026/05/apple-sports-expands-to-more-than-90-new-countries-and-regions/"
-  - "https://www.tomshardware.com/pc-components/cpus/amd-will-reinstate-memory-encryption-on-ryzen-9000-cpus-through-a-bios-update-in-july-tsme-is-coming-back-after-valuable-community-feedback"
-  - "https://www.tomshardware.com/desktops/servers/tesco-uk-supermarket-chain-removes-40-000-servers-from-vmware-infrastructure-mass-exodus-continues-due-to-broadcoms-aggressive-subscription-model"
-  - "https://www.apple.com/newsroom/2026/06/apple-announces-changes-to-ios-in-brazil/"
-  - "https://www.apple.com/newsroom/2026/06/apple-unveils-innovative-features-and-intelligence-experiences-across-services/"
-  - "https://www.tomshardware.com/peripherals/usb/best-usb-charger-deals"
+  - "https://3dnews.ru/1143843"
+  - "https://3dnews.ru/1143842"
+  - "https://3dnews.ru/1143837"
+  - "https://www.apple.com/newsroom/2026/06/apple-intelligence-brings-powerful-ai-capabilities-into-everyday-experiences/"
+  - "https://www.apple.com/newsroom/2026/06/apple-introduces-siri-ai-a-profoundly-more-capable-and-personal-assistant/"
+  - "https://www.apple.com/newsroom/2026/06/apple-expands-app-store-capabilities-to-help-developers-grow-and-reach-new-users/"
+  - "https://www.tomshardware.com/tech-industry/artificial-intelligence/sk-telecom-named-as-the-korean-carrier-at-the-center-of-anthropics-mythos-export-controls"
+  - "https://www.tomshardware.com/peripherals/docking-stations-hubs/the-best-thunderbolt-and-usb-c-docks-for-laptops"
+  - "https://www.tomshardware.com/desktops/gaming-pcs/save-a-massive-usd1-390-on-this-rtx-5080-alienware-gaming-pc-now-just-usd3-159-enormous-discount-delivers-top-specs-for-4k-gameplay-including-a-24-core-intel-cpu-32gb-ddr5-ram-and-a-2tb-ssd"
 source_titles:
-  - "Apple Newsroom: Apple Sports expands to more than 90 new countries and regions"
-  - "Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'"
-  - "Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model"
-  - "Apple Newsroom: Apple announces changes to iOS in Brazil"
-  - "Apple Newsroom: Apple unveils innovative features and intelligence experiences across services"
-  - "Tom's Hardware: Best USB charger deals 2026 – from tiny single-port smartphone chargers to large multi-port laptop chargers, we've found the best deals"
+  - "3DNews: Hyundai полностью выкупит Boston Dynamics у SoftBank"
+  - "3DNews: Google DeepMind покинул лауреат Нобелевской премии Джон Джампер — он перейдёт в Anthropic"
+  - "3DNews: Современные роботы освоили многое, но окружающий мир они всё ещё не понимают"
+  - "Apple Newsroom: Apple Intelligence brings powerful AI capabilities into everyday experiences"
+  - "Apple Newsroom: Apple introduces Siri AI, a profoundly more capable and personal assistant"
+  - "Apple Newsroom: Apple expands App Store capabilities to help developers grow and reach new users"
+  - "Tom's Hardware: SK Telecom named as the Korean carrier at the center of Anthropic's Mythos export controls controversy — access was revoked days before White House took Mythos and Fable 5 offline for all foreign nationals"
+  - "Tom's Hardware: The Best Thunderbolt and USB-C Docks in 2026: Up to 140W power delivery, 10 GbE, and even internal M.2 SSD slots"
+  - "Tom's Hardware: Save a massive $1,390 on this RTX 5080 Alienware gaming PC, now just $3,159 — enormous discount delivers top specs for 4K gameplay, including a 24-core Intel CPU, 32GB DDR5 RAM, and a 2TB SSD"
 source_types:
+  - "Технологическое медиа"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
+  - "Официальный источник"
+  - "Официальный источник"
   - "Официальный источник"
   - "Технологическое медиа"
   - "Технологическое медиа"
-  - "Официальный источник"
-  - "Официальный источник"
   - "Технологическое медиа"
 source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
@@ -59,18 +70,21 @@ source_notes:
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
   - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
+  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
+  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
+  - "Публичный RSS/Atom-сигнал; перед сильными выводами нужно открыть первичный материал и проверить контекст."
 media:
-  - "https://www.apple.com/newsroom/2026/05/apple-sports-expands-to-more-than-90-new-countries-and-regions/"
-  - "https://www.tomshardware.com/pc-components/cpus/amd-will-reinstate-memory-encryption-on-ryzen-9000-cpus-through-a-bios-update-in-july-tsme-is-coming-back-after-valuable-community-feedback"
-  - "https://www.tomshardware.com/desktops/servers/tesco-uk-supermarket-chain-removes-40-000-servers-from-vmware-infrastructure-mass-exodus-continues-due-to-broadcoms-aggressive-subscription-model"
-  - "https://www.apple.com/newsroom/2026/06/apple-announces-changes-to-ios-in-brazil/"
+  - "https://3dnews.ru/1143843"
+  - "https://3dnews.ru/1143842"
+  - "https://3dnews.ru/1143837"
+  - "https://www.apple.com/newsroom/2026/06/apple-intelligence-brings-powerful-ai-capabilities-into-everyday-experiences/"
 media_titles:
-  - "Apple Newsroom: Apple Sports expands to more than 90 new countries and regions"
-  - "Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'"
-  - "Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model"
-  - "Apple Newsroom: Apple announces changes to iOS in Brazil"
+  - "3DNews: Hyundai полностью выкупит Boston Dynamics у SoftBank"
+  - "3DNews: Google DeepMind покинул лауреат Нобелевской премии Джон Джампер — он перейдёт в Anthropic"
+  - "3DNews: Современные роботы освоили многое, но окружающий мир они всё ещё не понимают"
+  - "Apple Newsroom: Apple Intelligence brings powerful AI capabilities into everyday experiences"
 media_types:
-  - "Официальный источник"
+  - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
   - "Официальный источник"
@@ -94,20 +108,23 @@ editorial_review: "automated_topic_radar_v2"
 
 ## Главное
 
-1. Apple Newsroom: Apple Sports expands to more than 90 new countries and regions.
-2. Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'.
-3. Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model.
-4. Apple Newsroom: Apple announces changes to iOS in Brazil.
-5. Apple Newsroom: Apple unveils innovative features and intelligence experiences across services.
+1. 3DNews: Hyundai полностью выкупит Boston Dynamics у SoftBank.
+2. 3DNews: Google DeepMind покинул лауреат Нобелевской премии Джон Джампер — он перейдёт в Anthropic.
+3. 3DNews: Современные роботы освоили многое, но окружающий мир они всё ещё не понимают.
+4. Apple Newsroom: Apple Intelligence brings powerful AI capabilities into everyday experiences.
+5. Apple Newsroom: Apple introduces Siri AI, a profoundly more capable and personal assistant.
 
 ## Что произошло
 
-- Apple Newsroom опубликовал материал: Apple Sports expands to more than 90 new countries and regions. Дата в ленте: 2026-06-19.
-- Tom's Hardware опубликовал материал: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'. Дата в ленте: 2026-06-19.
-- Tom's Hardware опубликовал материал: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model. Дата в ленте: 2026-06-19.
-- Apple Newsroom опубликовал материал: Apple announces changes to iOS in Brazil. Дата в ленте: 2026-06-19.
-- Apple Newsroom опубликовал материал: Apple unveils innovative features and intelligence experiences across services. Дата в ленте: 2026-06-19.
-- Tom's Hardware опубликовал материал: Best USB charger deals 2026 – from tiny single-port smartphone chargers to large multi-port laptop chargers, we've found the best deals. Дата в ленте: 2026-06-19.
+- 3DNews опубликовал материал: Hyundai полностью выкупит Boston Dynamics у SoftBank. Дата в ленте: 2026-06-19.
+- 3DNews опубликовал материал: Google DeepMind покинул лауреат Нобелевской премии Джон Джампер — он перейдёт в Anthropic. Дата в ленте: 2026-06-19.
+- 3DNews опубликовал материал: Современные роботы освоили многое, но окружающий мир они всё ещё не понимают. Дата в ленте: 2026-06-19.
+- Apple Newsroom опубликовал материал: Apple Intelligence brings powerful AI capabilities into everyday experiences. Дата в ленте: 2026-06-19.
+- Apple Newsroom опубликовал материал: Apple introduces Siri AI, a profoundly more capable and personal assistant. Дата в ленте: 2026-06-19.
+- Apple Newsroom опубликовал материал: Apple expands App Store capabilities to help developers grow and reach new users. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: SK Telecom named as the Korean carrier at the center of Anthropic's Mythos export controls controversy — access was revoked days before White House took Mythos and Fable 5 offline for all foreign nationals. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: The Best Thunderbolt and USB-C Docks in 2026: Up to 140W power delivery, 10 GbE, and even internal M.2 SSD slots. Дата в ленте: 2026-06-19.
+- Tom's Hardware опубликовал материал: Save a massive $1,390 on this RTX 5080 Alienware gaming PC, now just $3,159 — enormous discount delivers top specs for 4K gameplay, including a 24-core Intel CPU, 32GB DDR5 RAM, and a 2TB SSD. Дата в ленте: 2026-06-19.
 
 ## Почему это важно
 
@@ -132,10 +149,10 @@ editorial_review: "automated_topic_radar_v2"
 ## Медиа и материалы
 
 В media-блок вынесены самые сильные материалы этого выпуска. Для них будет выполнено Open Graph/Twitter metadata enrichment: если источник отдаёт preview-изображение, оно появится в карточке с атрибуцией.
-- Apple Newsroom: Apple Sports expands to more than 90 new countries and regions.
-- Tom's Hardware: AMD will reinstate memory encryption on Ryzen 9000 CPUs through a BIOS update in July — TSME is coming back after 'valuable community feedback'.
-- Tom's Hardware: Tesco UK supermarket chain removes 40,000 servers from VMware infrastructure — mass exodus continues due to Broadcom's aggressive subscription model.
-- Apple Newsroom: Apple announces changes to iOS in Brazil.
+- 3DNews: Hyundai полностью выкупит Boston Dynamics у SoftBank.
+- 3DNews: Google DeepMind покинул лауреат Нобелевской премии Джон Джампер — он перейдёт в Anthropic.
+- 3DNews: Современные роботы освоили многое, но окружающий мир они всё ещё не понимают.
+- Apple Newsroom: Apple Intelligence brings powerful AI capabilities into everyday experiences.
 
 ## Источники
 
