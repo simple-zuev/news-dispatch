@@ -7,6 +7,7 @@ import html
 import json
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
@@ -65,12 +66,25 @@ def resolve_preview_path(preview: str, prefix: str) -> str:
     return prefix + preview.lstrip("/")
 
 
-def preview_source(item: dict[str, str]) -> str:
-    image_source = item.get("image_source") or item.get("site_name") or item.get("type") or "источник"
-    metadata_source = item.get("metadata_source")
-    if metadata_source == "open_graph" and item.get("image_url"):
-        return f"Изображение: {image_source} · Open Graph"
-    return f"Изображение: {image_source}"
+def host_label(url: str) -> str:
+    host = urlparse(url).netloc.replace("www.", "")
+    return host or "источник"
+
+
+def material_source(url: str, item: dict[str, str]) -> str:
+    return item.get("site_name") or item.get("image_source") or host_label(url)
+
+
+def image_source(url: str, item: dict[str, str]) -> str:
+    return item.get("image_source") or item.get("site_name") or material_source(url, item)
+
+
+def preview_origin(item: dict[str, str]) -> str:
+    if item.get("metadata_source") == "open_graph" and item.get("image_url"):
+        return "Open Graph / Twitter metadata"
+    if item.get("image_url"):
+        return "metadata"
+    return "локальный fallback"
 
 
 def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
@@ -78,12 +92,22 @@ def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
     fallback = item.get("preview", "").strip()
     preview = external or resolve_preview_path(fallback, prefix)
     title = item.get("external_title") or item.get("title") or "Материал"
-    attribution = preview_source(item)
+    material = material_source(url, item)
+    image = image_source(url, item)
+    origin = preview_origin(item)
+    canonical = item.get("canonical_url") or url
     return (
+        f'<figure class="reader-preview-figure">'
         f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
         f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
         f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
-        f'<p class="reader-preview-credit">{html.escape(attribution)}</p>'
+        f'<figcaption class="reader-preview-meta">'
+        f'<span><strong>Материал:</strong> {html.escape(material)}</span>'
+        f'<span><strong>Изображение:</strong> {html.escape(image)}</span>'
+        f'<span><strong>Источник preview:</strong> {html.escape(origin)}</span>'
+        f'<span><strong>URL:</strong> {html.escape(host_label(canonical))}</span>'
+        f'</figcaption>'
+        f'</figure>'
     )
 
 
