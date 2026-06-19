@@ -286,18 +286,33 @@ main {
   margin: 0 0 14px;
 }
 
-.reader-preview-link {
+.reader-preview-link,
+.reader-video-frame {
   display: block;
   overflow: hidden;
   border-radius: 16px;
   background: rgba(21, 21, 21, 0.06);
 }
 
-.reader-thumb {
+.reader-thumb,
+.reader-video,
+.reader-video-frame iframe {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+}
+
+.reader-video {
+  height: auto;
+  background: #111;
+  border: 0;
+  border-radius: 16px;
+}
+
+.reader-video-frame iframe {
+  height: auto;
+  border: 0;
 }
 
 .reader-preview-meta {
