@@ -4,64 +4,74 @@
     {
       "stream": "ai",
       "status": "draft",
-      "count": 2,
+      "count": 1,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-19-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/f5404674bb98e882-nothing-cancels-this-year-s-cmf-phone-due-to-ram-prices.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/4a4ea9d6a50319cb-kommersant-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/9fe7ea0f4d00cad8-openai--anthropic------llm.md"
       ],
-      "media_count": 2
+      "media_count": 1
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 5,
+      "count": 7,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/95d282bf08231e21-ethereum-faces-core-development-funding-crisis-former-contributor-warns.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f46887b1f9a990a7-republican-lawmaker-proposes-prediction-markets-insider-trading-ban-not.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f27bf3abfe054c23-two-texas-brothers-admit-to-8-million-crypto-robbery-after-holding-famil.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/d901dad099e02419-bitcoin-traders-load-up-on-bearish-bets-all-the-way-down-to-52-000.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/77a75a18d332e48a-base-targets-june-25-mainnet-launch-for-beryl-upgrade-and-new-b20-token.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/2a7b4831588975ae-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/29f945102cfca76a-andrew-tate-loses-nearly-86-000-longing-and-shorting-bitcoin.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/49f41de48649b2c7-most-difficult-day-in-the-history-of-digital-credit-strive-ceo-says-leve.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/c64fe46abacd829c-aave-survived-8-45b-in-withdrawals-but-risk-questions-remain.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/98a64dc66b1e87b4-charles-schwab-to-enter-prediction-markets-with-s-p-500-wagers-wsj.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f3355c2ae39dd2d3-ethereum-could-face-core-development-funding-crisis-within-nine-months-s.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/2ea03d4cab273105-franklin-templeton-files-for-etfs-that-reinvest-stock-dividends-into-bit.md"
       ],
       "media_count": 4
     },
     {
       "stream": "finance",
       "status": "draft",
-      "count": 8,
+      "count": 7,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/c6e7deaa48746f86-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/46678bb8bd673f18-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/3ccbb58398497a0f-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/26c59760312d67f4-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/5429f5026291a065-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ffb522740036ac8b-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/5e270d5758b7a17b-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/2f3087bb426a132a-g8.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8872d83ce1fc3984-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/38844dc0b8001d13-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/f35d55e8171988a3-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ce0675ad7f22bb48-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/170861bc2f4e2e51-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9e698d6da55ce18c-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/05285b4cf6ee4dce-rbc-finance.md"
       ],
       "media_count": 4
     },
     {
+      "stream": "science-discovery",
+      "status": "draft",
+      "count": 1,
+      "required_items": 4,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/science-discovery/2026-06-19-science-discovery-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/c7649afca3d4d21a-kommersant-finance.md"
+      ],
+      "media_count": 1
+    },
+    {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 9,
+      "count": 8,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/afc22a810743b96c-3dnews.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/83f6d2bd9d2ee814-spacex.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/59f107d636e18ba1-geforce-rtx-4090----gpu.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/52ae8133e83ed06f-apple-tv-to-air-first-major-live-pro-sports-event-shot-on-iphone-17-pro.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cf54b6e09c7b41b9-us-energy-regulator-to-order-grid-operators-to-expedite-ai-data-center-a.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cd581ee0c9df6384-amazon-workers-who-testified-against-ai-data-centers-say-they-were-intim.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/add7bbc1a251e645-scammers-in-china-sell-222-rtx-4090-with-fake-gpu-die-made-out-of-plasti.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cd71090c45bc0d7d-apple-previews-new-child-safety-features.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/162e504781e19bbb-apple-and-major-league-baseball-announce-july-friday-night-baseball-sche.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/f1f44c1b64ebe66c-spacex------20-------xai.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/d3bc05ecea6dd938-nothing---cmf-phone-3-pro.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/daea2d9a2f8eef60-mini-football-legends-family-feud-pocket-and-seven-more-hits-join-apple.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/33f026684317888f-app-store-ecosystem-reaches-1-4-trillion-as-developers-thrive-globally.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/ca3aeac980bf07b8-apple-reveals-winners-of-the-2026-apple-design-awards.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/390c409a8e97ab82-bernie-sanders-files-bill-proposing-50-public-ownership-of-us-ai-firms-a.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/ea8dc0a560c3a5d9-epic-games-unveils-launcher-v2-in-re-attempt-to-topple-steam-says-redesi.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/19d6285f0f3b30d1-post-silicon-era-gets-closer-as-industry-giants-crack-the-2d-transistor.md"
       ],
       "media_count": 4
     }
