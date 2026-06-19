@@ -90,6 +90,8 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add dispatches signals data validation media
           git commit -m "dispatch: update daily radar"
+          git reset --hard HEAD
+          git clean -fd site
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
