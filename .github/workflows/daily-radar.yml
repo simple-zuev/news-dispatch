@@ -6,11 +6,11 @@ on:
       status:
         description: "Dispatch publication status"
         required: false
-        default: "published"
+        default: "draft"
         type: choice
         options:
-          - published
           - draft
+          - published
       max_items:
         description: "Maximum feed items"
         required: false
@@ -27,7 +27,7 @@ jobs:
   build-commit:
     runs-on: ubuntu-latest
     env:
-      DAILY_RADAR_STATUS: ${{ inputs.status || 'published' }}
+      DAILY_RADAR_STATUS: ${{ inputs.status || 'draft' }}
       DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '56' }}
       DAILY_RADAR_MIN_ITEMS: "2"
       DAILY_RADAR_LOOKBACK_HOURS: "36"
