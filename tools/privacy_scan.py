@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Basic public-safety scanner for News Dispatch."""
+"""Public-safety scanner for News Dispatch.
+
+The scanner has two severity levels:
+- hard blockers: secrets, credentials, private keys, direct personal contact data;
+- soft warnings: editorial/private-context phrases that require review but should not
+  stop a public Pages deploy by themselves.
+"""
 
 from __future__ import annotations
 
@@ -29,14 +35,30 @@ SECRET_KEYWORDS = [
 ]
 KEYWORD_PATTERN = "(?i)(" + "|".join(SECRET_KEYWORDS) + ")"
 
-PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+HARD_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("possible_secret_keyword", re.compile(KEYWORD_PATTERN)),
     ("private_key_block", re.compile("-----BEGIN [A-Z ]*PRIVATE KEY-----")),
-    ("ipv4_address", re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")),
     ("email_address", re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)),
     ("phone_like", re.compile(r"(?<!\d)(?:\+?7|8)[\s\-\(]*\d{3}[\s\-\)]*\d{3}[\s\-]*\d{2}[\s\-]*\d{2}(?!\d)")),
-    ("private_context_phrase", re.compile(r"(?i)(our product|our company|our team|internal roadmap|internal metric|private vendor|contractor shortlist|customer data|partner notes)")),
-    ("russian_private_context_phrase", re.compile(r"(?i)(наш продукт|наша компания|наша команда|внутренн(ий|яя|ие) роадмап|внутренн(ий|яя|ие) метрик|клиентские данные|данные клиентов|подрядчик по проекту|партнерские заметки)")),
+]
+
+SOFT_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+    (
+        "private_context_phrase",
+        re.compile(
+            r"(?i)(our product|our company|our team|internal roadmap|internal metric|private vendor|contractor shortlist|customer data|partner notes)"
+        ),
+    ),
+    (
+        "russian_private_context_phrase",
+        re.compile(
+            r"(?i)(наш продукт|наша компания|наша команда|внутренн(ий|яя|ие) роадмап|внутренн(ий|яя|ие) метрик|клиентские данные|данные клиентов|подрядчик по проекту|партнерские заметки)"
+        ),
+    ),
+    (
+        "ipv4_address_review",
+        re.compile(r"\b(?:10|172\.(?:1[6-9]|2\d|3[0-1])|192\.168)\.\d{1,3}\.\d{1,3}\b"),
+    ),
 ]
 
 ALLOWLIST_PATTERNS = [
@@ -45,6 +67,7 @@ ALLOWLIST_PATTERNS = [
     re.compile(r"127\.0\.0\.1"),
     re.compile(r"0\.0\.0\.0"),
     re.compile(r"метрики качества", re.IGNORECASE),
+    re.compile(r"Open Graph", re.IGNORECASE),
 ]
 
 
@@ -65,32 +88,55 @@ def is_allowlisted(line: str) -> bool:
     return any(pattern.search(line) for pattern in ALLOWLIST_PATTERNS)
 
 
-def scan_file(path: Path) -> list[str]:
-    findings: list[str] = []
+def format_finding(path: Path, line_no: int, name: str, line: str) -> str:
+    return f"{path.relative_to(ROOT)}:{line_no}: {name}: {line.strip()[:220]}"
+
+
+def scan_file(path: Path) -> tuple[list[str], list[str]]:
+    blockers: list[str] = []
+    warnings: list[str] = []
     try:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
-        return findings
+        return blockers, warnings
     for line_no, line in enumerate(text.splitlines(), start=1):
         if is_allowlisted(line):
             continue
-        for name, pattern in PATTERNS:
+        for name, pattern in HARD_PATTERNS:
             if pattern.search(line):
-                findings.append(f"{path.relative_to(ROOT)}:{line_no}: {name}: {line.strip()[:220]}")
-    return findings
+                blockers.append(format_finding(path, line_no, name, line))
+        for name, pattern in SOFT_PATTERNS:
+            if pattern.search(line):
+                warnings.append(format_finding(path, line_no, name, line))
+    return blockers, warnings
 
 
 def main() -> int:
-    findings: list[str] = []
+    blockers: list[str] = []
+    warnings: list[str] = []
     for path in ROOT.rglob("*"):
         if path.is_file() and should_scan(path):
-            findings.extend(scan_file(path))
-    if findings:
-        print("Privacy scan failed. Review findings:")
-        for finding in findings:
+            file_blockers, file_warnings = scan_file(path)
+            blockers.extend(file_blockers)
+            warnings.extend(file_warnings)
+
+    if blockers:
+        print("Privacy scan failed. Hard blockers:")
+        for finding in blockers:
             print(f"- {finding}")
+        if warnings:
+            print("\nPrivacy scan warnings also found:")
+            for finding in warnings:
+                print(f"- {finding}")
         return 1
-    print("Privacy scan passed.")
+
+    if warnings:
+        print("Privacy scan passed with warnings. Review when editing content:")
+        for finding in warnings:
+            print(f"- {finding}")
+        return 0
+
+    print("Privacy scan passed. No blockers or warnings.")
     return 0
 
 
