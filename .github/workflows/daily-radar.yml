@@ -1,8 +1,6 @@
 name: Daily Radar
 
 on:
-  schedule:
-    - cron: "20 5 * * *"
   workflow_dispatch:
     inputs:
       status:
@@ -20,18 +18,13 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
   group: daily-radar
   cancel-in-progress: false
 
 jobs:
-  build-commit-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-commit:
     runs-on: ubuntu-latest
     env:
       DAILY_RADAR_STATUS: ${{ inputs.status || 'published' }}
@@ -50,10 +43,7 @@ jobs:
           python-version: '3.12'
 
       - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/apply_topic_streams.py tools/validate_stream_registry.py
-
-      - name: Validate stream registry
-        run: python tools/validate_stream_registry.py
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/render_site.py tools/enhance_site.py tools/enrich_media_registry.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/privacy_scan.py
 
       - name: Build Daily Radar dispatches
         run: python tools/daily_radar.py
@@ -70,8 +60,8 @@ jobs:
       - name: Enhance static site
         run: python tools/enhance_site.py
 
-      - name: Apply topic stream pages
-        run: python tools/apply_topic_streams.py
+      - name: Enrich media registry
+        run: python tools/enrich_media_registry.py
 
       - name: Apply media previews
         run: python tools/apply_media_previews.py
@@ -93,20 +83,6 @@ jobs:
           fi
           git config user.name "news-dispatch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add dispatches signals data validation site
-          git commit -m "dispatch: update topic daily radar"
+          git add dispatches signals data validation media
+          git commit -m "dispatch: update daily radar"
           git push
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
