@@ -2,7 +2,7 @@
 """Render News Dispatch Markdown files into a small static site.
 
 No external dependencies. This renderer is intentionally conservative:
-- reads public-safe Markdown dispatches from dispatches/**/*.md;
+- reads public-safe published Markdown dispatches from dispatches/**/*.md;
 - writes HTML pages to site/dispatches/;
 - writes a dynamic homepage, dispatch archive, and stream pages;
 - writes RSS and sitemap files;
@@ -106,9 +106,11 @@ def slugify(path: Path) -> str:
     return path.stem.lower().replace(" ", "-").replace("_", "-")
 
 
-def load_dispatch(path: Path) -> Dispatch:
+def load_dispatch(path: Path) -> Dispatch | None:
     text = path.read_text(encoding="utf-8")
     meta, body = parse_front_matter(text)
+    if meta.get("status", "draft") != "published":
+        return None
     title = meta.get("title") or path.stem.replace("-", " ").title()
     return Dispatch(
         source_path=path,
@@ -226,12 +228,12 @@ def markdown_to_html(markdown: str) -> str:
 
 def head(title: str, description: str, css_href: str = "styles/main.css") -> str:
     return f"""<head>
-  <meta charset=\"utf-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
-  <meta name=\"description\" content=\"{html.escape(description)}\">
-  <link rel=\"alternate\" type=\"application/rss+xml\" title=\"News Dispatch RSS\" href=\"{BASE_URL}/rss.xml\">
-  <link rel=\"stylesheet\" href=\"{css_href}\">
+  <meta name="description" content="{html.escape(description)}">
+  <link rel="alternate" type="application/rss+xml" title="News Dispatch RSS" href="{BASE_URL}/rss.xml">
+  <link rel="stylesheet" href="{css_href}">
 </head>"""
 
 
@@ -241,9 +243,9 @@ def dispatch_stream_title(dispatch: Dispatch) -> str:
 
 
 def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
-    return f"""<article class=\"card\">
-  <p class=\"label\">{html.escape(dispatch_stream_title(dispatch))} · {html.escape(dispatch.date)}</p>
-  <h3><a href=\"{prefix}{html.escape(dispatch.relative_url)}\">{html.escape(dispatch.title)}</a></h3>
+    return f"""<article class="card">
+  <p class="label">{html.escape(dispatch_stream_title(dispatch))} · {html.escape(dispatch.date)}</p>
+  <h3><a href="{prefix}{html.escape(dispatch.relative_url)}">{html.escape(dispatch.title)}</a></h3>
   <p>{html.escape(dispatch.summary)}</p>
 </article>"""
 
@@ -251,9 +253,9 @@ def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
 def stream_card(stream: StreamInfo, prefix: str = "", count: int | None = None) -> str:
     count_label = "" if count is None else f" · {count} выпусков"
     strict_class = " strict" if stream.strict else ""
-    return f"""<article class=\"card{strict_class}\">
-  <p class=\"label\">{html.escape(stream.review_label)}{html.escape(count_label)}</p>
-  <h3><a href=\"{prefix}{html.escape(stream.relative_url)}\">{html.escape(stream.title)}</a></h3>
+    return f"""<article class="card{strict_class}">
+  <p class="label">{html.escape(stream.review_label)}{html.escape(count_label)}</p>
+  <h3><a href="{prefix}{html.escape(stream.relative_url)}">{html.escape(stream.title)}</a></h3>
   <p>{html.escape(stream.description)}</p>
 </article>"""
 
@@ -264,16 +266,16 @@ def page_template(dispatch: Dispatch, body_html: str) -> str:
     safe_stream = html.escape(dispatch_stream_title(dispatch))
     safe_date = html.escape(dispatch.date)
     return f"""<!doctype html>
-<html lang=\"ru\">
+<html lang="ru">
 {head(dispatch.title, dispatch.summary, css_href="../styles/main.css")}
-<body class=\"dispatch-page\">
-  <header class=\"article-hero\">
-    <a class=\"backlink\" href=\"../index.html\">News Dispatch</a>
-    <p class=\"eyebrow\">{safe_stream} · {safe_date}</p>
+<body class="dispatch-page">
+  <header class="article-hero">
+    <a class="backlink" href="../index.html">News Dispatch</a>
+    <p class="eyebrow">{safe_stream} · {safe_date}</p>
     <h1>{safe_title}</h1>
-    <p class=\"lede\">{safe_summary}</p>
+    <p class="lede">{safe_summary}</p>
   </header>
-  <main class=\"article-body\">
+  <main class="article-body">
     {body_html}
   </main>
 </body>
@@ -286,32 +288,32 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
     latest_cards = "\n".join(dispatch_card(dispatch) for dispatch in latest)
     stream_cards = "\n".join(stream_card(stream) for stream in STREAMS[:8])
     return f"""<!doctype html>
-<html lang=\"ru\">
+<html lang="ru">
 {head("News Dispatch", "Личный reader/radar по технологиям, рынкам, AI, финансам, Москве, вещам, аудио и науке.")}
 <body>
-  <header class=\"masthead\">
-    <p class=\"eyebrow\">Персональный reader/radar</p>
+  <header class="masthead">
+    <p class="eyebrow">Персональный reader/radar</p>
     <h1>News Dispatch</h1>
-    <p class=\"lede\">Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.</p>
-    <p class=\"hero-actions\"><a href=\"radar/index.html\">Live Radar</a><a href=\"dispatches.html\">Архив выпусков</a><a href=\"streams/index.html\">Потоки</a><a href=\"rss.xml\">RSS</a></p>
+    <p class="lede">Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.</p>
+    <p class="hero-actions"><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив выпусков</a><a href="streams/index.html">Потоки</a><a href="rss.xml">RSS</a></p>
   </header>
 
   <main>
-    <section class=\"panel\">
+    <section class="panel">
       <h2>Последние выпуски</h2>
       <p>Итоговые материалы и тематические synthesis-выпуски.</p>
     </section>
 
-    <section class=\"grid latest-grid\" aria-label=\"Latest dispatches\">
+    <section class="grid latest-grid" aria-label="Latest dispatches">
       {latest_cards}
     </section>
 
-    <section class=\"panel\">
+    <section class="panel">
       <h2>Потоки</h2>
       <p>Темы разделены на самостоятельные reader-полки.</p>
     </section>
 
-    <section class=\"grid\" aria-label=\"Dispatch streams\">
+    <section class="grid" aria-label="Dispatch streams">
       {stream_cards}
     </section>
   </main>
@@ -323,17 +325,17 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
 def archive_template(dispatches: list[Dispatch]) -> str:
     cards = "\n".join(dispatch_card(dispatch) for dispatch in ordered_dispatches(dispatches))
     return f"""<!doctype html>
-<html lang=\"ru\">
+<html lang="ru">
 {head("News Dispatch — Выпуски", "Архив выпусков.")}
 <body>
-  <header class=\"masthead compact\">
-    <a class=\"backlink\" href=\"index.html\">News Dispatch</a>
-    <p class=\"eyebrow\">Архив</p>
+  <header class="masthead compact">
+    <a class="backlink" href="index.html">News Dispatch</a>
+    <p class="eyebrow">Архив</p>
     <h1>Выпуски</h1>
-    <p class=\"lede\">Архив опубликованных материалов.</p>
+    <p class="lede">Архив опубликованных материалов.</p>
   </header>
   <main>
-    <section class=\"grid\">
+    <section class="grid">
       {cards}
     </section>
   </main>
@@ -348,17 +350,17 @@ def stream_index_template(dispatches: list[Dispatch]) -> str:
         counts[dispatch.stream] = counts.get(dispatch.stream, 0) + 1
     cards = "\n".join(stream_card(stream, prefix="../", count=counts.get(stream.slug, 0)) for stream in STREAMS)
     return f"""<!doctype html>
-<html lang=\"ru\">
+<html lang="ru">
 {head("News Dispatch — Потоки", "Тематические потоки.", css_href="../styles/main.css")}
 <body>
-  <header class=\"masthead compact\">
-    <a class=\"backlink\" href=\"../index.html\">News Dispatch</a>
-    <p class=\"eyebrow\">Потоки</p>
+  <header class="masthead compact">
+    <a class="backlink" href="../index.html">News Dispatch</a>
+    <p class="eyebrow">Потоки</p>
     <h1>Потоки</h1>
-    <p class=\"lede\">Темы, форматы и направления reader/radar.</p>
+    <p class="lede">Темы, форматы и направления reader/radar.</p>
   </header>
   <main>
-    <section class=\"grid\">
+    <section class="grid">
       {cards}
     </section>
   </main>
@@ -372,17 +374,17 @@ def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch]) -> str:
     cards = "\n".join(dispatch_card(dispatch, prefix="../") for dispatch in stream_dispatches)
     empty = "" if cards else "<p>В этом потоке пока нет выпусков.</p>"
     return f"""<!doctype html>
-<html lang=\"ru\">
+<html lang="ru">
 {head(f"News Dispatch — {stream.title}", stream.description, css_href="../styles/main.css")}
 <body>
-  <header class=\"masthead compact\">
-    <a class=\"backlink\" href=\"../index.html\">News Dispatch</a>
-    <p class=\"eyebrow\">{html.escape(stream.review_label)}</p>
+  <header class="masthead compact">
+    <a class="backlink" href="../index.html">News Dispatch</a>
+    <p class="eyebrow">{html.escape(stream.review_label)}</p>
     <h1>{html.escape(stream.title)}</h1>
-    <p class=\"lede\">{html.escape(stream.description)}</p>
+    <p class="lede">{html.escape(stream.description)}</p>
   </header>
   <main>
-    <section class=\"grid\">
+    <section class="grid">
       {cards}
     </section>
     {empty}
@@ -404,8 +406,8 @@ def rss_template(dispatches: list[Dispatch]) -> str:
       <description>{html.escape(dispatch.summary)}</description>
     </item>"""
         )
-    return f"""<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<rss version=\"2.0\">
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
   <channel>
     <title>News Dispatch</title>
     <link>{BASE_URL}/</link>
@@ -423,8 +425,8 @@ def sitemap_template(dispatches: list[Dispatch]) -> str:
     urls.extend(f"{BASE_URL}/radar/{stream.slug}.html" for stream in STREAMS)
     urls.extend(dispatch.url for dispatch in ordered_dispatches(dispatches))
     entries = "\n".join(f"  <url><loc>{html.escape(url)}</loc></url>" for url in dict.fromkeys(urls))
-    return f"""<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {entries}
 </urlset>
 """
@@ -433,7 +435,16 @@ def sitemap_template(dispatches: list[Dispatch]) -> str:
 def render() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     STREAM_DIR.mkdir(parents=True, exist_ok=True)
-    dispatches = [load_dispatch(path) for path in sorted(DISPATCH_DIR.rglob("*.md"))]
+
+    for page in OUTPUT_DIR.glob("*.html"):
+        page.unlink()
+
+    dispatches: list[Dispatch] = []
+    for path in sorted(DISPATCH_DIR.rglob("*.md")):
+        dispatch = load_dispatch(path)
+        if dispatch is not None:
+            dispatches.append(dispatch)
+
     for dispatch in dispatches:
         body_html = markdown_to_html(dispatch.body)
         (OUTPUT_DIR / dispatch.output_name).write_text(page_template(dispatch, body_html), encoding="utf-8")
