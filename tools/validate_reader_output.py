@@ -11,7 +11,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DISPATCH_DIR = ROOT / "dispatches"
 SITE_DIR = ROOT / "site"
-REGISTRY = ROOT / "media" / "registry.json"
+REGISTRY_PATHS = [
+    ROOT / "media" / "registry.json",
+    ROOT / "media" / "registry.generated.json",
+]
 
 SECTIONS = {
     "Лид": ("reader-section-lede", "lede"),
@@ -19,6 +22,7 @@ SECTIONS = {
     "Что произошло": ("reader-section-facts", "facts"),
     "Почему это важно": ("reader-section-why", "why"),
     "Анализ": ("reader-section-analysis", "analysis"),
+    "Скрытые и косвенные сигналы": ("reader-section-signals", "signals"),
     "Слухи и мнения": ("reader-section-rumors", "rumors"),
     "Мнение людей": ("reader-section-people", "people"),
     "Медиа и материалы": ("reader-section-media", "media"),
@@ -84,15 +88,20 @@ def published() -> list[dict[str, object]]:
     return items
 
 
-def preview_urls() -> set[str]:
-    if not REGISTRY.exists():
-        return set()
-    data = json.loads(REGISTRY.read_text(encoding="utf-8"))
-    return {
-        str(item["url"])
-        for item in data.get("items", [])
-        if isinstance(item, dict) and item.get("url") and item.get("preview")
-    }
+def registry_preview_urls() -> set[str]:
+    urls: set[str] = set()
+    for path in REGISTRY_PATHS:
+        if not path.exists():
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        for item in data.get("items", []):
+            if not isinstance(item, dict):
+                continue
+            url = str(item.get("url", "")).strip()
+            has_media = item.get("preview") or item.get("image_url") or item.get("video_url") or item.get("embed_url")
+            if url and has_media:
+                urls.add(url)
+    return urls
 
 
 def body_html(text: str) -> str:
@@ -119,6 +128,10 @@ def media_card(text: str, url: str) -> str:
         if escaped in match.group(0):
             return match.group(0)
     return ""
+
+
+def has_rendered_media(card: str) -> bool:
+    return any(token in card for token in ("reader-thumb", "reader-video", "reader-video-frame"))
 
 
 def validate(item: dict[str, object], previews: set[str]) -> list[str]:
@@ -158,8 +171,8 @@ def validate(item: dict[str, object], previews: set[str]) -> list[str]:
         card = media_card(text, url)
         if not card:
             errors.append(f"{page}: missing media card for {url}")
-        elif url in previews and "reader-thumb" not in card:
-            errors.append(f"{page}: missing preview image inside media card for {url}")
+        elif url in previews and not has_rendered_media(card):
+            errors.append(f"{page}: missing rendered media preview inside media card for {url}")
 
     return errors
 
@@ -169,7 +182,7 @@ def main() -> int:
     if not items:
         print("No published dispatches to validate.")
         return 0
-    previews = preview_urls()
+    previews = registry_preview_urls()
     errors: list[str] = []
     for item in items:
         errors.extend(validate(item, previews))
