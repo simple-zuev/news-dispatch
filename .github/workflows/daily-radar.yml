@@ -47,6 +47,28 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Force feed-owned stream routing
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("tools/daily_radar.py")
+          text = path.read_text(encoding="utf-8")
+          old = '''def classify(feed: Feed, title: str, summary: str) -> str:
+              haystack = f"{title} {summary} {' '.join(feed.tags)}".lower()
+              scores = {stream: sum(1 for word in words if word in haystack) for stream, words in KEYWORDS.items()}
+              if not scores:
+                  return feed.stream
+              best_stream, best_score = max(scores.items(), key=lambda pair: pair[1])
+              return best_stream if best_score > 0 else feed.stream
+          '''
+          new = '''def classify(feed: Feed, title: str, summary: str) -> str:
+              return feed.stream
+          '''
+          if old not in text:
+              raise SystemExit("Expected classify() implementation not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
       - name: Check automation syntax
         run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/render_site.py tools/enhance_site.py tools/enrich_media_registry.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/privacy_scan.py
 
