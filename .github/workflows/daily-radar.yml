@@ -14,7 +14,7 @@ on:
       max_items:
         description: "Maximum feed items"
         required: false
-        default: "56"
+        default: "24"
 
 permissions:
   contents: write
@@ -28,9 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DAILY_RADAR_STATUS: ${{ inputs.status || 'draft' }}
-      DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '56' }}
-      DAILY_RADAR_MIN_ITEMS: "2"
-      DAILY_RADAR_LOOKBACK_HOURS: "36"
+      DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '24' }}
+      DAILY_RADAR_MIN_ITEMS: "4"
+      DAILY_RADAR_LOOKBACK_HOURS: "24"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
