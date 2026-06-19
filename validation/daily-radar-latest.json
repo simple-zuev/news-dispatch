@@ -8,41 +8,41 @@
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-19-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/ec5d5bdcea575d2f-kaleidescape-s-movie-player-blows-streaming-and-your-wallet-away.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/203ae823286ea440-the-inevitable-weakness-of-metrics.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/f5404674bb98e882-nothing-cancels-this-year-s-cmf-phone-due-to-ram-prices.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/ai/4a4ea9d6a50319cb-kommersant-finance.md"
       ],
       "media_count": 2
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 4,
+      "count": 5,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/d823c8e8b4bc11c6-digital-credit-market-hit-by-huge-selloff-as-strive-ceo-blames-leverage.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/6e5f7d3cfa12ae5e-live-markets-bitcoin-under-pressure-as-saylor-comments-on-strc-selloff.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/8e61d5a932eab018-whitebit-secures-mica-license-in-austria-ahead-of-july-1-eu-deadline.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/61d06db593874692-kalshi-in-early-ipo-talks-with-investment-banks-report.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/95d282bf08231e21-ethereum-faces-core-development-funding-crisis-former-contributor-warns.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f46887b1f9a990a7-republican-lawmaker-proposes-prediction-markets-insider-trading-ban-not.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/f27bf3abfe054c23-two-texas-brothers-admit-to-8-million-crypto-robbery-after-holding-famil.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/d901dad099e02419-bitcoin-traders-load-up-on-bearish-bets-all-the-way-down-to-52-000.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/77a75a18d332e48a-base-targets-june-25-mainnet-launch-for-beryl-upgrade-and-new-b20-token.md"
       ],
       "media_count": 4
     },
     {
       "stream": "finance",
       "status": "draft",
-      "count": 9,
+      "count": 8,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ff2d582cf2c146f6-16-08-2017-181.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/70c982d6ff367792-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/e13b787df679c6ee-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/964236974424f579-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/b0664f85185cd828-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/a2f9aa514336f1ff-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/73b6fb548dda69b6-14-25.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8349e2cb4877a41c-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/324aaa535aae9df1-rbc-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/c6e7deaa48746f86-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/46678bb8bd673f18-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/3ccbb58398497a0f-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/26c59760312d67f4-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/5429f5026291a065-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/ffb522740036ac8b-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/5e270d5758b7a17b-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/2f3087bb426a132a-g8.md"
       ],
       "media_count": 4
     },
@@ -53,15 +53,15 @@
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/b16c829e8a7a89a3-hyundai---boston-dynamics--softbank.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/904dad59c50611d6-google-deepmind----------anthropic.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/9a2922f06f6174c1-3dnews.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/3fa5dc0be21ed69f-apple-intelligence-brings-powerful-ai-capabilities-into-everyday-experie.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/0562324b96a1b9df-apple-introduces-siri-ai-a-profoundly-more-capable-and-personal-assistan.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/06d9cd9df6587d78-apple-expands-app-store-capabilities-to-help-developers-grow-and-reach-n.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/720c0a120ab13136-sk-telecom-named-as-the-korean-carrier-at-the-center-of-anthropic-s-myth.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/3697524a7e764317-the-best-thunderbolt-and-usb-c-docks-in-2026-up-to-140w-power-delivery-1.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/524523f9317f1136-save-a-massive-1-390-on-this-rtx-5080-alienware-gaming-pc-now-just-3-159.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/afc22a810743b96c-3dnews.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/83f6d2bd9d2ee814-spacex.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/59f107d636e18ba1-geforce-rtx-4090----gpu.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/52ae8133e83ed06f-apple-tv-to-air-first-major-live-pro-sports-event-shot-on-iphone-17-pro.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cf54b6e09c7b41b9-us-energy-regulator-to-order-grid-operators-to-expedite-ai-data-center-a.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cd581ee0c9df6384-amazon-workers-who-testified-against-ai-data-centers-say-they-were-intim.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/add7bbc1a251e645-scammers-in-china-sell-222-rtx-4090-with-fake-gpu-die-made-out-of-plasti.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cd71090c45bc0d7d-apple-previews-new-child-safety-features.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/162e504781e19bbb-apple-and-major-league-baseball-announce-july-friday-night-baseball-sche.md"
       ],
       "media_count": 4
     }
