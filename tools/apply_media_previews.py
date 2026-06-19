@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply media previews from media/registry.json to generated HTML cards."""
+"""Apply media previews from manual and generated media registries."""
 
 from __future__ import annotations
 
@@ -10,7 +10,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
-REGISTRY_PATH = ROOT / "media" / "registry.json"
+REGISTRY_PATHS = [
+    ROOT / "media" / "registry.json",
+    ROOT / "media" / "registry.generated.json",
+]
 
 MEDIA_CARD_RE = re.compile(
     r'(<article class="(?=[^"]*\bsource-card\b)(?=[^"]*\bmedia-card\b)[^"]*">)(.*?</article>)',
@@ -18,19 +21,34 @@ MEDIA_CARD_RE = re.compile(
 )
 
 
-def load_registry() -> dict[str, dict[str, str]]:
-    if not REGISTRY_PATH.exists():
-        return {}
-    data = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+def registry_items(path: Path) -> list[dict[str, str]]:
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
     items = data.get("items", [])
-    registry: dict[str, dict[str, str]] = {}
+    cleaned: list[dict[str, str]] = []
     for item in items:
         if not isinstance(item, dict):
             continue
         url = str(item.get("url", "")).strip()
-        preview = str(item.get("preview", "")).strip()
-        if url and preview:
-            registry[url] = {key: str(value) for key, value in item.items() if value is not None}
+        if not url:
+            continue
+        cleaned.append({key: str(value) for key, value in item.items() if value is not None})
+    return cleaned
+
+
+def load_registry() -> dict[str, dict[str, str]]:
+    registry: dict[str, dict[str, str]] = {}
+    for path in REGISTRY_PATHS:
+        for item in registry_items(path):
+            url = item["url"]
+            previous = registry.get(url, {})
+            merged = dict(previous)
+            for key, value in item.items():
+                if value:
+                    merged[key] = value
+            if merged.get("preview") or merged.get("image_url"):
+                registry[url] = merged
     return registry
 
 
@@ -47,13 +65,25 @@ def resolve_preview_path(preview: str, prefix: str) -> str:
     return prefix + preview.lstrip("/")
 
 
+def preview_source(item: dict[str, str]) -> str:
+    image_source = item.get("image_source") or item.get("site_name") or item.get("type") or "источник"
+    metadata_source = item.get("metadata_source")
+    if metadata_source == "open_graph" and item.get("image_url"):
+        return f"Изображение: {image_source} · Open Graph"
+    return f"Изображение: {image_source}"
+
+
 def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
-    preview = resolve_preview_path(item.get("preview", ""), prefix)
-    title = item.get("title", "Материал")
+    external = item.get("image_url", "").strip()
+    fallback = item.get("preview", "").strip()
+    preview = external or resolve_preview_path(fallback, prefix)
+    title = item.get("external_title") or item.get("title") or "Материал"
+    attribution = preview_source(item)
     return (
         f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
         f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
-        f'alt="{html.escape(title, quote=True)}" loading="lazy"></a>'
+        f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
+        f'<p class="reader-preview-credit">{html.escape(attribution)}</p>'
     )
 
 
