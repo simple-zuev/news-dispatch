@@ -20,6 +20,13 @@ MEDIA_CARD_RE = re.compile(
     r'(<article class="(?=[^"]*\bsource-card\b)(?=[^"]*\bmedia-card\b)[^"]*">)(.*?</article>)',
     re.S,
 )
+ALLOWED_EMBED_HOSTS = {
+    "youtube.com",
+    "www.youtube.com",
+    "www.youtube-nocookie.com",
+    "player.vimeo.com",
+}
+VIDEO_EXTENSIONS = (".mp4", ".webm", ".ogg", ".mov")
 
 
 def registry_items(path: Path) -> list[dict[str, str]]:
@@ -48,7 +55,7 @@ def load_registry() -> dict[str, dict[str, str]]:
             for key, value in item.items():
                 if value:
                     merged[key] = value
-            if merged.get("preview") or merged.get("image_url"):
+            if merged.get("preview") or merged.get("image_url") or merged.get("video_url") or merged.get("embed_url"):
                 registry[url] = merged
     return registry
 
@@ -79,12 +86,53 @@ def image_source(url: str, item: dict[str, str]) -> str:
     return item.get("image_source") or item.get("site_name") or material_source(url, item)
 
 
+def video_source(url: str, item: dict[str, str]) -> str:
+    return item.get("video_source") or item.get("site_name") or material_source(url, item)
+
+
+def is_direct_video(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme == "https" and parsed.path.lower().endswith(VIDEO_EXTENSIONS)
+
+
+def is_allowed_embed(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme == "https" and parsed.netloc.lower() in ALLOWED_EMBED_HOSTS
+
+
 def preview_origin(item: dict[str, str]) -> str:
+    if item.get("embed_url") or item.get("video_url"):
+        return "video metadata"
     if item.get("metadata_source") == "open_graph" and item.get("image_url"):
         return "Open Graph / Twitter metadata"
     if item.get("image_url"):
         return "metadata"
     return "локальный fallback"
+
+
+def media_object_html(url: str, item: dict[str, str], preview: str, title: str) -> str:
+    embed = item.get("embed_url", "").strip()
+    video = item.get("video_url", "").strip()
+    if embed and is_allowed_embed(embed):
+        return (
+            f'<div class="reader-video-frame">'
+            f'<iframe src="{html.escape(embed, quote=True)}" title="{html.escape(title, quote=True)}" '
+            f'loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" '
+            f'allowfullscreen referrerpolicy="no-referrer"></iframe></div>'
+        )
+    if video and is_direct_video(video):
+        poster = f' poster="{html.escape(preview, quote=True)}"' if preview else ""
+        return (
+            f'<video class="reader-video" controls preload="metadata"{poster}>'
+            f'<source src="{html.escape(video, quote=True)}">'
+            f'<a href="{html.escape(video, quote=True)}">Открыть видео</a>'
+            f'</video>'
+        )
+    return (
+        f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
+        f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
+        f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
+    )
 
 
 def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
@@ -94,16 +142,18 @@ def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
     title = item.get("external_title") or item.get("title") or "Материал"
     material = material_source(url, item)
     image = image_source(url, item)
+    video = video_source(url, item)
     origin = preview_origin(item)
     canonical = item.get("canonical_url") or url
+    media_object = media_object_html(url, item, preview, title)
+    video_line = f'<span><strong>Видео:</strong> {html.escape(video)}</span>' if item.get("embed_url") or item.get("video_url") else ""
     return (
         f'<figure class="reader-preview-figure">'
-        f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
-        f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
-        f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
+        f'{media_object}'
         f'<figcaption class="reader-preview-meta">'
         f'<span><strong>Материал:</strong> {html.escape(material)}</span>'
         f'<span><strong>Изображение:</strong> {html.escape(image)}</span>'
+        f'{video_line}'
         f'<span><strong>Источник preview:</strong> {html.escape(origin)}</span>'
         f'<span><strong>URL:</strong> {html.escape(host_label(canonical))}</span>'
         f'</figcaption>'
@@ -119,7 +169,7 @@ def insert_preview_in_media_cards(text: str, url: str, item: dict[str, str], pre
     def replace(match: re.Match[str]) -> str:
         opening, body = match.groups()
         article = match.group(0)
-        if escaped_url not in article or "reader-thumb" in article:
+        if escaped_url not in article or "reader-thumb" in article or "reader-video" in article or "reader-video-frame" in article:
             return article
         return opening + preview_html(url, item, prefix) + body
 
