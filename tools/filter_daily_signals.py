@@ -32,13 +32,26 @@ STREAM_DENY: dict[str, list[tuple[re.Pattern[str], str]]] = {
     ],
     "tech-hardware-software": [
         (re.compile(r"\b(baseball|sports|pro\s+sports|after\s+the\s+whistle|friday\s+night\s+baseball)\b", re.I), "sports_or_entertainment"),
-        (re.compile(r"\b(fda|moderna|mrna|sunscreen)\b", re.I), "medical_or_health_not_tech"),
+        (re.compile(r"\b(fda|moderna|mrna|sunscreen|healthy|heart-protecting|nutrient)\b", re.I), "medical_or_health_not_tech"),
         (re.compile(r"\b(child\s+safety|children|developer\s+academy|language\s+learners|cherokee)\b", re.I), "social_or_education_not_tech"),
         (re.compile(r"\bsolarpunk\b", re.I), "culture_not_tech"),
+    ],
+    "science-discovery": [
+        (re.compile(r"\b(think\s+you.?re\s+eating\s+healthy|heart-protecting\s+nutrient)\b", re.I), "wellness_not_science_discovery"),
     ],
     "gear-style-edc": [
         (re.compile(r"\b(grinch|sequel|movie|film)\b", re.I), "entertainment_not_gear"),
     ],
+}
+
+LOW_INFORMATION_TITLES = {
+    "3dnews",
+    "cbr news",
+    "rbc finance",
+    "kommersant finance",
+    "miacr",
+    "ruonia",
+    "g8",
 }
 
 
@@ -82,6 +95,27 @@ def list_value(meta: dict[str, Any], key: str) -> list[str]:
     return []
 
 
+def normalize_title(value: str) -> str:
+    value = value.lower().replace("ё", "е")
+    value = re.sub(r"[^a-z0-9а-я]+", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def has_enough_context(title: str) -> bool:
+    normalized = normalize_title(title)
+    if not normalized:
+        return False
+    if normalized in LOW_INFORMATION_TITLES:
+        return False
+    tokens = normalized.split()
+    if len(tokens) <= 2:
+        return False
+    letters = re.findall(r"[a-zа-я]", normalized)
+    if len(letters) < 12:
+        return False
+    return True
+
+
 def relative_signal_path(value: str) -> Path | None:
     value = value.strip()
     marker = "signals/"
@@ -118,6 +152,8 @@ def deny_reason(path: Path) -> str | None:
     domains = " ".join(list_value(meta, "domains"))
     haystack = f"{title} {domains} {path.as_posix()}"
 
+    if not has_enough_context(title):
+        return "low_information_title"
     for pattern, reason in GLOBAL_DENY:
         if pattern.search(haystack):
             return reason
