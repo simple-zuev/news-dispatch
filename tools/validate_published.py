@@ -4,6 +4,7 @@
 This is a guardrail, not a full fact-checker.
 It blocks common publication failures:
 - published content without sources;
+- mismatched source/media front-matter lists;
 - private/internal phrasing;
 - raw URL dumps in article body;
 - English headings in Russian articles;
@@ -62,8 +63,10 @@ REQUIRED_SECTIONS = [
     "## Что произошло",
     "## Почему это важно",
     "## Анализ",
+    "## Медиа и материалы",
     "## Источники",
     "## Что наблюдать дальше",
+    "## Итог",
 ]
 
 URL_RE = re.compile(r"https?://\S+")
@@ -115,6 +118,19 @@ def is_published(meta: dict[str, object]) -> bool:
     return meta.get("status") == "published"
 
 
+def require_parallel_lengths(rel: Path, errors: list[str], anchor_key: str, related_keys: list[str], meta: dict[str, object], allow_empty: bool) -> None:
+    anchor = list_value(meta, anchor_key)
+    if not anchor and not allow_empty:
+        errors.append(f"{rel}: published dispatch requires {anchor_key}")
+        return
+    if not anchor:
+        return
+    for key in related_keys:
+        values = list_value(meta, key)
+        if len(values) != len(anchor):
+            errors.append(f"{rel}: {key} length must match {anchor_key} length ({len(values)} != {len(anchor)})")
+
+
 def validate_published(path: Path, meta: dict[str, object], body: str) -> list[str]:
     errors: list[str] = []
     rel = path.relative_to(ROOT)
@@ -133,16 +149,31 @@ def validate_published(path: Path, meta: dict[str, object], body: str) -> list[s
         errors.append(f"{rel}: contains_confidential_strategy must be false")
     if meta.get("contains_nonpublic_sources") != "false":
         errors.append(f"{rel}: contains_nonpublic_sources must be false")
+    if meta.get("contains_investment_advice") != "false":
+        errors.append(f"{rel}: contains_investment_advice must be false")
+    if meta.get("contains_legal_advice") != "false":
+        errors.append(f"{rel}: contains_legal_advice must be false")
 
-    sources = list_value(meta, "sources")
-    source_titles = list_value(meta, "source_titles")
-    source_types = list_value(meta, "source_types")
-    if not sources:
-        errors.append(f"{rel}: published dispatch requires sources")
-    if len(source_titles) < len(sources):
-        errors.append(f"{rel}: every source needs source_titles entry")
-    if len(source_types) < len(sources):
-        errors.append(f"{rel}: every source needs source_types entry")
+    summary = str(meta.get("summary", "")).strip()
+    if len(summary) < 40:
+        errors.append(f"{rel}: summary is too short or missing")
+
+    require_parallel_lengths(
+        rel,
+        errors,
+        "sources",
+        ["source_titles", "source_types", "source_notes"],
+        meta,
+        allow_empty=False,
+    )
+    require_parallel_lengths(
+        rel,
+        errors,
+        "media",
+        ["media_titles", "media_types", "media_notes"],
+        meta,
+        allow_empty=True,
+    )
 
     for section in REQUIRED_SECTIONS:
         if section not in body:
