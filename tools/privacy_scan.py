@@ -70,6 +70,11 @@ ALLOWLIST_PATTERNS = [
     re.compile(r"Open Graph", re.IGNORECASE),
 ]
 
+REPO_SIGNAL_PATH_PATTERN = re.compile(
+    r"(?:^|[\"'\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'\s]+\.md(?:[\"'\s,]|$)",
+    re.IGNORECASE,
+)
+
 
 def should_scan(path: Path) -> bool:
     rel = path.relative_to(ROOT).as_posix()
@@ -88,6 +93,14 @@ def is_allowlisted(line: str) -> bool:
     return any(pattern.search(line) for pattern in ALLOWLIST_PATTERNS)
 
 
+def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
+    """Avoid known generated-report false positives while keeping hard checks strict."""
+    rel = path.relative_to(ROOT).as_posix()
+    if name == "phone_like" and rel.startswith("validation/") and REPO_SIGNAL_PATH_PATTERN.search(line):
+        return True
+    return False
+
+
 def format_finding(path: Path, line_no: int, name: str, line: str) -> str:
     return f"{path.relative_to(ROOT)}:{line_no}: {name}: {line.strip()[:220]}"
 
@@ -103,6 +116,8 @@ def scan_file(path: Path) -> tuple[list[str], list[str]]:
         if is_allowlisted(line):
             continue
         for name, pattern in HARD_PATTERNS:
+            if should_skip_hard_pattern(path, name, line):
+                continue
             if pattern.search(line):
                 blockers.append(format_finding(path, line_no, name, line))
         for name, pattern in SOFT_PATTERNS:
