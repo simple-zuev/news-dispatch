@@ -5,7 +5,7 @@ This script is intentionally conservative:
 - it reads validation/daily-radar-latest.json;
 - it only examines signal paths listed in that report;
 - it deletes low-value signal files from the current run;
-- it updates the report so it stays consistent with the committed signals;
+- it updates reports so they stay consistent with the committed signals;
 - it does not fetch external resources.
 """
 
@@ -14,11 +14,13 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
+SUMMARY_PATH = ROOT / "validation" / "daily-radar-filter-summary.json"
 MEDIA_LIMIT = 4
 
 GLOBAL_DENY: list[tuple[re.Pattern[str], str]] = [
@@ -140,30 +142,36 @@ def target_signal_paths(report: dict[str, Any]) -> list[Path]:
     return list(dict.fromkeys(paths))
 
 
-def deny_reason(path: Path) -> str | None:
+def signal_stream(path: Path, meta: dict[str, Any]) -> str:
+    streams = list_value(meta, "streams")
+    if streams:
+        return streams[0]
+    return path.parts[2] if len(path.parts) > 2 else "unknown"
+
+
+def deny_reason(path: Path) -> tuple[str | None, str]:
     full_path = ROOT / path
     if not full_path.exists():
-        return None
+        return None, "unknown"
     text = full_path.read_text(encoding="utf-8")
     meta = parse_front_matter(text)
     title = str(meta.get("title", ""))
-    streams = list_value(meta, "streams")
-    stream = streams[0] if streams else path.parts[2] if len(path.parts) > 2 else ""
+    stream = signal_stream(path, meta)
     domains = " ".join(list_value(meta, "domains"))
     haystack = f"{title} {domains} {path.as_posix()}"
 
     if not has_enough_context(title):
-        return "low_information_title"
+        return "low_information_title", stream
     for pattern, reason in GLOBAL_DENY:
         if pattern.search(haystack):
-            return reason
+            return reason, stream
     for pattern, reason in STREAM_DENY.get(stream, []):
         if pattern.search(haystack):
-            return reason
-    return None
+            return reason, stream
+    return None, stream
 
 
-def update_report(report: dict[str, Any], removed: dict[str, str]) -> dict[str, Any]:
+def update_report(report: dict[str, Any], removed: dict[str, dict[str, str]]) -> dict[str, Any]:
     removed_keys = set(removed)
     for item in report.get("generated", []):
         if not isinstance(item, dict):
@@ -180,9 +188,36 @@ def update_report(report: dict[str, Any], removed: dict[str, str]) -> dict[str, 
     filtered = report.get("filtered_signals", [])
     if not isinstance(filtered, list):
         filtered = []
-    filtered.extend({"path": path, "reason": reason} for path, reason in sorted(removed.items()))
+    filtered.extend({"path": path, **metadata} for path, metadata in sorted(removed.items()))
     report["filtered_signals"] = filtered
     return report
+
+
+def stream_counts(paths: list[Path]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for path in paths:
+        full_path = ROOT / path
+        if not full_path.exists():
+            continue
+        meta = parse_front_matter(full_path.read_text(encoding="utf-8"))
+        counts[signal_stream(path, meta)] += 1
+    return dict(sorted(counts.items()))
+
+
+def write_summary(report: dict[str, Any], original_paths: list[Path], kept_paths: list[Path], removed: dict[str, dict[str, str]]) -> None:
+    by_reason = Counter(item["reason"] for item in removed.values())
+    by_stream = Counter(item["stream"] for item in removed.values())
+    summary = {
+        "date": report.get("date", ""),
+        "generated_count": len(original_paths),
+        "kept_count": len(kept_paths),
+        "filtered_count": len(removed),
+        "filtered_by_reason": dict(sorted(by_reason.items())),
+        "filtered_by_stream": dict(sorted(by_stream.items())),
+        "remaining_by_stream": stream_counts(kept_paths),
+    }
+    SUMMARY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SUMMARY_PATH.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -190,24 +225,27 @@ def main() -> int:
         print("No Daily Radar report found; nothing to filter.")
         return 0
     report = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
-    removed: dict[str, str] = {}
-    for relative in target_signal_paths(report):
-        reason = deny_reason(relative)
+    original_paths = target_signal_paths(report)
+    removed: dict[str, dict[str, str]] = {}
+    for relative in original_paths:
+        reason, stream = deny_reason(relative)
         if not reason:
             continue
         full_path = ROOT / relative
         if full_path.exists():
             full_path.unlink()
-            removed[relative.as_posix()] = reason
+            removed[relative.as_posix()] = {"reason": reason, "stream": stream}
 
+    kept_paths = [path for path in original_paths if path.as_posix() not in removed]
     if removed:
         report = update_report(report, removed)
         REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"Filtered {len(removed)} Daily Radar signal(s).")
-        for path, reason in sorted(removed.items()):
-            print(f"- {path}: {reason}")
+        for path, metadata in sorted(removed.items()):
+            print(f"- {path}: {metadata['reason']}")
     else:
         print("No Daily Radar signals filtered.")
+    write_summary(report, original_paths, kept_paths, removed)
     return 0
 
 
