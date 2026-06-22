@@ -23,8 +23,9 @@ REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
 SUMMARY_PATH = ROOT / "validation" / "daily-radar-filter-summary.json"
 MEDIA_LIMIT = 4
 
-GLOBAL_DENY: list[tuple[re.Pattern[str], str]] = [
-    (re.compile(r"\b(deal|deals|discount|sale|coupon|save\s+\$|save\s+a|off\s+these|off\s+this|price\s+cut|slashed|woot)\b", re.I), "deal_or_discount"),
+GLOBAL_TITLE_DENY: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"\b(deal|deals|discount|sale|coupon|price\s+cut|slashed|woot|record-low\s+price|now\s+just|prime\s+day)\b", re.I), "deal_or_discount"),
+    (re.compile(r"(?:\$|£|€)\s?\d{2,}", re.I), "deal_or_discount"),
     (re.compile(r"\breview\b", re.I), "review_or_buying_guide"),
 ]
 
@@ -34,6 +35,7 @@ STREAM_DENY: dict[str, list[tuple[re.Pattern[str], str]]] = {
     ],
     "tech-hardware-software": [
         (re.compile(r"\b(baseball|sports|pro\s+sports|after\s+the\s+whistle|friday\s+night\s+baseball)\b", re.I), "sports_or_entertainment"),
+        (re.compile(r"\b(steam\s+game|video\s+games|pc\s+gaming|conspicuous\s+consumption|congratulations\s+on\s+your\s+purchase)\b", re.I), "gaming_culture_not_tech_signal"),
         (re.compile(r"\b(fda|moderna|mrna|sunscreen|healthy|heart-protecting|nutrient)\b", re.I), "medical_or_health_not_tech"),
         (re.compile(r"\b(child\s+safety|children|developer\s+academy|language\s+learners|cherokee)\b", re.I), "social_or_education_not_tech"),
         (re.compile(r"\bsolarpunk\b", re.I), "culture_not_tech"),
@@ -162,8 +164,8 @@ def deny_reason(path: Path) -> tuple[str | None, str]:
 
     if not has_enough_context(title):
         return "low_information_title", stream
-    for pattern, reason in GLOBAL_DENY:
-        if pattern.search(haystack):
+    for pattern, reason in GLOBAL_TITLE_DENY:
+        if pattern.search(title):
             return reason, stream
     for pattern, reason in STREAM_DENY.get(stream, []):
         if pattern.search(haystack):
