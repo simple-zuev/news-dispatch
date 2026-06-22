@@ -8,24 +8,22 @@
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-22-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/ai/2333f99a059e1025-powering-the-next-wave-of-ai-expanding-capacity-with-our-new-datacenter.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/ai/7cee79306bddb004-inside-the-world-s-deepest-and-longest-subsea-road-tunnel.md"
       ],
       "media_count": 1
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 7,
+      "count": 5,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-22-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/8ae0159a5863dac3-bank-of-england-backs-down-on-strict-stablecoin-holding-limits-sets-50-b.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/4ae1eb6331978000-tradfi-fund-manager-baillie-gifford-introduces-solana-ethereum-tokenized.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/75f5dcb1263f44dc-live-markets-bitcoin-bounces-to-65-000-saylor-s-strategy-adds-cash-coins.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/a8bf20499a3430d5-south-korea-s-toss-bank-to-test-blockchain-based-financial-infrastructur.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/695798b0ae324f4c-moneygram-becomes-solana-validator-expands-blockchain-payments-strategy.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/dfe4349f2774c3dc-bank-of-england-drops-proposed-holding-caps-for-sterling-stablecoins-set.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/0f279f2ecb4bc761-eur-trading-accounts-for-1-of-binance-spot-volume-cryptoquant-says.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/c00498f104cc4902-bitcoin-mining-network-becoming-more-sensitive-to-price-swings-jpmorgan.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/1cefcdf2a3aa2644-bitcoin-etf-outflow-pain-eases-just-as-another-headwind-gathers-strength.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/3876dadf759f9359-bank-of-korea-advances-cbdc-deposit-token-initiative-to-test-real-world.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/b35641ca7eb88b91-q2-2026-emerges-as-most-hacked-quarter-on-record-with-83-incidents.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/5d53b78402c2bc86-morgan-stanley-amends-ethereum-solana-etfs-to-reveal-record-cheap-fees.md"
       ],
       "media_count": 4
     },
@@ -36,32 +34,29 @@
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-22-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1d88cd594b280697-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/b1faa75980252073-02-04-2026-7339.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/95aa3f375ed0729a-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/47ff864aff162d4c-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/3de49674b4cbd47a-getty-images---350----openai.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/019bb60200f3644e-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/2dcff1472b4f9f61-c.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/8711a3226c72ec53-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/af4d427a21bd6bcb-kommersant-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1966922f0f432660-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1ba8673e16f5070f-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/f49387a749909363-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/ea7fdb4f39d58391-getty-images-------openal.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/7e0f960ee500d36e-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/aa29486f7ab02717-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/cb6fdbe193f6ff2b-boeing-737.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/c1d7da35cf028ebb-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/5d940395df781025-rbc-finance.md"
       ],
       "media_count": 4
     },
     {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 5,
+      "count": 2,
       "required_items": 4,
       "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-22-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/ce79b31710ca65e5-orange-pi-6--12------2-5gbe.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/6737d2cef4b9ce04-figure-ai.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/aafc72c6cfbb6d86-3dnews.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/e3185b61f28be4a6-ludicrous-999-steam-game-lasts-just-10-minutes-congratulations-on-your-p.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/b39406b45c3a4bfb-powerhouse-amd-ryzen-7-9800x3d-hits-record-low-price-at-amazon-uk-now-ju.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/dee97973e8683f61-wechat-----xiaowei.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/a0f2e46a672913f9-open-source-vulkan-driver-nvk-gains-experimental-dlss-support-bringing-n.md"
       ],
-      "media_count": 4
+      "media_count": 2
     }
   ],
   "fetch_errors": [
@@ -70,12 +65,37 @@
   ],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-22/ai/fecab4322bbbdb6d-the-download-record-breaking-subsea-tunnels-and-flexible-data-centers.md",
-      "reason": "review_or_buying_guide",
-      "stream": "ai"
+      "path": "signals/2026-06-22/crypto-finance/835326e340343ac4-strategy-added-35-million-in-bitcoin-300-million-in-cash-reserves-last-w.md",
+      "reason": "deal_or_discount",
+      "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-22/tech-hardware-software/324b70007ca69bdf-best-amazon-prime-day-tech-deals-live-pc-hardware-deals-on-ssds-ram-gpus.md",
+      "path": "signals/2026-06-22/crypto-finance/9128e946c014cf32-michael-saylor-s-strategy-buys-another-520-btc-for-35-million-adds-to-us.md",
+      "reason": "deal_or_discount",
+      "stream": "crypto-finance"
+    },
+    {
+      "path": "signals/2026-06-22/crypto-finance/da990dc709d973f9-crypto-trading-app-fomo-raises-75-million-at-550-million-valuation-in-in.md",
+      "reason": "deal_or_discount",
+      "stream": "crypto-finance"
+    },
+    {
+      "path": "signals/2026-06-22/tech-hardware-software/047809b952412dbb-200.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-22/tech-hardware-software/125cca8085221db7-intersect360--------300.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-22/tech-hardware-software/2f881aa046ee0111-m3-macbook-air-plunges-to-799-in-early-amazon-prime-day-sale-38-discount.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-22/tech-hardware-software/da5afceeacc546b4-get-a-4tb-ssd-for-399-this-prime-day-9-7-cents-per-gb-is-as-good-as-it-g.md",
       "reason": "deal_or_discount",
       "stream": "tech-hardware-software"
     }

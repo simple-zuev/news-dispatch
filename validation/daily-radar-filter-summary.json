@@ -1,20 +1,19 @@
 {
   "date": "2026-06-22",
   "generated_count": 24,
-  "kept_count": 22,
-  "filtered_count": 2,
+  "kept_count": 17,
+  "filtered_count": 7,
   "filtered_by_reason": {
-    "deal_or_discount": 1,
-    "review_or_buying_guide": 1
+    "deal_or_discount": 7
   },
   "filtered_by_stream": {
-    "ai": 1,
-    "tech-hardware-software": 1
+    "crypto-finance": 3,
+    "tech-hardware-software": 4
   },
   "remaining_by_stream": {
     "ai": 1,
-    "crypto-finance": 7,
+    "crypto-finance": 5,
     "finance": 9,
-    "tech-hardware-software": 5
+    "tech-hardware-software": 2
   }
 }
