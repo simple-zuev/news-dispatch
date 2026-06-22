@@ -1,18 +1,31 @@
 {
-  "date": "2026-06-19",
+  "date": "2026-06-22",
   "generated": [
+    {
+      "stream": "ai",
+      "status": "draft",
+      "count": 1,
+      "required_items": 4,
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-22-ai-daily-radar.md",
+      "signals": [
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/ai/2333f99a059e1025-powering-the-next-wave-of-ai-expanding-capacity-with-our-new-datacenter.md"
+      ],
+      "media_count": 1
+    },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 5,
+      "count": 7,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-19-crypto-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-22-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/05456dec4d792c1b-bitcoin-tipped-for-q3-macro-bottom-near-50k-as-major-liquidity-grab-loom.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/a9c9e23920ecd853-xrp-falls-3-after-losing-1-15-support-as-breakout-attempt-fades.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/32782be34db5f731-cftc-sec-request-public-comment-to-clarify-definition-of-swaps-amid-cme.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/8a094745f3da8dd3-celsius-mashinsky-gets-permanent-trading-ban-in-cftc-settlement.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/crypto-finance/1895319389382789-morgan-stanley-files-amendments-for-eth-and-sol-etfs-revealing-lowest-fe.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/8ae0159a5863dac3-bank-of-england-backs-down-on-strict-stablecoin-holding-limits-sets-50-b.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/4ae1eb6331978000-tradfi-fund-manager-baillie-gifford-introduces-solana-ethereum-tokenized.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/75f5dcb1263f44dc-live-markets-bitcoin-bounces-to-65-000-saylor-s-strategy-adds-cash-coins.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/a8bf20499a3430d5-south-korea-s-toss-bank-to-test-blockchain-based-financial-infrastructur.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/695798b0ae324f4c-moneygram-becomes-solana-validator-expands-blockchain-payments-strategy.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/dfe4349f2774c3dc-bank-of-england-drops-proposed-holding-caps-for-sterling-stablecoins-set.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/0f279f2ecb4bc761-eur-trading-accounts-for-1-of-binance-spot-volume-cryptoquant-says.md"
       ],
       "media_count": 4
     },
@@ -21,64 +34,50 @@
       "status": "draft",
       "count": 9,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-19-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-22-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/f5d27184fcce7042-ruonia.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/8ead8e8a1b19dd86-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/56a057e89bead81e-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9a51dc25e6cac991-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/3df4a7af4c86a211-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/9573057f00e75b09-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/21c0330de4806ec0-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/f441ba0a25bd6239-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/finance/1ff9818e41844019-rbc-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1d88cd594b280697-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/b1faa75980252073-02-04-2026-7339.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/95aa3f375ed0729a-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/47ff864aff162d4c-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/3de49674b4cbd47a-getty-images---350----openai.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/019bb60200f3644e-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/2dcff1472b4f9f61-c.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/8711a3226c72ec53-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/af4d427a21bd6bcb-kommersant-finance.md"
       ],
       "media_count": 4
     },
     {
-      "stream": "gear-style-edc",
-      "status": "draft",
-      "count": 2,
-      "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/gear-style-edc/2026-06-19-gear-style-edc-daily-radar.md",
-      "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/3d388ea74ad55653-the-jordan-luka-5-ignites-laser-fuchsia.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/gear-style-edc/031d0270b77b11e8-a-soothing-vast-grey-covers-the-nike-mind-002.md"
-      ],
-      "media_count": 2
-    },
-    {
-      "stream": "science-discovery",
-      "status": "draft",
-      "count": 1,
-      "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/science-discovery/2026-06-19-science-discovery-daily-radar.md",
-      "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/science-discovery/8204e63e631510e2-think-you-re-eating-healthy-you-may-be-missing-this-heart-protecting-nut.md"
-      ],
-      "media_count": 1
-    },
-    {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 7,
+      "count": 5,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-19-tech-hardware-software-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-22-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/da9c5360bf37f55c-3dnews.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/d3fdd32deb1ced55-maxsun----mini-itx---mcio---pcie-x16.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/1afc53daa989c635-3dnews.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/de3f5f254d9c2761-the-app-store-stopped-over-2-2-billion-in-fraudulent-transactions-in-202.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/fd44724c69dacb3d-apple-unveils-new-accessibility-features-and-updates-with-apple-intellig.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/cbb7b660d2100fb7-intel-hires-former-sk-hynix-chief-seok-hee-lee-to-lead-intel-foundry-adv.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-19/tech-hardware-software/191c482dfb550fd7-16-year-old-sata-ii-ssd-survives-1-petabyte-of-writes-25x-more-than-the.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/ce79b31710ca65e5-orange-pi-6--12------2-5gbe.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/6737d2cef4b9ce04-figure-ai.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/aafc72c6cfbb6d86-3dnews.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/e3185b61f28be4a6-ludicrous-999-steam-game-lasts-just-10-minutes-congratulations-on-your-p.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/b39406b45c3a4bfb-powerhouse-amd-ryzen-7-9800x3d-hits-record-low-price-at-amazon-uk-now-ju.md"
       ],
       "media_count": 4
     }
   ],
   "fetch_errors": [
     "mos-ru-news: URLError: <urlopen error timed out>",
-    "the-village: URLError: <urlopen error timed out>",
-    "nature-news: ParseError: not well-formed (invalid token): line 14, column 4"
+    "the-village: URLError: <urlopen error timed out>"
+  ],
+  "filtered_signals": [
+    {
+      "path": "signals/2026-06-22/ai/fecab4322bbbdb6d-the-download-record-breaking-subsea-tunnels-and-flexible-data-centers.md",
+      "reason": "review_or_buying_guide",
+      "stream": "ai"
+    },
+    {
+      "path": "signals/2026-06-22/tech-hardware-software/324b70007ca69bdf-best-amazon-prime-day-tech-deals-live-pc-hardware-deals-on-ssds-ram-gpus.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    }
   ]
 }
