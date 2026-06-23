@@ -2,7 +2,7 @@ name: Daily Radar
 
 on:
   schedule:
-    - cron: "17 5 * * *"
+    - cron: "55 6 * * *"
   workflow_dispatch:
     inputs:
       status:
