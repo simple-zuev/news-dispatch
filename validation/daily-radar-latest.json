@@ -1,101 +1,98 @@
 {
-  "date": "2026-06-22",
+  "date": "2026-06-23",
   "generated": [
     {
       "stream": "ai",
       "status": "draft",
       "count": 1,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-22-ai-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-23-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/ai/7cee79306bddb004-inside-the-world-s-deepest-and-longest-subsea-road-tunnel.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/ai/abbfa217e7549434-elephant-alert-ai-warning-systems-aim-to-avoid-deadly-clashes.md"
       ],
       "media_count": 1
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 5,
+      "count": 3,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-22-crypto-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-23-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/c00498f104cc4902-bitcoin-mining-network-becoming-more-sensitive-to-price-swings-jpmorgan.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/1cefcdf2a3aa2644-bitcoin-etf-outflow-pain-eases-just-as-another-headwind-gathers-strength.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/3876dadf759f9359-bank-of-korea-advances-cbdc-deposit-token-initiative-to-test-real-world.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/b35641ca7eb88b91-q2-2026-emerges-as-most-hacked-quarter-on-record-with-83-incidents.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/crypto-finance/5d53b78402c2bc86-morgan-stanley-amends-ethereum-solana-etfs-to-reveal-record-cheap-fees.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/96c0409c10e51bd9-xrp-drifts-toward-1-10-support-as-traders-await-break-from-three-week-ra.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/381170e0af1c3e81-hive-stock-surges-25-as-ivy-league-researchers-train-neural-networks-on.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/027833de5efaa3b7-david-bailey-s-nakamoto-closes-legacy-healthcare-clinics-as-bitcoin-oper.md"
       ],
-      "media_count": 4
+      "media_count": 3
     },
     {
       "stream": "finance",
       "status": "draft",
-      "count": 9,
+      "count": 7,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-22-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-23-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1966922f0f432660-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/1ba8673e16f5070f-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/f49387a749909363-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/ea7fdb4f39d58391-getty-images-------openal.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/7e0f960ee500d36e-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/aa29486f7ab02717-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/cb6fdbe193f6ff2b-boeing-737.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/c1d7da35cf028ebb-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/finance/5d940395df781025-rbc-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/6e38517b05c7f51e-2025.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/2c29859360eaf46d-1.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/91eefd99caf823fe-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/7ee64bccae89a165-kommersant-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/8afe58781ee47e1c-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/09e451e4c7b3404e-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/f7b08b75536ba00c-rbc-finance.md"
       ],
       "media_count": 4
     },
     {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 2,
+      "count": 7,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-22-tech-hardware-software-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-23-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/dee97973e8683f61-wechat-----xiaowei.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-22/tech-hardware-software/a0f2e46a672913f9-open-source-vulkan-driver-nvk-gains-experimental-dlss-support-bringing-n.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/45199a6b3700c4dd-roquo--19-8.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/a92b17355751cf94-700-000---jd-com.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/7eddcb0740d86391-openai---patch-the-planet.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/606836facce4bcfb-with-starfall-spacex-eyes-an-edge-in-global-cargo-delivery-from-orbit.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/b578b154b82292a0-arm-servers-capture-over-45-of-data-center-market-revenue-gpu-clusters-a.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/9d1d47ec4b50ed0a-nvidia-powers-over-400-of-the-world-s-500-fastest-supercomputers.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/b58a8aabb6223ec6-how-anthropic-may-have-talked-itself-into-an-ai-export-ban.md"
       ],
-      "media_count": 2
+      "media_count": 4
     }
   ],
   "fetch_errors": [
-    "mos-ru-news: URLError: <urlopen error timed out>",
-    "the-village: URLError: <urlopen error timed out>"
+    "mos-ru-news: HTTPError: HTTP Error 403: Forbidden",
+    "the-village: URLError: <urlopen error timed out>",
+    "science-daily: ParseError: junk after document element: line 440, column 46"
   ],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-22/crypto-finance/835326e340343ac4-strategy-added-35-million-in-bitcoin-300-million-in-cash-reserves-last-w.md",
+      "path": "signals/2026-06-23/ai/0b5b669013148f8e-the-400-million-machine-powering-the-future-of-chipmaking.md",
+      "reason": "deal_or_discount",
+      "stream": "ai"
+    },
+    {
+      "path": "signals/2026-06-23/crypto-finance/88e3a4ad584c1dbe-ark-invest-buys-32-million-worth-of-spacex-shares-as-stock-plunges-16.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-22/crypto-finance/9128e946c014cf32-michael-saylor-s-strategy-buys-another-520-btc-for-35-million-adds-to-us.md",
+      "path": "signals/2026-06-23/crypto-finance/8eecb8a1bad81a30-spacex-s-600-billion-plunge-erased-equivalent-of-nearly-half-of-bitcoin.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-22/crypto-finance/da990dc709d973f9-crypto-trading-app-fomo-raises-75-million-at-550-million-valuation-in-in.md",
+      "path": "signals/2026-06-23/crypto-finance/f060f2ee24273c30-bitcoin-falls-under-63-000-as-a-tech-selloff-drags-risk-assets-lower.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-22/tech-hardware-software/047809b952412dbb-200.md",
+      "path": "signals/2026-06-23/tech-hardware-software/5c9189aa3b4b98bc-astonishing-prime-day-rtx-5090-pc-deal-is-cheaper-than-buying-the-gpu-an.md",
       "reason": "deal_or_discount",
       "stream": "tech-hardware-software"
     },
     {
-      "path": "signals/2026-06-22/tech-hardware-software/125cca8085221db7-intersect360--------300.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-22/tech-hardware-software/2f881aa046ee0111-m3-macbook-air-plunges-to-799-in-early-amazon-prime-day-sale-38-discount.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-22/tech-hardware-software/da5afceeacc546b4-get-a-4tb-ssd-for-399-this-prime-day-9-7-cents-per-gb-is-as-good-as-it-g.md",
+      "path": "signals/2026-06-23/tech-hardware-software/69a14fe41f4405e8-13-brilliant-tech-bargains-under-13-to-upgrade-your-setup-lock-down-the.md",
       "reason": "deal_or_discount",
       "stream": "tech-hardware-software"
     }
