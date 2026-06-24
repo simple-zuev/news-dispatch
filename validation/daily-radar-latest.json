@@ -1,98 +1,91 @@
 {
-  "date": "2026-06-23",
+  "date": "2026-06-24",
   "generated": [
     {
       "stream": "ai",
       "status": "draft",
-      "count": 1,
+      "count": 3,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-23-ai-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/ai/2026-06-24-ai-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/ai/abbfa217e7549434-elephant-alert-ai-warning-systems-aim-to-avoid-deadly-clashes.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/ai/cf577bb9791520fe-reinventing-the-zipper.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/ai/14de5b78db6d0933-this-flying-solar-powered-platform-could-deliver-better-internet-from-th.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/ai/a304962ed0149faa-all-challenges-big-and-small.md"
       ],
-      "media_count": 1
+      "media_count": 3
     },
     {
       "stream": "crypto-finance",
       "status": "draft",
-      "count": 3,
+      "count": 5,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-23-crypto-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/crypto-finance/2026-06-24-crypto-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/96c0409c10e51bd9-xrp-drifts-toward-1-10-support-as-traders-await-break-from-three-week-ra.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/381170e0af1c3e81-hive-stock-surges-25-as-ivy-league-researchers-train-neural-networks-on.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/crypto-finance/027833de5efaa3b7-david-bailey-s-nakamoto-closes-legacy-healthcare-clinics-as-bitcoin-oper.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/crypto-finance/eea9409752dda205-cryptoquant-says-michael-saylor-s-strategy-should-halt-its-bitcoin-buyin.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/crypto-finance/03f8be74c70b5dbe-crypto-critic-roubini-joins-tokenization-boom-with-onchain-technodollar.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/crypto-finance/ca3b2aee703a2d38-law-enforcement-groups-warn-clarity-act-could-hinder-crypto-crime-invest.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/crypto-finance/97786a8b68e09a5a-cryptoquant-says-strategy-should-pause-bitcoin-purchases-and-rebuild-cas.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/crypto-finance/3d4c826aa6fc7a50-mark-cuban-dallas-mavericks-face-appeal-over-dismissed-voyager-crypto-ca.md"
       ],
-      "media_count": 3
+      "media_count": 4
     },
     {
       "stream": "finance",
       "status": "draft",
       "count": 7,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-23-finance-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/finance/2026-06-24-finance-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/6e38517b05c7f51e-2025.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/2c29859360eaf46d-1.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/91eefd99caf823fe-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/7ee64bccae89a165-kommersant-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/8afe58781ee47e1c-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/09e451e4c7b3404e-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/finance/f7b08b75536ba00c-rbc-finance.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/3bee60e5257a8e9a-24-06-2026.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/40849ad21e163cd9-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/d435869e8863cda3-cbr-news.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/1767913aa52208a9-15.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/4e0322464b400905-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/6d8cc60f1a0f22c6-rbc-finance.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/finance/0395387e2dca1d1a-6-5.md"
       ],
       "media_count": 4
     },
     {
       "stream": "tech-hardware-software",
       "status": "draft",
-      "count": 7,
+      "count": 5,
       "required_items": 4,
-      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-23-tech-hardware-software-daily-radar.md",
+      "dispatch_path": "/home/runner/work/news-dispatch/news-dispatch/dispatches/tech-hardware-software/2026-06-24-tech-hardware-software-daily-radar.md",
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/45199a6b3700c4dd-roquo--19-8.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/a92b17355751cf94-700-000---jd-com.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/7eddcb0740d86391-openai---patch-the-planet.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/606836facce4bcfb-with-starfall-spacex-eyes-an-edge-in-global-cargo-delivery-from-orbit.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/b578b154b82292a0-arm-servers-capture-over-45-of-data-center-market-revenue-gpu-clusters-a.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/9d1d47ec4b50ed0a-nvidia-powers-over-400-of-the-world-s-500-fastest-supercomputers.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-23/tech-hardware-software/b58a8aabb6223ec6-how-anthropic-may-have-talked-itself-into-an-ai-export-ban.md"
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/tech-hardware-software/a454ef3d9ce5183f-spacex----starfall.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/tech-hardware-software/d8895245358f0742-sony-lytia-610---rb2-2-ocl.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/tech-hardware-software/3b045ecf924afbbf-openai---chatgpt---bidi-1.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/tech-hardware-software/b05d0a886a5ee1e0-white-house-drastically-shortens-deadline-for-dropping-quantum-vulnerabl.md",
+        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-24/tech-hardware-software/e7cad40fb53bcdfe-nvidia-and-aws-collaborate-to-bring-ai-to-production-at-scale.md"
       ],
       "media_count": 4
     }
   ],
   "fetch_errors": [
-    "mos-ru-news: HTTPError: HTTP Error 403: Forbidden",
+    "mos-ru-news: URLError: <urlopen error timed out>",
     "the-village: URLError: <urlopen error timed out>",
+    "nature-news: ParseError: not well-formed (invalid token): line 14, column 4",
     "science-daily: ParseError: junk after document element: line 440, column 46"
   ],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-23/ai/0b5b669013148f8e-the-400-million-machine-powering-the-future-of-chipmaking.md",
-      "reason": "deal_or_discount",
-      "stream": "ai"
-    },
-    {
-      "path": "signals/2026-06-23/crypto-finance/88e3a4ad584c1dbe-ark-invest-buys-32-million-worth-of-spacex-shares-as-stock-plunges-16.md",
+      "path": "signals/2026-06-24/crypto-finance/783402a757ff8c9d-bitcoin-drops-toward-62-000-as-the-chip-selloff-deepens-for-a-second-day.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-23/crypto-finance/8eecb8a1bad81a30-spacex-s-600-billion-plunge-erased-equivalent-of-nearly-half-of-bitcoin.md",
+      "path": "signals/2026-06-24/crypto-finance/f69efc004344d70b-btc-price-four-year-trend-calls-for-76k-as-analysis-says-bitcoin-not-bro.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-23/crypto-finance/f060f2ee24273c30-bitcoin-falls-under-63-000-as-a-tech-selloff-drags-risk-assets-lower.md",
-      "reason": "deal_or_discount",
-      "stream": "crypto-finance"
-    },
-    {
-      "path": "signals/2026-06-23/tech-hardware-software/5c9189aa3b4b98bc-astonishing-prime-day-rtx-5090-pc-deal-is-cheaper-than-buying-the-gpu-an.md",
+      "path": "signals/2026-06-24/tech-hardware-software/4cb35a04e6dc3128-get-32gb-of-corsair-ddr5-ram-for-just-214-right-now-thanks-to-these-newe.md",
       "reason": "deal_or_discount",
       "stream": "tech-hardware-software"
     },
     {
-      "path": "signals/2026-06-23/tech-hardware-software/69a14fe41f4405e8-13-brilliant-tech-bargains-under-13-to-upgrade-your-setup-lock-down-the.md",
+      "path": "signals/2026-06-24/tech-hardware-software/dedaa181bb37a01f-best-amazon-prime-day-tech-deals-live-on-day-two-pc-hardware-deals-on-gp.md",
       "reason": "deal_or_discount",
       "stream": "tech-hardware-software"
     }
