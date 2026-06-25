@@ -23,6 +23,7 @@ Implemented:
 - reader-facing enhancement layer: archive, stream pages, RSS, sitemap, media/source cards, Open Graph metadata and reader sections;
 - automated Daily Radar signal collection from public RSS/Atom feeds;
 - signal filtering and validation reports;
+- reviewed radar and candidate-dispatch validation artifacts;
 - GitHub Actions workflows for signal collection, validation and Pages deployment.
 
 The main unfinished layer is editorial synthesis: turning collected signals into verified topic-first dispatches.
@@ -62,6 +63,8 @@ Each significant item should separate:
 
 For high-impact topics, especially finance, crypto-finance, regulation, AML/CFT, sanctions, taxation, cybersecurity and compliance, use primary sources whenever possible and avoid legal, tax, compliance or investment advice.
 
+The operational editorial workflow is documented in `docs/editorial-workflow.md`. Candidate promotion uses `templates/promotion-checklist.md`.
+
 ## Canonical streams
 
 Active streams are defined in `data/streams.json`.
@@ -86,12 +89,15 @@ Legacy stream names may remain for historical compatibility, but new navigation 
 
 Purpose: collect public RSS/Atom signals and update radar state.
 
-It writes signal-layer artifacts only:
+It writes signal-layer and validation artifacts only:
 
 - `signals/`;
 - `data/daily-radar-seen.json`;
 - `validation/daily-radar-latest.json`;
-- `validation/daily-radar-filter-summary.json`.
+- `validation/daily-radar-filter-summary.json`;
+- `validation/source-health-latest.json`;
+- `validation/reviewed-radar-latest.md`;
+- `validation/candidate-dispatch-latest.md`.
 
 It must not publish analytical conclusions by itself. Draft dispatch files are not a user-facing deliverable.
 
@@ -113,6 +119,9 @@ Only dispatches with `status: "published"` are exposed on GitHub Pages. Signals 
 public signal
 -> signal capture
 -> source/context check
+-> reviewed radar
+-> candidate dispatch artifact
+-> promotion checklist
 -> editorial synthesis
 -> privacy/public-safety check
 -> published dispatch
@@ -133,6 +142,10 @@ news-dispatch/
   STYLE_GUIDE.md
   PUBLISHING.md
   SECURITY.md
+
+  docs/
+    editorial-workflow.md
+    radar-quality-audit-2026-06-25.md
 
   data/
     streams.json
@@ -155,12 +168,15 @@ news-dispatch/
   templates/
     dispatch.md
     privacy-check.md
+    promotion-checklist.md
 
   tools/
     *.py
 
   validation/
     *.json
+    reviewed-radar-latest.md
+    candidate-dispatch-latest.md
 
   site/
     generated static site
