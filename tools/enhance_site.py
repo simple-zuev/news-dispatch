@@ -13,21 +13,38 @@ import json
 import re
 from email.utils import formatdate
 from pathlib import Path
+from typing import Any
+
+from stream_registry import streams as registry_streams
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 DISPATCH_DIR = ROOT / "dispatches"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 
-STREAMS = [
-    {"slug": "general", "title": "Общий выпуск", "label": "Редакционная проверка", "description": "Междисциплинарная аналитика о технологиях, рынках, вещах, культуре, городе, науке и смежных областях."},
-    {"slug": "digital-assets-infrastructure", "title": "Инфраструктура цифровых активов", "label": "Строгая проверка", "description": "Публичная аналитика о регулировании, технологиях, рыночной структуре, доверии и устойчивости инфраструктуры.", "strict": True},
-    {"slug": "work", "title": "Рабочий выпуск", "label": "Строгая проверка", "description": "Рыночные и продуктовые сигналы, ИИ, UX, операционные модели и организационные эффекты.", "strict": True},
-    {"slug": "finance", "title": "Финансовая среда", "label": "Строгая проверка", "description": "Ставки, банковские продукты, потребительская экономика, ликвидность, подписки и крупные покупки.", "strict": True},
-    {"slug": "gear", "title": "Вещи и материальная культура", "label": "Редакционная проверка", "description": "EDC, сумки, часы, инструменты, материалы, ремонтопригодность и критерии повседневного использования."},
-    {"slug": "horizon", "title": "Горизонт знаний", "label": "Редакционная проверка", "description": "Наука, системы, материалы, робототехника, биотех, когнитивные науки, HCI и сценарии будущего."},
-]
 
+def load_streams() -> list[dict[str, Any]]:
+    """Load the canonical stream registry.
+
+    `data/streams.json` is the single source of truth for reader navigation.
+    Legacy stream names may remain in old dispatch files, but new navigation
+    should not be generated from hard-coded legacy stream lists.
+    """
+    loaded: list[dict[str, Any]] = []
+    for item in registry_streams():
+        loaded.append(
+            {
+                "slug": str(item["slug"]),
+                "title": str(item["title"]),
+                "label": str(item.get("label", "Редакционная проверка")),
+                "description": str(item.get("description", "")),
+                "strict": bool(item.get("strict", False)),
+            }
+        )
+    return loaded
+
+
+STREAMS = load_streams()
 STREAM_BY_SLUG = {stream["slug"]: stream for stream in STREAMS}
 
 TEXT_REPLACEMENTS = {
@@ -215,7 +232,14 @@ def at(values: list[str], index: int, default: str = "") -> str:
     return values[index] if index < len(values) else default
 
 
-def cards_from_parallel_lists(urls: list[str], titles: list[str], types: list[str], notes: list[str] | None = None, images: list[str] | None = None, css_extra: str = "") -> str:
+def cards_from_parallel_lists(
+    urls: list[str],
+    titles: list[str],
+    types: list[str],
+    notes: list[str] | None = None,
+    images: list[str] | None = None,
+    css_extra: str = "",
+) -> str:
     notes = notes or []
     images = images or []
     cards = []
@@ -237,7 +261,7 @@ def add_reader_blocks(items: list[dict[str, object]]) -> None:
             continue
         text = page.read_text(encoding="utf-8")
         if "<section class=\"sources-block\"" in text:
-            text = re.sub(r'<section class="sources-block">.*?</section>', '', text, flags=re.S)
+            text = re.sub(r'<section class="sources-block">.*?</section>', "", text, flags=re.S)
         blocks = []
         media_cards = cards_from_parallel_lists(list(item["media"]), list(item["media_titles"]), list(item["media_types"]), notes=list(item["media_notes"]), images=list(item["media_images"]), css_extra="media-card")
         source_cards = cards_from_parallel_lists(list(item["sources"]), list(item["source_titles"]), list(item["source_types"]), notes=list(item["source_notes"]))
