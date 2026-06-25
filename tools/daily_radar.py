@@ -82,6 +82,13 @@ def slugify(value: str, fallback: str) -> str:
     return (latin or fallback)[:72].strip("-") or fallback
 
 
+def repo_path(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def parse_date(value: str, fallback: datetime) -> datetime:
     if not value:
         return fallback
@@ -313,7 +320,7 @@ def build(args: argparse.Namespace) -> int:
             "stream": stream,
             "status": "signals-only",
             "count": len(stream_items),
-            "signals": [path.as_posix() for path in signal_paths],
+            "signals": [repo_path(path) for path in signal_paths],
             "media_count": min(MEDIA_LIMIT, len(stream_items)),
             "routing": "feed_owned",
         })
