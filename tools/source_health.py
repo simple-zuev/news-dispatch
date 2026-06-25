@@ -37,7 +37,7 @@ def main() -> int:
             "status": "disabled" if not enabled else "error" if feed_id in bad else "ok",
         })
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps({"feeds": rows}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    OUT.write_text(json.dumps({"total": len(rows), "feeds": rows}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {OUT.relative_to(ROOT)}")
     return 0
 
