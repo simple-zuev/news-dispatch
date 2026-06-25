@@ -2,14 +2,25 @@
   "date": "2026-06-25",
   "generated": [
     {
+      "stream": "ai",
+      "status": "signals-only",
+      "count": 2,
+      "signals": [
+        "signals/2026-06-25/ai/20bbdf16a8b7f3ef-the-download-europe-s-heat-wave-hits-the-grid-and-ibm-s-chip-targets-moo.md",
+        "signals/2026-06-25/ai/9976f622653b5621-ibm-has-unveiled-chip-technology-that-could-help-extend-moore-s-law-anot.md"
+      ],
+      "media_count": 2,
+      "routing": "feed_owned"
+    },
+    {
       "stream": "crypto-finance",
       "status": "signals-only",
       "count": 4,
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/crypto-finance/6cd5bdd291d6d704-live-markets-bitcoin-ether-lead-1-billion-liquidation-losses-as-ai-trade.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/crypto-finance/f547a8ae173768a7-bitcoin-has-a-new-line-in-the-sand-thursday-s-core-pce-could-stress-test.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/crypto-finance/4f5acc68972f5e5d-binance-co-ceo-remains-committed-to-securing-eu-license-after-exchange-w.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/crypto-finance/3eb135d706c69edb-ripple-launches-rlusd-stablecoin-in-japan-after-regulatory-approval.md"
+        "signals/2026-06-25/crypto-finance/480a3c73eec77217-uniswap-spark-aim-to-build-stablecoin-fx-market-as-banks-fintechs-enter.md",
+        "signals/2026-06-25/crypto-finance/b1453f404f7cb40e-post-prison-cz-says-time-behind-bars-didn-t-hurt-the-billionaire-s-busin.md",
+        "signals/2026-06-25/crypto-finance/f1d4d35e2677bbe9-circle-nomura-eye-japan-corporate-fx-with-stablecoin-settlement-report.md",
+        "signals/2026-06-25/crypto-finance/1f007f03b8eae990-60-of-world-cup-bettors-on-polymarket-were-first-time-crypto-users.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -19,14 +30,14 @@
       "status": "signals-only",
       "count": 8,
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/bbfd5f5a79d9084e-0409135----1--2026.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/edb0e3a33104f104-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/abb81177a74ea4e4-cbr-news.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/3991e49ca1377580-26.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/4b55bc21ff01f4a1-1-4.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/83d5a63078e3e93e-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/87744c8f68421258-rbc-finance.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/finance/a5a0875792a8354f-rbc-finance.md"
+        "signals/2026-06-25/finance/b29f579177ffd395-cbr-news.md",
+        "signals/2026-06-25/finance/a710326cf09ebef1-cbr-news.md",
+        "signals/2026-06-25/finance/e98180de2167224e-cbr-news.md",
+        "signals/2026-06-25/finance/4bc16fba1fda18eb-259.md",
+        "signals/2026-06-25/finance/9250c3bd1e53598b-rbc-finance.md",
+        "signals/2026-06-25/finance/f2cb2a3c13e98b4d-politico.md",
+        "signals/2026-06-25/finance/ce5239740ce3042d-kommersant-finance.md",
+        "signals/2026-06-25/finance/8c8ba8192df857e0-kommersant-finance.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -34,13 +45,14 @@
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 5,
+      "count": 6,
       "signals": [
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/tech-hardware-software/d3ef509215a90f14-anthropic-mythos.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/tech-hardware-software/03b1d0ba142e5401-openai----llm--chatgpt.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/tech-hardware-software/3481c120960d82e1-openai-and-broadcom-announce-chip-designed-for-llm-inference-at-scale.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/tech-hardware-software/7ebbb3922a4ab607-one-two-punch-delivered-in-global-operation-disrupts-cybercrime-assembly.md",
-        "/home/runner/work/news-dispatch/news-dispatch/signals/2026-06-25/tech-hardware-software/08e83b7ea1885f8a-china-tops-the-list-of-fastest-supercomputers-with-a-cpu-only-behemoth-e.md"
+        "signals/2026-06-25/tech-hardware-software/a2432db1679544ed-gartner.md",
+        "signals/2026-06-25/tech-hardware-software/4b5741f918ef665b-3dnews.md",
+        "signals/2026-06-25/tech-hardware-software/a387a153a6af476c-ssd-samsung--pcie-6-0.md",
+        "signals/2026-06-25/tech-hardware-software/816946bd7e9d36f9-anthropic-claims-that-china-s-alibaba-illicitly-distilled-its-models-fro.md",
+        "signals/2026-06-25/tech-hardware-software/922d781bb9442b12-ibm-claims-world-s-first-sub-1-nanometer-chip-technology.md",
+        "signals/2026-06-25/tech-hardware-software/7876c1c26b5362a5-qualcomm-plans-china-specific-data-center-chips-new-dragonfly-lineup-wil.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -48,43 +60,29 @@
   ],
   "fetch_errors": [
     "mos-ru-news: URLError: <urlopen error timed out>",
-    "the-village: URLError: <urlopen error timed out>"
+    "the-village: URLError: <urlopen error timed out>",
+    "nature-news: ParseError: not well-formed (invalid token): line 14, column 4"
   ],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-25/crypto-finance/565b8dcab0c2b290-bitcoin-back-above-60-000-eth-sol-recoup-losses-as-ai-stocks-stage-rebou.md",
+      "path": "signals/2026-06-25/crypto-finance/97e2ff171bc716f4-sbi-holdings-agrees-to-acquire-japanese-crypto-exchange-bitbank-in-288-6.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-25/crypto-finance/b3ef9518d11431cd-thailand-issues-arrest-warrant-for-chinese-businessman-tied-to-28-millio.md",
+      "path": "signals/2026-06-25/crypto-finance/be3f52456fadc449-circle-and-nomura-join-forces-to-target-a-440-billion-daily-foreign-exch.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-25/finance/45b8c56ad6ee0032-700.md",
+      "path": "signals/2026-06-25/crypto-finance/ce42787148a03be5-waiting-for-buyers-bitcoin-holds-fragile-60k-floor-ahead-of-10-6b-quarte.md",
+      "reason": "deal_or_discount",
+      "stream": "crypto-finance"
+    },
+    {
+      "path": "signals/2026-06-25/finance/6174f38dec1469a3-90.md",
       "reason": "deal_or_discount",
       "stream": "finance"
-    },
-    {
-      "path": "signals/2026-06-25/tech-hardware-software/699554bcbe3011f8-best-amazon-prime-day-tech-deals-live-on-day-three-pc-hardware-deals-on.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-25/tech-hardware-software/c2b977bd14bb9a3b-back-in-stock-corsair-s-tiny-touchscreen-discount-returns-during-prime-w.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-25/tech-hardware-software/c96b54f67a91c33c-disney-agreed-to-50m-settlement-over-claims-it-made-live-tv-streaming-ex.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-25/tech-hardware-software/e6ca1c4dc80fda52-60-000.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
     }
   ]
 }
