@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Run Daily Radar in guarded signal-collection mode.
-
-This wrapper intentionally does not mutate repository source files at runtime.
-Signal routing and feed enablement must be explicit in committed configuration.
-"""
+"""Run Daily Radar in guarded signal-collection mode."""
 
 from __future__ import annotations
 
@@ -22,6 +18,7 @@ def run(command: list[str]) -> None:
 def main() -> int:
     run([sys.executable, "tools/daily_radar.py"])
     run([sys.executable, "tools/filter_daily_signals.py"])
+    run([sys.executable, "tools/source_health.py"])
     return 0
 
 
