@@ -74,6 +74,8 @@
       "source_type": "Технологическое медиа",
       "source_class": "public_media",
       "priority": 0.86,
+      "enabled": false,
+      "disabled_reason": "Broad feed produced cross-topic noise in Daily Radar; keep disabled until per-section filtering exists.",
       "tags": ["ai", "platforms", "search", "agents", "consumer-tech"]
     },
     {
