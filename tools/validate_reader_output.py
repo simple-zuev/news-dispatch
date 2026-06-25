@@ -15,6 +15,7 @@ REGISTRY_PATHS = [
     ROOT / "media" / "registry.json",
     ROOT / "media" / "registry.generated.json",
 ]
+EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
 
 SECTIONS = {
     "Лид": ("reader-section-lede", "lede"),
@@ -62,8 +63,11 @@ def front_matter(text: str) -> tuple[dict[str, object], str]:
 def list_value(meta: dict[str, object], key: str) -> list[str]:
     value = meta.get(key, [])
     if isinstance(value, list):
-        return [str(item) for item in value]
-    return [str(value)] if value else []
+        return [str(item) for item in value if str(item).strip() not in EMPTY_SCALARS]
+    scalar = str(value).strip()
+    if scalar in EMPTY_SCALARS:
+        return []
+    return [scalar]
 
 
 def slugify(path: Path) -> str:

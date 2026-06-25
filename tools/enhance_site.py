@@ -23,6 +23,9 @@ DISPATCH_DIR = ROOT / "dispatches"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 
 
+EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
+
+
 def load_streams() -> list[dict[str, Any]]:
     """Load the canonical stream registry.
 
@@ -107,10 +110,11 @@ def slugify(path: Path) -> str:
 def list_value(meta: dict[str, object], key: str) -> list[str]:
     value = meta.get(key, [])
     if isinstance(value, list):
-        return [str(item) for item in value]
-    if value:
-        return [str(value)]
-    return []
+        return [str(item) for item in value if str(item).strip() not in EMPTY_SCALARS]
+    scalar = str(value).strip()
+    if scalar in EMPTY_SCALARS:
+        return []
+    return [scalar]
 
 
 def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object]]]:
@@ -244,6 +248,8 @@ def cards_from_parallel_lists(
     images = images or []
     cards = []
     for index, url in enumerate(urls):
+        if not url or url in EMPTY_SCALARS:
+            continue
         title = at(titles, index, url)
         source_type = at(types, index, "Источник")
         note = at(notes, index, "")
