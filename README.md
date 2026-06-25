@@ -1,41 +1,125 @@
 # News Dispatch
 
-**News Dispatch** is a public-safe editorial platform for multi-domain analytical dispatches.
+**News Dispatch** — public-safe editorial radar for multi-domain analytical dispatches.
 
-It is designed for publishable, anonymized briefings across technology, product, finance, culture, gear, home, science, cities, creative tools, regulated markets, and adjacent domains.
-
-## Core idea
-
-News Dispatch is not a personal diary, not a raw notes dump, not a private inventory, and not a repository for internal drafts.
-
-It is an editorial system for turning external signals into structured analytical dispatches:
+The project turns public external signals into structured analytical material:
 
 ```text
-signal -> verification -> context -> mechanism -> second-order effects -> decision criteria -> what would change the view -> new knowledge
+public signal -> source check -> context -> mechanism -> second-order effects -> criteria -> published dispatch
 ```
 
-## Public-by-default rule
+It is not a raw news feed, personal notebook, private research dump, internal product memo, investment newsletter, or operational work log.
+
+## Current status
+
+The project is now a working GitHub Pages/static-site MVP with an automated signal radar and publication guardrails.
+
+Implemented:
+
+- canonical stream registry in `data/streams.json`;
+- public-safe editorial, source, privacy, security and publishing rules;
+- Markdown dispatch format with strict front matter;
+- static renderer for published dispatches;
+- reader-facing enhancement layer: archive, stream pages, RSS, sitemap, media/source cards, Open Graph metadata and reader sections;
+- automated Daily Radar signal collection from public RSS/Atom feeds;
+- signal filtering and validation reports;
+- GitHub Actions workflows for signal collection, validation and Pages deployment.
+
+The main unfinished layer is editorial synthesis: turning collected signals into verified topic-first dispatches.
+
+## Publication boundary
 
 Everything committed to this repository must be safe for public disclosure.
 
-This applies even when the repository is private.
+This includes Git history, branches, pull requests, issues, comments, file names, commit messages, generated reports, deleted files and metadata.
 
-Git history, branches, pull requests, issues, comments, file names, commit messages, and deleted files may become visible later. Therefore, private calibration, raw prompts, internal notes, sensitive work context, infrastructure details, personal inventories, and unpublished company or product information must stay outside this repository.
+Do not commit:
 
-## Editorial anonymization
+- private prompts or private calibration notes;
+- internal company, product, client, partner, vendor, contractor, roadmap, metric, compliance or security context;
+- personal data, account data, private financial data, medical data or employment-sensitive data;
+- infrastructure details, private URLs, hostnames, IP addresses, tokens, cookies, keys or credentials;
+- screenshots with private UI or metadata.
 
-Personal or organizational context may influence topic selection, weighting, and editorial judgment, but it must not appear as personal or internal disclosure.
+Personal or organizational context may influence topic selection and weighting, but it must not appear in the published text.
 
-The text should not name the intended beneficiary of a conclusion.
+## Editorial model
 
-Prefer neutral analytical language:
+News Dispatch is an analytical publication system, not a clipping service.
 
-- the signal may indicate;
-- the observable mechanism is;
-- the likely implication is;
-- pressure may increase around;
-- the hypothesis should be tested against;
-- the position changes if.
+Each significant item should separate:
+
+- fact;
+- release;
+- research;
+- review;
+- benchmark;
+- user/community signal;
+- rumor or unconfirmed signal;
+- forecast;
+- marketing claim;
+- editorial inference.
+
+For high-impact topics, especially finance, crypto-finance, regulation, AML/CFT, sanctions, taxation, cybersecurity and compliance, use primary sources whenever possible and avoid legal, tax, compliance or investment advice.
+
+## Canonical streams
+
+Active streams are defined in `data/streams.json`.
+
+Current streams:
+
+- `finance` — финансы РФ и мир;
+- `crypto-finance` — криптофинансы РФ и мир;
+- `ai` — AI, железо, софт и исследования;
+- `tech-hardware-software` — железо и софт;
+- `gear-style-edc` — EDC, кроссовки и одежда;
+- `moscow-city` — Москва, события и места;
+- `dj-audio-creative` — DJ, аудио и creative tech;
+- `science-discovery` — наука и открытия;
+- `general` — only for cross-domain special issues.
+
+Legacy stream names may remain for historical compatibility, but new navigation and publication logic must use `data/streams.json`.
+
+## Workflows
+
+### Daily Radar Signals
+
+Purpose: collect public RSS/Atom signals and update radar state.
+
+It writes signal-layer artifacts only:
+
+- `signals/`;
+- `data/daily-radar-seen.json`;
+- `validation/daily-radar-latest.json`;
+- `validation/daily-radar-filter-summary.json`.
+
+It must not publish analytical conclusions by itself. Draft dispatch files are not a user-facing deliverable.
+
+### Validate News Dispatch
+
+Purpose: verify repository quality on PRs and pushes to `main`.
+
+It checks Python syntax, front matter, published-content rules, static rendering, reader output and public-safety scanning.
+
+### Deploy News Dispatch Pages
+
+Purpose: build and deploy the public site.
+
+Only dispatches with `status: "published"` are exposed on GitHub Pages. Signals and draft material are not published as finished dispatches.
+
+## Publication workflow
+
+```text
+public signal
+-> signal capture
+-> source/context check
+-> editorial synthesis
+-> privacy/public-safety check
+-> published dispatch
+-> static site deployment
+```
+
+Minimal rule: Daily Radar can tell what appeared in public sources. A dispatch can state what it means only after editorial review.
 
 ## Repository structure
 
@@ -50,46 +134,38 @@ news-dispatch/
   PUBLISHING.md
   SECURITY.md
 
-  streams/
-    README.md
-    digital-assets-infrastructure/
+  data/
+    streams.json
+    taxonomy.yml
+    daily-radar-seen.json
+
+  sources/
+    feeds.json
+
+  dispatches/
+    <stream>/*.md
+
+  signals/
+    YYYY-MM-DD/<stream>/*.md
+
+  media/
+    registry.json
+    registry.generated.json
 
   templates/
     dispatch.md
     privacy-check.md
 
-  data/
-    taxonomy.yml
-
   tools/
-    privacy_scan.py
+    *.py
+
+  validation/
+    *.json
 
   site/
-    README.md
+    generated static site
 ```
 
-## Editorial streams
+## Quality target
 
-News Dispatch can host multiple independent editorial streams:
-
-- General multi-domain dispatches
-- Work and product intelligence
-- Finance and consumer economics
-- Digital assets infrastructure
-- Home, environment and infrastructure
-- Gear, carry and material culture
-- City, culture and media
-- Audio, DJ and creative technology
-- Horizon notes: science, systems, futures
-
-## Status
-
-Initial Git MVP scaffold.
-
-Next steps:
-
-1. Keep all repository content public-safe from the first draft.
-2. Add missing policy and style files.
-3. Add first anonymized dispatch template instance.
-4. Run privacy check before any external publication.
-5. Decide whether the public layer will be GitHub Pages, static export, or Home Lab mirror.
+A good issue is short but not shallow. It distinguishes signal from noise, fact from inference, source report from verified claim, and public evidence from community sentiment. It explains mechanisms, second-order effects, uncertainty, and what should be checked next.

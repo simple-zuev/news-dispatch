@@ -1,18 +1,10 @@
-name: Daily Radar
+name: Daily Radar Signals
 
 on:
   schedule:
     - cron: "55 6 * * *"
   workflow_dispatch:
     inputs:
-      status:
-        description: "Dispatch publication status"
-        required: false
-        default: "draft"
-        type: choice
-        options:
-          - draft
-          - published
       max_items:
         description: "Maximum feed items"
         required: false
@@ -26,10 +18,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-commit:
+  collect-commit:
     runs-on: ubuntu-latest
     env:
-      DAILY_RADAR_STATUS: ${{ inputs.status || 'draft' }}
       DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '24' }}
       DAILY_RADAR_MIN_ITEMS: "4"
       DAILY_RADAR_LOOKBACK_HOURS: "24"
@@ -50,52 +41,26 @@ jobs:
           python-version: '3.12'
 
       - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/run_daily_radar_safe.py tools/filter_daily_signals.py tools/render_site.py tools/enhance_site.py tools/enrich_media_registry.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/privacy_scan.py
+        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/run_daily_radar_safe.py tools/filter_daily_signals.py tools/privacy_scan.py
 
       - name: Build Daily Radar signals
         run: python tools/run_daily_radar_safe.py
 
-      - name: Validate dispatch front matter
-        run: python tools/validate_front_matter.py
-
-      - name: Validate published editorial content
-        run: python tools/validate_published.py
-
-      - name: Render static site
-        run: python tools/render_site.py
-
-      - name: Enhance static site
-        run: python tools/enhance_site.py
-
-      - name: Enrich media registry
-        run: python tools/enrich_media_registry.py
-
-      - name: Apply media previews
-        run: python tools/apply_media_previews.py
-
-      - name: Apply reader sections
-        run: python tools/apply_reader_sections.py
-
-      - name: Validate reader output
-        run: python tools/validate_reader_output.py
-
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
-      - name: Commit Daily Radar changes
+      - name: Commit Daily Radar signal changes
         run: |
           git config user.name "news-dispatch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add signals data validation media
+          git add signals data validation
           if git diff --cached --quiet --exit-code; then
             echo "No signal/report changes to commit."
             git reset --hard HEAD
-            git clean -fd site dispatches
             exit 0
           fi
           git commit -m "dispatch: update daily radar signals"
           git reset --hard HEAD
-          git clean -fd site dispatches
           for attempt in 1 2 3; do
             git fetch origin main
             git rebase origin/main
