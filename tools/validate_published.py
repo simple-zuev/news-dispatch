@@ -9,7 +9,8 @@ It blocks common publication failures:
 - raw URL dumps in article body;
 - English headings in Russian articles;
 - obvious advertising language;
-- rumors mixed into articles without the required section.
+- rumors mixed into articles without the required section;
+- pre-publication radar/candidate artifacts leaked into published dispatches.
 """
 
 from __future__ import annotations
@@ -55,6 +56,16 @@ TECHNICAL_PUBLIC_PATTERNS = [
     r"front matter",
     r"publication_scope",
     r"private_context_used",
+]
+
+PREPUBLICATION_PATTERNS = [
+    r"pre-publication",
+    r"candidate dispatch",
+    r"reviewed radar",
+    r"not a published dispatch",
+    r"daily radar signals",
+    r"source-reported RSS/Atom appearance",
+    r"needs grouping, context check and impact assessment",
 ]
 
 REQUIRED_SECTIONS = [
@@ -196,6 +207,9 @@ def validate_published(path: Path, meta: dict[str, object], body: str) -> list[s
     for pattern in TECHNICAL_PUBLIC_PATTERNS:
         if re.search(pattern, body, re.IGNORECASE):
             errors.append(f"{rel}: technical/publication phrase leaked into body: {pattern}")
+    for pattern in PREPUBLICATION_PATTERNS:
+        if re.search(pattern, body, re.IGNORECASE):
+            errors.append(f"{rel}: pre-publication artifact phrase leaked into published body: {pattern}")
 
     rumor_words = ["слух", "инсайд", "утечк", "неподтверж"]
     has_rumor_language = any(word in body.lower() for word in rumor_words)
