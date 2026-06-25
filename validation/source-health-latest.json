@@ -1,0 +1,173 @@
+{
+  "total": 24,
+  "feeds": [
+    {
+      "id": "rbc-finance",
+      "title": "РБК",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "kommersant-finance",
+      "title": "Коммерсантъ",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "cbr-news",
+      "title": "Банк России",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "coindesk",
+      "title": "CoinDesk",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "cointelegraph",
+      "title": "Cointelegraph",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "the-block",
+      "title": "The Block",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "the-verge-ai",
+      "title": "The Verge",
+      "stream": "ai",
+      "enabled": false,
+      "status": "disabled"
+    },
+    {
+      "id": "github-blog-ai",
+      "title": "GitHub Blog",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "microsoft-blog-ai",
+      "title": "Microsoft Blog",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "mit-tech-review-ai",
+      "title": "MIT Technology Review",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "ars-technica-tech",
+      "title": "Ars Technica",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "3dnews",
+      "title": "3DNews",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "tomshardware",
+      "title": "Tom's Hardware",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "apple-newsroom-tech",
+      "title": "Apple Newsroom",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "nvidia-blog-tech",
+      "title": "NVIDIA Blog",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "sneaker-news",
+      "title": "Sneaker News",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "hypebeast",
+      "title": "Hypebeast",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "mos-ru-news",
+      "title": "mos.ru",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "error"
+    },
+    {
+      "id": "the-village",
+      "title": "The Village",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "error"
+    },
+    {
+      "id": "dj-techtools",
+      "title": "DJ TechTools",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "create-digital-music",
+      "title": "Create Digital Music",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "nature-news",
+      "title": "Nature",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "science-daily",
+      "title": "ScienceDaily",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "nplus1",
+      "title": "N+1",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    }
+  ]
+}
