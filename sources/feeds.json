@@ -186,6 +186,8 @@
       "source_type": "Официальный городской источник",
       "source_class": "official_source",
       "priority": 0.76,
+      "enabled": false,
+      "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until a stable official Moscow feed or fallback source is added.",
       "tags": ["moscow", "city", "transport", "services", "events"]
     },
     {
@@ -196,6 +198,8 @@
       "source_type": "Городское медиа",
       "source_class": "public_media",
       "priority": 0.68,
+      "enabled": false,
+      "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until the feed is stable or replaced.",
       "tags": ["moscow", "city", "venues", "food", "culture"]
     },
     {
@@ -226,6 +230,8 @@
       "source_type": "Научный журнал",
       "source_class": "research_media",
       "priority": 0.88,
+      "enabled": false,
+      "disabled_reason": "Feed produced XML parse errors during production Daily Radar run; keep paused until replaced by a valid feed endpoint.",
       "tags": ["science", "research", "biology", "medicine", "physics"]
     },
     {
