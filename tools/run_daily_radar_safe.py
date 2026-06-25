@@ -22,6 +22,7 @@ def main() -> int:
     run([sys.executable, "tools/source_health.py"])
     run([sys.executable, "tools/build_radar_review.py"])
     run([sys.executable, "tools/build_candidate_dispatch.py"])
+    run([sys.executable, "tools/validate_candidate_dispatch.py"])
     return 0
 
 
