@@ -1,12 +1,12 @@
 ---
 title: ""
 date: "YYYY-MM-DD"
-period: ""
-stream: "general"
+period: "YYYY-MM-DD"
+stream: "crypto-finance"
 type: "daily"
 language: "ru"
 status: "draft"
-review_level: "standard_public_review"
+review_level: "strict_publication_review"
 publication_scope: "public"
 public_safe: false
 private_context_used: false
@@ -16,94 +16,90 @@ contains_confidential_strategy: false
 contains_nonpublic_sources: false
 contains_investment_advice: false
 contains_legal_advice: false
+contains_advertising: false
+contains_paid_promotion: false
 source_mode: "public_sources_only"
 summary: ""
 tags: []
 sources: []
+source_titles: []
+source_types: []
+source_notes: []
+media: []
+media_titles: []
+media_types: []
+media_notes: []
+visuals: []
+visual_titles: []
+visual_types: []
 privacy_review: "not_started"
 editorial_review: "not_started"
 ---
 
 # {{ title }}
 
-## Issue panel
+## Лид
 
-| Field | Value |
-|---|---|
-| Period |  |
-| Main thesis |  |
-| Main question |  |
-| Importance |  |
-| Main risk |  |
-| Main decision criterion |  |
-| What would change the view |  |
+Коротко сформулировать главный сдвиг: что изменилось, почему это не просто новость, какой механизм важен.
 
-## Executive brief
+## Главное
 
-Write 5-7 non-obvious conclusions. Each conclusion should include a mechanism, consequence, or decision criterion.
+1. Первый вывод: факт → механизм → следствие.
+2. Второй вывод: факт → механизм → следствие.
+3. Третий вывод: факт → механизм → следствие.
+4. Четвёртый вывод: факт → механизм → следствие.
+5. Пятый вывод: факт → механизм → следствие.
 
-1. 
-2. 
-3. 
-4. 
-5. 
+## Что произошло
 
-## Main editorial essay
+Разделить факты, источник сообщения и статус подтверждения. Не смешивать опубликованный факт, интерпретацию и слух.
 
-Write a connected analytical narrative, not a list of unrelated news items.
+## Почему это важно
 
-## Key signals
+Показать, на какой слой влияет событие: рынок, регулирование, инфраструктура, продуктовая категория, пользовательское поведение, доверие, стоимость действия или операционный риск.
 
-### Signal 1 — 
+## Анализ
 
-- Type: fact / release / research / review / benchmark / community signal / forecast / marketing / editorial inference
-- Confidence: high / medium / low / unknown
-- Sources:
-- Verification:
-- Mechanism:
-- Second-order effects:
-- Leading indicators:
-- Lagging indicators:
-- Decision criteria:
-- What would change the view:
-- New knowledge:
+Для каждого существенного сигнала использовать схему:
 
-## Community radar
+Тезис → Аргумент → Следствие/Риск.
 
-Separate verified facts from user sentiment. Classify community evidence as isolated complaint, repeated defect, firmware/software regression, compatibility pattern, long-term ownership signal, or subjective preference.
+Указывать:
+- источник и уровень подтверждения;
+- механизм влияния;
+- кого или что затрагивает;
+- вторичные эффекты;
+- что остаётся неопределённым;
+- что изменит текущую оценку.
 
-## Buying and material-culture radar
+## Скрытые и косвенные сигналы
 
-Use scenario, duplication, compatibility, materials, weight, repairability, service, availability, and total cost of ownership. State conditions under which the position changes.
+Зафиксировать непрямые изменения, которые могут повлиять на рынок, продуктовые категории, инфраструктуру, регуляторную среду или организационные модели.
 
-## Finance and consumer environment
+## Слухи и мнения
 
-Use educational, scenario-based framing. No personal financial advice.
+Если используются Telegram, X/Twitter, форумы, Reddit, комментарии, инсайды или неподтверждённые сообщения, явно маркировать их как weak signal. Не выдавать за факт.
 
-## Horizon notes
+## Мнение людей
 
-Add one to three ideas that broaden competence beyond the immediate news cycle.
+Отделить пользовательскую реакцию от фактов. Классифицировать её как: isolated complaint, repeated defect pattern, software/firmware regression, compatibility issue, bad batch signal, long-term ownership signal, subjective preference или local market availability issue.
 
-## Signal vs noise
+## Медиа и материалы
 
-| Signal | Noise |
-|---|---|
-|  |  |
+Коротко объяснить, какие материалы вынесены в media/source cards и почему они нужны для проверки.
 
-## Risks and limits
+## Источники
 
-- 
+Описать источниковую базу: первичные документы, официальные источники, деловые/отраслевые медиа, исследования, слабые сигналы. Указать ограничения.
 
-## Decisions with criteria
+## Что наблюдать дальше
 
-- Watch:
-- Test:
-- Buy / do not buy:
-- Add to watchlist:
-- Ignore:
+- Какие первичные документы должны появиться.
+- Какие независимые подтверждения нужны.
+- Какие метрики/сигналы покажут, что оценка верна.
+- Что изменит текущую позицию.
+- Что проверить через 7/30/90 дней.
 
-## Change in worldview
+## Итог
 
-1. 
-2. 
-3. 
+Одним абзацем: что стало понятнее, где сохраняется неопределённость и какой публичный критерий наблюдения дальше.
