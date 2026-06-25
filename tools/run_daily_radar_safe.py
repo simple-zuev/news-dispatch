@@ -16,6 +16,7 @@ def run(command: list[str]) -> None:
 
 
 def main() -> int:
+    run([sys.executable, "tools/validate_feeds.py"])
     run([sys.executable, "tools/daily_radar.py"])
     run([sys.executable, "tools/filter_daily_signals.py"])
     run([sys.executable, "tools/source_health.py"])
