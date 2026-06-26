@@ -6,7 +6,7 @@ stream: "tech-hardware-software"
 type: "daily"
 language: "ru"
 status: "published"
-review_level: "limited_publication"
+review_level: "strict_publication_review"
 publication_scope: "public"
 public_safe: true
 private_context_used: false
