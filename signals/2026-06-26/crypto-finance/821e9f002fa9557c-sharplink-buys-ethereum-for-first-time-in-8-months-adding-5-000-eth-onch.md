@@ -1,0 +1,29 @@
+---
+title: "Sharplink buys Ethereum for first time in 8 months, adding 5,000 ETH: onchain analyst"
+date: "2026-06-26"
+status: "draft"
+signal_type: "fact"
+confidence: "source_reported"
+source_class: "specialized_media"
+streams:
+  - "crypto-finance"
+domains:
+  - "the-block"
+sources:
+  - "https://www.theblock.co/post/406268/sharplink-buys-ethereum-8-months?utm_source=rss&utm_medium=rss"
+source_titles:
+  - "The Block: Sharplink buys Ethereum for first time in 8 months, adding 5,000 ETH: onchain analyst"
+source_types:
+  - "Криптофинансовое медиа"
+---
+
+# Sharplink buys Ethereum for first time in 8 months, adding 5,000 ETH: onchain analyst
+
+## Что произошло
+
+The Block опубликовал материал в публичной RSS/Atom-ленте.
+
+## Статус проверки
+
+- Подтверждено: факт появления материала в публичной ленте.
+- Не подтверждено: полнота контекста, последствия и интерпретации.

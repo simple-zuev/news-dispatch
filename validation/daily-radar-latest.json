@@ -1,13 +1,13 @@
 {
-  "date": "2026-06-25",
+  "date": "2026-06-26",
   "generated": [
     {
       "stream": "ai",
       "status": "signals-only",
       "count": 2,
       "signals": [
-        "signals/2026-06-25/ai/20bbdf16a8b7f3ef-the-download-europe-s-heat-wave-hits-the-grid-and-ibm-s-chip-targets-moo.md",
-        "signals/2026-06-25/ai/9976f622653b5621-ibm-has-unveiled-chip-technology-that-could-help-extend-moore-s-law-anot.md"
+        "signals/2026-06-26/ai/0d180708b9cf8116-evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harn.md",
+        "signals/2026-06-26/ai/0ed8d377bbafdcb1-heat-waves-mess-with-your-brain-scientists-are-trying-to-figure-out-why.md"
       ],
       "media_count": 2,
       "routing": "feed_owned"
@@ -15,12 +15,13 @@
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 4,
+      "count": 5,
       "signals": [
-        "signals/2026-06-25/crypto-finance/480a3c73eec77217-uniswap-spark-aim-to-build-stablecoin-fx-market-as-banks-fintechs-enter.md",
-        "signals/2026-06-25/crypto-finance/b1453f404f7cb40e-post-prison-cz-says-time-behind-bars-didn-t-hurt-the-billionaire-s-busin.md",
-        "signals/2026-06-25/crypto-finance/f1d4d35e2677bbe9-circle-nomura-eye-japan-corporate-fx-with-stablecoin-settlement-report.md",
-        "signals/2026-06-25/crypto-finance/1f007f03b8eae990-60-of-world-cup-bettors-on-polymarket-were-first-time-crypto-users.md"
+        "signals/2026-06-26/crypto-finance/a9dd25ad00c6e9a1-corporate-bitcoin-treasuries-explained-why-public-companies-hold-bitcoin.md",
+        "signals/2026-06-26/crypto-finance/ada2537193686496-ethereum-treasury-firm-sharplink-takes-in-ether-for-the-first-time-in-ei.md",
+        "signals/2026-06-26/crypto-finance/c2aadff95c59ab22-bitcoin-etf-flows-explained-what-etf-inflows-and-outflows-mean-for-inves.md",
+        "signals/2026-06-26/crypto-finance/821e9f002fa9557c-sharplink-buys-ethereum-for-first-time-in-8-months-adding-5-000-eth-onch.md",
+        "signals/2026-06-26/crypto-finance/701e3ce8e1e9c277-kraken-maple-launch-onchain-warehouse-facility-for-crypto-backed-institu.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -28,16 +29,15 @@
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 8,
+      "count": 7,
       "signals": [
-        "signals/2026-06-25/finance/b29f579177ffd395-cbr-news.md",
-        "signals/2026-06-25/finance/a710326cf09ebef1-cbr-news.md",
-        "signals/2026-06-25/finance/e98180de2167224e-cbr-news.md",
-        "signals/2026-06-25/finance/4bc16fba1fda18eb-259.md",
-        "signals/2026-06-25/finance/9250c3bd1e53598b-rbc-finance.md",
-        "signals/2026-06-25/finance/f2cb2a3c13e98b4d-politico.md",
-        "signals/2026-06-25/finance/ce5239740ce3042d-kommersant-finance.md",
-        "signals/2026-06-25/finance/8c8ba8192df857e0-kommersant-finance.md"
+        "signals/2026-06-26/finance/061146cca67e7bd0-cbr-news.md",
+        "signals/2026-06-26/finance/4c671a94bd5a92ca-cbr-news.md",
+        "signals/2026-06-26/finance/9bddb2170643ed8a-cbr-news.md",
+        "signals/2026-06-26/finance/775aef0d91a3925e-rbc-finance.md",
+        "signals/2026-06-26/finance/d00a722a7d2a420e-rbc-finance.md",
+        "signals/2026-06-26/finance/85413f76558a7d45-2026.md",
+        "signals/2026-06-26/finance/dc17a72fe6744ff1-the-information----openai.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -47,42 +47,40 @@
       "status": "signals-only",
       "count": 6,
       "signals": [
-        "signals/2026-06-25/tech-hardware-software/a2432db1679544ed-gartner.md",
-        "signals/2026-06-25/tech-hardware-software/4b5741f918ef665b-3dnews.md",
-        "signals/2026-06-25/tech-hardware-software/a387a153a6af476c-ssd-samsung--pcie-6-0.md",
-        "signals/2026-06-25/tech-hardware-software/816946bd7e9d36f9-anthropic-claims-that-china-s-alibaba-illicitly-distilled-its-models-fro.md",
-        "signals/2026-06-25/tech-hardware-software/922d781bb9442b12-ibm-claims-world-s-first-sub-1-nanometer-chip-technology.md",
-        "signals/2026-06-25/tech-hardware-software/7876c1c26b5362a5-qualcomm-plans-china-specific-data-center-chips-new-dragonfly-lineup-wil.md"
+        "signals/2026-06-26/tech-hardware-software/bf49248621c0bee4-openai---ipo-------1.md",
+        "signals/2026-06-26/tech-hardware-software/7b398501be8f4937-openai.md",
+        "signals/2026-06-26/tech-hardware-software/d1bcce1feb7cdcc3-openai----gpt-5-6.md",
+        "signals/2026-06-26/tech-hardware-software/483f2dbca7cdce8b-google-finally-releases-a-finance-android-app-promises-ios-version-later.md",
+        "signals/2026-06-26/tech-hardware-software/880f32e678ad7b2f-microsoft-adds-another-year-to-windows-10-extended-update-program.md",
+        "signals/2026-06-26/tech-hardware-software/9cbee71e8f254b02-new-effort-will-get-genome-sequences-for-entire-endangered-species-list.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     }
   ],
   "fetch_errors": [
-    "mos-ru-news: URLError: <urlopen error timed out>",
-    "the-village: URLError: <urlopen error timed out>",
-    "nature-news: ParseError: not well-formed (invalid token): line 14, column 4"
+    "hypebeast: TimeoutError: The read operation timed out"
   ],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-25/crypto-finance/97e2ff171bc716f4-sbi-holdings-agrees-to-acquire-japanese-crypto-exchange-bitbank-in-288-6.md",
+      "path": "signals/2026-06-26/crypto-finance/065d0151044d448e-japanese-financial-services-giant-sbi-holdings-to-buy-bitbank-for-289-mi.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-25/crypto-finance/be3f52456fadc449-circle-and-nomura-join-forces-to-target-a-440-billion-daily-foreign-exch.md",
+      "path": "signals/2026-06-26/crypto-finance/b006432b5d8100f1-too-big-to-fail-strategy-s-13-billion-bitcoin-paper-loss-alone-dwarfs-hu.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-25/crypto-finance/ce42787148a03be5-waiting-for-buyers-bitcoin-holds-fragile-60k-floor-ahead-of-10-6b-quarte.md",
+      "path": "signals/2026-06-26/tech-hardware-software/285a8eba91bab87a-keep-your-gaming-keyboard-and-pc-fans-clean-with-these-electric-air-blow.md",
       "reason": "deal_or_discount",
-      "stream": "crypto-finance"
+      "stream": "tech-hardware-software"
     },
     {
-      "path": "signals/2026-06-25/finance/6174f38dec1469a3-90.md",
+      "path": "signals/2026-06-26/tech-hardware-software/886d3570ad62ad81-best-amazon-prime-day-tech-deals-live-on-day-four-last-chance-to-grab-sa.md",
       "reason": "deal_or_discount",
-      "stream": "finance"
+      "stream": "tech-hardware-software"
     }
   ]
 }

@@ -118,21 +118,21 @@
       "title": "Hypebeast",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "mos-ru-news",
       "title": "mos.ru",
       "stream": "moscow-city",
-      "enabled": true,
-      "status": "error"
+      "enabled": false,
+      "status": "disabled"
     },
     {
       "id": "the-village",
       "title": "The Village",
       "stream": "moscow-city",
-      "enabled": true,
-      "status": "error"
+      "enabled": false,
+      "status": "disabled"
     },
     {
       "id": "dj-techtools",
@@ -152,8 +152,8 @@
       "id": "nature-news",
       "title": "Nature",
       "stream": "science-discovery",
-      "enabled": true,
-      "status": "error"
+      "enabled": false,
+      "status": "disabled"
     },
     {
       "id": "science-daily",
