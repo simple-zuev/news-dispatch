@@ -2,32 +2,70 @@
   "date": "2026-06-27",
   "generated": [
     {
+      "stream": "ai",
+      "status": "signals-only",
+      "count": 3,
+      "signals": [
+        "signals/2026-06-27/ai/482be67e10193735-the-download-brain-melting-heatwaves-and-unprecedented-openai-restrictio.md",
+        "signals/2026-06-27/ai/3f2100667a87c7b2-github-and-undp-team-up-to-advance-development-priorities-in-ghana-with.md",
+        "signals/2026-06-27/ai/d989886b0f49e6a4-transitioning-as-a-hubber.md"
+      ],
+      "media_count": 3,
+      "routing": "feed_owned"
+    },
+    {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 6,
+      "count": 7,
       "signals": [
-        "signals/2026-06-27/crypto-finance/83bfb476b9d52867-ripple-ceo-stays-bullish-on-bitcoin-but-says-saylor-s-strategy-has-hurt.md",
-        "signals/2026-06-27/crypto-finance/25622f82d61d2435-dogecoin-and-hyperliquid-s-hype-led-weekly-crypto-losses-as-ai-stocks-lu.md",
-        "signals/2026-06-27/crypto-finance/552e43ae5e35357a-here-s-what-happened-in-crypto-today.md",
-        "signals/2026-06-27/crypto-finance/2449d12a5718ee6d-ripple-ceo-says-michael-saylor-has-hurt-crypto-market-as-strategy-s-strc.md",
-        "signals/2026-06-27/crypto-finance/cc324d1699cb211d-draftkings-launches-its-own-prediction-markets-exchange-as-consumer-volu.md",
-        "signals/2026-06-27/crypto-finance/93dace31fab9c3bc-eu-lawmakers-urge-assessing-defi-staking-nft-regulation.md"
+        "signals/2026-06-27/crypto-finance/5d6c953785c84a95-what-robinhood-s-recent-layoffs-say-about-the-current-state-of-crypto-in.md",
+        "signals/2026-06-27/crypto-finance/4e8119f78607e170-binance-founder-cz-blames-crypto-s-sour-2026-on-mix-of-ai-global-tension.md",
+        "signals/2026-06-27/crypto-finance/f98b99a3b3cbcdc9-average-ibit-investor-now-down-about-40-as-spot-bitcoin-etfs-cap-second.md",
+        "signals/2026-06-27/crypto-finance/3a47472baf04fb61-fidelity-rebuts-claims-bitcoin-becomes-less-secure-after-halvings.md",
+        "signals/2026-06-27/crypto-finance/560e1dc43a61b685-dcg-backed-yuma-launches-fund-offering-institutional-exposure-to-bittens.md",
+        "signals/2026-06-27/crypto-finance/e8dbea8d10e686dd-bitcoin-faces-fresh-capitulation-risk-as-50k-btc-moved-at-a-loss.md",
+        "signals/2026-06-27/crypto-finance/96ea60547da2f647-strategy-loses-its-bitcoin-premium-as-enterprise-mnav-dips-below-1.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     },
     {
+      "stream": "dj-audio-creative",
+      "status": "signals-only",
+      "count": 2,
+      "signals": [
+        "signals/2026-06-27/dj-audio-creative/45686a0bf1622e5b-ekssperimental-sounds-studios-analog-style-wonders-for-reason-hands-on.md",
+        "signals/2026-06-27/dj-audio-creative/d04d7cf56eb74083-venezuela-is-reeling-from-major-earthquakes-artists-on-how-to-help.md"
+      ],
+      "media_count": 2,
+      "routing": "feed_owned"
+    },
+    {
       "stream": "finance",
       "status": "signals-only",
-      "count": 7,
+      "count": 6,
       "signals": [
-        "signals/2026-06-27/finance/a4a4107da2ef67af-2026.md",
-        "signals/2026-06-27/finance/9349e817e51a22d2-rbc-finance.md",
-        "signals/2026-06-27/finance/7836790e5edf92d1-2026.md",
-        "signals/2026-06-27/finance/1a875a430174eac2-kommersant-finance.md",
-        "signals/2026-06-27/finance/967aec9dfe827e58-ruonia.md",
-        "signals/2026-06-27/finance/3ea6fab713319b80-cbr-news.md",
-        "signals/2026-06-27/finance/f32e30cb970c7218-kommersant-finance.md"
+        "signals/2026-06-27/finance/1d970601addcb4f0-ukdj.md",
+        "signals/2026-06-27/finance/5594d923758ce6d0-rbc-finance.md",
+        "signals/2026-06-27/finance/adc962893854086a-rbc-finance.md",
+        "signals/2026-06-27/finance/0aa7e583b81915e8-kommersant-finance.md",
+        "signals/2026-06-27/finance/8173b7195a58c5b7-kommersant-finance.md",
+        "signals/2026-06-27/finance/92800b8bbea4f0dd-kommersant-finance.md"
+      ],
+      "media_count": 4,
+      "routing": "feed_owned"
+    },
+    {
+      "stream": "gear-style-edc",
+      "status": "signals-only",
+      "count": 6,
+      "signals": [
+        "signals/2026-06-27/gear-style-edc/ef4ce1e8a21e6403-nike-celebrates-30th-anniversary-of-jay-z-s-reasonable-doubt-album-with.md",
+        "signals/2026-06-27/gear-style-edc/5fbf1dada6545a53-the-women-s-nike-vomero-5-aluminum-doubles-up-on-swooshes.md",
+        "signals/2026-06-27/gear-style-edc/78c8272eda2fbcd1-first-look-at-the-nike-kobe-6-protro-coals-for-christmas-2026.md",
+        "signals/2026-06-27/gear-style-edc/279f097150eb2190-junya-watanabe-man-ss27-blends-streetwear-icons-and-luxury-tailoring-und.md",
+        "signals/2026-06-27/gear-style-edc/a5d4dbbf01ecf7e0-announcing-the-awake-ny-x-doordash-collection-and-ticket-winners.md",
+        "signals/2026-06-27/gear-style-edc/7cafc67236ce6f0e-sony-pictures-unveils-official-whimsical-trailer-for-taika-waititi-s-kla.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -35,24 +73,29 @@
     {
       "stream": "science-discovery",
       "status": "signals-only",
-      "count": 0,
-      "signals": [],
-      "media_count": 0,
+      "count": 6,
+      "signals": [
+        "signals/2026-06-27/science-discovery/63a98c46bfb42f0d-scientists-discover-what-triggers-belly-fat-as-we-age.md",
+        "signals/2026-06-27/science-discovery/0e2eb2abcc30bf6e-new-solid-state-material-converts-sunlight-into-higher-energy-uv-light.md",
+        "signals/2026-06-27/science-discovery/bf6bffcd2f713635-researchers-discover-why-fructose-doesn-t-satisfy-hunger-like-glucose.md",
+        "signals/2026-06-27/science-discovery/1c19c14cf09d7c9e-nplus1.md",
+        "signals/2026-06-27/science-discovery/9e35fd24cbf5417a-nplus1.md",
+        "signals/2026-06-27/science-discovery/95f198fc45323a6d-nplus1.md"
+      ],
+      "media_count": 4,
       "routing": "feed_owned"
     },
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 8,
+      "count": 6,
       "signals": [
-        "signals/2026-06-27/tech-hardware-software/079c25f1a777768a-msi-------titan-18-hx-dragon-edition-draco-epic--core-ultra-9-290hx--rtx.md",
-        "signals/2026-06-27/tech-hardware-software/860a64543104b23f-apple-vision-pro-----openai.md",
-        "signals/2026-06-27/tech-hardware-software/f7a6d6e1adbde7d8-imei.md",
-        "signals/2026-06-27/tech-hardware-software/9ad3af891193d1bf-south-korea-plans-to-train-entire-military-as-drone-warriors.md",
-        "signals/2026-06-27/tech-hardware-software/5eee074db3850cbb-nyt-slams-microsoft-for-building-copyright-infringing-supercomputer-for.md",
-        "signals/2026-06-27/tech-hardware-software/7ef3cf49325e1e7a-doctors-suspected-man-had-brain-cancer-he-actually-had-worms.md",
-        "signals/2026-06-27/tech-hardware-software/2a7a9f3e6b4dc40a-openai-s-chatgpt-5-6-gets-the-same-banhammer-treatment-as-anthropic-s-my.md",
-        "signals/2026-06-27/tech-hardware-software/f8ecd965ee806119-solidigm-vp-talks-pcie-6-0-ssds-next-gen-floating-gate-nand-liquid-coole.md"
+        "signals/2026-06-27/tech-hardware-software/273d2af8d56e8752-raspberry-pi-4-model-b.md",
+        "signals/2026-06-27/tech-hardware-software/c4e3ebf53f857f53-windows-11-----ddr--intel-core-2-quad---radeon-hd-4650.md",
+        "signals/2026-06-27/tech-hardware-software/30b13f31d2281825-apple-and-audi-alumni-have-made-a-luxe-ev-based-on-the-moon-buggy.md",
+        "signals/2026-06-27/tech-hardware-software/71f8537431583d4e-modded-steam-controller-can-automatically-charge-itself-like-a-robot-vac.md",
+        "signals/2026-06-27/tech-hardware-software/2050b3874f329192-russian-citizens-told-switch-to-android-after-apple-blocks-key-russian-a.md",
+        "signals/2026-06-27/tech-hardware-software/f42c2525f6e2bcae-spacex-plans-to-launch-starlink-mobile-service-in-the-us.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -61,19 +104,29 @@
   "fetch_errors": [],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-27/crypto-finance/619976145bd70537-aave-solana-ecosystem-tokens-lead-crypto-rebound-as-bitcoin-steadies-nea.md",
+      "path": "signals/2026-06-27/crypto-finance/6cfbfb431df2b24c-framework-ventures-raises-400-million-for-fourth-fund-to-invest-across-c.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-27/crypto-finance/789afbe823647c54-ethereum-og-wallets-finally-sell-after-8-years-locking-in-estimated-27m.md",
+      "path": "signals/2026-06-27/crypto-finance/d952d01400bad57b-tether-putting-23-billion-gold-stockpile-to-work-with-bullion-backed-loa.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-27/science-discovery/3c88c9e651c0ee48-nplus1.md",
-      "reason": "low_information_title",
-      "stream": "science-discovery"
+      "path": "signals/2026-06-27/tech-hardware-software/5a160047ad2a55fa-get-an-rtx-5060-gaming-laptop-loaded-with-ryzen-7-cpu-and-32gb-ram-for-1.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-27/tech-hardware-software/6773f2ce2224bf0d-commodore-drops-callback-flip-phone-by-100-by-defaulting-to-recycled-mem.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-27/tech-hardware-software/92d60b0e80fd7764-ayaneo-pocket-micro-2---snapdragon-865--239.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
     }
   ]
 }

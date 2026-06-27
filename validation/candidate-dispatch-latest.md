@@ -22,165 +22,279 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 21
-- Streams with retained signals: 4
+- Retained signals: 36
+- Streams with retained signals: 7
 - Fetch warnings: 0
+
+## ai
+
+- **The Download: brain-melting heatwaves and unprecedented OpenAI restrictions**
+  - Topic: `ai-platforms`
+  - Source: `mit-tech-review-ai` / `public_media`
+  - Signal path: `signals/2026-06-27/ai/482be67e10193735-the-download-brain-melting-heatwaves-and-unprecedented-openai-restrictio.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **GitHub and UNDP team up to advance development priorities in Ghana with open source**
+  - Topic: `general-monitoring`
+  - Source: `github-blog-ai` / `official_source`
+  - Signal path: `signals/2026-06-27/ai/3f2100667a87c7b2-github-and-undp-team-up-to-advance-development-priorities-in-ghana-with.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Transitioning as a Hubber**
+  - Topic: `general-monitoring`
+  - Source: `github-blog-ai` / `official_source`
+  - Signal path: `signals/2026-06-27/ai/d989886b0f49e6a4-transitioning-as-a-hubber.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
 
 ## crypto-finance
 
-- **Ripple CEO stays bullish on bitcoin but says Saylor's strategy has hurt crypto**
-  - Topic: `market`
+- **What Robinhood’s recent layoffs say about the current state of crypto investments**
+  - Topic: `general-monitoring`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/83bfb476b9d52867-ripple-ceo-stays-bullish-on-bitcoin-but-says-saylor-s-strategy-has-hurt.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/5d6c953785c84a95-what-robinhood-s-recent-layoffs-say-about-the-current-state-of-crypto-in.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Dogecoin and Hyperliquid's HYPE led weekly crypto losses as AI stocks lure buyers**
+- **Binance founder CZ blames crypto's sour 2026 on mix of AI, global tension, 4-year cycle**
   - Topic: `ai-platforms`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/25622f82d61d2435-dogecoin-and-hyperliquid-s-hype-led-weekly-crypto-losses-as-ai-stocks-lu.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/4e8119f78607e170-binance-founder-cz-blames-crypto-s-sour-2026-on-mix-of-ai-global-tension.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Here’s what happened in crypto today**
+- **Average IBIT investor now down about 40% as spot bitcoin ETFs cap second-worst week on record**
+  - Topic: `market`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/f98b99a3b3cbcdc9-average-ibit-investor-now-down-about-40-as-spot-bitcoin-etfs-cap-second.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Fidelity rebuts claims Bitcoin becomes less secure after halvings**
+  - Topic: `market`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/3a47472baf04fb61-fidelity-rebuts-claims-bitcoin-becomes-less-secure-after-halvings.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **DCG-backed Yuma launches fund offering institutional exposure to Bittensor**
   - Topic: `general-monitoring`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/552e43ae5e35357a-here-s-what-happened-in-crypto-today.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/560e1dc43a61b685-dcg-backed-yuma-launches-fund-offering-institutional-exposure-to-bittens.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Ripple CEO says Michael Saylor has hurt crypto market as Strategy’s STRC trades 25% below par**
+- **Bitcoin faces fresh capitulation risk as 50K BTC moved at a loss**
   - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/2449d12a5718ee6d-ripple-ceo-says-michael-saylor-has-hurt-crypto-market-as-strategy-s-strc.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **DraftKings launches its own prediction markets exchange as consumer volume exceeds $3 billion**
-  - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/cc324d1699cb211d-draftkings-launches-its-own-prediction-markets-exchange-as-consumer-volu.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **EU lawmakers urge assessing DeFi, staking, NFT regulation**
-  - Topic: `regulation`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-27/crypto-finance/93dace31fab9c3bc-eu-lawmakers-urge-assessing-defi-staking-nft-regulation.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/e8dbea8d10e686dd-bitcoin-faces-fresh-capitulation-risk-as-50k-btc-moved-at-a-loss.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Strategy loses its bitcoin premium as enterprise mNAV dips below 1**
+  - Topic: `market`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/96ea60547da2f647-strategy-loses-its-bitcoin-premium-as-enterprise-mnav-dips-below-1.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+
+## dj-audio-creative
+
+- **Ekssperimental Sounds Studios analog-style wonders for Reason: hands-on**
+  - Topic: `general-monitoring`
+  - Source: `create-digital-music` / `specialized_media`
+  - Signal path: `signals/2026-06-27/dj-audio-creative/45686a0bf1622e5b-ekssperimental-sounds-studios-analog-style-wonders-for-reason-hands-on.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Venezuela is reeling from major earthquakes; artists on how to help**
+  - Topic: `general-monitoring`
+  - Source: `create-digital-music` / `specialized_media`
+  - Signal path: `signals/2026-06-27/dj-audio-creative/d04d7cf56eb74083-venezuela-is-reeling-from-major-earthquakes-artists-on-how-to-help.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## finance
 
-- **Самые быстрые футболисты чемпионата мира — 2026**
+- **UKDJ сообщила, что у Британии не осталось атомной подводной лодки на ходу**
   - Topic: `general-monitoring`
   - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-27/finance/a4a4107da2ef67af-2026.md`
+  - Signal path: `signals/2026-06-27/finance/1d970601addcb4f0-ukdj.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **В МВД рассказали о новой схеме мошенников с заменой домофона**
+- **В США пассажирский лайнер едва не столкнулся с дроном**
   - Topic: `general-monitoring`
   - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-27/finance/9349e817e51a22d2-rbc-finance.md`
+  - Signal path: `signals/2026-06-27/finance/5594d923758ce6d0-rbc-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Исторический гол и рекорды. Как футболисты РПЛ выступили на ЧМ-2026**
+- **Россиянин стал самым высоким задрафтованным игроком в истории НХЛ**
   - Topic: `general-monitoring`
   - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-27/finance/7836790e5edf92d1-2026.md`
+  - Signal path: `signals/2026-06-27/finance/adc962893854086a-rbc-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Робот поприветствовал Кадырова фразой «Ахмат-сила» на выставке в Грозном**
-  - Topic: `market`
-  - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-27/finance/1a875a430174eac2-kommersant-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Индекс и срочная версия RUONIA**
-  - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-27/finance/967aec9dfe827e58-ruonia.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Перечень микрофинансовых организаций предпринимательского финансирования**
-  - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-27/finance/3ea6fab713319b80-cbr-news.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Трамп рассчитывает на суровый приговор своему экс-советнику Болтону**
+- **Министр нацбезопасности Израиля назвал сделку с Ливаном исторической ошибкой**
   - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-27/finance/f32e30cb970c7218-kommersant-finance.md`
+  - Signal path: `signals/2026-06-27/finance/0aa7e583b81915e8-kommersant-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Капитана сборной Кабо-Верде обвинили в изнасиловании**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/8173b7195a58c5b7-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Нетаньяху заявил о намерении сформировать широкую коалицию к предстоящим выборам**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/92800b8bbea4f0dd-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+
+## gear-style-edc
+
+- **Nike Celebrates 30th Anniversary Of Jay-Z’s Reasonable Doubt Album With An Air Force 1**
+  - Topic: `ai-platforms`
+  - Source: `sneaker-news` / `specialized_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/ef4ce1e8a21e6403-nike-celebrates-30th-anniversary-of-jay-z-s-reasonable-doubt-album-with.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **The Women’s Nike Vomero 5 “Aluminum” Doubles Up On Swooshes**
+  - Topic: `general-monitoring`
+  - Source: `sneaker-news` / `specialized_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/5fbf1dada6545a53-the-women-s-nike-vomero-5-aluminum-doubles-up-on-swooshes.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **First Look At The Nike Kobe 6 Protro “Coals” For Christmas 2026**
+  - Topic: `general-monitoring`
+  - Source: `sneaker-news` / `specialized_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/78c8272eda2fbcd1-first-look-at-the-nike-kobe-6-protro-coals-for-christmas-2026.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Junya Watanabe MAN SS27 Blends Streetwear Icons and Luxury Tailoring Under \"BLING BLING BLING\" Theme**
+  - Topic: `ai-platforms`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/279f097150eb2190-junya-watanabe-man-ss27-blends-streetwear-icons-and-luxury-tailoring-und.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Announcing the Awake NY x DoorDash Collection and Ticket Winners**
+  - Topic: `general-monitoring`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/a5d4dbbf01ecf7e0-announcing-the-awake-ny-x-doordash-collection-and-ticket-winners.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Sony Pictures Unveils Official Whimsical Trailer for Taika Waititi's 'Klara and the Sun'**
+  - Topic: `ai-platforms`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-27/gear-style-edc/7cafc67236ce6f0e-sony-pictures-unveils-official-whimsical-trailer-for-taika-waititi-s-kla.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## science-discovery
 
+- **Scientists discover what triggers belly fat as we age**
+  - Topic: `general-monitoring`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-06-27/science-discovery/63a98c46bfb42f0d-scientists-discover-what-triggers-belly-fat-as-we-age.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **New solid-state material converts sunlight into higher-energy UV light**
+  - Topic: `general-monitoring`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-06-27/science-discovery/0e2eb2abcc30bf6e-new-solid-state-material-converts-sunlight-into-higher-energy-uv-light.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Researchers discover why fructose doesn't satisfy hunger like glucose**
+  - Topic: `general-monitoring`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-06-27/science-discovery/bf6bffcd2f713635-researchers-discover-why-fructose-doesn-t-satisfy-hunger-like-glucose.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Зоологи опознали катающихся на морских змеях личинок крабов**
+  - Topic: `general-monitoring`
+  - Source: `nplus1` / `specialized_media`
+  - Signal path: `signals/2026-06-27/science-discovery/1c19c14cf09d7c9e-nplus1.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Человекообразные обезьяны не смогли контролировать скорость смеха**
+  - Topic: `general-monitoring`
+  - Source: `nplus1` / `specialized_media`
+  - Signal path: `signals/2026-06-27/science-discovery/9e35fd24cbf5417a-nplus1.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Немецкие инженеры сделали прототип марсохода с «восьмерками» на колесах**
+  - Topic: `general-monitoring`
+  - Source: `nplus1` / `specialized_media`
+  - Signal path: `signals/2026-06-27/science-discovery/95f198fc45323a6d-nplus1.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## tech-hardware-software
 
-- **MSI выпустит в России флагманский игровой ноутбук Titan 18 HX Dragon Edition Draco Epic с Core Ultra 9 290HX и RTX 5090**
+- **В продаже появились даунклокнутые Raspberry Pi 4 Model B**
   - Topic: `general-monitoring`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/079c25f1a777768a-msi-------titan-18-hx-dragon-edition-draco-epic--core-ultra-9-290hx--rtx.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/273d2af8d56e8752-raspberry-pi-4-model-b.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Руководитель разработки Apple Vision Pro переходит на работу в OpenAI**
-  - Topic: `ai-platforms`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/860a64543104b23f-apple-vision-pro-----openai.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Путин подписал закон о создании базы IMEI всех смартфонов россиян**
+- **Энтузиаст запустил Windows 11 на компьютере с памятью DDR, чипом Intel Core 2 Quad и видеокартой Radeon HD 4650**
   - Topic: `general-monitoring`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/f7a6d6e1adbde7d8-imei.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/c4e3ebf53f857f53-windows-11-----ddr--intel-core-2-quad---radeon-hd-4650.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **South Korea plans to train entire military as \"drone warriors\"**
-  - Topic: `ai-platforms`
+- **Apple and Audi alumni have made a luxe EV based on the moon buggy**
+  - Topic: `general-monitoring`
   - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/9ad3af891193d1bf-south-korea-plans-to-train-entire-military-as-drone-warriors.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/30b13f31d2281825-apple-and-audi-alumni-have-made-a-luxe-ev-based-on-the-moon-buggy.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **NYT slams Microsoft for building copyright-infringing supercomputer for OpenAI**
-  - Topic: `ai-platforms`
-  - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/5eee074db3850cbb-nyt-slams-microsoft-for-building-copyright-infringing-supercomputer-for.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Doctors suspected man had brain cancer. He actually had worms.**
-  - Topic: `ai-platforms`
-  - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/7ef3cf49325e1e7a-doctors-suspected-man-had-brain-cancer-he-actually-had-worms.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **OpenAI's ChatGPT-5.6 gets the same banhammer treatment as Anthropic’s Mythos from the federal government — source says that Washington cautioned OpenAI against releasing the model without receiving approval**
-  - Topic: `regulation`
+- **Modded Steam Controller can automatically charge itself like a robot vacuum — enthusiast creates GitHub program that uses the vibration motor to walk it back to its docking station**
+  - Topic: `general-monitoring`
   - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/2a7a9f3e6b4dc40a-openai-s-chatgpt-5-6-gets-the-same-banhammer-treatment-as-anthropic-s-my.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/71f8537431583d4e-modded-steam-controller-can-automatically-charge-itself-like-a-robot-vac.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Solidigm VP talks PCIe 6.0 SSDs, next-gen floating gate NAND, liquid cooled storage and more — Avi Shetty, VP of AI, Solutions & Market Enablement discusses the future of enterprise storage tech**
-  - Topic: `market`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-27/tech-hardware-software/f8ecd965ee806119-solidigm-vp-talks-pcie-6-0-ssds-next-gen-floating-gate-nand-liquid-coole.md`
+- **Russian citizens told \"switch to Android\" after Apple blocks key Russian apps**
+  - Topic: `general-monitoring`
+  - Source: `ars-technica-tech` / `public_media`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/2050b3874f329192-russian-citizens-told-switch-to-android-after-apple-blocks-key-russian-a.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **SpaceX plans to launch Starlink mobile service in the US**
+  - Topic: `general-monitoring`
+  - Source: `ars-technica-tech` / `public_media`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/f42c2525f6e2bcae-spacex-plans-to-launch-starlink-mobile-service-in-the-us.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.

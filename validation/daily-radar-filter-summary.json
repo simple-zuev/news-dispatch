@@ -1,19 +1,22 @@
 {
   "date": "2026-06-27",
-  "generated_count": 24,
-  "kept_count": 21,
-  "filtered_count": 3,
+  "generated_count": 41,
+  "kept_count": 36,
+  "filtered_count": 5,
   "filtered_by_reason": {
-    "deal_or_discount": 2,
-    "low_information_title": 1
+    "deal_or_discount": 5
   },
   "filtered_by_stream": {
     "crypto-finance": 2,
-    "science-discovery": 1
+    "tech-hardware-software": 3
   },
   "remaining_by_stream": {
-    "crypto-finance": 6,
-    "finance": 7,
-    "tech-hardware-software": 8
+    "ai": 3,
+    "crypto-finance": 7,
+    "dj-audio-creative": 2,
+    "finance": 6,
+    "gear-style-edc": 6,
+    "science-discovery": 6,
+    "tech-hardware-software": 6
   }
 }

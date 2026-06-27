@@ -1,0 +1,54 @@
+{
+  "date": "2026-06-27",
+  "generated": [
+    {
+      "stream": "ai",
+      "signals": 3,
+      "path": "dispatches/ai/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "crypto-finance",
+      "signals": 6,
+      "path": "dispatches/crypto-finance/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "dj-audio-creative",
+      "signals": 2,
+      "path": "dispatches/dj-audio-creative/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "finance",
+      "signals": 6,
+      "path": "dispatches/finance/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "gear-style-edc",
+      "signals": 6,
+      "path": "dispatches/gear-style-edc/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "science-discovery",
+      "signals": 6,
+      "path": "dispatches/science-discovery/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "tech-hardware-software",
+      "signals": 6,
+      "path": "dispatches/tech-hardware-software/2026-06-27-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    }
+  ]
+}
