@@ -2,9 +2,6 @@ name: Validate News Dispatch
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
   validate:
