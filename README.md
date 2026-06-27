@@ -1,6 +1,6 @@
 # News Dispatch
 
-**News Dispatch** — public-safe editorial radar for multi-domain analytical dispatches.
+**News Dispatch** is a public-safe editorial radar for multi-domain analytical dispatches.
 
 The project turns public external signals into structured analytical material:
 
@@ -12,7 +12,7 @@ It is not a raw news feed, personal notebook, private research dump, internal pr
 
 ## Current status
 
-The project is now a working GitHub Pages/static-site MVP with an automated signal radar and publication guardrails.
+The project is a working GitHub Pages/static-site MVP with an automated signal radar, publication guardrails and a growing editorial workflow.
 
 Implemented:
 
@@ -22,11 +22,25 @@ Implemented:
 - static renderer for published dispatches;
 - reader-facing enhancement layer: archive, stream pages, RSS, sitemap, media/source cards, Open Graph metadata and reader sections;
 - automated Daily Radar signal collection from public RSS/Atom feeds;
-- signal filtering and validation reports;
+- source-health, filtering and validation reports;
 - reviewed radar and candidate-dispatch validation artifacts;
-- GitHub Actions workflows for signal collection, validation and Pages deployment.
+- promotion checklists for publication decisions;
+- GitHub Actions workflows for signal collection, validation and Pages deployment;
+- first reusable core utilities and dispatch synthesis scaffolding.
 
-The main unfinished layer is editorial synthesis: turning collected signals into verified topic-first dispatches.
+The main unfinished layer is full editorial synthesis automation: turning collected signals into verified topic-first dispatches without bypassing source review.
+
+## Recent improvements
+
+Recent changes moved the repository from a static prototype toward an operating editorial radar:
+
+- Daily Radar now produces signal-layer artifacts, reviewed radar output and candidate-dispatch scaffolding.
+- Public publication is gated by front-matter validation, published-content validation, privacy scanning and reader-output validation.
+- GitHub Pages exposes only dispatches with `status: "published"`.
+- Empty media fields are normalized so the reader does not render blank media cards.
+- Unstable feeds can be paused with `enabled: false` and `disabled_reason` without deleting source metadata.
+- `tools/core.py` centralizes shared helpers for path handling, text normalization, front matter parsing, JSON IO, logging and slug generation.
+- `tools/synthesize_dispatch.py` introduces an AI-ready, dependency-light draft synthesis workflow from signal files.
 
 ## Publication boundary
 
@@ -101,6 +115,22 @@ It writes signal-layer and validation artifacts only:
 
 It must not publish analytical conclusions by itself. Draft dispatch files are not a user-facing deliverable.
 
+### Dispatch synthesis
+
+Purpose: convert selected signal files into a structured analytical draft.
+
+Example:
+
+```bash
+python tools/synthesize_dispatch.py \
+  --from-radar validation/daily-radar-latest.json \
+  --stream crypto-finance \
+  --max-signals 3 \
+  --status draft
+```
+
+The synthesis tool produces a safe editorial draft with required reader sections and public-safety front matter. It does not verify primary sources and does not remove the need for promotion review.
+
 ### Validate News Dispatch
 
 Purpose: verify repository quality on PRs and pushes to `main`.
@@ -121,8 +151,8 @@ public signal
 -> source/context check
 -> reviewed radar
 -> candidate dispatch artifact
+-> draft synthesis
 -> promotion checklist
--> editorial synthesis
 -> privacy/public-safety check
 -> published dispatch
 -> static site deployment
@@ -130,11 +160,37 @@ public signal
 
 Minimal rule: Daily Radar can tell what appeared in public sources. A dispatch can state what it means only after editorial review.
 
+## Local development
+
+The project currently uses the Python standard library for runtime tooling.
+
+```bash
+python --version
+python -m pip install -r requirements.txt
+python -m py_compile tools/*.py
+python tools/validate_front_matter.py
+python tools/validate_published.py
+python tools/render_site.py
+python tools/enhance_site.py
+```
+
+Common local checks:
+
+```bash
+python tools/run_daily_radar_safe.py
+python tools/privacy_scan.py
+python tools/validate_reader_output.py
+```
+
+Use dry-run modes where available before writing generated artifacts.
+
 ## Repository structure
 
 ```text
 news-dispatch/
   README.md
+  CONTRIBUTING.md
+  requirements.txt
   PUBLICATION_BOUNDARY.md
   PRIVACY.md
   EDITORIAL_STANDARD.md
@@ -171,12 +227,15 @@ news-dispatch/
     promotion-checklist.md
 
   tools/
+    core.py
+    synthesize_dispatch.py
     *.py
 
   validation/
     *.json
     reviewed-radar-latest.md
     candidate-dispatch-latest.md
+    promotion-checklists/
 
   site/
     generated static site
