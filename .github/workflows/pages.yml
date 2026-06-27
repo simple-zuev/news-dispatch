@@ -50,6 +50,9 @@ jobs:
       - name: Render static site
         run: python tools/render_site.py
 
+      - name: Build radar pages
+        run: python tools/build_radar_pages.py
+
       - name: Enhance static site
         run: python tools/enhance_site.py
 
