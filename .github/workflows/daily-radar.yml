@@ -2,13 +2,16 @@ name: Daily Radar Signals
 
 on:
   schedule:
-    - cron: "55 6 * * *"
+    - cron: "30 6 * * *"
+    - cron: "30 11 * * *"
+    - cron: "30 16 * * *"
+    - cron: "30 20 * * *"
   workflow_dispatch:
     inputs:
       max_items:
         description: "Maximum feed items"
         required: false
-        default: "24"
+        default: "56"
 
 permissions:
   contents: write
@@ -21,9 +24,9 @@ jobs:
   collect-commit:
     runs-on: ubuntu-latest
     env:
-      DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '24' }}
-      DAILY_RADAR_MIN_ITEMS: "4"
-      DAILY_RADAR_LOOKBACK_HOURS: "24"
+      DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '56' }}
+      DAILY_RADAR_MIN_ITEMS: "2"
+      DAILY_RADAR_LOOKBACK_HOURS: "36"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,25 +44,25 @@ jobs:
           python-version: '3.12'
 
       - name: Check automation syntax
-        run: python -m py_compile tools/stream_registry.py tools/daily_radar.py tools/run_daily_radar_safe.py tools/filter_daily_signals.py tools/privacy_scan.py
+        run: python -m py_compile tools/*.py
 
-      - name: Build Daily Radar signals
+      - name: Build Daily Radar signals and drafts
         run: python tools/run_daily_radar_safe.py
 
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
-      - name: Commit Daily Radar signal changes
+      - name: Commit Daily Radar content changes
         run: |
           git config user.name "news-dispatch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add signals data validation
+          git add signals data validation dispatches
           if git diff --cached --quiet --exit-code; then
-            echo "No signal/report changes to commit."
+            echo "No signal, draft or report changes to commit."
             git reset --hard HEAD
             exit 0
           fi
-          git commit -m "dispatch: update daily radar signals"
+          git commit -m "dispatch: update daily radar content"
           git reset --hard HEAD
           for attempt in 1 2 3; do
             git fetch origin main
