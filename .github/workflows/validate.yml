@@ -21,6 +21,14 @@ jobs:
       - name: Check core syntax
         run: python -m py_compile tools/*.py
 
+      - name: Smoke-test dispatch synthesis
+        run: |
+          python tools/synthesize_dispatch.py --from-radar validation/daily-radar-latest.json --stream crypto-finance --max-signals 3 --status draft --dry-run > /tmp/synthesis-dry-run.md
+          grep -q 'primary_rubric:' /tmp/synthesis-dry-run.md
+          grep -q 'issue_type:' /tmp/synthesis-dry-run.md
+          grep -q 'publication_mode:' /tmp/synthesis-dry-run.md
+          grep -q '## Evidence Ledger' /tmp/synthesis-dry-run.md
+
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
 
