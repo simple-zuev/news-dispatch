@@ -42,11 +42,13 @@ from core import (
 )
 
 DEFAULT_SECTIONS = (
+    "Issue Panel",
     "Лид",
     "Главное",
     "Что произошло",
     "Почему это важно",
     "Анализ",
+    "Evidence Ledger",
     "Слухи и мнения",
     "Мнение людей",
     "Медиа и материалы",
@@ -86,6 +88,26 @@ STREAM_DEFAULTS: dict[str, dict[str, str]] = {
     },
 }
 
+TOPIC_RUBRICS: dict[str, tuple[str, ...]] = {
+    "regulation": ("reg-watch",),
+    "market": ("market-structure", "reg-watch"),
+    "infrastructure": ("infrastructure",),
+    "security": ("security-abuse",),
+    "product": ("product-platform", "consumer-use"),
+    "general-monitoring": ("weak-signals",),
+}
+
+TOPIC_ISSUE_TYPES: dict[str, str] = {
+    "regulation": "reg-brief",
+    "market": "market-structure-note",
+    "infrastructure": "infrastructure-radar",
+    "security": "claim-check",
+    "product": "daily-radar-review",
+    "general-monitoring": "daily-radar-review",
+}
+
+STRICT_STREAMS = {"finance", "crypto-finance"}
+
 
 @dataclass(frozen=True)
 class Signal:
@@ -116,6 +138,19 @@ class Signal:
     @property
     def primary_source_url(self) -> str:
         return first_value(list(self.sources), "")
+
+
+@dataclass(frozen=True)
+class TaxonomyDecision:
+    topic: str
+    primary_rubric: str
+    rubrics: tuple[str, ...]
+    issue_type: str
+    confidence: str
+    publication_mode: str
+    evidence_status: str
+    verification_gap: str
+    claim_types: tuple[str, ...]
 
 
 def load_signal(path: Path) -> Signal:
@@ -212,6 +247,84 @@ def title_from_signals(signals: list[Signal], stream: str, explicit: str | None)
     return default
 
 
+def signal_has_primary_source(signal: Signal) -> bool:
+    values = {signal.source_class, *signal.source_types}
+    return bool(values & {"official_source", "primary_source", "regulator", "research_media"})
+
+
+def infer_rubrics(signals: list[Signal], stream: str) -> tuple[str, ...]:
+    topic = classify_topic(signals)
+    rubrics = list(TOPIC_RUBRICS.get(topic, ("weak-signals",)))
+    if stream == "crypto-finance" and "reg-watch" not in rubrics:
+        rubrics.append("reg-watch")
+    if stream == "science-discovery" and "research-evidence" not in rubrics:
+        rubrics.insert(0, "research-evidence")
+    if stream == "moscow-city" and "city-culture" not in rubrics:
+        rubrics.insert(0, "city-culture")
+    return tuple(unique_preserve_order(rubrics))
+
+
+def infer_issue_type(signals: list[Signal]) -> str:
+    return TOPIC_ISSUE_TYPES.get(classify_topic(signals), "daily-radar-review")
+
+
+def infer_confidence(signals: list[Signal]) -> str:
+    source_count = len(unique_preserve_order(url for signal in signals for url in signal.sources if url))
+    has_primary = any(signal_has_primary_source(signal) for signal in signals)
+    if has_primary and source_count >= 2:
+        return "medium"
+    if has_primary:
+        return "medium"
+    if source_count >= 2:
+        return "low"
+    return "unknown"
+
+
+def publication_mode_for(status: str) -> str:
+    return "draft_only" if status == "draft" else "limited_publication"
+
+
+def claim_types_for(signals: list[Signal]) -> tuple[str, ...]:
+    values = ["source_reported_claim", "editorial_inference"]
+    if any(signal_has_primary_source(signal) for signal in signals):
+        values.insert(0, "confirmed_fact")
+    if classify_topic(signals) == "security":
+        values.append("weak_signal")
+    return tuple(unique_preserve_order(values))
+
+
+def evidence_status_for(signals: list[Signal], status: str) -> str:
+    if status == "draft":
+        return "needs_primary_source_review"
+    if any(signal_has_primary_source(signal) for signal in signals):
+        return "limited_publication_primary_source_present"
+    return "limited_publication_media_only"
+
+
+def verification_gap_for(signals: list[Signal], stream: str) -> str:
+    if stream in STRICT_STREAMS:
+        return "Перед публикацией проверить первичные документы, статус источников, адресатов требований и независимые подтверждения."
+    if any(signal_has_primary_source(signal) for signal in signals):
+        return "Проверить полноту первичного источника, независимое подтверждение и границы редакционного вывода."
+    return "Найти первичные источники или явно оставить материал как source-reported / weak-signal draft."
+
+
+def taxonomy_for(signals: list[Signal], stream: str, status: str) -> TaxonomyDecision:
+    topic = classify_topic(signals)
+    rubrics = infer_rubrics(signals, stream)
+    return TaxonomyDecision(
+        topic=topic,
+        primary_rubric=rubrics[0],
+        rubrics=rubrics,
+        issue_type=infer_issue_type(signals),
+        confidence=infer_confidence(signals),
+        publication_mode=publication_mode_for(status),
+        evidence_status=evidence_status_for(signals, status),
+        verification_gap=verification_gap_for(signals, stream),
+        claim_types=claim_types_for(signals),
+    )
+
+
 def front_matter(signals: list[Signal], *, title: str, day: str, stream: str, status: str) -> dict[str, Any]:
     sources = unique_preserve_order(url for signal in signals for url in signal.sources if url)
     source_titles = unique_preserve_order(title for signal in signals for title in signal.source_titles if title)
@@ -221,16 +334,21 @@ def front_matter(signals: list[Signal], *, title: str, day: str, stream: str, st
         for signal in signals
     ]
     summary = build_summary(signals, stream)
+    taxonomy = taxonomy_for(signals, stream, status)
     return {
         "title": title,
         "date": day,
         "period": day,
         "stream": stream,
         "type": "daily",
+        "primary_rubric": taxonomy.primary_rubric,
+        "rubrics": list(taxonomy.rubrics),
+        "issue_type": taxonomy.issue_type,
         "language": "ru",
         "status": status,
         "review_level": "strict_publication_review",
         "publication_scope": "public",
+        "publication_mode": taxonomy.publication_mode,
         "public_safe": True,
         "private_context_used": False,
         "contains_personal_data": False,
@@ -244,6 +362,10 @@ def front_matter(signals: list[Signal], *, title: str, day: str, stream: str, st
         "source_mode": "public_sources_only",
         "summary": summary,
         "tags": tags_for(signals, stream),
+        "claim_types": list(taxonomy.claim_types),
+        "confidence": taxonomy.confidence,
+        "evidence_status": taxonomy.evidence_status,
+        "verification_gap": taxonomy.verification_gap,
         "sources": sources,
         "source_titles": source_titles,
         "source_types": source_types or ["public_source"],
@@ -262,7 +384,8 @@ def front_matter(signals: list[Signal], *, title: str, day: str, stream: str, st
 
 def tags_for(signals: list[Signal], stream: str) -> list[str]:
     topic = classify_topic(signals)
-    values = [stream, topic]
+    rubrics = infer_rubrics(signals, stream)
+    values = [stream, topic, *rubrics]
     for signal in signals:
         if signal.source_class:
             values.append(signal.source_class)
@@ -295,6 +418,54 @@ def source_inventory(signals: list[Signal]) -> str:
             f"confidence: {signal.confidence}; signal: `{repo_path(signal.path)}`."
         )
     return "\n".join(lines)
+
+
+def table_cell(value: str) -> str:
+    return clean_text(value, 180).replace("|", "/") or "нет"
+
+
+def claim_type_for_signal(signal: Signal) -> str:
+    if signal_has_primary_source(signal):
+        return "confirmed_fact"
+    if "marketing" in {signal.source_class, *signal.source_types}:
+        return "marketing_claim"
+    return "source_reported_claim"
+
+
+def evidence_ledger(signals: list[Signal], *, status: str) -> str:
+    publication_mode = publication_mode_for(status)
+    rows = [
+        "| Claim | Claim type | Primary source | Secondary source | Confidence | Verification gap | Publication mode |",
+        "|---|---|---|---|---|---|---|",
+    ]
+    for signal in signals:
+        claim_type = claim_type_for_signal(signal)
+        primary = signal.primary_source_title if claim_type == "confirmed_fact" else "нет"
+        secondary = "нет" if claim_type == "confirmed_fact" else signal.primary_source_title
+        gap = "Проверить первичный источник, контекст, дату, статус и независимое подтверждение."
+        rows.append(
+            "| "
+            + " | ".join(
+                [
+                    table_cell(signal.title),
+                    table_cell(claim_type),
+                    table_cell(primary),
+                    table_cell(secondary),
+                    table_cell("medium" if claim_type == "confirmed_fact" else "low"),
+                    table_cell(gap),
+                    table_cell(publication_mode),
+                ]
+            )
+            + " |"
+        )
+    rows.append(
+        "| Редакционный вывод о возможном эффекте кластера | editorial_inference | нет | source packet | "
+        + table_cell(infer_confidence(signals))
+        + " | Проверить причинно-следственный механизм и альтернативные объяснения. | "
+        + table_cell(publication_mode)
+        + " |"
+    )
+    return "\n".join(rows)
 
 
 def analysis_blocks(signals: list[Signal], stream: str) -> str:
@@ -349,12 +520,22 @@ def watch_items(signals: list[Signal]) -> list[str]:
 
 
 def build_body(signals: list[Signal], *, title: str, stream: str, status: str) -> str:
-    topic = classify_topic(signals)
+    taxonomy = taxonomy_for(signals, stream, status)
     signal_titles = ordered_signal_titles(signals)
     source_count = len(unique_preserve_order(url for signal in signals for url in signal.sources if url))
     caveat = "Это draft: публикация требует первичной проверки." if status == "draft" else "Это limited publication note: выводы ограничены публичными источниками."
 
     return f"""# {title}
+
+## Issue Panel
+
+- Stream: `{stream}`.
+- Primary rubric: `{taxonomy.primary_rubric}`.
+- Rubrics: {', '.join(f'`{rubric}`' for rubric in taxonomy.rubrics)}.
+- Issue type: `{taxonomy.issue_type}`.
+- Confidence: `{taxonomy.confidence}`.
+- Publication mode: `{taxonomy.publication_mode}`.
+- Evidence status: `{taxonomy.evidence_status}`.
 
 ## Лид
 
@@ -362,9 +543,9 @@ def build_body(signals: list[Signal], *, title: str, stream: str, status: str) -
 
 ## Главное
 
-1. Кластер относится к теме `{topic}` и требует отделения факта появления сообщения от интерпретации последствий.
+1. Кластер относится к теме `{taxonomy.topic}` и требует отделения факта появления сообщения от интерпретации последствий.
 2. Источниковая база: {source_count} публичных source item(s); приватные источники не используются.
-3. Уровень подтверждения остаётся ограниченным, пока не проверены первичные материалы.
+3. Уровень подтверждения: `{taxonomy.confidence}`; ключевой gap — {taxonomy.verification_gap}
 4. Потенциальный эффект следует оценивать через {STREAM_DEFAULTS.get(stream, {}).get('lens', 'рыночный, продуктовый и инфраструктурный контур')}.
 5. Материал не содержит investment advice, legal advice или внутренних данных.
 
@@ -385,6 +566,10 @@ def build_body(signals: list[Signal], *, title: str, stream: str, status: str) -
 ## Анализ
 
 {analysis_blocks(signals, stream)}
+
+## Evidence Ledger
+
+{evidence_ledger(signals, status=status)}
 
 ## Слухи и мнения
 
