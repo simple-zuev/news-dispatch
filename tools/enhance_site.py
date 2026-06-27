@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Prepare the reader-facing News Dispatch site after the base render step.
 
-Only dispatches with `status: published` are exposed on the public site.
-Drafts, samples and review files may exist in the repository but are removed
-from generated HTML, RSS, sitemap and JSON outputs.
+The base renderer owns homepage, stream pages, rubric pages and dispatch pages.
+This enhancer must not overwrite those pages with older navigation. It only:
+- removes hidden draft pages from generated output;
+- adds source/media blocks to published dispatch pages;
+- polishes reader-facing copy;
+- adds canonical/social metadata and reader CSS;
+- rewrites RSS, sitemap, robots.txt and dispatches.json from published items only.
 """
 
 from __future__ import annotations
@@ -20,19 +24,68 @@ from stream_registry import streams as registry_streams
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 DISPATCH_DIR = ROOT / "dispatches"
+RUBRICS_PATH = ROOT / "data" / "rubrics.json"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
-
 
 EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
 
+TEXT_REPLACEMENTS = {
+    "Public-safe editorial briefing system": "Аналитический радар",
+    "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Аналитический радар по рынкам, технологиям, AI, криптофинансам, Москве, вещам, аудио и науке.",
+    "Персональный reader/radar": "Аналитический радар",
+    "Личный reader/radar": "Аналитический радар",
+    "Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.": "Что произошло, почему это важно, кого затрагивает и что проверять дальше.",
+    "Личный reader/radar по технологиям, рынкам, AI, финансам, Москве, вещам, аудио и науке.": "Аналитический радар по рынкам, технологиям, AI, криптофинансам, Москве, вещам, аудио и науке.",
+    "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.": "Аналитический радар по рынкам, технологиям, AI, криптофинансам, Москве, вещам, аудио и науке.",
+    "Редакционный журнал": "Аналитический радар",
+    "Live Radar": "Свежий радар",
+    "Live signals": "Свежие сигналы",
+    "Live signal": "Сигнал",
+    "Потоки": "Темы",
+    "Dispatch streams": "Темы",
+    "Темы разделены на самостоятельные reader-полки.": "Темы собирают опубликованные материалы и свежие публичные сигналы.",
+    "Темы, форматы и направления reader/radar.": "Темы наблюдения и анализа.",
+    "Темы, форматы и направления редакционной аналитики.": "Темы наблюдения и анализа.",
+    "Потоки показывают опубликованные выпуски и последние публичные live-сигналы.": "Темы показывают опубликованные материалы и свежие публичные сигналы.",
+    "Рубрики": "Рубрики анализа",
+    "Dispatch rubrics": "Рубрики анализа",
+    "Аналитические рубрики.": "Рубрики анализа.",
+    "Повторяющиеся аналитические линзы: regulation, market structure, infrastructure, product/platform, security, research, consumer use и weak signals.": "Повторяющиеся аналитические линзы: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования, потребительская среда и слабые сигналы.",
+    "Аналитические линзы поверх потоков: регулирование, инфраструктура, market structure, research evidence и weak signals.": "Срезы анализа поверх тем: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования и слабые сигналы.",
+    "Последние выпуски": "Новые аналитические выпуски",
+    "Latest dispatches": "Новые аналитические выпуски",
+    "Итоговые материалы и тематические synthesis-выпуски.": "Короткие аналитические материалы: что произошло, почему это важно и что проверять дальше.",
+    "Новые материалы из редакционных потоков.": "Короткие аналитические материалы: что произошло, почему это важно и что проверять дальше.",
+    "Open dispatch archive": "Архив выпусков",
+    "Archive": "Архив",
+    "Dispatches": "Выпуски",
+    "Strict review": "Строгая проверка",
+    "Editorial review": "Редакционная проверка",
+    "General Dispatch": "Общий выпуск",
+    "Digital Assets Infrastructure": "Инфраструктура цифровых активов",
+    "Work Dispatch": "Рабочий выпуск",
+    "Finance Dispatch": "Финансовая среда",
+    "Gear & Material Culture": "Вещи и материальная культура",
+    "В этом потоке пока нет выпусков.": "В этой теме пока нет опубликованных материалов.",
+    "В этом потоке пока нет опубликованных выпусков.": "В этой теме пока нет опубликованных материалов.",
+    "В этом потоке сейчас нет live-сигналов.": "В этой теме сейчас нет свежих сигналов.",
+    "Reader-facing материалы, прошедшие публикационный контур.": "Материалы, прошедшие редакционную проверку.",
+    "Опубликованные выпуски": "Опубликованные материалы",
+    "Последние публичные сигналы потока. Это сырьё для анализа, а не опубликованные выводы.": "Публичные события и источники, которые могут попасть в будущие выпуски после проверки. Сигнал — не вывод.",
+    "Публичный сигнал из live-radar. Это не опубликованный выпуск и не аналитический вывод.": "Публичный сигнал для будущей проверки. Это не готовый аналитический вывод.",
+    "Открыть Live Radar": "Открыть свежий радар",
+    "limited_publication": "ограниченная публикация",
+    "reg-brief": "регуляторная заметка",
+    "market-structure-note": "заметка о структуре рынка",
+    "infrastructure-radar": "инфраструктурный радар",
+    "source-dossier": "досье источников",
+    "daily-radar-review": "обзор сигналов",
+    "Public-safe dispatch archive.": "Архив выпусков.",
+    "Обезличенный архив public-safe выпусков.": "Архив выпусков.",
+}
+
 
 def load_streams() -> list[dict[str, Any]]:
-    """Load the canonical stream registry.
-
-    `data/streams.json` is the single source of truth for reader navigation.
-    Legacy stream names may remain in old dispatch files, but new navigation
-    should not be generated from hard-coded legacy stream lists.
-    """
     loaded: list[dict[str, Any]] = []
     for item in registry_streams():
         loaded.append(
@@ -47,28 +100,21 @@ def load_streams() -> list[dict[str, Any]]:
     return loaded
 
 
-STREAMS = load_streams()
-STREAM_BY_SLUG = {stream["slug"]: stream for stream in STREAMS}
+def load_rubrics() -> list[dict[str, str]]:
+    if not RUBRICS_PATH.exists():
+        return []
+    data = json.loads(RUBRICS_PATH.read_text(encoding="utf-8"))
+    rubrics: list[dict[str, str]] = []
+    for item in data.get("rubrics", []):
+        slug = str(item.get("slug", "")).strip()
+        if slug:
+            rubrics.append({"slug": slug, "title": str(item.get("title", slug))})
+    return rubrics
 
-TEXT_REPLACEMENTS = {
-    "Public-safe editorial briefing system": "Редакционный журнал",
-    "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.",
-    "Open dispatch archive": "Архив выпусков",
-    "Latest dispatches": "Последние выпуски",
-    "Streams": "Потоки",
-    "Archive": "Архив",
-    "Dispatches": "Выпуски",
-    "Strict review": "Строгая проверка",
-    "Editorial review": "Редакционная проверка",
-    "General Dispatch": "Общий выпуск",
-    "Digital Assets Infrastructure": "Инфраструктура цифровых активов",
-    "Work Dispatch": "Рабочий выпуск",
-    "Finance Dispatch": "Финансовая среда",
-    "Gear & Material Culture": "Вещи и материальная культура",
-    "No dispatches in this stream yet.": "В этом потоке пока нет выпусков.",
-    "Public-safe dispatch archive.": "Архив выпусков.",
-    "Обезличенный архив public-safe выпусков.": "Архив выпусков.",
-}
+
+STREAMS = load_streams()
+RUBRICS = load_rubrics()
+STREAM_BY_SLUG = {stream["slug"]: stream for stream in STREAMS}
 
 
 def parse_front_matter(text: str) -> tuple[dict[str, object], str]:
@@ -131,6 +177,9 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
             "type": str(meta.get("type", "daily")),
             "status": str(meta.get("status", "draft")),
             "review_level": str(meta.get("review_level", "")),
+            "primary_rubric": str(meta.get("primary_rubric", "")),
+            "issue_type": str(meta.get("issue_type", "")),
+            "publication_mode": str(meta.get("publication_mode", "")),
             "summary": str(meta.get("summary", "")),
             "sources": list_value(meta, "sources"),
             "source_titles": list_value(meta, "source_titles"),
@@ -154,75 +203,10 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
     return published, hidden
 
 
-def stream_title(slug: object) -> str:
-    return str(STREAM_BY_SLUG.get(str(slug), {"title": str(slug)})["title"])
-
-
 def clean_copy(text: str) -> str:
     for source, target in TEXT_REPLACEMENTS.items():
         text = text.replace(source, target)
     return text
-
-
-def dispatch_card(item: dict[str, object], css_class: str = "card", prefix: str = "") -> str:
-    href = f"{prefix}{html.escape(str(item['path']))}"
-    return f"""<article class=\"{css_class}\">
-  <p class=\"label\">{html.escape(stream_title(item['stream']))} · {html.escape(str(item['date']))}</p>
-  <h3><a href=\"{href}\">{html.escape(str(item['title']))}</a></h3>
-  <p>{html.escape(str(item['summary']))}</p>
-</article>"""
-
-
-def stream_card(stream: dict[str, object], count: int, prefix: str = "") -> str:
-    strict_class = " strict" if stream.get("strict") else ""
-    href = f"{prefix}streams/{html.escape(str(stream['slug']))}.html"
-    return f"""<article class=\"stream-card{strict_class}\">
-  <p class=\"label\">{html.escape(str(stream['label']))} · {count} выпусков</p>
-  <h3><a href=\"{href}\">{html.escape(str(stream['title']))}</a></h3>
-  <p>{html.escape(str(stream['description']))}</p>
-</article>"""
-
-
-def empty_notice() -> str:
-    return "<section class=\"empty-state\"><h2>Выпуски готовятся</h2><p>Редакция готовит первые чистовые материалы. Черновики и технические тесты не публикуются.</p></section>"
-
-
-def render_homepage(items: list[dict[str, object]]) -> None:
-    counts = {str(stream["slug"]): 0 for stream in STREAMS}
-    for item in items:
-        counts[str(item["stream"])] = counts.get(str(item["stream"]), 0) + 1
-    stream_cards = "\n".join(stream_card(stream, counts.get(str(stream["slug"]), 0)) for stream in STREAMS)
-    if items:
-        featured = items[0]
-        latest = [item for item in items if item != featured][:4]
-        main_content = f"""<section class=\"featured-section\" aria-label=\"Главный выпуск\"><p class=\"section-kicker\">Главный выпуск</p>{dispatch_card(featured, css_class="featured-card")}</section><section class=\"panel section-header\"><h2>Последние выпуски</h2><p>Новые материалы из редакционных потоков.</p></section><section class=\"grid latest-grid\" aria-label=\"Последние выпуски\">{''.join(dispatch_card(item) for item in latest)}</section>"""
-    else:
-        main_content = empty_notice()
-    text = f"""<!doctype html>
-<html lang=\"ru\">
-<head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch</title><meta name=\"description\" content=\"Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.\"><link rel=\"alternate\" type=\"application/rss+xml\" title=\"News Dispatch RSS\" href=\"{BASE_URL}/rss.xml\"><link rel=\"stylesheet\" href=\"styles/main.css\"><link rel=\"stylesheet\" href=\"styles/reader.css\"></head>
-<body><header class=\"masthead homepage-hero\"><p class=\"eyebrow\">Редакционный журнал</p><h1>News Dispatch</h1><p class=\"lede\">Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.</p><nav class=\"hero-actions\" aria-label=\"Основная навигация\"><a href=\"dispatches.html\">Архив выпусков</a><a href=\"streams/index.html\">Потоки</a><a href=\"rss.xml\">RSS</a></nav></header><main>{main_content}<section class=\"panel section-header\"><h2>Потоки</h2><p>Темы, форматы и направления редакционной аналитики.</p></section><section class=\"stream-grid\" aria-label=\"Редакционные потоки\">{stream_cards}</section></main></body></html>"""
-    (SITE_DIR / "index.html").write_text(text, encoding="utf-8")
-
-
-def render_archive(items: list[dict[str, object]]) -> None:
-    cards = "\n".join(dispatch_card(item) for item in items) if items else empty_notice()
-    text = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Выпуски</title><meta name=\"description\" content=\"Архив выпусков.\"><link rel=\"stylesheet\" href=\"styles/main.css\"><link rel=\"stylesheet\" href=\"styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">News Dispatch</a><p class=\"eyebrow\">Архив</p><h1>Выпуски</h1><p class=\"lede\">Архив опубликованных материалов.</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
-    (SITE_DIR / "dispatches.html").write_text(text, encoding="utf-8")
-
-
-def render_stream_pages(items: list[dict[str, object]]) -> None:
-    stream_dir = SITE_DIR / "streams"
-    stream_dir.mkdir(parents=True, exist_ok=True)
-    index_cards = []
-    for stream in STREAMS:
-        stream_items = [item for item in items if item.get("stream") == stream["slug"]]
-        index_cards.append(stream_card(stream, len(stream_items), prefix="../"))
-        cards = "\n".join(dispatch_card(item, prefix="../") for item in stream_items) if stream_items else "<p>В этом потоке пока нет выпусков.</p>"
-        page = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — {html.escape(str(stream['title']))}</title><meta name=\"description\" content=\"{html.escape(str(stream['description']))}\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">{html.escape(str(stream['label']))}</p><h1>{html.escape(str(stream['title']))}</h1><p class=\"lede\">{html.escape(str(stream['description']))}</p></header><main><section class=\"grid\">{cards}</section></main></body></html>"""
-        (stream_dir / f"{stream['slug']}.html").write_text(page, encoding="utf-8")
-    index = f"""<!doctype html><html lang=\"ru\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>News Dispatch — Потоки</title><meta name=\"description\" content=\"Редакционные потоки.\"><link rel=\"stylesheet\" href=\"../styles/main.css\"><link rel=\"stylesheet\" href=\"../styles/reader.css\"></head><body><header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Потоки</p><h1>Потоки</h1><p class=\"lede\">Темы, форматы и направления редакционной аналитики.</p></header><main><section class=\"grid\">{''.join(index_cards)}</section></main></body></html>"""
-    (stream_dir / "index.html").write_text(index, encoding="utf-8")
 
 
 def remove_hidden_pages(items: list[dict[str, object]]) -> None:
@@ -287,7 +271,7 @@ def page_url(path: Path) -> str:
 
 def add_reader_css(text: str, path: Path) -> str:
     rel = path.relative_to(SITE_DIR).as_posix()
-    prefix = "../" if rel.startswith("streams/") or rel.startswith("dispatches/") else ""
+    prefix = "../" if "/" in rel else ""
     href = f"{prefix}styles/reader.css"
     if href in text:
         return text
@@ -300,7 +284,7 @@ def enhance_html(path: Path) -> None:
         title_match = re.search(r"<title>(.*?)</title>", text, re.S)
         title = html.unescape(title_match.group(1)) if title_match else "News Dispatch"
         description_match = re.search(r'<meta name="description" content="(.*?)">', text, re.S)
-        description = html.unescape(description_match.group(1)) if description_match else "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке."
+        description = html.unescape(description_match.group(1)) if description_match else "Аналитический радар по рынкам, технологиям, AI, криптофинансам, Москве, вещам, аудио и науке."
         meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"News Dispatch\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
         text = text.replace("<link rel=\"stylesheet\"", meta + "<link rel=\"stylesheet\"", 1)
     text = add_reader_css(text, path)
@@ -311,14 +295,24 @@ def write_rss(items: list[dict[str, object]]) -> None:
     rss_items = []
     for item in items[:20]:
         rss_items.append(f"<item><title>{html.escape(str(item['title']))}</title><link>{html.escape(str(item['url']))}</link><guid>{html.escape(str(item['url']))}</guid><pubDate>{formatdate(usegmt=True)}</pubDate><description>{html.escape(str(item['summary']))}</description></item>")
-    (SITE_DIR / "rss.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>News Dispatch</title><link>{BASE_URL}/</link><description>Редакционный журнал.</description><language>ru</language>{''.join(rss_items)}</channel></rss>", encoding="utf-8")
+    (SITE_DIR / "rss.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>News Dispatch</title><link>{BASE_URL}/</link><description>Аналитический радар.</description><language>ru</language>{''.join(rss_items)}</channel></rss>", encoding="utf-8")
 
 
 def write_sitemap(items: list[dict[str, object]]) -> None:
-    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html"]
+    urls = [
+        f"{BASE_URL}/",
+        f"{BASE_URL}/dispatches.html",
+        f"{BASE_URL}/rss.xml",
+        f"{BASE_URL}/sitemap.xml",
+        f"{BASE_URL}/streams/index.html",
+        f"{BASE_URL}/rubrics/index.html",
+        f"{BASE_URL}/radar/index.html",
+    ]
     urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(f"{BASE_URL}/radar/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(f"{BASE_URL}/rubrics/{rubric['slug']}.html" for rubric in RUBRICS)
     urls.extend(str(item["url"]) for item in items)
-    entries = "".join(f"<url><loc>{html.escape(url)}</loc></url>" for url in urls)
+    entries = "".join(f"<url><loc>{html.escape(url)}</loc></url>" for url in dict.fromkeys(urls))
     (SITE_DIR / "sitemap.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{entries}</urlset>", encoding="utf-8")
 
 
@@ -333,9 +327,6 @@ def write_dispatches_json(items: list[dict[str, object]]) -> None:
 def main() -> int:
     items, hidden = collect_dispatches()
     remove_hidden_pages(hidden)
-    render_homepage(items)
-    render_archive(items)
-    render_stream_pages(items)
     add_reader_blocks(items)
     for html_path in SITE_DIR.rglob("*.html"):
         enhance_html(html_path)
