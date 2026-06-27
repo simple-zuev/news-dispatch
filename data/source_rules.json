@@ -109,7 +109,7 @@
         "requires_primary_source": true,
         "requires_independent_secondary": false,
         "allowed_publication_modes": ["published", "limited_publication"],
-        "blocked_without_primary_for_claims": ["confirmed_fact", "event_fact"]
+        "blocked_without_primary_for_claims": ["confirmed_fact"]
       },
       "default_risks": ["outdated_event_time", "venue_or_availability_error", "recommendation_without_source"]
     },
