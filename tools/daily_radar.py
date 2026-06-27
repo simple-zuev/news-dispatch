@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
-"""Collect public RSS/Atom signals for News Dispatch."""
+"""Collect public RSS/Atom signals for News Dispatch.
+
+Daily Radar is intentionally signal-only. It records that a public source
+reported something; it does not publish analytical conclusions and it does not
+turn signals into reader-facing dispatches.
+"""
 
 from __future__ import annotations
 
 import argparse
 import hashlib
-import html
 import json
 import os
-import re
 import sys
+import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
@@ -17,17 +21,33 @@ from email.utils import parsedate_to_datetime
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from stream_registry import stream_keywords, stream_slugs, stream_title
+from core import (
+    DATA_DIR,
+    ROOT,
+    SIGNALS_DIR,
+    VALIDATION_DIR,
+    NewsDispatchError,
+    clean_text,
+    log as core_log,
+    repo_path,
+    slugify,
+    write_json,
+    yaml_quote,
+)
+from stream_registry import stream_keywords, stream_slugs
 
-ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "sources" / "feeds.json"
-STATE_PATH = ROOT / "data" / "daily-radar-seen.json"
-SIGNALS_DIR = ROOT / "signals"
-REPORT_PATH = ROOT / "validation" / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.5 (+https://simple-zuev.github.io/news-dispatch/)"
-STREAMS = stream_slugs()
+STATE_PATH = DATA_DIR / "daily-radar-seen.json"
+REPORT_PATH = VALIDATION_DIR / "daily-radar-latest.json"
+USER_AGENT = "NewsDispatchDailyRadar/0.6 (+https://simple-zuev.github.io/news-dispatch/)"
+STREAMS = set(stream_slugs())
 KEYWORDS = stream_keywords()
 MEDIA_LIMIT = 4
+MAX_SEEN_ITEMS = 3000
+
+
+class FeedConfigError(NewsDispatchError):
+    """Raised when the feed configuration cannot be used safely."""
 
 
 @dataclass(frozen=True)
@@ -60,36 +80,11 @@ class Item:
 
 
 def log(message: str) -> None:
-    print(f"[daily-radar] {message}")
-
-
-def clean_text(value: str, max_len: int = 280) -> str:
-    text = html.unescape(value or "")
-    text = re.sub(r"<[^>]+>", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text if len(text) <= max_len else text[: max_len - 1].rstrip() + "…"
-
-
-def yaml_quote(value: str) -> str:
-    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
-
-
-def slugify(value: str, fallback: str) -> str:
-    value = value.lower().replace("ё", "е")
-    value = re.sub(r"[^a-z0-9а-я-]+", "-", value)
-    value = re.sub(r"-+", "-", value).strip("-")
-    latin = re.sub(r"[^a-z0-9-]+", "", value).strip("-")
-    return (latin or fallback)[:72].strip("-") or fallback
-
-
-def repo_path(path: Path) -> str:
-    try:
-        return path.relative_to(ROOT).as_posix()
-    except ValueError:
-        return path.as_posix()
+    core_log(message, scope="daily-radar")
 
 
 def parse_date(value: str, fallback: datetime) -> datetime:
+    """Parse common RSS/Atom date formats and normalize them to UTC."""
     if not value:
         return fallback
     try:
@@ -97,8 +92,9 @@ def parse_date(value: str, fallback: datetime) -> datetime:
         if parsed.tzinfo is None:
             parsed = parsed.replace(tzinfo=timezone.utc)
         return parsed.astimezone(timezone.utc)
-    except Exception:
+    except (TypeError, ValueError):
         pass
+
     for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%d"):
         try:
             parsed = datetime.strptime(value[:25], fmt)
@@ -111,61 +107,108 @@ def parse_date(value: str, fallback: datetime) -> datetime:
 
 
 def load_config(path: Path) -> tuple[list[Feed], dict[str, object]]:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    """Load enabled public feeds from ``sources/feeds.json``.
+
+    Invalid stream names are downgraded to ``general`` to preserve historical
+    behavior and avoid failing the whole radar job because of one feed row.
+    Feeds with ``enabled: false`` are retained in metadata but skipped at run
+    time.
+    """
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise FeedConfigError(f"Missing feed configuration: {repo_path(path)}") from exc
+    except json.JSONDecodeError as exc:
+        raise FeedConfigError(f"Invalid feed configuration JSON: {repo_path(path)}: {exc}") from exc
+
     feeds: list[Feed] = []
-    for raw in data.get("feeds", []):
+    for index, raw in enumerate(data.get("feeds", []), start=1):
+        if not isinstance(raw, dict):
+            log(f"skipping feed #{index}: expected object")
+            continue
         if raw.get("enabled", True) is False:
             continue
+        try:
+            feed_id = str(raw["id"])
+            title = str(raw["title"])
+            url = str(raw["url"])
+        except KeyError as exc:
+            log(f"skipping feed #{index}: missing required key {exc}")
+            continue
+
         stream = str(raw.get("stream", "general"))
         if stream not in STREAMS:
+            log(f"feed {feed_id}: unknown stream {stream!r}; using 'general'")
             stream = "general"
-        feeds.append(Feed(
-            id=str(raw["id"]),
-            title=str(raw["title"]),
-            url=str(raw["url"]),
-            stream=stream,
-            source_type=str(raw.get("source_type", "Источник")),
-            source_class=str(raw.get("source_class", "public_media")),
-            priority=float(raw.get("priority", 0.5)),
-            tags=tuple(str(tag) for tag in raw.get("tags", [])),
-        ))
+
+        try:
+            priority = float(raw.get("priority", 0.5))
+        except (TypeError, ValueError):
+            log(f"feed {feed_id}: invalid priority; using 0.5")
+            priority = 0.5
+
+        feeds.append(
+            Feed(
+                id=feed_id,
+                title=title,
+                url=url,
+                stream=stream,
+                source_type=str(raw.get("source_type", "Источник")),
+                source_class=str(raw.get("source_class", "public_media")),
+                priority=priority,
+                tags=tuple(str(tag) for tag in raw.get("tags", [])),
+            )
+        )
     return feeds, dict(data.get("defaults", {}))
 
 
 def download(url: str, timeout: int) -> bytes:
+    """Download a feed payload with a deterministic User-Agent."""
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return response.read()
 
 
+def _local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1].lower()
+
+
 def text_of(node: ET.Element, names: tuple[str, ...]) -> str:
+    """Read text from RSS/Atom nodes with and without namespaces."""
+    wanted = {name.lower() for name in names}
     for name in names:
         found = node.find(name)
         if found is not None and found.text:
             return found.text.strip()
     for child in node.iter():
-        local = child.tag.rsplit("}", 1)[-1].lower()
-        if local in names and child.text:
+        if _local_name(child.tag) in wanted and child.text:
             return child.text.strip()
     return ""
 
 
 def link_of(node: ET.Element) -> str:
+    """Extract an item URL from RSS ``link`` text or Atom ``link href``."""
     link = text_of(node, ("link",))
     if link:
         return link
     for child in node.iter():
-        local = child.tag.rsplit("}", 1)[-1].lower()
-        if local == "link" and child.attrib.get("href"):
+        if _local_name(child.tag) == "link" and child.attrib.get("href"):
             return child.attrib["href"].strip()
     return ""
 
 
 def classify(feed: Feed, title: str, summary: str) -> str:
+    """Return the stream for an item.
+
+    The current routing model is feed-owned. The function is intentionally kept
+    separate so later semantic routing can be introduced without changing the
+    rest of the collector.
+    """
     return feed.stream
 
 
 def item_score(feed: Feed, title: str, summary: str, published: datetime, now: datetime) -> float:
+    """Score an item by source priority, freshness and broad topic hits."""
     age_hours = max((now - published).total_seconds() / 3600, 0)
     freshness = max(0, 1 - age_hours / 72)
     haystack = f"{title} {summary}".lower()
@@ -173,11 +216,20 @@ def item_score(feed: Feed, title: str, summary: str, published: datetime, now: d
     return round(feed.priority * 10 + freshness * 4 + min(topic_hits, 6) * 0.35, 3)
 
 
+def feed_nodes(root: ET.Element) -> list[ET.Element]:
+    """Return RSS item or Atom entry nodes from a parsed feed root."""
+    return (
+        root.findall(".//item")
+        or root.findall(".//{http://www.w3.org/2005/Atom}entry")
+        or root.findall(".//entry")
+    )
+
+
 def parse_feed(feed: Feed, payload: bytes, now: datetime) -> list[Item]:
+    """Parse one RSS/Atom payload into normalized radar items."""
     root = ET.fromstring(payload)
-    nodes = root.findall(".//item") or root.findall(".//{http://www.w3.org/2005/Atom}entry") or root.findall(".//entry")
     items: list[Item] = []
-    for node in nodes:
+    for node in feed_nodes(root):
         title = clean_text(text_of(node, ("title",)))
         url = clean_text(link_of(node), 500)
         if not title or not url:
@@ -192,23 +244,31 @@ def parse_feed(feed: Feed, payload: bytes, now: datetime) -> list[Item]:
 
 
 def fetch_items(feeds: list[Feed], timeout: int) -> tuple[list[Item], list[str]]:
+    """Fetch every enabled feed, returning parsed items and non-fatal warnings."""
     now = datetime.now(timezone.utc)
     items: list[Item] = []
     errors: list[str] = []
     for feed in feeds:
         try:
-            items.extend(parse_feed(feed, download(feed.url, timeout), now))
-        except Exception as exc:
+            payload = download(feed.url, timeout)
+            parsed = parse_feed(feed, payload, now)
+            items.extend(parsed)
+            log(f"{feed.id}: parsed {len(parsed)} item(s)")
+        except (urllib.error.URLError, TimeoutError, ET.ParseError, UnicodeError, OSError) as exc:
+            errors.append(f"{feed.id}: {exc.__class__.__name__}: {exc}")
+        except Exception as exc:  # keep radar resilient; surface unexpected errors as warnings
             errors.append(f"{feed.id}: {exc.__class__.__name__}: {exc}")
     return items, errors
 
 
 def load_seen(path: Path) -> set[str]:
+    """Load previously seen item keys. Corrupt state is treated as empty."""
     if not path.exists():
         return set()
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
+        log(f"state file is not valid JSON; ignoring {repo_path(path)}")
         return set()
     return {str(item) for item in data.get("seen", [])}
 
@@ -216,12 +276,12 @@ def load_seen(path: Path) -> set[str]:
 def save_seen(path: Path, old: set[str], new_keys: list[str], dry_run: bool) -> None:
     if dry_run:
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    merged = list(dict.fromkeys([*new_keys, *sorted(old)]))[:3000]
-    path.write_text(json.dumps({"seen": merged}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    merged = list(dict.fromkeys([*new_keys, *sorted(old)]))[:MAX_SEEN_ITEMS]
+    write_json(path, {"seen": merged})
 
 
 def select_items(items: list[Item], seen: set[str], max_items: int, per_source: int, lookback_hours: int) -> list[Item]:
+    """Deduplicate, filter by lookback and select the highest-scoring items."""
     now = datetime.now(timezone.utc)
     cutoff = now - timedelta(hours=lookback_hours)
     unique: dict[str, Item] = {}
@@ -229,6 +289,7 @@ def select_items(items: list[Item], seen: set[str], max_items: int, per_source: 
         if item.key in seen or item.published < cutoff:
             continue
         unique.setdefault(item.key, item)
+
     counts: dict[str, int] = {}
     selected: list[Item] = []
     for item in sorted(unique.values(), key=lambda x: (x.score, x.published), reverse=True):
@@ -250,6 +311,7 @@ def group_by_stream(items: list[Item]) -> dict[str, list[Item]]:
 
 
 def write_signal(day: date, item: Item, dry_run: bool) -> Path:
+    """Write one signal Markdown file and return its intended path."""
     directory = SIGNALS_DIR / day.isoformat() / item.stream
     path = directory / f"{item.key}-{slugify(item.title, item.feed.id)}.md"
     content = f"""---
@@ -283,7 +345,7 @@ source_types:
 - Не подтверждено: полнота контекста, последствия и интерпретации.
 """
     if not dry_run:
-        directory.mkdir(parents=True, exist_ok=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
     return path
 
@@ -291,24 +353,37 @@ source_types:
 def write_report(day: date, generated: list[dict[str, object]], errors: list[str], dry_run: bool) -> None:
     if dry_run:
         return
-    REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    REPORT_PATH.write_text(
-        json.dumps({"date": day.isoformat(), "generated": generated, "fetch_errors": errors}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    write_json(REPORT_PATH, {"date": day.isoformat(), "generated": generated, "fetch_errors": errors})
+
+
+def int_setting(value: int | None, default: object, fallback: int) -> int:
+    """Resolve CLI/env integer overrides against config defaults."""
+    if value:
+        return int(value)
+    try:
+        resolved = int(default) if default not in (None, "") else fallback
+    except (TypeError, ValueError):
+        return fallback
+    return resolved
 
 
 def build(args: argparse.Namespace) -> int:
     day = date.fromisoformat(args.date) if args.date else date.today()
     feeds, defaults = load_config(CONFIG_PATH)
-    max_items = int(args.max_items or defaults.get("max_items", 40))
-    per_source = int(args.per_source or defaults.get("per_source", 3))
-    lookback = int(args.lookback_hours or defaults.get("lookback_hours", 36))
-    log(f"loaded {len(feeds)} feed(s); day={day}; dry_run={args.dry_run}")
+    max_items = int_setting(args.max_items, defaults.get("max_items"), 40)
+    per_source = int_setting(args.per_source, defaults.get("per_source"), 3)
+    lookback = int_setting(args.lookback_hours, defaults.get("lookback_hours"), 36)
+
+    log(
+        f"loaded {len(feeds)} feed(s); day={day}; max_items={max_items}; "
+        f"per_source={per_source}; lookback_hours={lookback}; dry_run={args.dry_run}"
+    )
+
     raw_items, fetch_errors = fetch_items(feeds, timeout=args.timeout)
     seen = set() if args.no_state else load_seen(STATE_PATH)
     selected = select_items(raw_items, seen, max_items=max_items, per_source=per_source, lookback_hours=lookback)
     groups = group_by_stream(selected)
+
     generated: list[dict[str, object]] = []
     new_keys: list[str] = []
     for stream, stream_items in sorted(groups.items()):
@@ -316,17 +391,21 @@ def build(args: argparse.Namespace) -> int:
             continue
         signal_paths = [write_signal(day, item, args.dry_run) for item in stream_items]
         new_keys.extend(item.key for item in stream_items)
-        generated.append({
-            "stream": stream,
-            "status": "signals-only",
-            "count": len(stream_items),
-            "signals": [repo_path(path) for path in signal_paths],
-            "media_count": min(MEDIA_LIMIT, len(stream_items)),
-            "routing": "feed_owned",
-        })
+        generated.append(
+            {
+                "stream": stream,
+                "status": "signals-only",
+                "count": len(stream_items),
+                "signals": [repo_path(path) for path in signal_paths],
+                "media_count": min(MEDIA_LIMIT, len(stream_items)),
+                "routing": "feed_owned",
+            }
+        )
         log(f"{stream}: {len(stream_items)} signal(s)")
+
     save_seen(STATE_PATH, seen, new_keys, args.dry_run or args.no_state)
     write_report(day, generated, fetch_errors, args.dry_run)
+
     if not generated:
         log("no new signals generated")
     if fetch_errors:
@@ -347,7 +426,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    return build(parse_args(sys.argv[1:] if argv is None else argv))
+    try:
+        return build(parse_args(sys.argv[1:] if argv is None else argv))
+    except NewsDispatchError as exc:
+        print(f"[daily-radar] {exc}", file=sys.stderr)
+        return 1
+    except ValueError as exc:
+        print(f"[daily-radar] invalid argument: {exc}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

@@ -18,11 +18,9 @@ from dataclasses import dataclass
 from email.utils import formatdate
 from pathlib import Path
 
+from core import DISPATCH_DIR, SITE_DIR, coalesce, parse_front_matter_file
 from stream_registry import streams as registry_streams
 
-ROOT = Path(__file__).resolve().parents[1]
-DISPATCH_DIR = ROOT / "dispatches"
-SITE_DIR = ROOT / "site"
 OUTPUT_DIR = SITE_DIR / "dispatches"
 STREAM_DIR = SITE_DIR / "streams"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
@@ -83,43 +81,27 @@ class Dispatch:
         return f"dispatches/{self.output_name}"
 
 
-def parse_front_matter(text: str) -> tuple[dict[str, str], str]:
-    if not text.startswith("---\n"):
-        return {}, text
-    end = text.find("\n---\n", 4)
-    if end == -1:
-        return {}, text
-    raw = text[4:end]
-    body = text[end + 5 :]
-    meta: dict[str, str] = {}
-    for line in raw.splitlines():
-        if not line.strip() or line.startswith(" ") or line.startswith("-"):
-            continue
-        if ":" not in line:
-            continue
-        key, value = line.split(":", 1)
-        meta[key.strip()] = value.strip().strip('"')
-    return meta, body
-
-
-def slugify(path: Path) -> str:
+def output_slug(path: Path) -> str:
+    """Preserve the historical render-site URL mapping."""
     return path.stem.lower().replace(" ", "-").replace("_", "-")
 
 
 def load_dispatch(path: Path) -> Dispatch | None:
-    text = path.read_text(encoding="utf-8")
-    meta, body = parse_front_matter(text)
-    if meta.get("status", "draft") != "published":
+    doc = parse_front_matter_file(path)
+    if doc.errors:
         return None
-    title = meta.get("title") or path.stem.replace("-", " ").title()
+    meta = doc.metadata
+    if coalesce(meta.get("status"), default="draft") != "published":
+        return None
+    title = coalesce(meta.get("title"), default=path.stem.replace("-", " ").title())
     return Dispatch(
         source_path=path,
         title=title,
-        date=meta.get("date", ""),
-        stream=meta.get("stream", "general"),
-        summary=meta.get("summary", ""),
-        body=body.strip(),
-        output_name=f"{slugify(path)}.html",
+        date=coalesce(meta.get("date")),
+        stream=coalesce(meta.get("stream"), default="general"),
+        summary=coalesce(meta.get("summary")),
+        body=doc.body.strip(),
+        output_name=f"{output_slug(path)}.html",
     )
 
 
@@ -420,7 +402,14 @@ def rss_template(dispatches: list[Dispatch]) -> str:
 
 
 def sitemap_template(dispatches: list[Dispatch]) -> str:
-    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html", f"{BASE_URL}/radar/index.html"]
+    urls = [
+        f"{BASE_URL}/",
+        f"{BASE_URL}/dispatches.html",
+        f"{BASE_URL}/rss.xml",
+        f"{BASE_URL}/sitemap.xml",
+        f"{BASE_URL}/streams/index.html",
+        f"{BASE_URL}/radar/index.html",
+    ]
     urls.extend(stream.url for stream in STREAMS)
     urls.extend(f"{BASE_URL}/radar/{stream.slug}.html" for stream in STREAMS)
     urls.extend(dispatch.url for dispatch in ordered_dispatches(dispatches))
