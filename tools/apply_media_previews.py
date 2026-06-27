@@ -16,8 +16,8 @@ REGISTRY_PATHS = [
     ROOT / "media" / "registry.generated.json",
 ]
 
-MEDIA_CARD_RE = re.compile(
-    r'(<article class="(?=[^"]*\bsource-card\b)(?=[^"]*\bmedia-card\b)[^"]*">)(.*?</article>)',
+SOURCE_CARD_RE = re.compile(
+    r'(<article class="(?=[^"]*\bsource-card\b)[^"]*">)(.*?</article>)',
     re.S,
 )
 ALLOWED_EMBED_HOSTS = {
@@ -62,7 +62,7 @@ def load_registry() -> dict[str, dict[str, str]]:
 
 def prefix_for(page: Path) -> str:
     rel = page.relative_to(SITE_DIR).as_posix()
-    if rel.startswith("dispatches/") or rel.startswith("streams/"):
+    if "/" in rel:
         return "../"
     return ""
 
@@ -102,11 +102,11 @@ def is_allowed_embed(url: str) -> bool:
 
 def preview_origin(item: dict[str, str]) -> str:
     if item.get("embed_url") or item.get("video_url"):
-        return "video metadata"
+        return "метаданные видео"
     if item.get("metadata_source") == "open_graph" and item.get("image_url"):
         return "Open Graph / Twitter metadata"
     if item.get("image_url"):
-        return "metadata"
+        return "метаданные источника"
     return "локальный fallback"
 
 
@@ -128,11 +128,13 @@ def media_object_html(url: str, item: dict[str, str], preview: str, title: str) 
             f'<a href="{html.escape(video, quote=True)}">Открыть видео</a>'
             f'</video>'
         )
-    return (
-        f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
-        f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
-        f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
-    )
+    if preview:
+        return (
+            f'<a class="reader-preview-link" href="{html.escape(url, quote=True)}">'
+            f'<img class="reader-thumb" src="{html.escape(preview, quote=True)}" '
+            f'alt="{html.escape(title, quote=True)}" loading="lazy" referrerpolicy="no-referrer"></a>'
+        )
+    return ""
 
 
 def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
@@ -146,6 +148,8 @@ def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
     origin = preview_origin(item)
     canonical = item.get("canonical_url") or url
     media_object = media_object_html(url, item, preview, title)
+    if not media_object:
+        return ""
     video_line = f'<span><strong>Видео:</strong> {html.escape(video)}</span>' if item.get("embed_url") or item.get("video_url") else ""
     return (
         f'<figure class="reader-preview-figure">'
@@ -154,14 +158,14 @@ def preview_html(url: str, item: dict[str, str], prefix: str) -> str:
         f'<span><strong>Материал:</strong> {html.escape(material)}</span>'
         f'<span><strong>Изображение:</strong> {html.escape(image)}</span>'
         f'{video_line}'
-        f'<span><strong>Источник preview:</strong> {html.escape(origin)}</span>'
-        f'<span><strong>URL:</strong> {html.escape(host_label(canonical))}</span>'
+        f'<span><strong>Превью:</strong> {html.escape(origin)}</span>'
+        f'<span><strong>Сайт:</strong> {html.escape(host_label(canonical))}</span>'
         f'</figcaption>'
         f'</figure>'
     )
 
 
-def insert_preview_in_media_cards(text: str, url: str, item: dict[str, str], prefix: str) -> str:
+def insert_preview_in_source_cards(text: str, url: str, item: dict[str, str], prefix: str) -> str:
     escaped_url = html.escape(url, quote=True)
     if escaped_url not in text:
         return text
@@ -171,14 +175,17 @@ def insert_preview_in_media_cards(text: str, url: str, item: dict[str, str], pre
         article = match.group(0)
         if escaped_url not in article or "reader-thumb" in article or "reader-video" in article or "reader-video-frame" in article:
             return article
-        return opening + preview_html(url, item, prefix) + body
+        preview = preview_html(url, item, prefix)
+        if not preview:
+            return article
+        return opening + preview + body
 
-    return MEDIA_CARD_RE.sub(replace, text)
+    return SOURCE_CARD_RE.sub(replace, text)
 
 
 def enrich_html(text: str, registry: dict[str, dict[str, str]], prefix: str) -> str:
     for url, item in registry.items():
-        text = insert_preview_in_media_cards(text, url, item, prefix)
+        text = insert_preview_in_source_cards(text, url, item, prefix)
     return text
 
 
