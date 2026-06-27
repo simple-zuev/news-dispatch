@@ -53,6 +53,9 @@ jobs:
       - name: Apply reader sections
         run: python tools/apply_reader_sections.py
 
+      - name: Apply reader structure
+        run: python tools/apply_reader_structure.py
+
       - name: Validate reader output
         run: python tools/validate_reader_output.py
 
