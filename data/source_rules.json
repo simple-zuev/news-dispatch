@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "description": "Source governance rules for News Dispatch. These rules define minimum evidence expectations, publication modes, and required caution by stream, source class and claim type. They do not replace editorial judgment.",
+  "source_classes": {
+    "official_source": {
+      "tier": "A",
+      "role": "fact_base",
+      "description": "Regulators, laws, courts, official records, public company releases, official blogs, filings and primary documents.",
+      "default_confidence_ceiling": "high",
+      "allowed_claim_types": ["confirmed_fact", "source_reported_claim", "editorial_inference"]
+    },
+    "business_media": {
+      "tier": "B",
+      "role": "context_and_corroboration",
+      "description": "Reliable business media used for context, corroboration and source-reported claims.",
+      "default_confidence_ceiling": "medium",
+      "allowed_claim_types": ["source_reported_claim", "corroborated_signal", "editorial_inference"]
+    },
+    "public_media": {
+      "tier": "B",
+      "role": "context_and_signal",
+      "description": "General public media used as public signal and context, not as proof of high-impact claims by itself.",
+      "default_confidence_ceiling": "medium",
+      "allowed_claim_types": ["source_reported_claim", "corroborated_signal", "editorial_inference"]
+    },
+    "specialized_media": {
+      "tier": "C",
+      "role": "industry_signal",
+      "description": "Industry media and trade publications. Useful for early signal detection; primary-source checks are required for strong conclusions.",
+      "default_confidence_ceiling": "medium",
+      "allowed_claim_types": ["source_reported_claim", "corroborated_signal", "editorial_inference"]
+    },
+    "research_media": {
+      "tier": "C",
+      "role": "research_context",
+      "description": "Scientific journals, research media, papers, preprints, lab reports and research explainers.",
+      "default_confidence_ceiling": "medium",
+      "allowed_claim_types": ["research_result", "source_reported_claim", "editorial_inference"]
+    },
+    "community_source": {
+      "tier": "E",
+      "role": "weak_signal_only",
+      "description": "Telegram, X, Reddit, forums, comments, reviews and community posts. These are never fact base by themselves.",
+      "default_confidence_ceiling": "low",
+      "allowed_claim_types": ["community_signal", "weak_signal", "rumor", "editorial_inference"]
+    },
+    "marketing_source": {
+      "tier": "M",
+      "role": "claim_to_verify",
+      "description": "Vendor marketing, sponsored material, landing pages and promotional claims. Treat as claims, not proof.",
+      "default_confidence_ceiling": "low",
+      "allowed_claim_types": ["marketing_claim", "source_reported_claim", "editorial_inference"]
+    }
+  },
+  "stream_rules": {
+    "finance": {
+      "strict": true,
+      "minimum_for_published": {
+        "requires_primary_source": true,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact", "forecast", "editorial_inference"]
+      },
+      "default_risks": ["investment_advice", "legal_advice", "tax_advice", "outdated_rate_or_policy_status"]
+    },
+    "crypto-finance": {
+      "strict": true,
+      "minimum_for_published": {
+        "requires_primary_source": true,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact", "forecast", "editorial_inference"]
+      },
+      "default_risks": ["investment_advice", "legal_advice", "sanctions_or_aml_overstatement", "media_only_market_claim"]
+    },
+    "ai": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": false,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact"]
+      },
+      "default_risks": ["vendor_claim_as_fact", "research_to_product_overstatement", "model_capability_overstatement"]
+    },
+    "tech-hardware-software": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": false,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact", "benchmark_result"]
+      },
+      "default_risks": ["vendor_claim_as_fact", "benchmark_overstatement", "availability_or_compatibility_error"]
+    },
+    "gear-style-edc": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": false,
+        "requires_independent_secondary": false,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact"]
+      },
+      "default_risks": ["advertising_language", "affiliate_or_promotion_tone", "isolated_review_as_pattern"]
+    },
+    "moscow-city": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": true,
+        "requires_independent_secondary": false,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact"]
+      },
+      "default_risks": ["outdated_event_time", "venue_or_availability_error", "recommendation_without_source"]
+    },
+    "dj-audio-creative": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": false,
+        "requires_independent_secondary": false,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact", "benchmark_result"]
+      },
+      "default_risks": ["vendor_claim_as_fact", "workflow_overgeneralization", "compatibility_error"]
+    },
+    "science-discovery": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": true,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact", "research_result"]
+      },
+      "default_risks": ["preprint_as_peer_reviewed", "research_to_practice_overstatement", "medical_or_policy_advice"]
+    },
+    "general": {
+      "strict": false,
+      "minimum_for_published": {
+        "requires_primary_source": true,
+        "requires_independent_secondary": true,
+        "allowed_publication_modes": ["published", "limited_publication"],
+        "blocked_without_primary_for_claims": ["confirmed_fact"]
+      },
+      "default_risks": ["cross_domain_overreach", "mixed_scope", "weak_signal_as_fact"]
+    }
+  },
+  "publication_modes": {
+    "published": "Reader-facing issue. Requires completed editorial review and source sufficiency for its stream.",
+    "limited_publication": "Reader-facing but explicitly limited. Used when the signal is useful but evidence gaps remain.",
+    "draft_only": "Non-reader-facing draft. Used for synthesis, source review and taxonomy testing.",
+    "blocked": "Must not be published until source, safety or editorial blockers are resolved."
+  },
+  "claim_rules": {
+    "confirmed_fact": "Needs primary source or official record unless the fact is only about a source item appearing in a public feed.",
+    "source_reported_claim": "May be based on a named public source, but must not be written as independently verified fact.",
+    "corroborated_signal": "Needs at least two meaningfully independent sources or one primary source plus one secondary source.",
+    "research_result": "Must identify peer-reviewed, preprint, corporate lab report, benchmark report, survey or unknown status.",
+    "benchmark_result": "Needs methodology, tested configuration and limits. Vendor-only benchmarks are marketing claims until independently checked.",
+    "community_signal": "Needs pattern classification. Isolated complaints do not justify broad conclusions.",
+    "weak_signal": "Must include confidence, what would confirm it and what would falsify it.",
+    "rumor": "Not publishable as fact. Can appear only in a clearly marked weak-signal section if public-safe.",
+    "forecast": "Must be framed as scenario or forecast, not as fact or investment guidance.",
+    "marketing_claim": "Vendor claim to verify. Never proof by itself.",
+    "editorial_inference": "Must be tied to evidence and include uncertainty or verification gap."
+  }
+}
