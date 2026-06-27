@@ -2,6 +2,15 @@
 
 **News Dispatch** — public-safe editorial radar for multi-domain analytical dispatches.
 
+## Recent Improvements (Июнь 2026)
+
+- Выделен общий модуль `tools/core.py` с утилитами (slugify, front-matter parser, logging и т.д.)
+- Создан `tools/synthesize_dispatch.py` — инструмент для AI-синтеза аналитических диспатчей из сигналов
+- Подготовлена основа для LLM-интеграции (Grok / другие модели)
+- Код стал чище и модульнее
+
+Следующие этапы: улучшение daily_radar, render_site и workflows.
+
 The project turns public external signals into structured analytical material:
 
 ```text
