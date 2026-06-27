@@ -3,11 +3,15 @@ title: ""
 date: "YYYY-MM-DD"
 period: "YYYY-MM-DD"
 stream: "crypto-finance"
-type: "daily"
+primary_rubric: "reg-watch"
+rubrics:
+  - "reg-watch"
+issue_type: "daily-radar-review"
 language: "ru"
 status: "draft"
 review_level: "strict_publication_review"
 publication_scope: "public"
+publication_mode: "draft_only"
 public_safe: false
 private_context_used: false
 contains_personal_data: false
@@ -21,6 +25,11 @@ contains_paid_promotion: false
 source_mode: "public_sources_only"
 summary: ""
 tags: []
+claim_types:
+  - "source_reported_claim"
+confidence: "unknown"
+evidence_status: "not_checked"
+verification_gap: ""
 sources: []
 source_titles: []
 source_types: []
@@ -37,6 +46,14 @@ editorial_review: "not_started"
 ---
 
 # {{ title }}
+
+## Issue Panel
+
+- Stream: `{{ stream }}` — thematic shelf.
+- Primary rubric: `{{ primary_rubric }}` — analytical lens.
+- Issue type: `{{ issue_type }}` — product format.
+- Confidence: `{{ confidence }}`.
+- Publication mode: `{{ publication_mode }}`.
 
 ## Лид
 
@@ -71,6 +88,14 @@ editorial_review: "not_started"
 - вторичные эффекты;
 - что остаётся неопределённым;
 - что изменит текущую оценку.
+
+## Evidence Ledger
+
+Для каждого важного утверждения заполнить:
+
+| Claim | Claim type | Primary source | Secondary source | Confidence | Verification gap | Publication mode |
+|---|---|---|---|---|---|---|
+| Утверждение | fact / source_reported_claim / weak_signal / editorial_inference | ссылка или нет | ссылка или нет | high / medium / low / unknown | что не проверено | published / limited_publication / draft_only / blocked |
 
 ## Скрытые и косвенные сигналы
 
