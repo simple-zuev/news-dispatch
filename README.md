@@ -137,14 +137,6 @@ Purpose: verify repository quality on PRs and pushes to `main`.
 
 It checks Python syntax, front matter, published-content rules, static rendering, reader output and public-safety scanning.
 
-For local preflight, run:
-
-```bash
-python -m py_compile tools/*.py
-```
-
-This catches newly added tools even before workflow file lists are updated.
-
 ### Deploy News Dispatch Pages
 
 Purpose: build and deploy the public site.
