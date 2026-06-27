@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "description": "Editorial taxonomy for News Dispatch. Streams answer what domain a dispatch belongs to; rubrics answer what analytical lens is used; issue_types answer what product format is being published; reader_sections preserve the recurring reader-facing blocks inside an issue.",
+  "rubrics": [
+    {
+      "slug": "reg-watch",
+      "title": "Reg Watch",
+      "description": "Regulation, laws, courts, licensing, supervision, sanctions, AML/KYC/KYT and other formal rule-making or enforcement signals.",
+      "source_requirement": "Primary regulator, court, official document or legal text is preferred. Without primary source, publish only as limited note or draft.",
+      "default_streams": ["finance", "crypto-finance", "ai", "tech-hardware-software"],
+      "claim_focus": ["official_fact", "source_reported_claim", "legal_or_regulatory_inference", "verification_gap"]
+    },
+    {
+      "slug": "market-structure",
+      "title": "Market Structure",
+      "description": "Market participants, exchanges, liquidity, custody, settlement, payment rails, pricing, intermediaries and business-model shifts.",
+      "source_requirement": "Use at least one primary or high-reliability source for high-impact market claims; media-only signals must be labelled.",
+      "default_streams": ["finance", "crypto-finance"],
+      "claim_focus": ["market_signal", "participant_change", "infrastructure_effect", "unverified_assumption"]
+    },
+    {
+      "slug": "infrastructure",
+      "title": "Infrastructure",
+      "description": "Hardware, data centers, APIs, networks, chips, supply chain, payment rails, production constraints and platform dependencies.",
+      "source_requirement": "Separate research, vendor claims, media reports and production readiness. Do not treat lab signals as commercial availability.",
+      "default_streams": ["ai", "tech-hardware-software", "crypto-finance", "dj-audio-creative"],
+      "claim_focus": ["technical_signal", "vendor_claim", "capacity_constraint", "operational_risk"]
+    },
+    {
+      "slug": "product-platform",
+      "title": "Product / Platform",
+      "description": "Product releases, platform changes, UX, developer tools, ecosystem lock-in, distribution and workflow changes.",
+      "source_requirement": "Prefer primary product release, changelog, developer documentation or official blog; separate release fact from adoption hypothesis.",
+      "default_streams": ["ai", "tech-hardware-software", "dj-audio-creative", "gear-style-edc"],
+      "claim_focus": ["release", "user_impact", "platform_control", "adoption_hypothesis"]
+    },
+    {
+      "slug": "security-abuse",
+      "title": "Security / Abuse",
+      "description": "Vulnerabilities, fraud, abuse patterns, model misuse, distillation, leaks, operational risk and trust failures.",
+      "source_requirement": "Use primary disclosure, vendor statement, CVE/advisory, court/regulator document or multiple independent reports. Accusations remain claims unless independently verified.",
+      "default_streams": ["ai", "tech-hardware-software", "crypto-finance", "finance"],
+      "claim_focus": ["incident_fact", "party_claim", "abuse_pattern", "mitigation_gap"]
+    },
+    {
+      "slug": "research-evidence",
+      "title": "Research / Evidence",
+      "description": "Papers, preprints, peer review, benchmarks, lab reports, replication status and research-to-product translation.",
+      "source_requirement": "Mark whether the work is peer-reviewed, preprint, corporate lab report, benchmark or unknown. Avoid overstating external validity.",
+      "default_streams": ["science-discovery", "ai", "tech-hardware-software"],
+      "claim_focus": ["research_result", "method_limit", "replication_status", "application_hypothesis"]
+    },
+    {
+      "slug": "consumer-use",
+      "title": "Consumer / Use",
+      "description": "User scenarios, ownership signals, usability, durability, local availability, practical value and material-culture use cases.",
+      "source_requirement": "Community evidence must be classified by pattern type. Isolated complaints are not proof of a general defect.",
+      "default_streams": ["gear-style-edc", "moscow-city", "dj-audio-creative", "tech-hardware-software"],
+      "claim_focus": ["ownership_signal", "usability_pattern", "availability_issue", "subjective_preference"]
+    },
+    {
+      "slug": "city-culture",
+      "title": "City / Culture",
+      "description": "Moscow, venues, events, public spaces, transport, cultural infrastructure, food/bar scenes and local service changes.",
+      "source_requirement": "Prefer official city source, venue page, organizer source or reliable city media; separate listing fact from recommendation.",
+      "default_streams": ["moscow-city"],
+      "claim_focus": ["event_fact", "venue_signal", "local_context", "practical_constraint"]
+    },
+    {
+      "slug": "weak-signals",
+      "title": "Weak Signals",
+      "description": "Telegram, X, Reddit, forums, comments, hiring, patents, GitHub activity, on-chain anomalies and indirect early indicators.",
+      "source_requirement": "Weak signals are never facts. Use only with explicit labelling, confidence level and what would confirm or falsify the signal.",
+      "default_streams": ["general", "crypto-finance", "ai", "tech-hardware-software", "gear-style-edc", "moscow-city", "dj-audio-creative", "science-discovery"],
+      "claim_focus": ["weak_signal", "rumor", "community_pattern", "falsification_criterion"]
+    }
+  ],
+  "issue_types": [
+    {
+      "slug": "daily-radar-review",
+      "title": "Daily Radar Review",
+      "description": "Short editorial review of retained public signals. It may group and classify signals but should not overstate conclusions."
+    },
+    {
+      "slug": "weekly-digest",
+      "title": "Weekly Digest",
+      "description": "Synthesis of the most consequential developments over a week by stream and rubric. Not a raw RSS recap."
+    },
+    {
+      "slug": "reg-brief",
+      "title": "Reg Brief",
+      "description": "Focused regulatory note around one document, proceeding, enforcement signal or rule-making process."
+    },
+    {
+      "slug": "claim-check",
+      "title": "Claim Check",
+      "description": "Verification-focused issue around one disputed or high-impact claim."
+    },
+    {
+      "slug": "market-structure-note",
+      "title": "Market Structure Note",
+      "description": "Analysis of changes in market participants, rails, intermediaries, custody, liquidity or settlement."
+    },
+    {
+      "slug": "infrastructure-radar",
+      "title": "Infrastructure Radar",
+      "description": "Signals around hardware, software, compute, networks, production constraints and platform dependencies."
+    },
+    {
+      "slug": "source-dossier",
+      "title": "Source Dossier",
+      "description": "Source-first review of what is confirmed, what is media-reported and what remains unverified."
+    },
+    {
+      "slug": "special-issue",
+      "title": "Special Issue",
+      "description": "Cross-domain issue where the relationship between several streams is the main point."
+    }
+  ],
+  "reader_sections": [
+    {
+      "slug": "issue-panel",
+      "title": "Issue Panel",
+      "purpose": "A compact metadata panel: stream, rubric, issue type, period, confidence and publication mode."
+    },
+    {
+      "slug": "executive-brief",
+      "title": "Executive Brief",
+      "purpose": "A short decision-grade summary of the main signal, mechanism and uncertainty."
+    },
+    {
+      "slug": "main-editorial-essay",
+      "title": "Main Editorial Essay",
+      "purpose": "The central analytical narrative connecting facts, mechanism and second-order effects."
+    },
+    {
+      "slug": "key-signals",
+      "title": "Key Signals",
+      "purpose": "A structured list of important signals with source class and confidence."
+    },
+    {
+      "slug": "community-radar",
+      "title": "Community Radar",
+      "purpose": "User/community evidence classified as complaints, repeated patterns, regressions, bad batches or subjective preferences."
+    },
+    {
+      "slug": "buying-material-culture-radar",
+      "title": "Buying and Material-Culture Radar",
+      "purpose": "Product, gear, EDC and ownership-oriented evidence; never advertising or affiliate copy."
+    },
+    {
+      "slug": "finance-consumer-environment",
+      "title": "Finance and Consumer Environment",
+      "purpose": "Impact on consumer finance, rates, payments, banks, ruble, cards and household financial context."
+    },
+    {
+      "slug": "horizon-notes",
+      "title": "Horizon Notes",
+      "purpose": "Longer-horizon technology, science, culture and infrastructure signals that are too early for firm conclusions."
+    },
+    {
+      "slug": "signal-vs-noise",
+      "title": "Signal vs Noise",
+      "purpose": "What should be treated as meaningful, what should be ignored, and what needs more evidence."
+    },
+    {
+      "slug": "risks-and-limits",
+      "title": "Risks and Limits",
+      "purpose": "Known uncertainty, missing sources, contradictory evidence and possible analytical errors."
+    },
+    {
+      "slug": "decisions-with-criteria",
+      "title": "Decisions with Criteria",
+      "purpose": "Non-directive criteria for monitoring, publication, source review or future editorial prioritization."
+    },
+    {
+      "slug": "change-in-worldview",
+      "title": "Change in Worldview",
+      "purpose": "What the reader should understand differently after the issue, and what evidence would reverse it."
+    }
+  ],
+  "claim_types": [
+    "confirmed_fact",
+    "source_reported_claim",
+    "corroborated_signal",
+    "research_result",
+    "benchmark_result",
+    "community_signal",
+    "weak_signal",
+    "rumor",
+    "forecast",
+    "marketing_claim",
+    "editorial_inference"
+  ],
+  "confidence_levels": ["high", "medium", "low", "unknown"],
+  "publication_modes": ["published", "limited_publication", "draft_only", "blocked"]
+}
