@@ -1,76 +1,76 @@
 {
   "version": 1,
-  "description": "Editorial taxonomy for News Dispatch. Streams answer what domain a dispatch belongs to; rubrics answer what analytical lens is used; issue_types answer what product format is being published; reader_sections preserve the recurring reader-facing blocks inside an issue.",
+  "description": "Редакционная таксономия News Dispatch. Поток определяет предметную область, рубрика — аналитическую оптику, тип выпуска — формат материала, а разделы выпуска — повторяющуюся структуру текста для читателя.",
   "rubrics": [
     {
       "slug": "reg-watch",
-      "title": "Reg Watch",
-      "description": "Regulation, laws, courts, licensing, supervision, sanctions, AML/KYC/KYT and other formal rule-making or enforcement signals.",
-      "source_requirement": "Primary regulator, court, official document or legal text is preferred. Without primary source, publish only as limited note or draft.",
+      "title": "Регуляторный контур",
+      "description": "Законы, нормативные акты, суды, лицензирование, надзор, санкции, AML/KYC/KYT и другие формальные правила или правоприменительные сигналы.",
+      "source_requirement": "Предпочтителен первичный источник: регулятор, суд, официальный документ или текст нормативного акта. Без первичного источника материал допускается только как ограниченная заметка или черновик.",
       "default_streams": ["finance", "crypto-finance", "ai", "tech-hardware-software"],
       "claim_focus": ["official_fact", "source_reported_claim", "legal_or_regulatory_inference", "verification_gap"]
     },
     {
       "slug": "market-structure",
-      "title": "Market Structure",
-      "description": "Market participants, exchanges, liquidity, custody, settlement, payment rails, pricing, intermediaries and business-model shifts.",
-      "source_requirement": "Use at least one primary or high-reliability source for high-impact market claims; media-only signals must be labelled.",
+      "title": "Структура рынка",
+      "description": "Участники рынка, биржи, ликвидность, хранение активов, расчёты, платёжные каналы, ценообразование, посредники и изменения бизнес-моделей.",
+      "source_requirement": "Для значимых рыночных утверждений нужен первичный или надёжный деловой источник. Сигналы только из медиа должны быть явно отмечены как сообщения источника.",
       "default_streams": ["finance", "crypto-finance"],
       "claim_focus": ["market_signal", "participant_change", "infrastructure_effect", "unverified_assumption"]
     },
     {
       "slug": "infrastructure",
-      "title": "Infrastructure",
-      "description": "Hardware, data centers, APIs, networks, chips, supply chain, payment rails, production constraints and platform dependencies.",
-      "source_requirement": "Separate research, vendor claims, media reports and production readiness. Do not treat lab signals as commercial availability.",
+      "title": "Инфраструктура",
+      "description": "Железо, дата-центры, API, сети, чипы, цепочки поставок, платёжная инфраструктура, производственные ограничения и зависимость от платформ.",
+      "source_requirement": "Нужно разделять исследовательский результат, заявление поставщика, сообщение медиа и фактическую готовность к промышленному использованию.",
       "default_streams": ["ai", "tech-hardware-software", "crypto-finance", "dj-audio-creative"],
       "claim_focus": ["technical_signal", "vendor_claim", "capacity_constraint", "operational_risk"]
     },
     {
       "slug": "product-platform",
-      "title": "Product / Platform",
-      "description": "Product releases, platform changes, UX, developer tools, ecosystem lock-in, distribution and workflow changes.",
-      "source_requirement": "Prefer primary product release, changelog, developer documentation or official blog; separate release fact from adoption hypothesis.",
+      "title": "Продукт и платформа",
+      "description": "Релизы продуктов, изменения платформ, пользовательский опыт, инструменты разработчика, экосистемная зависимость, каналы распространения и изменения рабочих процессов.",
+      "source_requirement": "Предпочтительны официальный релиз, журнал изменений, документация для разработчиков или официальный блог. Факт релиза нужно отделять от гипотезы о принятии рынком.",
       "default_streams": ["ai", "tech-hardware-software", "dj-audio-creative", "gear-style-edc"],
       "claim_focus": ["release", "user_impact", "platform_control", "adoption_hypothesis"]
     },
     {
       "slug": "security-abuse",
-      "title": "Security / Abuse",
-      "description": "Vulnerabilities, fraud, abuse patterns, model misuse, distillation, leaks, operational risk and trust failures.",
-      "source_requirement": "Use primary disclosure, vendor statement, CVE/advisory, court/regulator document or multiple independent reports. Accusations remain claims unless independently verified.",
+      "title": "Безопасность и злоупотребления",
+      "description": "Уязвимости, мошенничество, злоупотребления, неправомерное использование моделей, утечки, операционные риски и сбои доверия.",
+      "source_requirement": "Нужны первичное раскрытие, заявление поставщика, CVE/advisory, документ суда или регулятора либо несколько независимых сообщений. Обвинения остаются утверждениями источника до подтверждения.",
       "default_streams": ["ai", "tech-hardware-software", "crypto-finance", "finance"],
       "claim_focus": ["incident_fact", "party_claim", "abuse_pattern", "mitigation_gap"]
     },
     {
       "slug": "research-evidence",
-      "title": "Research / Evidence",
-      "description": "Papers, preprints, peer review, benchmarks, lab reports, replication status and research-to-product translation.",
-      "source_requirement": "Mark whether the work is peer-reviewed, preprint, corporate lab report, benchmark or unknown. Avoid overstating external validity.",
+      "title": "Исследования и доказательная база",
+      "description": "Научные статьи, препринты, рецензирование, бенчмарки, отчёты лабораторий, воспроизводимость и перенос исследования в продуктовую практику.",
+      "source_requirement": "Нужно указывать статус работы: рецензируемая статья, препринт, корпоративный отчёт, бенчмарк или неопределённый статус. Нельзя завышать применимость результата.",
       "default_streams": ["science-discovery", "ai", "tech-hardware-software"],
       "claim_focus": ["research_result", "method_limit", "replication_status", "application_hypothesis"]
     },
     {
       "slug": "consumer-use",
-      "title": "Consumer / Use",
-      "description": "User scenarios, ownership signals, usability, durability, local availability, practical value and material-culture use cases.",
-      "source_requirement": "Community evidence must be classified by pattern type. Isolated complaints are not proof of a general defect.",
+      "title": "Пользовательская практика",
+      "description": "Сценарии использования, опыт владения, удобство, надёжность, локальная доступность, практическая ценность и повседневное применение продуктов или сервисов.",
+      "source_requirement": "Пользовательские отзывы нужно классифицировать по типу паттерна. Единичная жалоба не является доказательством системной проблемы.",
       "default_streams": ["gear-style-edc", "moscow-city", "dj-audio-creative", "tech-hardware-software"],
       "claim_focus": ["ownership_signal", "usability_pattern", "availability_issue", "subjective_preference"]
     },
     {
       "slug": "city-culture",
-      "title": "City / Culture",
-      "description": "Moscow, venues, events, public spaces, transport, cultural infrastructure, food/bar scenes and local service changes.",
-      "source_requirement": "Prefer official city source, venue page, organizer source or reliable city media; separate listing fact from recommendation.",
+      "title": "Город и культура",
+      "description": "Москва, городские пространства, события, площадки, транспорт, культурная инфраструктура, рестораны, бары и изменения локальных сервисов.",
+      "source_requirement": "Предпочтительны официальный городской источник, страница площадки, организатор или надёжное городское медиа. Факт события нужно отделять от рекомендации.",
       "default_streams": ["moscow-city"],
       "claim_focus": ["event_fact", "venue_signal", "local_context", "practical_constraint"]
     },
     {
       "slug": "weak-signals",
-      "title": "Weak Signals",
-      "description": "Telegram, X, Reddit, forums, comments, hiring, patents, GitHub activity, on-chain anomalies and indirect early indicators.",
-      "source_requirement": "Weak signals are never facts. Use only with explicit labelling, confidence level and what would confirm or falsify the signal.",
+      "title": "Слабые сигналы",
+      "description": "Публичные сообщения в социальных сетях и сообществах, вакансии, патенты, активность в GitHub, ончейн-аномалии и другие ранние косвенные признаки изменений.",
+      "source_requirement": "Слабые сигналы не являются фактами. Они допускаются только с явной маркировкой, уровнем уверенности и указанием, что может подтвердить или опровергнуть сигнал.",
       "default_streams": ["general", "crypto-finance", "ai", "tech-hardware-software", "gear-style-edc", "moscow-city", "dj-audio-creative", "science-discovery"],
       "claim_focus": ["weak_signal", "rumor", "community_pattern", "falsification_criterion"]
     }
@@ -78,105 +78,105 @@
   "issue_types": [
     {
       "slug": "daily-radar-review",
-      "title": "Daily Radar Review",
-      "description": "Short editorial review of retained public signals. It may group and classify signals but should not overstate conclusions."
+      "title": "Обзор сигналов",
+      "description": "Короткий редакционный обзор публичных сигналов. Может группировать и классифицировать события, но не должен завышать выводы."
     },
     {
       "slug": "weekly-digest",
-      "title": "Weekly Digest",
-      "description": "Synthesis of the most consequential developments over a week by stream and rubric. Not a raw RSS recap."
+      "title": "Недельный дайджест",
+      "description": "Синтез наиболее значимых изменений за неделю по теме и аналитической рубрике. Не является пересказом RSS-ленты."
     },
     {
       "slug": "reg-brief",
-      "title": "Reg Brief",
-      "description": "Focused regulatory note around one document, proceeding, enforcement signal or rule-making process."
+      "title": "Регуляторная заметка",
+      "description": "Короткий материал вокруг одного документа, процесса, судебного или надзорного сигнала."
     },
     {
       "slug": "claim-check",
-      "title": "Claim Check",
-      "description": "Verification-focused issue around one disputed or high-impact claim."
+      "title": "Проверка утверждения",
+      "description": "Материал, сфокусированный на проверке спорного или потенциально значимого утверждения."
     },
     {
       "slug": "market-structure-note",
-      "title": "Market Structure Note",
-      "description": "Analysis of changes in market participants, rails, intermediaries, custody, liquidity or settlement."
+      "title": "Заметка о структуре рынка",
+      "description": "Анализ изменений в участниках рынка, инфраструктуре, посредниках, хранении, ликвидности или расчётах."
     },
     {
       "slug": "infrastructure-radar",
-      "title": "Infrastructure Radar",
-      "description": "Signals around hardware, software, compute, networks, production constraints and platform dependencies."
+      "title": "Инфраструктурный радар",
+      "description": "Сигналы о железе, программном обеспечении, вычислениях, сетях, производственных ограничениях и зависимости от платформ."
     },
     {
       "slug": "source-dossier",
-      "title": "Source Dossier",
-      "description": "Source-first review of what is confirmed, what is media-reported and what remains unverified."
+      "title": "Досье источников",
+      "description": "Разбор источников: что подтверждено, что сообщено медиа и что остаётся непроверенным."
     },
     {
       "slug": "special-issue",
-      "title": "Special Issue",
-      "description": "Cross-domain issue where the relationship between several streams is the main point."
+      "title": "Специальный выпуск",
+      "description": "Кросс-доменный материал, где основное значение имеет связь между несколькими темами."
     }
   ],
   "reader_sections": [
     {
       "slug": "issue-panel",
-      "title": "Issue Panel",
-      "purpose": "A compact metadata panel: stream, rubric, issue type, period, confidence and publication mode."
+      "title": "Паспорт выпуска",
+      "purpose": "Краткий блок с темой, рубрикой, типом выпуска, периодом, уровнем уверенности и режимом публикации."
     },
     {
       "slug": "executive-brief",
-      "title": "Executive Brief",
-      "purpose": "A short decision-grade summary of the main signal, mechanism and uncertainty."
+      "title": "Кратко",
+      "purpose": "Сжатое резюме главного сигнала, механизма влияния и неопределённости."
     },
     {
       "slug": "main-editorial-essay",
-      "title": "Main Editorial Essay",
-      "purpose": "The central analytical narrative connecting facts, mechanism and second-order effects."
+      "title": "Основной анализ",
+      "purpose": "Центральная аналитическая часть, связывающая факты, механизм влияния и возможные последствия."
     },
     {
       "slug": "key-signals",
-      "title": "Key Signals",
-      "purpose": "A structured list of important signals with source class and confidence."
+      "title": "Ключевые сигналы",
+      "purpose": "Структурированный список важных сигналов с классом источника и уровнем уверенности."
     },
     {
       "slug": "community-radar",
-      "title": "Community Radar",
-      "purpose": "User/community evidence classified as complaints, repeated patterns, regressions, bad batches or subjective preferences."
+      "title": "Сигналы сообщества",
+      "purpose": "Пользовательские и общественные сигналы: жалобы, повторяющиеся паттерны, регрессии, дефекты партий или субъективные предпочтения."
     },
     {
       "slug": "buying-material-culture-radar",
-      "title": "Buying and Material-Culture Radar",
-      "purpose": "Product, gear, EDC and ownership-oriented evidence; never advertising or affiliate copy."
+      "title": "Вещи и практическое использование",
+      "purpose": "Продукты, EDC, опыт владения и материальная культура без рекламной или партнёрской подачи."
     },
     {
       "slug": "finance-consumer-environment",
-      "title": "Finance and Consumer Environment",
-      "purpose": "Impact on consumer finance, rates, payments, banks, ruble, cards and household financial context."
+      "title": "Финансовая среда потребителя",
+      "purpose": "Влияние на ставки, платежи, банки, карты, рубль и бытовой финансовый контекст."
     },
     {
       "slug": "horizon-notes",
-      "title": "Horizon Notes",
-      "purpose": "Longer-horizon technology, science, culture and infrastructure signals that are too early for firm conclusions."
+      "title": "Горизонт наблюдения",
+      "purpose": "Долгосрочные технологические, научные, культурные и инфраструктурные сигналы, по которым рано делать твёрдые выводы."
     },
     {
       "slug": "signal-vs-noise",
-      "title": "Signal vs Noise",
-      "purpose": "What should be treated as meaningful, what should be ignored, and what needs more evidence."
+      "title": "Сигнал и шум",
+      "purpose": "Что можно считать значимым, что лучше игнорировать и где требуется больше данных."
     },
     {
       "slug": "risks-and-limits",
-      "title": "Risks and Limits",
-      "purpose": "Known uncertainty, missing sources, contradictory evidence and possible analytical errors."
+      "title": "Риски и ограничения",
+      "purpose": "Известная неопределённость, недостающие источники, противоречия и возможные аналитические ошибки."
     },
     {
       "slug": "decisions-with-criteria",
-      "title": "Decisions with Criteria",
-      "purpose": "Non-directive criteria for monitoring, publication, source review or future editorial prioritization."
+      "title": "Критерии наблюдения",
+      "purpose": "Недирективные критерии для мониторинга, проверки источников и будущей редакционной приоритизации."
     },
     {
       "slug": "change-in-worldview",
-      "title": "Change in Worldview",
-      "purpose": "What the reader should understand differently after the issue, and what evidence would reverse it."
+      "title": "Что меняется в картине мира",
+      "purpose": "Что читатель должен понять иначе после выпуска и какие данные могут изменить этот вывод."
     }
   ],
   "claim_types": [
