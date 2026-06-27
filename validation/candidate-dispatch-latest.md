@@ -14,7 +14,7 @@ Status: candidate only. Not published. Do not move to dispatches/ without editor
 
 ## Исходный reviewed radar
 
-# Reviewed Radar Report — 2026-06-26
+# Reviewed Radar Report — 2026-06-27
 
 Status: pre-publication review artifact.
 
@@ -22,165 +22,168 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 20
+- Retained signals: 21
 - Streams with retained signals: 4
-- Fetch warnings: 1
-
-## ai
-
-- **Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks**
-  - Topic: `general-monitoring`
-  - Source: `github-blog-ai` / `official_source`
-  - Signal path: `signals/2026-06-26/ai/0d180708b9cf8116-evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harn.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Heat waves mess with your brain. Scientists are trying to figure out why.**
-  - Topic: `ai-platforms`
-  - Source: `mit-tech-review-ai` / `public_media`
-  - Signal path: `signals/2026-06-26/ai/0ed8d377bbafdcb1-heat-waves-mess-with-your-brain-scientists-are-trying-to-figure-out-why.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- Fetch warnings: 0
 
 ## crypto-finance
 
-- **Corporate Bitcoin Treasuries Explained: Why Public Companies Hold Bitcoin**
-  - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-26/crypto-finance/a9dd25ad00c6e9a1-corporate-bitcoin-treasuries-explained-why-public-companies-hold-bitcoin.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Ethereum treasury firm Sharplink takes in ether for the first time in eight months**
+- **Ripple CEO stays bullish on bitcoin but says Saylor's strategy has hurt crypto**
   - Topic: `market`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-26/crypto-finance/ada2537193686496-ethereum-treasury-firm-sharplink-takes-in-ether-for-the-first-time-in-ei.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/83bfb476b9d52867-ripple-ceo-stays-bullish-on-bitcoin-but-says-saylor-s-strategy-has-hurt.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Bitcoin ETF Flows Explained: What ETF Inflows and Outflows Mean for Investors**
-  - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-26/crypto-finance/c2aadff95c59ab22-bitcoin-etf-flows-explained-what-etf-inflows-and-outflows-mean-for-inves.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Sharplink buys Ethereum for first time in 8 months, adding 5,000 ETH: onchain analyst**
-  - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-26/crypto-finance/821e9f002fa9557c-sharplink-buys-ethereum-for-first-time-in-8-months-adding-5-000-eth-onch.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Kraken, Maple launch onchain warehouse facility for crypto-backed institutional loans**
+- **Dogecoin and Hyperliquid's HYPE led weekly crypto losses as AI stocks lure buyers**
   - Topic: `ai-platforms`
+  - Source: `coindesk` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/25622f82d61d2435-dogecoin-and-hyperliquid-s-hype-led-weekly-crypto-losses-as-ai-stocks-lu.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Here’s what happened in crypto today**
+  - Topic: `general-monitoring`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-26/crypto-finance/701e3ce8e1e9c277-kraken-maple-launch-onchain-warehouse-facility-for-crypto-backed-institu.md`
+  - Signal path: `signals/2026-06-27/crypto-finance/552e43ae5e35357a-here-s-what-happened-in-crypto-today.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Ripple CEO says Michael Saylor has hurt crypto market as Strategy’s STRC trades 25% below par**
+  - Topic: `market`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/2449d12a5718ee6d-ripple-ceo-says-michael-saylor-has-hurt-crypto-market-as-strategy-s-strc.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **DraftKings launches its own prediction markets exchange as consumer volume exceeds $3 billion**
+  - Topic: `market`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/cc324d1699cb211d-draftkings-launches-its-own-prediction-markets-exchange-as-consumer-volu.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **EU lawmakers urge assessing DeFi, staking, NFT regulation**
+  - Topic: `regulation`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-06-27/crypto-finance/93dace31fab9c3bc-eu-lawmakers-urge-assessing-defi-staking-nft-regulation.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## finance
 
-- **Проекты нормативных документов Банка России для публичного обсуждения**
+- **Самые быстрые футболисты чемпионата мира — 2026**
   - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-26/finance/061146cca67e7bd0-cbr-news.md`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/a4a4107da2ef67af-2026.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Денежная база (в узком определении, еженедельные значения)**
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **В МВД рассказали о новой схеме мошенников с заменой домофона**
   - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-26/finance/4c671a94bd5a92ca-cbr-news.md`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/9349e817e51a22d2-rbc-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Оценка разрыва цен между первичным и вторичным рынками жилья Российской Федерации**
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Исторический гол и рекорды. Как футболисты РПЛ выступили на ЧМ-2026**
   - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-26/finance/9bddb2170643ed8a-cbr-news.md`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/7836790e5edf92d1-2026.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Совкомбанк повысил ставки по вкладам до одного года**
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Робот поприветствовал Кадырова фразой «Ахмат-сила» на выставке в Грозном**
   - Topic: `market`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-26/finance/775aef0d91a3925e-rbc-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **В РФС допустили «движение» по обращению Федорищева о коррупции в футболе**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-26/finance/d00a722a7d2a420e-rbc-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Какие сенсации произошли на чемпионате мира-2026**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-26/finance/85413f76558a7d45-2026.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **The Information: Белый дом попросил OpenAI отложить релиз новой ИИ-модели**
-  - Topic: `ai-platforms`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-26/finance/dc17a72fe6744ff1-the-information----openai.md`
+  - Signal path: `signals/2026-06-27/finance/1a875a430174eac2-kommersant-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Индекс и срочная версия RUONIA**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-27/finance/967aec9dfe827e58-ruonia.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Перечень микрофинансовых организаций предпринимательского финансирования**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-27/finance/3ea6fab713319b80-cbr-news.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Трамп рассчитывает на суровый приговор своему экс-советнику Болтону**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-06-27/finance/f32e30cb970c7218-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+
+## science-discovery
+
 
 ## tech-hardware-software
 
-- **OpenAI может отложить IPO до следующего года ради оценки в $1 трлн**
+- **MSI выпустит в России флагманский игровой ноутбук Titan 18 HX Dragon Edition Draco Epic с Core Ultra 9 290HX и RTX 5090**
+  - Topic: `general-monitoring`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/079c25f1a777768a-msi-------titan-18-hx-dragon-edition-draco-epic--core-ultra-9-290hx--rtx.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **Руководитель разработки Apple Vision Pro переходит на работу в OpenAI**
   - Topic: `ai-platforms`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/bf49248621c0bee4-openai---ipo-------1.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/860a64543104b23f-apple-vision-pro-----openai.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Сотрудники OpenAI стали переходить от использования чат-ботов к ИИ-агентам**
-  - Topic: `ai-platforms`
+- **Путин подписал закон о создании базы IMEI всех смартфонов россиян**
+  - Topic: `general-monitoring`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/7b398501be8f4937-openai.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/f7a6d6e1adbde7d8-imei.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Администрация Трампа попросила OpenAI задержать публичный выпуск GPT-5.6 «из соображений безопасности»**
+- **South Korea plans to train entire military as \"drone warriors\"**
   - Topic: `ai-platforms`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/d1bcce1feb7cdcc3-openai----gpt-5-6.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Google finally releases a Finance Android app, promises iOS version later in 2026**
-  - Topic: `general-monitoring`
   - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/483f2dbca7cdce8b-google-finally-releases-a-finance-android-app-promises-ios-version-later.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/9ad3af891193d1bf-south-korea-plans-to-train-entire-military-as-drone-warriors.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Microsoft adds another year to Windows 10 extended update program**
-  - Topic: `general-monitoring`
+- **NYT slams Microsoft for building copyright-infringing supercomputer for OpenAI**
+  - Topic: `ai-platforms`
   - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/880f32e678ad7b2f-microsoft-adds-another-year-to-windows-10-extended-update-program.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/5eee074db3850cbb-nyt-slams-microsoft-for-building-copyright-infringing-supercomputer-for.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **New effort will get genome sequences for entire Endangered Species list**
-  - Topic: `general-monitoring`
+- **Doctors suspected man had brain cancer. He actually had worms.**
+  - Topic: `ai-platforms`
   - Source: `ars-technica-tech` / `public_media`
-  - Signal path: `signals/2026-06-26/tech-hardware-software/9cbee71e8f254b02-new-effort-will-get-genome-sequences-for-entire-endangered-species-list.md`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/7ef3cf49325e1e7a-doctors-suspected-man-had-brain-cancer-he-actually-had-worms.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-
-## Fetch warnings
-
-- hypebeast: TimeoutError: The read operation timed out
+- **OpenAI's ChatGPT-5.6 gets the same banhammer treatment as Anthropic’s Mythos from the federal government — source says that Washington cautioned OpenAI against releasing the model without receiving approval**
+  - Topic: `regulation`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/2a7a9f3e6b4dc40a-openai-s-chatgpt-5-6-gets-the-same-banhammer-treatment-as-anthropic-s-my.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **Solidigm VP talks PCIe 6.0 SSDs, next-gen floating gate NAND, liquid cooled storage and more — Avi Shetty, VP of AI, Solutions & Market Enablement discusses the future of enterprise storage tech**
+  - Topic: `market`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-06-27/tech-hardware-software/f8ecd965ee806119-solidigm-vp-talks-pcie-6-0-ssds-next-gen-floating-gate-nand-liquid-coole.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
 
 ## Next review checks
 

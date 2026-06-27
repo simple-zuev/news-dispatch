@@ -1,27 +1,17 @@
 {
-  "date": "2026-06-26",
+  "date": "2026-06-27",
   "generated": [
-    {
-      "stream": "ai",
-      "status": "signals-only",
-      "count": 2,
-      "signals": [
-        "signals/2026-06-26/ai/0d180708b9cf8116-evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harn.md",
-        "signals/2026-06-26/ai/0ed8d377bbafdcb1-heat-waves-mess-with-your-brain-scientists-are-trying-to-figure-out-why.md"
-      ],
-      "media_count": 2,
-      "routing": "feed_owned"
-    },
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 5,
+      "count": 6,
       "signals": [
-        "signals/2026-06-26/crypto-finance/a9dd25ad00c6e9a1-corporate-bitcoin-treasuries-explained-why-public-companies-hold-bitcoin.md",
-        "signals/2026-06-26/crypto-finance/ada2537193686496-ethereum-treasury-firm-sharplink-takes-in-ether-for-the-first-time-in-ei.md",
-        "signals/2026-06-26/crypto-finance/c2aadff95c59ab22-bitcoin-etf-flows-explained-what-etf-inflows-and-outflows-mean-for-inves.md",
-        "signals/2026-06-26/crypto-finance/821e9f002fa9557c-sharplink-buys-ethereum-for-first-time-in-8-months-adding-5-000-eth-onch.md",
-        "signals/2026-06-26/crypto-finance/701e3ce8e1e9c277-kraken-maple-launch-onchain-warehouse-facility-for-crypto-backed-institu.md"
+        "signals/2026-06-27/crypto-finance/83bfb476b9d52867-ripple-ceo-stays-bullish-on-bitcoin-but-says-saylor-s-strategy-has-hurt.md",
+        "signals/2026-06-27/crypto-finance/25622f82d61d2435-dogecoin-and-hyperliquid-s-hype-led-weekly-crypto-losses-as-ai-stocks-lu.md",
+        "signals/2026-06-27/crypto-finance/552e43ae5e35357a-here-s-what-happened-in-crypto-today.md",
+        "signals/2026-06-27/crypto-finance/2449d12a5718ee6d-ripple-ceo-says-michael-saylor-has-hurt-crypto-market-as-strategy-s-strc.md",
+        "signals/2026-06-27/crypto-finance/cc324d1699cb211d-draftkings-launches-its-own-prediction-markets-exchange-as-consumer-volu.md",
+        "signals/2026-06-27/crypto-finance/93dace31fab9c3bc-eu-lawmakers-urge-assessing-defi-staking-nft-regulation.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -31,56 +21,59 @@
       "status": "signals-only",
       "count": 7,
       "signals": [
-        "signals/2026-06-26/finance/061146cca67e7bd0-cbr-news.md",
-        "signals/2026-06-26/finance/4c671a94bd5a92ca-cbr-news.md",
-        "signals/2026-06-26/finance/9bddb2170643ed8a-cbr-news.md",
-        "signals/2026-06-26/finance/775aef0d91a3925e-rbc-finance.md",
-        "signals/2026-06-26/finance/d00a722a7d2a420e-rbc-finance.md",
-        "signals/2026-06-26/finance/85413f76558a7d45-2026.md",
-        "signals/2026-06-26/finance/dc17a72fe6744ff1-the-information----openai.md"
+        "signals/2026-06-27/finance/a4a4107da2ef67af-2026.md",
+        "signals/2026-06-27/finance/9349e817e51a22d2-rbc-finance.md",
+        "signals/2026-06-27/finance/7836790e5edf92d1-2026.md",
+        "signals/2026-06-27/finance/1a875a430174eac2-kommersant-finance.md",
+        "signals/2026-06-27/finance/967aec9dfe827e58-ruonia.md",
+        "signals/2026-06-27/finance/3ea6fab713319b80-cbr-news.md",
+        "signals/2026-06-27/finance/f32e30cb970c7218-kommersant-finance.md"
       ],
       "media_count": 4,
+      "routing": "feed_owned"
+    },
+    {
+      "stream": "science-discovery",
+      "status": "signals-only",
+      "count": 0,
+      "signals": [],
+      "media_count": 0,
       "routing": "feed_owned"
     },
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 6,
+      "count": 8,
       "signals": [
-        "signals/2026-06-26/tech-hardware-software/bf49248621c0bee4-openai---ipo-------1.md",
-        "signals/2026-06-26/tech-hardware-software/7b398501be8f4937-openai.md",
-        "signals/2026-06-26/tech-hardware-software/d1bcce1feb7cdcc3-openai----gpt-5-6.md",
-        "signals/2026-06-26/tech-hardware-software/483f2dbca7cdce8b-google-finally-releases-a-finance-android-app-promises-ios-version-later.md",
-        "signals/2026-06-26/tech-hardware-software/880f32e678ad7b2f-microsoft-adds-another-year-to-windows-10-extended-update-program.md",
-        "signals/2026-06-26/tech-hardware-software/9cbee71e8f254b02-new-effort-will-get-genome-sequences-for-entire-endangered-species-list.md"
+        "signals/2026-06-27/tech-hardware-software/079c25f1a777768a-msi-------titan-18-hx-dragon-edition-draco-epic--core-ultra-9-290hx--rtx.md",
+        "signals/2026-06-27/tech-hardware-software/860a64543104b23f-apple-vision-pro-----openai.md",
+        "signals/2026-06-27/tech-hardware-software/f7a6d6e1adbde7d8-imei.md",
+        "signals/2026-06-27/tech-hardware-software/9ad3af891193d1bf-south-korea-plans-to-train-entire-military-as-drone-warriors.md",
+        "signals/2026-06-27/tech-hardware-software/5eee074db3850cbb-nyt-slams-microsoft-for-building-copyright-infringing-supercomputer-for.md",
+        "signals/2026-06-27/tech-hardware-software/7ef3cf49325e1e7a-doctors-suspected-man-had-brain-cancer-he-actually-had-worms.md",
+        "signals/2026-06-27/tech-hardware-software/2a7a9f3e6b4dc40a-openai-s-chatgpt-5-6-gets-the-same-banhammer-treatment-as-anthropic-s-my.md",
+        "signals/2026-06-27/tech-hardware-software/f8ecd965ee806119-solidigm-vp-talks-pcie-6-0-ssds-next-gen-floating-gate-nand-liquid-coole.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     }
   ],
-  "fetch_errors": [
-    "hypebeast: TimeoutError: The read operation timed out"
-  ],
+  "fetch_errors": [],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-26/crypto-finance/065d0151044d448e-japanese-financial-services-giant-sbi-holdings-to-buy-bitbank-for-289-mi.md",
+      "path": "signals/2026-06-27/crypto-finance/619976145bd70537-aave-solana-ecosystem-tokens-lead-crypto-rebound-as-bitcoin-steadies-nea.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-26/crypto-finance/b006432b5d8100f1-too-big-to-fail-strategy-s-13-billion-bitcoin-paper-loss-alone-dwarfs-hu.md",
+      "path": "signals/2026-06-27/crypto-finance/789afbe823647c54-ethereum-og-wallets-finally-sell-after-8-years-locking-in-estimated-27m.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-26/tech-hardware-software/285a8eba91bab87a-keep-your-gaming-keyboard-and-pc-fans-clean-with-these-electric-air-blow.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-26/tech-hardware-software/886d3570ad62ad81-best-amazon-prime-day-tech-deals-live-on-day-four-last-chance-to-grab-sa.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
+      "path": "signals/2026-06-27/science-discovery/3c88c9e651c0ee48-nplus1.md",
+      "reason": "low_information_title",
+      "stream": "science-discovery"
     }
   ]
 }
