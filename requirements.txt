@@ -1,0 +1,6 @@
+# News Dispatch currently runs on the Python standard library.
+# Keep this file so local setup and CI can install project dependencies in a stable way:
+#
+#   python -m pip install -r requirements.txt
+#
+# Add third-party packages only when a tool genuinely imports them at runtime.
