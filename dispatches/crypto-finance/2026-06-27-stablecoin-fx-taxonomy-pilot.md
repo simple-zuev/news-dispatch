@@ -3,6 +3,7 @@ title: "Стейблкоины и FX-инфраструктура: taxonomy pilo
 date: "2026-06-27"
 period: "2026-06-25—2026-06-27"
 stream: "crypto-finance"
+type: "daily"
 primary_rubric: "market-structure"
 rubrics:
   - "market-structure"
