@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the reader-facing News Dispatch site after the base render step.
-
-The base renderer owns homepage, stream pages, rubric pages and dispatch pages.
-This enhancer must not overwrite those pages with older navigation. It only:
-- removes hidden draft pages from generated output;
-- adds source/media blocks to published dispatch pages;
-- polishes reader-facing copy;
-- adds canonical/social metadata and reader CSS;
-- rewrites RSS, sitemap, robots.txt and dispatches.json from published items only.
-"""
+"""Prepare the reader-facing News Dispatch site after the base render step."""
 
 from __future__ import annotations
 
@@ -19,6 +10,7 @@ from email.utils import formatdate
 from pathlib import Path
 from typing import Any
 
+from build_site_status import main as build_site_status
 from stream_registry import streams as registry_streams
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,7 +18,6 @@ SITE_DIR = ROOT / "site"
 DISPATCH_DIR = ROOT / "dispatches"
 RUBRICS_PATH = ROOT / "data" / "rubrics.json"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
-
 EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
 
 TEXT_REPLACEMENTS = {
@@ -35,63 +26,28 @@ TEXT_REPLACEMENTS = {
     "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке.",
     "Персональный reader/radar": "Публичный аналитический обзор",
     "Личный reader/radar": "Публичный аналитический обзор",
-    "Аналитический радар по рынкам, технологиям, AI, криптофинансам, Москве, вещам, аудио и науке.": "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке.",
-    "Аналитический радар по технологиям, рынкам, AI, финансам, Москве, вещам, аудио и науке.": "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке.",
-    "Редакционный журнал о технологиях, рынках, продуктах, инфраструктуре, вещах, городе, культуре и науке.": "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке.",
-    "Редакционный журнал": "Публичный аналитический обзор",
-    "Аналитический радар": "Публичный аналитический обзор",
     "Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.": "Публичные события, документы и рыночные сигналы с кратким разбором: что произошло, почему это важно и что требует дополнительной проверки.",
-    "Что произошло, почему это важно, кого затрагивает и что проверять дальше.": "Публичные события, документы и рыночные сигналы с кратким разбором: что произошло, почему это важно и что требует дополнительной проверки.",
     "Live Radar": "Свежие сигналы",
-    "Свежий радар": "Свежие сигналы",
     "Live signals": "Свежие сигналы",
     "Live signal": "Сигнал",
-    "live-сигналов": "сигналов",
-    "live-сигналы": "сигналы",
     "live-radar": "радар",
     "Потоки": "Темы",
     "Dispatch streams": "Темы",
-    "Темы разделены на самостоятельные reader-полки.": "Темы объединяют опубликованные материалы и свежие публичные сигналы по одному направлению.",
-    "Темы, форматы и направления reader/radar.": "Основные направления наблюдения и анализа.",
-    "Темы, форматы и направления редакционной аналитики.": "Основные направления наблюдения и анализа.",
-    "Темы наблюдения и анализа.": "Основные направления наблюдения и анализа.",
-    "Потоки показывают опубликованные выпуски и последние публичные live-сигналы.": "Темы объединяют опубликованные материалы и свежие публичные сигналы по одному направлению.",
-    "Темы показывают опубликованные материалы и свежие публичные сигналы.": "Темы объединяют опубликованные материалы и свежие публичные сигналы по одному направлению.",
     "Рубрики": "Рубрики анализа",
     "Dispatch rubrics": "Рубрики анализа",
-    "Аналитические рубрики.": "Рубрики анализа.",
-    "Повторяющиеся аналитические линзы: regulation, market structure, infrastructure, product/platform, security, research, consumer use и weak signals.": "Сквозные типы анализа: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования, пользовательская практика и слабые сигналы.",
-    "Аналитические линзы поверх потоков: регулирование, инфраструктура, market structure, research evidence и weak signals.": "Сквозные типы анализа: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования, пользовательская практика и слабые сигналы.",
-    "Срезы анализа поверх тем: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования и слабые сигналы.": "Сквозные типы анализа: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования, пользовательская практика и слабые сигналы.",
     "Последние выпуски": "Новые материалы",
-    "Новые аналитические выпуски": "Новые материалы",
     "Latest dispatches": "Новые материалы",
     "Итоговые материалы и тематические synthesis-выпуски.": "Опубликованные материалы с источниками, контекстом и обозначенными ограничениями.",
-    "Короткие аналитические материалы: что произошло, почему это важно и что проверять дальше.": "Опубликованные материалы с источниками, контекстом и обозначенными ограничениями.",
-    "Новые материалы из редакционных потоков.": "Опубликованные материалы с источниками, контекстом и обозначенными ограничениями.",
     "Open dispatch archive": "Архив материалов",
     "Архив выпусков": "Архив материалов",
-    "Archive": "Архив",
     "Dispatches": "Материалы",
     "Выпуски": "Материалы",
     "выпусков": "материалов",
-    "1 материалов": "1 материал",
-    "2 материалов": "2 материала",
-    "3 материалов": "3 материала",
-    "4 материалов": "4 материала",
-    "Strict review": "Строгая проверка",
-    "Editorial review": "Редакционная проверка",
-    "General Dispatch": "Общий обзор",
-    "Digital Assets Infrastructure": "Инфраструктура цифровых активов",
-    "Work Dispatch": "Рабочий обзор",
-    "Finance Dispatch": "Финансовая среда",
-    "Gear & Material Culture": "Вещи и материальная культура",
     "В этом потоке пока нет выпусков.": "В этой теме пока нет опубликованных материалов.",
     "В этом потоке пока нет опубликованных выпусков.": "В этой теме пока нет опубликованных материалов.",
     "В этом потоке сейчас нет live-сигналов.": "В этой теме сейчас нет свежих сигналов.",
     "Reader-facing материалы, прошедшие публикационный контур.": "Материалы, прошедшие редакционную проверку.",
     "Опубликованные выпуски": "Опубликованные материалы",
-    "Последние публичные сигналы потока. Это сырьё для анализа, а не опубликованные выводы.": "Публичные события и источники, которые могут попасть в будущие материалы после проверки. Сигнал не является готовым выводом.",
     "Публичный сигнал из live-radar. Это не опубликованный выпуск и не аналитический вывод.": "Публичный сигнал для проверки. Это не готовый аналитический вывод.",
     "Открыть Live Radar": "Открыть свежие сигналы",
     "AI-инфраструктура": "ИИ-инфраструктура",
@@ -114,44 +70,37 @@ TEXT_REPLACEMENTS = {
     "public_media": "публичное медиа",
     "specialized_media": "отраслевое медиа",
     "research_media": "исследовательский источник",
-    "community_source": "сообщество",
-    "marketing_source": "заявление поставщика",
     "limited_publication": "ограниченная публикация",
     "reg-brief": "регуляторная заметка",
     "market-structure-note": "заметка о структуре рынка",
     "infrastructure-radar": "инфраструктурный обзор",
     "source-dossier": "досье источников",
     "daily-radar-review": "обзор сигналов",
-    "Public-safe dispatch archive.": "Архив материалов.",
-    "Обезличенный архив public-safe выпусков.": "Архив материалов.",
 }
 
 
 def load_streams() -> list[dict[str, Any]]:
-    loaded: list[dict[str, Any]] = []
-    for item in registry_streams():
-        loaded.append(
-            {
-                "slug": str(item["slug"]),
-                "title": str(item["title"]),
-                "label": str(item.get("label", "Редакционная проверка")),
-                "description": str(item.get("description", "")),
-                "strict": bool(item.get("strict", False)),
-            }
-        )
-    return loaded
+    return [
+        {
+            "slug": str(item["slug"]),
+            "title": str(item["title"]),
+            "label": str(item.get("label", "Редакционная проверка")),
+            "description": str(item.get("description", "")),
+            "strict": bool(item.get("strict", False)),
+        }
+        for item in registry_streams()
+    ]
 
 
 def load_rubrics() -> list[dict[str, str]]:
     if not RUBRICS_PATH.exists():
         return []
     data = json.loads(RUBRICS_PATH.read_text(encoding="utf-8"))
-    rubrics: list[dict[str, str]] = []
-    for item in data.get("rubrics", []):
-        slug = str(item.get("slug", "")).strip()
-        if slug:
-            rubrics.append({"slug": slug, "title": str(item.get("title", slug))})
-    return rubrics
+    return [
+        {"slug": str(item.get("slug", "")), "title": str(item.get("title", item.get("slug", "")))}
+        for item in data.get("rubrics", [])
+        if str(item.get("slug", "")).strip()
+    ]
 
 
 STREAMS = load_streams()
@@ -262,14 +211,7 @@ def at(values: list[str], index: int, default: str = "") -> str:
     return values[index] if index < len(values) else default
 
 
-def cards_from_parallel_lists(
-    urls: list[str],
-    titles: list[str],
-    types: list[str],
-    notes: list[str] | None = None,
-    images: list[str] | None = None,
-    css_extra: str = "",
-) -> str:
+def cards_from_parallel_lists(urls: list[str], titles: list[str], types: list[str], notes: list[str] | None = None, images: list[str] | None = None, css_extra: str = "") -> str:
     notes = notes or []
     images = images or []
     cards = []
@@ -326,7 +268,7 @@ def enhance_html(path: Path) -> None:
         title_match = re.search(r"<title>(.*?)</title>", text, re.S)
         title = html.unescape(title_match.group(1)) if title_match else "Дайджест"
         description_match = re.search(r'<meta name="description" content="(.*?)">', text, re.S)
-        description = html.unescape(description_match.group(1)) if description_match else "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке."
+        description = html.unescape(description_match.group(1)) if description_match else "Публичный аналитический обзор."
         meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"Дайджест\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
         text = text.replace("<link rel=\"stylesheet\"", meta + "<link rel=\"stylesheet\"", 1)
     text = add_reader_css(text, path)
@@ -341,15 +283,7 @@ def write_rss(items: list[dict[str, object]]) -> None:
 
 
 def write_sitemap(items: list[dict[str, object]]) -> None:
-    urls = [
-        f"{BASE_URL}/",
-        f"{BASE_URL}/dispatches.html",
-        f"{BASE_URL}/rss.xml",
-        f"{BASE_URL}/sitemap.xml",
-        f"{BASE_URL}/streams/index.html",
-        f"{BASE_URL}/rubrics/index.html",
-        f"{BASE_URL}/radar/index.html",
-    ]
+    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html", f"{BASE_URL}/rubrics/index.html", f"{BASE_URL}/radar/index.html", f"{BASE_URL}/status.json"]
     urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
     urls.extend(f"{BASE_URL}/radar/{stream['slug']}.html" for stream in STREAMS)
     urls.extend(f"{BASE_URL}/rubrics/{rubric['slug']}.html" for rubric in RUBRICS)
@@ -376,6 +310,7 @@ def main() -> int:
     write_sitemap(items)
     write_robots()
     write_dispatches_json(items)
+    build_site_status()
     print("Enhanced News Dispatch site.")
     return 0
 
