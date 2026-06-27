@@ -2,6 +2,24 @@
 
 This document describes the public-safe editorial flow for News Dispatch.
 
+News Dispatch is not a raw feed. It is a source-aware analytical radar that turns public signals into reader-facing issues only after verification, classification and promotion review.
+
+## Editorial layers
+
+Do not mix these layers:
+
+```text
+stream -> rubric -> issue_type -> evidence ledger -> reader sections
+```
+
+- `stream` answers what domain a dispatch belongs to: finance, crypto-finance, ai, tech-hardware-software, gear-style-edc, moscow-city, dj-audio-creative, science-discovery or general.
+- `rubric` answers what analytical lens is used: regulation, market structure, infrastructure, security, research evidence, consumer use, weak signals and related lenses from `data/rubrics.json`.
+- `issue_type` answers what product format is being published: daily radar review, weekly digest, reg brief, claim check, market structure note, infrastructure radar, source dossier or special issue.
+- `evidence ledger` records claim type, source support, confidence, gaps and publication mode.
+- `reader sections` are the recurring blocks inside an issue: issue panel, executive brief, key signals, community radar, buying/material-culture radar, horizon notes, signal vs noise, risks and limits and other reader-facing sections.
+
+A stream is not a rubric. A rubric is not a section. A Daily Radar artifact is not a published dispatch.
+
 ## 1. Signal collection
 
 Daily Radar collects public RSS/Atom items from configured feeds and writes raw signal files under `signals/`.
@@ -36,7 +54,50 @@ This is a candidate artifact only. It must not be moved to `dispatches/` automat
 
 `tools/validate_candidate_dispatch.py` verifies that the candidate artifact still carries candidate-only disclaimers and does not claim published status.
 
-## 6. Promotion gate
+## 6. Rubric classification
+
+Before promotion, classify the candidate by `primary_rubric`, optional additional `rubrics` and `issue_type`.
+
+Use `data/rubrics.json` as the source of truth for editorial rubrics, issue types, reader sections, claim types, confidence levels and publication modes.
+
+Examples:
+
+```text
+stream: crypto-finance
+primary_rubric: reg-watch
+rubrics: [reg-watch, market-structure]
+issue_type: reg-brief
+```
+
+```text
+stream: tech-hardware-software
+primary_rubric: infrastructure
+rubrics: [infrastructure, security-abuse]
+issue_type: infrastructure-radar
+```
+
+```text
+stream: gear-style-edc
+primary_rubric: consumer-use
+rubrics: [consumer-use]
+issue_type: weekly-digest
+```
+
+## 7. Evidence ledger
+
+Every high-impact claim should be checked at claim level.
+
+Use this model:
+
+```text
+claim -> claim_type -> primary_source -> secondary_source -> confidence -> verification_gap -> publication_mode
+```
+
+Claim types should distinguish confirmed fact, source-reported claim, corroborated signal, research result, benchmark result, community signal, weak signal, rumor, forecast, marketing claim and editorial inference.
+
+For finance, crypto-finance, regulation, sanctions, legal, AML/CFT, taxation, security and compliance-sensitive topics, do not publish high-impact conclusions without a primary source or an explicit limitation. If primary support is absent, use `limited_publication`, `draft_only` or `blocked` rather than overstating the claim.
+
+## 8. Promotion gate
 
 Before any candidate is moved into `dispatches/`, use `templates/promotion-checklist.md`.
 
@@ -44,14 +105,33 @@ The checklist verifies source boundary, editorial boundary and publication bound
 
 The promotion decision is manual.
 
-## 7. Published dispatch validation
+## 9. Published dispatch validation
 
 `tools/validate_published.py` validates reader-facing published issues. It blocks missing sources, private/internal phrasing, weak source handling errors, advertising language and pre-publication artifact leakage.
 
 A dispatch may be marked `published` only after the promotion checklist is satisfied and the published validation passes.
+
+## Reader-section guidance
+
+The old rubric-like blocks remain useful, but they are reader sections, not streams:
+
+- Issue Panel — compact metadata: stream, rubric, issue type, confidence and publication mode.
+- Executive Brief — concise decision-grade summary.
+- Main Editorial Essay — central analytical narrative.
+- Key Signals — important signals with source class and confidence.
+- Community Radar — user/community evidence and repeated patterns.
+- Buying and Material-Culture Radar — product, gear, EDC and ownership-oriented evidence, without advertising.
+- Finance and Consumer Environment — consumer finance and household financial context.
+- Horizon Notes — long-horizon science, technology and culture signals.
+- Signal vs Noise — what matters, what should be ignored and what needs more evidence.
+- Risks and Limits — uncertainty, missing sources and potential analytical errors.
+- Decisions with Criteria — non-directive criteria for monitoring and future editorial prioritization.
+- Change in Worldview — what the reader should understand differently after the issue.
 
 ## Non-goals
 
 - Daily Radar must not auto-publish dispatches.
 - Candidate artifacts must not become reader-facing content without editorial promotion.
 - The project must not publish investment advice, legal advice, private context or internal company information.
+- Rubrics must not become a dumping ground for unrelated topics.
+- Reader sections must not be confused with thematic streams.
