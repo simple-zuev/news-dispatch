@@ -3,8 +3,8 @@
 
 No external dependencies. This renderer is intentionally conservative:
 - reads public-safe published Markdown dispatches from dispatches/**/*.md;
-- writes HTML pages to site/dispatches/;
-- writes a dynamic homepage, dispatch archive, stream pages and rubric pages;
+- reads public radar signal metadata for stream pages;
+- writes HTML pages to site/dispatches/, site/streams/ and site/rubrics/;
 - writes RSS and sitemap files;
 - does not fetch remote resources;
 - does not inject tracking scripts.
@@ -26,6 +26,7 @@ OUTPUT_DIR = SITE_DIR / "dispatches"
 STREAM_DIR = SITE_DIR / "streams"
 RUBRIC_DIR = SITE_DIR / "rubrics"
 RUBRICS_PATH = ROOT / "data" / "rubrics.json"
+RADAR_PATH = ROOT / "validation" / "daily-radar-latest.json"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 
 
@@ -59,6 +60,59 @@ class RubricInfo:
     @property
     def url(self) -> str:
         return f"{BASE_URL}/{self.relative_url}"
+
+
+@dataclass
+class Dispatch:
+    source_path: Path
+    title: str
+    date: str
+    stream: str
+    summary: str
+    body: str
+    output_name: str
+    primary_rubric: str = ""
+    issue_type: str = ""
+    publication_mode: str = ""
+
+    @property
+    def url(self) -> str:
+        return f"{BASE_URL}/dispatches/{self.output_name}"
+
+    @property
+    def relative_url(self) -> str:
+        return f"dispatches/{self.output_name}"
+
+
+@dataclass
+class Signal:
+    source_path: Path
+    title: str
+    date: str
+    stream: str
+    source_class: str
+    source_title: str
+    source_url: str
+
+    @property
+    def radar_relative_url(self) -> str:
+        return f"radar/{self.stream}.html"
+
+
+def list_meta(meta: dict[str, object], key: str) -> list[str]:
+    value = meta.get(key, [])
+    if isinstance(value, list):
+        return [str(item) for item in value if str(item).strip()]
+    if value:
+        return [str(value)]
+    return []
+
+
+def first_meta(meta: dict[str, object], key: str, default: str = "") -> str:
+    values = list_meta(meta, key)
+    if values:
+        return values[0]
+    return coalesce(meta.get(key), default=default)
 
 
 def load_streams() -> list[StreamInfo]:
@@ -101,30 +155,7 @@ STREAM_BY_SLUG = {stream.slug: stream for stream in STREAMS}
 RUBRIC_BY_SLUG = {rubric.slug: rubric for rubric in RUBRICS}
 
 
-@dataclass
-class Dispatch:
-    source_path: Path
-    title: str
-    date: str
-    stream: str
-    summary: str
-    body: str
-    output_name: str
-    primary_rubric: str = ""
-    issue_type: str = ""
-    publication_mode: str = ""
-
-    @property
-    def url(self) -> str:
-        return f"{BASE_URL}/dispatches/{self.output_name}"
-
-    @property
-    def relative_url(self) -> str:
-        return f"dispatches/{self.output_name}"
-
-
 def output_slug(path: Path) -> str:
-    """Preserve the historical render-site URL mapping."""
     return path.stem.lower().replace(" ", "-").replace("_", "-")
 
 
@@ -150,8 +181,48 @@ def load_dispatch(path: Path) -> Dispatch | None:
     )
 
 
+def load_signal(path_text: str) -> Signal | None:
+    path = ROOT / path_text
+    if not path.exists():
+        return None
+    doc = parse_front_matter_file(path)
+    if doc.errors:
+        return None
+    meta = doc.metadata
+    stream = first_meta(meta, "streams", default=coalesce(meta.get("stream"), default="general"))
+    return Signal(
+        source_path=path,
+        title=coalesce(meta.get("title"), default=path.stem.replace("-", " ").title()),
+        date=coalesce(meta.get("date")),
+        stream=stream,
+        source_class=coalesce(meta.get("source_class"), default="public_source"),
+        source_title=first_meta(meta, "source_titles", default=first_meta(meta, "sources", default="Публичный источник")),
+        source_url=first_meta(meta, "sources"),
+    )
+
+
+def load_live_signals() -> dict[str, list[Signal]]:
+    by_stream: dict[str, list[Signal]] = {stream.slug: [] for stream in STREAMS}
+    if not RADAR_PATH.exists():
+        return by_stream
+    data = json.loads(RADAR_PATH.read_text(encoding="utf-8"))
+    for item in data.get("generated", []):
+        stream = str(item.get("stream", "")).strip()
+        if not stream:
+            continue
+        for path_text in item.get("signals", []):
+            signal = load_signal(str(path_text))
+            if signal is not None:
+                by_stream.setdefault(stream, []).append(signal)
+    return by_stream
+
+
 def ordered_dispatches(dispatches: list[Dispatch]) -> list[Dispatch]:
     return sorted(dispatches, key=lambda item: (item.date, item.title), reverse=True)
+
+
+def ordered_signals(signals: list[Signal]) -> list[Signal]:
+    return sorted(signals, key=lambda item: (item.date, item.title), reverse=True)
 
 
 def inline_markup(text: str) -> str:
@@ -221,14 +292,12 @@ def markdown_to_html(markdown: str) -> str:
             flush_list()
             flush_table()
             continue
-
         if stripped.startswith("|") and stripped.endswith("|"):
             flush_paragraph()
             flush_list()
             table_lines.append(stripped)
             continue
         flush_table()
-
         if stripped.startswith("### "):
             flush_paragraph()
             flush_list()
@@ -246,7 +315,6 @@ def markdown_to_html(markdown: str) -> str:
             list_items.append(stripped[2:].strip())
         else:
             paragraph.append(stripped)
-
     flush_paragraph()
     flush_list()
     flush_table()
@@ -285,6 +353,11 @@ def dispatch_meta_label(dispatch: Dispatch) -> str:
     return " · ".join(part for part in parts if part)
 
 
+def signal_meta_label(signal: Signal) -> str:
+    parts = [signal.date, signal.source_class, signal.source_title]
+    return " · ".join(part for part in parts if part)
+
+
 def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
     return f"""<article class="card">
   <p class="label">{html.escape(dispatch_meta_label(dispatch))}</p>
@@ -293,8 +366,21 @@ def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
 </article>"""
 
 
-def stream_card(stream: StreamInfo, prefix: str = "", count: int | None = None) -> str:
-    count_label = "" if count is None else f" · {count} выпусков"
+def signal_card(signal: Signal, prefix: str = "") -> str:
+    return f"""<article class="card signal-card">
+  <p class="label">Live signal · {html.escape(signal_meta_label(signal))}</p>
+  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal.title)}</a></h3>
+  <p>Публичный сигнал из live-radar. Это не опубликованный выпуск и не аналитический вывод.</p>
+</article>"""
+
+
+def stream_card(stream: StreamInfo, prefix: str = "", count: int | None = None, signal_count: int | None = None) -> str:
+    parts: list[str] = []
+    if count is not None:
+        parts.append(f"{count} выпусков")
+    if signal_count is not None:
+        parts.append(f"{signal_count} сигналов")
+    count_label = "" if not parts else " · " + " · ".join(parts)
     strict_class = " strict" if stream.strict else ""
     return f"""<article class="card{strict_class}">
   <p class="label">{html.escape(stream.review_label)}{html.escape(count_label)}</p>
@@ -313,18 +399,15 @@ def rubric_card(rubric: RubricInfo, prefix: str = "", count: int | None = None) 
 
 
 def page_template(dispatch: Dispatch, body_html: str) -> str:
-    safe_title = html.escape(dispatch.title)
-    safe_summary = html.escape(dispatch.summary)
-    safe_meta = html.escape(dispatch_meta_label(dispatch))
     return f"""<!doctype html>
 <html lang="ru">
 {head(dispatch.title, dispatch.summary, css_href="../styles/main.css")}
 <body class="dispatch-page">
   <header class="article-hero">
     <a class="backlink" href="../index.html">News Dispatch</a>
-    <p class="eyebrow">{safe_meta}</p>
-    <h1>{safe_title}</h1>
-    <p class="lede">{safe_summary}</p>
+    <p class="eyebrow">{html.escape(dispatch_meta_label(dispatch))}</p>
+    <h1>{html.escape(dispatch.title)}</h1>
+    <p class="lede">{html.escape(dispatch.summary)}</p>
   </header>
   <main class="article-body">
     {body_html}
@@ -334,10 +417,25 @@ def page_template(dispatch: Dispatch, body_html: str) -> str:
 """
 
 
-def homepage_template(dispatches: list[Dispatch]) -> str:
-    latest = ordered_dispatches(dispatches)[:6]
-    latest_cards = "\n".join(dispatch_card(dispatch) for dispatch in latest)
-    stream_cards = "\n".join(stream_card(stream) for stream in STREAMS[:8])
+def stream_counts(dispatches: list[Dispatch]) -> dict[str, int]:
+    counts = {stream.slug: 0 for stream in STREAMS}
+    for dispatch in dispatches:
+        counts[dispatch.stream] = counts.get(dispatch.stream, 0) + 1
+    return counts
+
+
+def signal_counts(signals: dict[str, list[Signal]]) -> dict[str, int]:
+    return {stream: len(items) for stream, items in signals.items()}
+
+
+def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal]]) -> str:
+    latest_cards = "\n".join(dispatch_card(dispatch) for dispatch in ordered_dispatches(dispatches)[:6])
+    dispatch_counts = stream_counts(dispatches)
+    live_counts = signal_counts(signals)
+    stream_cards = "\n".join(
+        stream_card(stream, count=dispatch_counts.get(stream.slug, 0), signal_count=live_counts.get(stream.slug, 0))
+        for stream in STREAMS[:8]
+    )
     rubric_counts = rubric_counts_for(dispatches)
     rubric_cards = "\n".join(rubric_card(rubric, count=rubric_counts.get(rubric.slug, 0)) for rubric in RUBRICS[:6])
     return f"""<!doctype html>
@@ -352,32 +450,12 @@ def homepage_template(dispatches: list[Dispatch]) -> str:
   </header>
 
   <main>
-    <section class="panel">
-      <h2>Последние выпуски</h2>
-      <p>Итоговые материалы и тематические synthesis-выпуски.</p>
-    </section>
-
-    <section class="grid latest-grid" aria-label="Latest dispatches">
-      {latest_cards}
-    </section>
-
-    <section class="panel">
-      <h2>Рубрики</h2>
-      <p>Аналитические линзы поверх потоков: регулирование, инфраструктура, market structure, research evidence и weak signals.</p>
-    </section>
-
-    <section class="grid" aria-label="Dispatch rubrics">
-      {rubric_cards}
-    </section>
-
-    <section class="panel">
-      <h2>Потоки</h2>
-      <p>Темы разделены на самостоятельные reader-полки.</p>
-    </section>
-
-    <section class="grid" aria-label="Dispatch streams">
-      {stream_cards}
-    </section>
+    <section class="panel"><h2>Последние выпуски</h2><p>Итоговые материалы и тематические synthesis-выпуски.</p></section>
+    <section class="grid latest-grid" aria-label="Latest dispatches">{latest_cards}</section>
+    <section class="panel"><h2>Рубрики</h2><p>Аналитические линзы поверх потоков: регулирование, инфраструктура, market structure, research evidence и weak signals.</p></section>
+    <section class="grid" aria-label="Dispatch rubrics">{rubric_cards}</section>
+    <section class="panel"><h2>Потоки</h2><p>Потоки показывают опубликованные выпуски и последние публичные live-сигналы.</p></section>
+    <section class="grid" aria-label="Dispatch streams">{stream_cards}</section>
   </main>
 </body>
 </html>
@@ -390,51 +468,38 @@ def archive_template(dispatches: list[Dispatch]) -> str:
 <html lang="ru">
 {head("News Dispatch — Выпуски", "Архив выпусков.")}
 <body>
-  <header class="masthead compact">
-    <a class="backlink" href="index.html">News Dispatch</a>
-    <p class="eyebrow">Архив</p>
-    <h1>Выпуски</h1>
-    <p class="lede">Архив опубликованных материалов.</p>
-  </header>
-  <main>
-    <section class="grid">
-      {cards}
-    </section>
-  </main>
+  <header class="masthead compact"><a class="backlink" href="index.html">News Dispatch</a><p class="eyebrow">Архив</p><h1>Выпуски</h1><p class="lede">Архив опубликованных материалов.</p></header>
+  <main><section class="grid">{cards}</section></main>
 </body>
 </html>
 """
 
 
-def stream_index_template(dispatches: list[Dispatch]) -> str:
-    counts = {stream.slug: 0 for stream in STREAMS}
-    for dispatch in dispatches:
-        counts[dispatch.stream] = counts.get(dispatch.stream, 0) + 1
-    cards = "\n".join(stream_card(stream, prefix="../", count=counts.get(stream.slug, 0)) for stream in STREAMS)
+def stream_index_template(dispatches: list[Dispatch], signals: dict[str, list[Signal]]) -> str:
+    dispatch_counts = stream_counts(dispatches)
+    live_counts = signal_counts(signals)
+    cards = "\n".join(
+        stream_card(stream, prefix="../", count=dispatch_counts.get(stream.slug, 0), signal_count=live_counts.get(stream.slug, 0))
+        for stream in STREAMS
+    )
     return f"""<!doctype html>
 <html lang="ru">
 {head("News Dispatch — Потоки", "Тематические потоки.", css_href="../styles/main.css")}
 <body>
-  <header class="masthead compact">
-    <a class="backlink" href="../index.html">News Dispatch</a>
-    <p class="eyebrow">Потоки</p>
-    <h1>Потоки</h1>
-    <p class="lede">Темы, форматы и направления reader/radar.</p>
-  </header>
-  <main>
-    <section class="grid">
-      {cards}
-    </section>
-  </main>
+  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Потоки</p><h1>Потоки</h1><p class="lede">Потоки объединяют опубликованные выпуски и последние публичные сигналы.</p></header>
+  <main><section class="grid">{cards}</section></main>
 </body>
 </html>
 """
 
 
-def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch]) -> str:
+def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch], signals: dict[str, list[Signal]]) -> str:
     stream_dispatches = [dispatch for dispatch in ordered_dispatches(dispatches) if dispatch.stream == stream.slug]
+    stream_signals = ordered_signals(signals.get(stream.slug, []))[:8]
     cards = "\n".join(dispatch_card(dispatch, prefix="../") for dispatch in stream_dispatches)
-    empty = "" if cards else "<p>В этом потоке пока нет выпусков.</p>"
+    signal_cards = "\n".join(signal_card(signal, prefix="../") for signal in stream_signals)
+    published_empty = "" if cards else "<p>В этом потоке пока нет опубликованных выпусков.</p>"
+    signals_empty = "" if signal_cards else "<p>В этом потоке сейчас нет live-сигналов.</p>"
     return f"""<!doctype html>
 <html lang="ru">
 {head(f"News Dispatch — {stream.title}", stream.description, css_href="../styles/main.css")}
@@ -444,12 +509,15 @@ def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch]) -> str:
     <p class="eyebrow">{html.escape(stream.review_label)}</p>
     <h1>{html.escape(stream.title)}</h1>
     <p class="lede">{html.escape(stream.description)}</p>
+    <p class="hero-actions"><a href="../radar/{html.escape(stream.slug)}.html">Открыть Live Radar</a></p>
   </header>
   <main>
-    <section class="grid">
-      {cards}
-    </section>
-    {empty}
+    <section class="panel"><h2>Опубликованные выпуски</h2><p>Reader-facing материалы, прошедшие публикационный контур.</p></section>
+    <section class="grid">{cards}</section>
+    {published_empty}
+    <section class="panel"><h2>Live signals</h2><p>Последние публичные сигналы потока. Это сырьё для анализа, а не опубликованные выводы.</p></section>
+    <section class="grid">{signal_cards}</section>
+    {signals_empty}
   </main>
 </body>
 </html>
@@ -471,17 +539,8 @@ def rubric_index_template(dispatches: list[Dispatch]) -> str:
 <html lang="ru">
 {head("News Dispatch — Рубрики", "Аналитические рубрики.", css_href="../styles/main.css")}
 <body>
-  <header class="masthead compact">
-    <a class="backlink" href="../index.html">News Dispatch</a>
-    <p class="eyebrow">Рубрики</p>
-    <h1>Рубрики</h1>
-    <p class="lede">Повторяющиеся аналитические линзы: regulation, market structure, infrastructure, product/platform, security, research, consumer use и weak signals.</p>
-  </header>
-  <main>
-    <section class="grid">
-      {cards}
-    </section>
-  </main>
+  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Рубрики</p><h1>Рубрики</h1><p class="lede">Повторяющиеся аналитические линзы: regulation, market structure, infrastructure, product/platform, security, research, consumer use и weak signals.</p></header>
+  <main><section class="grid">{cards}</section></main>
 </body>
 </html>
 """
@@ -495,18 +554,8 @@ def rubric_page_template(rubric: RubricInfo, dispatches: list[Dispatch]) -> str:
 <html lang="ru">
 {head(f"News Dispatch — {rubric.title}", rubric.description, css_href="../styles/main.css")}
 <body>
-  <header class="masthead compact">
-    <a class="backlink" href="../index.html">News Dispatch</a>
-    <p class="eyebrow">Аналитическая рубрика</p>
-    <h1>{html.escape(rubric.title)}</h1>
-    <p class="lede">{html.escape(rubric.description)}</p>
-  </header>
-  <main>
-    <section class="grid">
-      {cards}
-    </section>
-    {empty}
-  </main>
+  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Аналитическая рубрика</p><h1>{html.escape(rubric.title)}</h1><p class="lede">{html.escape(rubric.description)}</p></header>
+  <main><section class="grid">{cards}</section>{empty}</main>
 </body>
 </html>
 """
@@ -574,17 +623,18 @@ def render() -> None:
         dispatch = load_dispatch(path)
         if dispatch is not None:
             dispatches.append(dispatch)
+    signals = load_live_signals()
 
     for dispatch in dispatches:
         body_html = markdown_to_html(dispatch.body)
         (OUTPUT_DIR / dispatch.output_name).write_text(page_template(dispatch, body_html), encoding="utf-8")
     for stream in STREAMS:
-        (STREAM_DIR / f"{stream.slug}.html").write_text(stream_page_template(stream, dispatches), encoding="utf-8")
+        (STREAM_DIR / f"{stream.slug}.html").write_text(stream_page_template(stream, dispatches, signals), encoding="utf-8")
     for rubric in RUBRICS:
         (RUBRIC_DIR / f"{rubric.slug}.html").write_text(rubric_page_template(rubric, dispatches), encoding="utf-8")
-    (STREAM_DIR / "index.html").write_text(stream_index_template(dispatches), encoding="utf-8")
+    (STREAM_DIR / "index.html").write_text(stream_index_template(dispatches, signals), encoding="utf-8")
     (RUBRIC_DIR / "index.html").write_text(rubric_index_template(dispatches), encoding="utf-8")
-    (SITE_DIR / "index.html").write_text(homepage_template(dispatches), encoding="utf-8")
+    (SITE_DIR / "index.html").write_text(homepage_template(dispatches, signals), encoding="utf-8")
     (SITE_DIR / "dispatches.html").write_text(archive_template(dispatches), encoding="utf-8")
     (SITE_DIR / "rss.xml").write_text(rss_template(dispatches), encoding="utf-8")
     (SITE_DIR / "sitemap.xml").write_text(sitemap_template(dispatches), encoding="utf-8")
