@@ -2,7 +2,7 @@
 """Enrich media registry from public Open Graph / Twitter metadata.
 
 The script is intentionally conservative:
-- reads published dispatches and their media/sources URLs;
+- reads published dispatches and latest public radar signals;
 - fetches only the source page itself, not random image or video search results;
 - extracts publisher-provided metadata such as og:image, twitter:image,
   og:video, and twitter:player;
@@ -27,9 +27,11 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 DISPATCH_DIR = ROOT / "dispatches"
 MEDIA_DIR = ROOT / "media"
+VALIDATION_DIR = ROOT / "validation"
+RADAR_PATH = VALIDATION_DIR / "daily-radar-latest.json"
 MANUAL_REGISTRY = MEDIA_DIR / "registry.json"
 GENERATED_REGISTRY = MEDIA_DIR / "registry.generated.json"
-MAX_URLS = 80
+MAX_URLS = 160
 FETCH_TIMEOUT_SECONDS = 12
 USER_AGENT = "NewsDispatchBot/1.0 (+https://simple-zuev.github.io/news-dispatch/)"
 
@@ -126,6 +128,19 @@ def load_manual_registry() -> dict[str, dict[str, str]]:
     return registry
 
 
+def rows_from_lists(urls: list[str], titles: list[str], types: list[str], notes: list[str], role: str) -> list[dict[str, str]]:
+    rows = []
+    for idx, url in enumerate(urls):
+        rows.append({
+            "url": url,
+            "title": titles[idx] if idx < len(titles) else "",
+            "type": types[idx] if idx < len(types) else "",
+            "note": notes[idx] if idx < len(notes) else "",
+            "role": role,
+        })
+    return rows
+
+
 def dispatch_urls() -> list[dict[str, str]]:
     items: list[dict[str, str]] = []
     seen: set[str] = set()
@@ -133,32 +148,9 @@ def dispatch_urls() -> list[dict[str, str]]:
         meta, _body = parse_front_matter(path.read_text(encoding="utf-8"))
         if str(meta.get("status", "draft")) != "published":
             continue
-        media = list_value(meta, "media")
-        titles = list_value(meta, "media_titles")
-        types = list_value(meta, "media_types")
-        notes = list_value(meta, "media_notes")
-        sources = list_value(meta, "sources")
-        source_titles = list_value(meta, "source_titles")
-        source_types = list_value(meta, "source_types")
-        source_notes = list_value(meta, "source_notes")
-        rows = []
-        for idx, url in enumerate(media):
-            rows.append({
-                "url": url,
-                "title": titles[idx] if idx < len(titles) else "",
-                "type": types[idx] if idx < len(types) else "",
-                "note": notes[idx] if idx < len(notes) else "",
-                "role": "media",
-            })
-        if not rows:
-            for idx, url in enumerate(sources[:6]):
-                rows.append({
-                    "url": url,
-                    "title": source_titles[idx] if idx < len(source_titles) else "",
-                    "type": source_types[idx] if idx < len(source_types) else "",
-                    "note": source_notes[idx] if idx < len(source_notes) else "",
-                    "role": "source",
-                })
+        media = rows_from_lists(list_value(meta, "media"), list_value(meta, "media_titles"), list_value(meta, "media_types"), list_value(meta, "media_notes"), "media")
+        source = rows_from_lists(list_value(meta, "sources")[:6], list_value(meta, "source_titles"), list_value(meta, "source_types"), list_value(meta, "source_notes"), "source")
+        rows = media or source
         for row in rows:
             parsed = urlparse(row["url"])
             if parsed.scheme not in {"http", "https"}:
@@ -170,6 +162,50 @@ def dispatch_urls() -> list[dict[str, str]]:
             if len(items) >= MAX_URLS:
                 return items
     return items
+
+
+def signal_urls() -> list[dict[str, str]]:
+    if not RADAR_PATH.exists():
+        return []
+    try:
+        data = json.loads(RADAR_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+    rows: list[dict[str, str]] = []
+    seen: set[str] = set()
+    for item in data.get("generated", []):
+        for path_text in item.get("signals", [])[:8]:
+            path = ROOT / str(path_text)
+            if not path.exists():
+                continue
+            meta, _body = parse_front_matter(path.read_text(encoding="utf-8"))
+            sources = list_value(meta, "sources")
+            titles = list_value(meta, "source_titles")
+            types = list_value(meta, "source_types")
+            notes = list_value(meta, "source_notes")
+            for row in rows_from_lists(sources[:1], titles, types, notes, "signal"):
+                parsed = urlparse(row["url"])
+                if parsed.scheme not in {"http", "https"} or row["url"] in seen:
+                    continue
+                seen.add(row["url"])
+                rows.append(row)
+                if len(rows) >= MAX_URLS:
+                    return rows
+    return rows
+
+
+def all_urls() -> list[dict[str, str]]:
+    seen: set[str] = set()
+    rows: list[dict[str, str]] = []
+    for row in [*dispatch_urls(), *signal_urls()]:
+        url = row["url"]
+        if url in seen:
+            continue
+        seen.add(url)
+        rows.append(row)
+        if len(rows) >= MAX_URLS:
+            break
+    return rows
 
 
 def clean_text(value: str) -> str:
@@ -188,7 +224,6 @@ def metadata_video(meta: dict[str, str], url: str) -> tuple[str, str, str]:
     video = absolute_url(url, meta.get("og:video") or meta.get("video") or "")
     video_type = clean_text(meta.get("og:video:type") or "")
     if embed and embed == video:
-        # Keep direct video files in video_url; iframe-like players in embed_url.
         parsed = urlparse(embed)
         if parsed.path.lower().endswith((".mp4", ".webm", ".ogg", ".mov")):
             return "", embed, video_type
@@ -271,7 +306,7 @@ def enrich_item(row: dict[str, str], manual: dict[str, dict[str, str]]) -> dict[
 def main() -> int:
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     manual = load_manual_registry()
-    rows = dispatch_urls()
+    rows = all_urls()
     generated = [enrich_item(row, manual) for row in rows]
     payload = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

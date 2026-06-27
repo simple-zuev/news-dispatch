@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run Daily Radar in guarded signal-collection mode."""
+"""Run Daily Radar in guarded signal-collection and draft-building mode."""
 
 from __future__ import annotations
 
@@ -23,6 +23,7 @@ def main() -> int:
     run([sys.executable, "tools/build_radar_review.py"])
     run([sys.executable, "tools/build_candidate_dispatch.py"])
     run([sys.executable, "tools/validate_candidate_dispatch.py"])
+    run([sys.executable, "tools/build_auto_dispatches.py"])
     run([sys.executable, "tools/validate_radar_artifacts.py"])
     return 0
 
