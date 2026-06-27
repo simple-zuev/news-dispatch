@@ -28,10 +28,21 @@ jobs:
           python-version: '3.12'
 
       - name: Check core syntax
-        run: python -m py_compile tools/stream_registry.py tools/render_site.py tools/enhance_site.py tools/enrich_media_registry.py tools/validate_media_registry.py tools/apply_media_previews.py tools/apply_reader_sections.py tools/validate_reader_output.py tools/run_daily_radar_safe.py tools/filter_daily_signals.py tools/privacy_scan.py
+        run: python -m py_compile tools/*.py
+
+      - name: Smoke-test dispatch synthesis
+        run: |
+          python tools/synthesize_dispatch.py --from-radar validation/daily-radar-latest.json --stream crypto-finance --max-signals 3 --status draft --dry-run > /tmp/synthesis-dry-run.md
+          grep -q 'primary_rubric:' /tmp/synthesis-dry-run.md
+          grep -q 'issue_type:' /tmp/synthesis-dry-run.md
+          grep -q 'publication_mode:' /tmp/synthesis-dry-run.md
+          grep -q '## Evidence Ledger' /tmp/synthesis-dry-run.md
 
       - name: Validate dispatch front matter
         run: python tools/validate_front_matter.py
+
+      - name: Validate source rules
+        run: python tools/validate_source_rules.py
 
       - name: Validate published editorial content
         run: python tools/validate_published.py
