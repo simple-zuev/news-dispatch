@@ -71,6 +71,9 @@ jobs:
       - name: Apply reader structure
         run: python tools/apply_reader_structure.py
 
+      - name: Apply editorial home layout
+        run: python tools/apply_editorial_home_layout.py
+
       - name: Validate reader output
         run: python tools/validate_reader_output.py
 
