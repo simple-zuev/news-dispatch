@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Build Today Radar from the Daily Radar ranking report.
 
-The page is public-safe: it renders source-reported signals as a radar, not as
-confirmed conclusions or recommendations.
+The page is public-safe: it renders source-reported signals as an analytical
+radar, not as confirmed facts, forecasts or recommendations.
 """
 
 from __future__ import annotations
@@ -29,6 +29,28 @@ STREAM_LABELS = {
     "science-discovery": "Наука",
 }
 
+STREAM_EFFECTS = {
+    "finance": "Потенциальная зона внимания: рыночные ожидания, ставки, ликвидность, валютные и долговые условия.",
+    "crypto-finance": "Потенциальная зона внимания: регулирование, инфраструктура оборота цифровых активов, AML/KYC/KYT и платёжные каналы.",
+    "ai": "Потенциальная зона внимания: продуктовые возможности, вычислительная инфраструктура, модели, данные и регуляторный контур.",
+    "tech-hardware-software": "Потенциальная зона внимания: технологические зависимости, цепочки поставок, платформы и инфраструктурные риски.",
+    "gear-style-edc": "Потенциальная зона внимания: потребительские паттерны, дизайн, доступность, качество и прикладная полезность.",
+    "moscow-city": "Потенциальная зона внимания: городская инфраструктура, сервисы, транспорт, регуляторика и повседневная среда.",
+    "dj-audio-creative": "Потенциальная зона внимания: оборудование, софт, площадки, авторские права и творческая инфраструктура.",
+    "science-discovery": "Потенциальная зона внимания: научная воспроизводимость, технологический перенос и горизонт прикладного эффекта.",
+}
+
+STREAM_MONITORING = {
+    "finance": "Проверить первоисточник, реакцию регуляторов, динамику ставок, ликвидности, валютного рынка и комментарии крупных участников.",
+    "crypto-finance": "Проверить первичные документы, правоприменение, позиции регуляторов, бирж, банков, кастодианов и провайдеров AML/KYT.",
+    "ai": "Проверить релизные notes, paper/model card, лицензии, доступность API, benchmark-контекст и ограничения внедрения.",
+    "tech-hardware-software": "Проверить vendor notes, security advisories, зависимые платформы, сроки поставок, совместимость и поддержку.",
+    "gear-style-edc": "Проверить независимые обзоры, сертификацию, гарантию, реальные сценарии использования и устойчивость качества.",
+    "moscow-city": "Проверить официальные документы, сроки запуска, фактическую доступность сервиса и влияние на жителей/бизнес.",
+    "dj-audio-creative": "Проверить спецификации, совместимость, лицензионные условия, доступность и отзывы профессионального сообщества.",
+    "science-discovery": "Проверить публикацию, методологию, данные, независимое подтверждение и границы применимости результата.",
+}
+
 
 def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
@@ -41,10 +63,21 @@ def score(value: object) -> str:
         return "0.00"
 
 
+def numeric(value: object) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
     if not path.exists():
         return {"date": "", "items": [], "fetch_errors": []}
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def stream_slug(item: dict[str, Any]) -> str:
+    return str(item.get("routed_stream") or item.get("configured_stream") or "")
 
 
 def stream_label(slug: object) -> str:
@@ -56,41 +89,98 @@ def selected_items(report: dict[str, Any], limit: int = 12) -> list[dict[str, An
     items = [item for item in report.get("items", []) if item.get("selected")]
     if not items:
         items = [item for item in report.get("items", []) if item.get("source_rule_status") == "accepted_by_source_rules"]
-    return sorted(items, key=lambda item: float(item.get("final_score", 0.0)), reverse=True)[:limit]
+    return sorted(items, key=lambda item: numeric(item.get("final_score")), reverse=True)[:limit]
 
 
 def stream_summary(report: dict[str, Any]) -> str:
-    counts = Counter(
-        str(item.get("routed_stream") or item.get("configured_stream") or "")
-        for item in report.get("items", [])
-    )
+    counts = Counter(stream_slug(item) for item in report.get("items", []))
     if not counts:
         return "<p>Нет данных для сводки по потокам.</p>"
     rows = "".join(f"<li>{esc(stream_label(slug))}: {count}</li>" for slug, count in counts.most_common())
     return f"<ul>{rows}</ul>"
 
 
+def evidence_hits(item: dict[str, Any]) -> list[str]:
+    for key in ("include_hits", "boost_hits", "stream_keyword_hits"):
+        value = item.get(key)
+        if isinstance(value, list) and value:
+            return [str(part) for part in value[:5]]
+    return []
+
+
+def confirmation_level(item: dict[str, Any]) -> str:
+    source_class = str(item.get("source_class") or "public_source")
+    source_type = str(item.get("source_type") or "public source")
+    status = str(item.get("source_rule_status") or "unknown")
+    if source_class in {"official", "regulator", "company"}:
+        base = "высокий для факта публикации первоисточником"
+    elif source_class in {"public_media", "industry_media"}:
+        base = "средний для факта публикации в публичном источнике"
+    else:
+        base = "ограниченный; требуется ручная сверка источника"
+    return f"{base}; source class: {source_class}, source type: {source_type}, rule status: {status}."
+
+
+def thesis(item: dict[str, Any]) -> str:
+    title = str(item.get("title") or "Без заголовка")
+    stream = stream_label(stream_slug(item))
+    return f"В потоке «{stream}» зафиксирован публичный сигнал: {title}"
+
+
+def argument(item: dict[str, Any]) -> str:
+    source = item.get("feed_title") or item.get("feed_id") or "публичный источник"
+    hits = evidence_hits(item)
+    parts = [
+        f"Источник: {source}.",
+        f"Итоговый score: {score(item.get('final_score'))}.",
+        f"Relevance: {score(item.get('relevance_score'))}.",
+    ]
+    if hits:
+        parts.append("Ключевые совпадения: " + ", ".join(hits) + ".")
+    if item.get("translation_required"):
+        parts.append("Для русскоязычного выпуска требуется смысловая нормализация, а не буквальный перевод.")
+    return " ".join(parts)
+
+
+def implication(item: dict[str, Any]) -> str:
+    slug = stream_slug(item)
+    effect = STREAM_EFFECTS.get(slug, "Потенциальная зона внимания: уточнить рыночный, продуктовый, регуляторный или инфраструктурный эффект.")
+    return effect + " Формулировка является зоной мониторинга, а не прогнозом и не инструкцией к действию."
+
+
+def uncertainty(item: dict[str, Any]) -> str:
+    if item.get("selected"):
+        rank_note = "Сигнал выбран ранжированием Daily Radar."
+    else:
+        rank_note = "Сигнал прошёл source-rule отбор, но не был выбран как top-ranked item."
+    return rank_note + " Требуется сверка первоисточника, даты, контекста и независимых подтверждений перед включением в аналитический выпуск."
+
+
+def monitoring(item: dict[str, Any]) -> str:
+    return STREAM_MONITORING.get(
+        stream_slug(item),
+        "Проверить первоисточник, дату, контекст, независимое подтверждение и возможный эффект для соответствующего тематического потока.",
+    )
+
+
 def card(item: dict[str, Any]) -> str:
-    stream = stream_label(item.get("routed_stream") or item.get("configured_stream"))
+    stream = stream_label(stream_slug(item))
     source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
     title = item.get("title") or "Без заголовка"
     url = item.get("url") or ""
-    translation = " · нужна русская нормализация" if item.get("translation_required") else ""
-    hit_list = item.get("include_hits") or item.get("boost_hits") or item.get("stream_keyword_hits") or []
-    hits = ", ".join(str(hit) for hit in hit_list[:5]) if isinstance(hit_list, list) else ""
-    why = "Сигнал прошёл первичный source-rule отбор."
-    if hits:
-        why += f" Ключевые совпадения: {hits}."
-
     title_html = esc(title)
     if url:
         title_html = f'<a href="{esc(url)}">{title_html}</a>'
 
     return f"""<article class="card signal-card">
-  <p class="label">{esc(stream)} · {esc(source)} · score {score(item.get("final_score"))} · relevance {score(item.get("relevance_score"))}{translation}</p>
+  <p class="label">{esc(stream)} · {esc(source)} · score {score(item.get("final_score"))} · relevance {score(item.get("relevance_score"))}</p>
   <h3>{title_html}</h3>
-  <p>{esc(why)}</p>
-  <p><strong>Статус:</strong> публичный source-reported сигнал; это не подтверждённый аналитический вывод и не рекомендация.</p>
+  <p><strong>Тезис:</strong> {esc(thesis(item))}</p>
+  <p><strong>Аргумент:</strong> {esc(argument(item))}</p>
+  <p><strong>Следствие/риск:</strong> {esc(implication(item))}</p>
+  <p><strong>Уровень подтверждения:</strong> {esc(confirmation_level(item))}</p>
+  <p><strong>Что отслеживать дальше:</strong> {esc(monitoring(item))}</p>
+  <p><strong>Неопределённость:</strong> {esc(uncertainty(item))}</p>
 </article>"""
 
 
@@ -121,13 +211,13 @@ def render(report: dict[str, Any]) -> str:
     <a class="backlink" href="index.html">News Dispatch</a>
     <p class="eyebrow">Today Radar · {esc(report.get("date"))}</p>
     <h1>Today Radar</h1>
-    <p class="lede">Панель свежих публичных сигналов, прошедших первичный source-rule отбор. Это рабочий радар, а не финальный аналитический выпуск.</p>
+    <p class="lede">Панель свежих публичных сигналов, прошедших первичный source-rule отбор. Это рабочий аналитический радар, а не финальный выпуск, прогноз или рекомендация.</p>
     <p class="hero-actions"><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
   </header>
   <main>
     <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано: {selected}. Отфильтровано: {filtered}. Ошибок источников: {errors}.</p></section>
     <section class="panel"><h2>Потоки</h2>{stream_summary(report)}</section>
-    <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже ранжированы по итоговому score и relevance. Каждая карточка показывает первичный источник, поток, объяснение отбора и границу интерпретации.</p></section>
+    <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже показывают первичную аналитическую рамку: тезис, аргумент, следствие/риск, уровень подтверждения, неопределённость и что отслеживать дальше.</p></section>
     <section class="grid latest-grid" aria-label="Today Radar cards">{cards_block(items)}</section>
     <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
   </main>
