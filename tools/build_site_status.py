@@ -26,6 +26,32 @@ def load_json(path: Path) -> dict[str, Any]:
         return {}
 
 
+def feed_health_counts() -> dict[str, int]:
+    health = load_json(VALIDATION_DIR / "source-health-latest.json")
+    rows = health.get("feeds", []) if isinstance(health.get("feeds", []), list) else []
+    total = 0
+    ok = 0
+    disabled = 0
+    error = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        total += 1
+        status = str(row.get("status", ""))
+        if status == "ok":
+            ok += 1
+        elif status == "disabled":
+            disabled += 1
+        elif status == "error":
+            error += 1
+    return {
+        "feed_total": total,
+        "feed_ok": ok,
+        "feed_disabled": disabled,
+        "feed_error": error,
+    }
+
+
 def status_payload() -> dict[str, Any]:
     radar = load_json(VALIDATION_DIR / "daily-radar-latest.json")
     auto = load_json(VALIDATION_DIR / "auto-dispatch-latest.json")
@@ -41,7 +67,7 @@ def status_payload() -> dict[str, Any]:
         streams += 1 if count else 0
     published = dispatches.get("dispatches", []) if isinstance(dispatches.get("dispatches", []), list) else []
     drafts = auto.get("generated", []) if isinstance(auto.get("generated", []), list) else []
-    return {
+    payload: dict[str, Any] = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "radar_date": str(radar.get("date", "")),
         "signals": signals,
@@ -50,6 +76,8 @@ def status_payload() -> dict[str, Any]:
         "published_materials": len(published),
         "drafts_to_review": len(drafts),
     }
+    payload.update(feed_health_counts())
+    return payload
 
 
 def block(payload: dict[str, Any]) -> str:
@@ -65,8 +93,11 @@ def block(payload: dict[str, Any]) -> str:
     <li>Материалы на сайте: {int(payload.get('published_materials', 0))}</li>
     <li>Черновики к проверке: {int(payload.get('drafts_to_review', 0))}</li>
     <li>Медиа-превью из источников: {int(payload.get('media_candidates', 0))}</li>
+    <li>Источники OK: {int(payload.get('feed_ok', 0))}/{int(payload.get('feed_total', 0))}</li>
+    <li>Отключённые источники: {int(payload.get('feed_disabled', 0))}</li>
+    <li>Ошибки источников: {int(payload.get('feed_error', 0))}</li>
   </ul>
-  <p>Черновики не публикуются без редакционной проверки источников, дат и формулировок.</p>
+  <p>Черновики не публикуются без редакционной проверки источников, дат и формулировок. Статус источников показывает покрытие радара, а не качество отдельного материала.</p>
 </section>
 {END}"""
 
