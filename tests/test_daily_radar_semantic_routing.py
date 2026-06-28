@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression tests for conservative Daily Radar semantic routing."""
+"""Regression tests for conservative Daily Radar semantic routing and source rules."""
 
 from __future__ import annotations
 
@@ -19,17 +19,19 @@ sys.modules["daily_radar"] = daily_radar
 spec.loader.exec_module(daily_radar)
 
 
-def feed(stream: str):
-    return daily_radar.Feed(
-        id="test-feed",
-        title="Test Feed",
-        url="https://example.com/feed.xml",
-        stream=stream,
-        source_type="Тестовый источник",
-        source_class="public_media",
-        priority=0.5,
-        tags=(),
-    )
+def feed(stream: str, **kwargs):
+    defaults = {
+        "id": "test-feed",
+        "title": "Test Feed",
+        "url": "https://example.com/feed.xml",
+        "stream": stream,
+        "source_type": "Тестовый источник",
+        "source_class": "public_media",
+        "priority": 0.5,
+        "tags": (),
+    }
+    defaults.update(kwargs)
+    return daily_radar.Feed(**defaults)
 
 
 def route(stream: str, title: str, summary: str = "") -> str:
@@ -68,11 +70,33 @@ def test_finance_story_without_crypto_terms_stays_finance() -> None:
     ) == "finance"
 
 
+def test_source_rule_exclude_zeroes_relevance() -> None:
+    configured = feed(
+        "finance",
+        include_keywords=("bank", "market"),
+        exclude_keywords=("sports", "football"),
+        min_relevance_score=0.45,
+    )
+    assert daily_radar.relevance_score(configured, "Sports league match report", "football coach update") == 0.0
+
+
+def test_source_rule_include_and_boost_raise_relevance() -> None:
+    configured = feed(
+        "finance",
+        include_keywords=("bank", "market"),
+        boost_keywords=("central bank",),
+        min_relevance_score=0.45,
+    )
+    assert daily_radar.relevance_score(configured, "Central bank keeps market rate unchanged", "bank liquidity remains key") >= 0.45
+
+
 def main() -> int:
     test_ai_story_from_broad_tech_feed_routes_to_ai()
     test_hardware_story_stays_in_tech()
     test_crypto_story_from_finance_feed_routes_to_crypto_finance()
     test_finance_story_without_crypto_terms_stays_finance()
+    test_source_rule_exclude_zeroes_relevance()
+    test_source_rule_include_and_boost_raise_relevance()
     print("daily_radar semantic routing tests passed")
     return 0
 
