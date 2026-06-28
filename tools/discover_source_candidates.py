@@ -24,6 +24,7 @@ from probe_feed_candidates import fetch_url
 from stream_registry import stream_keywords, stream_slugs
 
 DISCOVERY_QUERIES = ROOT / "sources" / "discovery-queries.json"
+DISCOVERY_RULES = ROOT / "sources" / "discovery-rules.json"
 REPORT_PATH = VALIDATION_DIR / "source-discovery-latest.json"
 USER_AGENT = "NewsDispatchSourceDiscovery/1.0 (+https://simple-zuev.github.io/news-dispatch/)"
 
@@ -34,33 +35,7 @@ FEED_TYPES = {
     "application/feed+json",
 }
 
-DISCOVERY_STEM_TERMS: dict[str, set[str]] = {
-    "moscow-city": {
-        "москов",
-        "москв",
-        "метро",
-        "мцд",
-        "улиц",
-        "дорог",
-        "городск",
-        "транспорт",
-        "ярмарк",
-        "садов",
-        "кольц",
-    },
-}
-
-DISCOVERY_WEAK_TERMS: dict[str, set[str]] = {
-    "moscow-city": {
-        "бар",
-        "клуб",
-        "концерт",
-        "музей",
-        "парк",
-        "ресторан",
-        "выстав",
-    },
-}
+_RULES_CACHE: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -136,28 +111,84 @@ def fetch_page(url: str, timeout: float) -> str:
     return body.decode("utf-8", errors="replace")
 
 
-def keyword_hits(stream: str, text: str) -> list[str]:
+def term_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [str(item) for item in value if str(item).strip()]
+
+
+def load_discovery_rules(path: Path = DISCOVERY_RULES) -> dict[str, Any]:
+    if not path.exists():
+        return {"version": 0, "defaults": {}, "streams": {}}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def discovery_rules() -> dict[str, Any]:
+    global _RULES_CACHE
+    if _RULES_CACHE is None:
+        _RULES_CACHE = load_discovery_rules()
+    return _RULES_CACHE
+
+
+def stream_discovery_rule(stream: str) -> dict[str, Any]:
+    rules = discovery_rules()
+    defaults = rules.get("defaults", {})
+    stream_rules = rules.get("streams", {}).get(stream, {})
+    merged: dict[str, Any] = {}
+    for key in ("strong_terms", "stem_terms", "weak_terms", "deny_terms"):
+        merged[key] = [
+            *term_list(defaults.get(key, [])),
+            *term_list(stream_rules.get(key, [])),
+        ]
+    merged["min_sample_ratio"] = float(stream_rules.get("min_sample_ratio", defaults.get("min_sample_ratio", 0.2)))
+    return merged
+
+
+def normalized_set(values: list[str]) -> set[str]:
+    return {normalize_text(value) for value in values if normalize_text(value)}
+
+
+def term_matches(phrase: str, tokens: list[str], haystack: str, stem_terms: set[str]) -> bool:
+    if not phrase:
+        return False
+    if " " in phrase:
+        return f" {phrase} " in haystack
+    if phrase in stem_terms:
+        return any(token == phrase or token.startswith(phrase) for token in tokens)
+    return any(token == phrase for token in tokens)
+
+
+def term_hits(terms: list[str], text: str, stem_terms: set[str] | None = None, weak_terms: set[str] | None = None) -> list[str]:
     normalized = normalize_text(text)
     haystack = f" {normalized} "
     tokens = normalized.split()
-    stem_terms = DISCOVERY_STEM_TERMS.get(stream, set())
-    weak_terms = DISCOVERY_WEAK_TERMS.get(stream, set())
-
+    stems = stem_terms or set()
+    weak = weak_terms or set()
     hits = []
-    for word in stream_keywords().get(stream, []):
-        raw = str(word)
-        phrase = normalize_text(raw)
-        if not phrase or phrase in weak_terms:
+    for term in terms:
+        phrase = normalize_text(term)
+        if not phrase or phrase in weak:
             continue
-        if " " in phrase:
-            matched = f" {phrase} " in haystack
-        elif phrase in stem_terms:
-            matched = any(token == phrase or token.startswith(phrase) for token in tokens)
-        else:
-            matched = any(token == phrase for token in tokens)
-        if matched:
-            hits.append(raw)
-    return hits
+        if term_matches(phrase, tokens, haystack, stems):
+            hits.append(str(term))
+    return unique(hits)
+
+
+def keyword_hits(stream: str, text: str) -> list[str]:
+    rule = stream_discovery_rule(stream)
+    stem_terms = normalized_set(term_list(rule.get("stem_terms", [])))
+    weak_terms = normalized_set(term_list(rule.get("weak_terms", [])))
+    terms = unique([
+        *[str(item) for item in stream_keywords().get(stream, [])],
+        *term_list(rule.get("strong_terms", [])),
+        *term_list(rule.get("stem_terms", [])),
+    ])
+    return term_hits(terms, text, stem_terms=stem_terms, weak_terms=weak_terms)
+
+
+def deny_term_hits(stream: str, text: str) -> list[str]:
+    rule = stream_discovery_rule(stream)
+    return term_hits(term_list(rule.get("deny_terms", [])), text)
 
 
 def sample_match_stats(stream: str, sample_titles: list[str]) -> dict[str, Any]:
@@ -184,15 +215,21 @@ def score_candidate(stream: str, feed_url: str, probe: dict[str, Any], title: st
     raw_sample_titles = probe.get("sample_titles", [])
     sample_titles_list = [str(item) for item in raw_sample_titles if str(item).strip()] if isinstance(raw_sample_titles, list) else []
     sample_titles_text = " ".join(sample_titles_list)
-    hits = keyword_hits(stream, " ".join([feed_url, title, snippet, str(probe.get("first_title", "")), sample_titles_text]))
+    combined_text = " ".join([feed_url, title, snippet, str(probe.get("first_title", "")), sample_titles_text])
+    hits = keyword_hits(stream, combined_text)
+    deny_hits = deny_term_hits(stream, combined_text)
     item_count = int(probe.get("item_count") or 0)
     sample_stats = sample_match_stats(stream, sample_titles_list)
+    rule = stream_discovery_rule(stream)
+    min_sample_ratio = float(rule.get("min_sample_ratio", 0.2))
 
     if not probe.get("ok"):
         return {
             "candidate_status": "failed_probe",
             "score": 0.0,
             "keyword_hits": hits,
+            "deny_term_hits": deny_hits,
+            "min_sample_ratio": min_sample_ratio,
             **sample_stats,
             "reason": str(probe.get("error") or "probe_failed"),
         }
@@ -202,29 +239,36 @@ def score_candidate(stream: str, feed_url: str, probe: dict[str, Any], title: st
             "candidate_status": "low_item_count",
             "score": 0.25,
             "keyword_hits": hits,
+            "deny_term_hits": deny_hits,
+            "min_sample_ratio": min_sample_ratio,
             **sample_stats,
             "reason": "feed parsed, but item_count is below promotion threshold",
         }
 
     sample_ratio = float(sample_stats["sample_match_ratio"])
-    status = "passed_probe" if sample_ratio >= 0.2 else "broad_feed_review_required"
+    status = "passed_probe" if sample_ratio >= min_sample_ratio else "broad_feed_review_required"
 
     score = 0.35
     score += min(item_count, 20) * 0.0075
     score += min(len(hits), 5) * 0.03
     score += min(sample_ratio, 0.6) * 0.55
-    score = round(min(score, 1.0), 3)
+    score -= min(len(deny_hits), 5) * 0.08
+    score = round(max(0.0, min(score, 1.0)), 3)
 
     reason = (
         "feed parsed with enough items and useful stream density; editorial/source-rule review still required"
         if status == "passed_probe"
         else "feed parsed, but sample density is low; source-rule filtering or section-level feed is required"
     )
+    if deny_hits:
+        reason = f"{reason}; deny terms detected"
 
     return {
         "candidate_status": status,
         "score": score,
         "keyword_hits": hits,
+        "deny_term_hits": deny_hits,
+        "min_sample_ratio": min_sample_ratio,
         **sample_stats,
         "reason": reason,
     }
@@ -236,7 +280,12 @@ def load_discovery_queries(path: Path = DISCOVERY_QUERIES) -> dict[str, Any]:
 
 def load_search_results(path: Path, default_stream: str = "") -> list[SearchResult]:
     data = json.loads(path.read_text(encoding="utf-8"))
-    raw_results = data.get("results", data if isinstance(data, list) else [])
+    if isinstance(data, list):
+        raw_results = data
+    elif isinstance(data, dict):
+        raw_results = data.get("results", [])
+    else:
+        raw_results = []
     results: list[SearchResult] = []
     for raw in raw_results:
         if not isinstance(raw, dict):
