@@ -306,6 +306,22 @@
       "tags": ["moscow", "city", "venues", "food", "culture"]
     },
     {
+      "id": "m24-moscow-news",
+      "title": "Москва 24",
+      "url": "https://www.m24.ru/rss.xml",
+      "stream": "moscow-city",
+      "source_type": "Городское медиа",
+      "source_class": "public_media",
+      "priority": 0.66,
+      "language": "ru",
+      "translation_required": false,
+      "include_keywords": ["москва", "москов", "столиц", "метро", "мцд", "транспорт", "город", "район", "улиц", "дорог", "парк", "выстав", "концерт", "фестиваль", "ресторан", "бар", "клуб", "сервис", "инфраструктур"],
+      "exclude_keywords": ["ленобласт", "петербург", "футбол", "хоккей", "чемпионат мира", "трамп", "сша", "украин", "военн"],
+      "boost_keywords": ["москва", "метро", "мцд", "московский транспорт", "городские сервисы", "афиша"],
+      "min_relevance_score": 0.35,
+      "tags": ["moscow", "city", "transport", "services", "events", "culture"]
+    },
+    {
       "id": "dj-techtools",
       "title": "DJ TechTools",
       "url": "https://djtechtools.com/feed/",

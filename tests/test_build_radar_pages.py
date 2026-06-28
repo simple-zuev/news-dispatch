@@ -19,14 +19,18 @@ sys.modules["build_radar_pages"] = build_radar_pages
 spec.loader.exec_module(build_radar_pages)
 
 
-def test_source_status_detects_disabled_moscow_feeds() -> None:
+def test_source_status_detects_active_moscow_source() -> None:
     status = build_radar_pages.source_status_by_stream()
     moscow = status.get("moscow-city", {})
-    assert len(moscow.get("active", [])) == 0
-    assert len(moscow.get("disabled", [])) >= 2
+    active = moscow.get("active", [])
+    disabled = moscow.get("disabled", [])
+
+    assert len(active) >= 1
+    assert any(source.get("id") == "m24-moscow-news" for source in active)
+    assert len(disabled) >= 2
 
 
-def test_empty_stream_page_explains_why_it_is_empty() -> None:
+def test_empty_stream_page_explains_active_source_without_generated_signals() -> None:
     stream = {
         "slug": "moscow-city",
         "title": "Москва",
@@ -34,16 +38,17 @@ def test_empty_stream_page_explains_why_it_is_empty() -> None:
     }
     status = build_radar_pages.source_status_by_stream().get("moscow-city", {})
     html = build_radar_pages.stream_page(stream, [], status)
+
     assert "Почему рубрика пустая" in html
-    assert "Активные источники: 0" in html
+    assert "Активные источники:" in html
     assert "Отключённые источники:" in html
-    assert "Все известные источники рубрики сейчас отключены" in html
+    assert "Активные источники есть, но в последнем Daily Radar run" in html
     assert "Это диагностическое состояние" in html
 
 
 def main() -> int:
-    test_source_status_detects_disabled_moscow_feeds()
-    test_empty_stream_page_explains_why_it_is_empty()
+    test_source_status_detects_active_moscow_source()
+    test_empty_stream_page_explains_active_source_without_generated_signals()
     print("radar page tests passed")
     return 0
 
