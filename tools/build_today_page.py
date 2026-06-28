@@ -14,9 +14,11 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
+POLICY_PATH = VALIDATION_DIR / "reader-policy-latest.json"
 OUTPUT_PATH = SITE_DIR / "today.html"
 
 STREAM_LABELS = {
@@ -82,6 +84,23 @@ def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_policy(report: dict[str, Any], path: Path = POLICY_PATH) -> dict[str, Any]:
+    if path.exists():
+        return json.loads(path.read_text(encoding="utf-8"))
+    return build_policy_report(report)
+
+
+def reader_safe_keys(policy: dict[str, Any]) -> set[str]:
+    decisions = policy.get("decisions", [])
+    if not isinstance(decisions, list):
+        return set()
+    return {
+        str(decision.get("item_key"))
+        for decision in decisions
+        if isinstance(decision, dict) and decision.get("decision") == "reader_safe" and decision.get("item_key")
+    }
+
+
 def stream_slug(item: dict[str, Any]) -> str:
     return str(item.get("routed_stream") or item.get("configured_stream") or "")
 
@@ -91,17 +110,20 @@ def stream_label(slug: object) -> str:
     return STREAM_LABELS.get(text, text or "Без потока")
 
 
-def selected_items(report: dict[str, Any], limit: int = 18) -> list[dict[str, Any]]:
+def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> list[dict[str, Any]]:
     items = [item for item in report.get("items", []) if item.get("selected")]
     if not items:
         items = [item for item in report.get("items", []) if item.get("source_rule_status") == "accepted_by_source_rules"]
+    if policy is not None:
+        allowed = reader_safe_keys(policy)
+        items = [item for item in items if item_key(item) in allowed]
     return sorted(items, key=lambda item: numeric(item.get("final_score")), reverse=True)[:limit]
 
 
-def stream_summary(report: dict[str, Any]) -> str:
-    counts = Counter(stream_slug(item) for item in report.get("items", []))
+def stream_summary(items: list[dict[str, Any]]) -> str:
+    counts = Counter(stream_slug(item) for item in items)
     if not counts:
-        return "<p>Нет данных для сводки по потокам.</p>"
+        return "<p>Нет reader-safe данных для сводки по потокам.</p>"
     rows = "".join(f"<li>{esc(stream_label(slug))}: {count}</li>" for slug, count in counts.most_common())
     return f"<ul>{rows}</ul>"
 
@@ -261,12 +283,21 @@ def card(cluster: list[dict[str, Any]]) -> str:
 
 def cards_block(items: list[dict[str, Any]]) -> str:
     if not items:
-        return '<article class="card empty-state"><p class="label">Нет данных</p><h3>Нет выбранных сигналов</h3><p>Свежие items не прошли первичный отбор.</p></article>'
+        return '<article class="card empty-state"><p class="label">Нет reader-safe данных</p><h3>Нет сигналов для публичного отображения</h3><p>Свежие items не прошли reader policy gate или были оставлены только в audit/review контуре.</p></article>'
     return "\n".join(card(cluster) for cluster in cluster_items(items))
 
 
-def render(report: dict[str, Any]) -> str:
-    items = selected_items(report)
+def policy_summary(policy: dict[str, Any]) -> str:
+    counts = policy.get("counts", {}) if isinstance(policy.get("counts"), dict) else {}
+    safe = int(counts.get("reader_safe", 0) or 0)
+    review = int(counts.get("review_only", 0) or 0)
+    blocked = int(counts.get("blocked", 0) or 0)
+    return f"Reader policy gate: reader_safe={safe}, review_only={review}, blocked={blocked}. Today Radar рендерит только reader_safe items."
+
+
+def render(report: dict[str, Any], policy: dict[str, Any] | None = None) -> str:
+    policy = policy or load_policy(report)
+    items = selected_items(report, policy=policy)
     clusters = cluster_items(items)
     total = len(report.get("items", []))
     selected = len([item for item in report.get("items", []) if item.get("selected")])
@@ -287,12 +318,12 @@ def render(report: dict[str, Any]) -> str:
     <a class="backlink" href="index.html">News Dispatch</a>
     <p class="eyebrow">Today Radar · {esc(report.get("date"))}</p>
     <h1>Today Radar</h1>
-    <p class="lede">Панель свежих публичных сигналов, прошедших первичный source-rule отбор. Это рабочий аналитический радар, а не финальный выпуск, прогноз или рекомендация.</p>
-    <p class="hero-actions"><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
+    <p class="lede">Панель свежих публичных сигналов, прошедших source-rule отбор и reader policy gate. Это рабочий аналитический радар, а не финальный выпуск, прогноз или рекомендация.</p>
+    <p class="hero-actions"><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="reader-policy-latest.json">Reader Policy JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
   </header>
   <main>
-    <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано: {selected}. Кластеров: {len(clusters)}. Отфильтровано: {filtered}. Ошибок источников: {errors}.</p></section>
-    <section class="panel"><h2>Потоки</h2>{stream_summary(report)}</section>
+    <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано ранжированием: {selected}. Reader-safe items: {len(items)}. Кластеров: {len(clusters)}. Отфильтровано source rules: {filtered}. Ошибок источников: {errors}.</p><p>{esc(policy_summary(policy))}</p></section>
+    <section class="panel"><h2>Потоки</h2>{stream_summary(items)}</section>
     <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже сгруппированы в тематические кластеры и показывают первичную аналитическую рамку: тезис, аргумент, следствие/риск, уровень подтверждения, неопределённость и что отслеживать дальше.</p></section>
     <section class="grid latest-grid" aria-label="Today Radar cards">{cards_block(items)}</section>
     <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
@@ -304,7 +335,8 @@ def render(report: dict[str, Any]) -> str:
 
 def main() -> int:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
-    write_text(OUTPUT_PATH, render(load_report()))
+    report = load_report()
+    write_text(OUTPUT_PATH, render(report, load_policy(report)))
     print(f"Built {OUTPUT_PATH}")
     return 0
 
