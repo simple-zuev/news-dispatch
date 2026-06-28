@@ -1,6 +1,8 @@
 # News Dispatch
 
-**News Dispatch** is a public-safe editorial radar for multi-domain analytical dispatches.
+**News Dispatch** is a public-safe autonomous analytical radar for multi-domain news dispatches.
+
+The target operating model is **zero-touch / autopilot**: the system should discover sources, evaluate them, collect public signals, rank and cluster events, build reader-facing analytical radar pages, apply safety gates and publish only policy-compliant output without routine manual source selection or manual issue promotion.
 
 ## Recent Improvements (Июнь 2026)
 
@@ -21,7 +23,7 @@ It is not a raw news feed, personal notebook, private research dump, internal pr
 
 ## Current status
 
-The project is a working GitHub Pages/static-site MVP with an automated signal radar, publication guardrails and a growing editorial workflow.
+The project is a working GitHub Pages/static-site MVP with an automated signal radar, publication guardrails and a growing policy-gated publication workflow.
 
 Implemented:
 
@@ -33,11 +35,11 @@ Implemented:
 - automated Daily Radar signal collection from public RSS/Atom feeds;
 - source-health, filtering and validation reports;
 - reviewed radar and candidate-dispatch validation artifacts;
-- promotion checklists for publication decisions;
+- policy-gate checklists and audit artifacts for publication decisions;
 - GitHub Actions workflows for signal collection, validation and Pages deployment;
 - first reusable core utilities and dispatch synthesis scaffolding.
 
-The main unfinished layer is full editorial synthesis automation: turning collected signals into verified topic-first dispatches without bypassing source review.
+The main unfinished layer is full autonomous policy-gated publishing: source lifecycle automation, automated promotion-by-policy, self-healing source coverage and safe publication without routine manual review.
 
 ## Recent improvements
 
@@ -86,7 +88,7 @@ Each significant item should separate:
 
 For high-impact topics, especially finance, crypto-finance, regulation, AML/CFT, sanctions, taxation, cybersecurity and compliance, use primary sources whenever possible and avoid legal, tax, compliance or investment advice.
 
-The operational editorial workflow is documented in `docs/editorial-workflow.md`. Candidate promotion uses `templates/promotion-checklist.md`.
+The operational workflow is documented in `docs/editorial-workflow.md` and `docs/autopilot-architecture.md`. The promotion checklist remains an audit/control artifact, not the normal operating path.
 
 ## Canonical streams
 
@@ -138,7 +140,7 @@ python tools/synthesize_dispatch.py \
   --status draft
 ```
 
-The synthesis tool produces a safe editorial draft with required reader sections and public-safety front matter. It does not verify primary sources and does not remove the need for promotion review.
+The synthesis tool produces a safe analytical draft with required reader sections and public-safety front matter. It does not verify primary sources and does not bypass automated policy gates.
 
 ### Validate News Dispatch
 
@@ -152,22 +154,22 @@ Purpose: build and deploy the public site.
 
 Only dispatches with `status: "published"` are exposed on GitHub Pages. Signals and draft material are not published as finished dispatches.
 
-## Publication workflow
+## Autopilot publication workflow
 
 ```text
 public signal
 -> signal capture
--> source/context check
--> reviewed radar
--> candidate dispatch artifact
--> draft synthesis
--> promotion checklist
--> privacy/public-safety check
+-> source policy gate
+-> ranking and clustering
+-> analytical radar builder
+-> publication policy gate
+-> public-safety validation
+-> published radar/dispatch if policy passed
 -> published dispatch
 -> static site deployment
 ```
 
-Minimal rule: Daily Radar can tell what appeared in public sources. A dispatch can state what it means only after editorial review.
+Minimal rule: automation may publish only artifacts that pass source, evidence, safety and publication policy gates. Items that do not pass are blocked, downgraded or retained as non-public operational artifacts.
 
 ## Local development
 

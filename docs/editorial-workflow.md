@@ -1,22 +1,33 @@
-# Editorial workflow
+# Autonomous editorial workflow
 
-This document describes the public-safe editorial flow for News Dispatch.
+This document describes the public-safe autonomous workflow for News Dispatch.
 
-News Dispatch is not a raw feed. It is a source-aware analytical radar that turns public signals into reader-facing issues only after verification, classification and promotion review.
+News Dispatch is not a raw feed and not a manual editorial queue. It is a policy-gated analytical radar that turns public signals into reader-facing radar pages and dispatches through automated checks.
+
+## Core principle
+
+```text
+zero-touch operation
+manual override optional
+policy gates mandatory
+```
+
+The system should not require routine manual source selection, manual issue promotion or manual signal triage. Manual review is an override/audit path, not the default operating model.
 
 ## Editorial layers
 
 Do not mix these layers:
 
 ```text
-stream -> rubric -> issue_type -> evidence ledger -> reader sections
+stream -> rubric -> issue_type -> evidence ledger -> reader sections -> policy gate
 ```
 
 - `stream` answers what domain a dispatch belongs to: finance, crypto-finance, ai, tech-hardware-software, gear-style-edc, moscow-city, dj-audio-creative, science-discovery or general.
 - `rubric` answers what analytical lens is used: regulation, market structure, infrastructure, security, research evidence, consumer use, weak signals and related lenses from `data/rubrics.json`.
 - `issue_type` answers what product format is being published: daily radar review, weekly digest, reg brief, claim check, market structure note, infrastructure radar, source dossier or special issue.
 - `evidence ledger` records claim type, source support, confidence, gaps and publication mode.
-- `reader sections` are the recurring blocks inside an issue: issue panel, executive brief, key signals, community radar, buying/material-culture radar, horizon notes, signal vs noise, risks and limits and other reader-facing sections.
+- `reader sections` are the recurring blocks inside an issue.
+- `policy gate` decides whether output can be published, downgraded, blocked or retained as an operational artifact.
 
 A stream is not a rubric. A rubric is not a section. A Daily Radar artifact is not a published dispatch.
 
@@ -30,13 +41,13 @@ Signals are not dispatches. A signal confirms only that a public source item app
 
 `tools/filter_daily_signals.py` removes obvious low-value items such as deal, discount and shopping noise before the reviewed layer.
 
-Filtered items remain an operational artifact, not a reader-facing issue.
+Filtered items remain operational artifacts unless they later pass publication policy.
 
 ## 3. Source health
 
 `tools/source_health.py` writes `validation/source-health-latest.json` so source availability can be reviewed separately from editorial quality.
 
-A temporary source error is not automatically a reason to remove a source. Repeated errors should trigger source review.
+A temporary source error is not automatically a reason to delete a source. Repeated errors should trigger automated downgrade or suspension.
 
 ## 4. Reviewed radar
 
@@ -97,19 +108,19 @@ Claim types should distinguish confirmed fact, source-reported claim, corroborat
 
 For finance, crypto-finance, regulation, sanctions, legal, AML/CFT, taxation, security and compliance-sensitive topics, do not publish high-impact conclusions without a primary source or an explicit limitation. If primary support is absent, use `limited_publication`, `draft_only` or `blocked` rather than overstating the claim.
 
-## 8. Promotion gate
+## 8. Publication policy gate
 
-Before any candidate is moved into `dispatches/`, use `templates/promotion-checklist.md`.
+Before reader-facing publication, automation must verify source boundary, evidence boundary, safety boundary, canonical stream, acceptable confidence and public-safe language.
 
-The checklist verifies source boundary, editorial boundary and publication boundary.
+If checks pass, an item or issue may be published automatically. If checks fail, it must remain blocked, downgraded or operational-only.
 
-The promotion decision is manual.
+Manual review is an override/audit path, not the default operating model.
 
 ## 9. Published dispatch validation
 
 `tools/validate_published.py` validates reader-facing published issues. It blocks missing sources, private/internal phrasing, weak source handling errors, advertising language and pre-publication artifact leakage.
 
-A dispatch may be marked `published` only after the promotion checklist is satisfied and the published validation passes.
+A dispatch may be marked `published` only after automated policy gates and published validation pass.
 
 ## Reader-section guidance
 
@@ -130,8 +141,8 @@ The old rubric-like blocks remain useful, but they are reader sections, not stre
 
 ## Non-goals
 
-- Daily Radar must not auto-publish dispatches.
-- Candidate artifacts must not become reader-facing content without editorial promotion.
+- Autopilot must not publish unsupported conclusions as facts.
+- Autopilot must not promote sources without lifecycle checks.
 - The project must not publish investment advice, legal advice, private context or internal company information.
 - Rubrics must not become a dumping ground for unrelated topics.
 - Reader sections must not be confused with thematic streams.
