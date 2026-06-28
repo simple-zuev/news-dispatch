@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "purpose": "Autonomous source lifecycle registry. This file tracks policy states for candidate and live sources without requiring routine manual source selection.",
+  "states": [
+    "discovered",
+    "probation",
+    "active",
+    "degraded",
+    "suspended",
+    "rejected"
+  ],
+  "state_model": {
+    "discovered": "Candidate source found by search or discovery but not yet eligible for ingestion.",
+    "probation": "Candidate source may be sampled with strict limits and source rules.",
+    "active": "Source is eligible for normal Daily Radar ingestion.",
+    "degraded": "Source remains known but has repeated health, density or quality issues.",
+    "suspended": "Source is temporarily excluded by policy until health or quality recovers.",
+    "rejected": "Source failed policy and should not be retried unless discovery evidence changes."
+  },
+  "policy": {
+    "promotion_min_success_count": 3,
+    "promotion_max_failure_count": 1,
+    "degrade_failure_count": 3,
+    "suspend_failure_count": 5,
+    "max_new_probation_sources_per_run": 3,
+    "probation_ingestion_limit_per_source": 1,
+    "required_policy_gates": [
+      "feed_parseable",
+      "stream_known",
+      "sample_density_ok",
+      "deny_terms_below_threshold",
+      "not_duplicate",
+      "public_source_only"
+    ]
+  },
+  "sources": []
+}
