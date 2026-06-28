@@ -39,7 +39,7 @@ from stream_registry import stream_keywords, stream_slugs
 CONFIG_PATH = ROOT / "sources" / "feeds.json"
 STATE_PATH = DATA_DIR / "daily-radar-seen.json"
 REPORT_PATH = VALIDATION_DIR / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.7 (+https://simple-zuev.github.io/news-dispatch/)"
+USER_AGENT = "NewsDispatchDailyRadar/0.8 (+https://simple-zuev.github.io/news-dispatch/)"
 STREAMS = set(stream_slugs())
 KEYWORDS = stream_keywords()
 MEDIA_LIMIT = 4
@@ -95,6 +95,13 @@ class Feed:
     source_class: str
     priority: float
     tags: tuple[str, ...]
+    include_keywords: tuple[str, ...] = ()
+    exclude_keywords: tuple[str, ...] = ()
+    boost_keywords: tuple[str, ...] = ()
+    penalty_keywords: tuple[str, ...] = ()
+    min_relevance_score: float = 0.0
+    language: str = ""
+    translation_required: bool = False
 
 
 @dataclass(frozen=True)
@@ -116,6 +123,21 @@ class Item:
 
 def log(message: str) -> None:
     core_log(message, scope="daily-radar")
+
+
+def tuple_of_strings(value: object) -> tuple[str, ...]:
+    if isinstance(value, list):
+        return tuple(str(item).strip() for item in value if str(item).strip())
+    if isinstance(value, str) and value.strip():
+        return (value.strip(),)
+    return ()
+
+
+def float_setting(value: object, fallback: float = 0.0) -> float:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return fallback
 
 
 def parse_date(value: str, fallback: datetime) -> datetime:
@@ -191,7 +213,14 @@ def load_config(path: Path) -> tuple[list[Feed], dict[str, object]]:
                 source_type=str(raw.get("source_type", "Источник")),
                 source_class=str(raw.get("source_class", "public_media")),
                 priority=priority,
-                tags=tuple(str(tag) for tag in raw.get("tags", [])),
+                tags=tuple_of_strings(raw.get("tags", [])),
+                include_keywords=tuple_of_strings(raw.get("include_keywords", [])),
+                exclude_keywords=tuple_of_strings(raw.get("exclude_keywords", [])),
+                boost_keywords=tuple_of_strings(raw.get("boost_keywords", [])),
+                penalty_keywords=tuple_of_strings(raw.get("penalty_keywords", [])),
+                min_relevance_score=float_setting(raw.get("min_relevance_score"), 0.0),
+                language=str(raw.get("language", "")),
+                translation_required=bool(raw.get("translation_required", False)),
             )
         )
     return feeds, dict(data.get("defaults", {}))
@@ -240,8 +269,12 @@ def normalized_haystack(title: str, summary: str) -> str:
 
 
 def contains_phrase(haystack: str, phrase: str) -> bool:
-    phrase = " ".join(phrase.lower().split())
+    phrase = " ".join(phrase.lower().replace("ё", "е").split())
     return f" {phrase} " in f" {haystack} "
+
+
+def count_phrases(haystack: str, phrases: tuple[str, ...]) -> int:
+    return sum(1 for phrase in phrases if phrase and contains_phrase(haystack, phrase))
 
 
 def keyword_score(stream: str, haystack: str) -> int:
@@ -293,13 +326,34 @@ def classify(feed: Feed, title: str, summary: str) -> str:
     return routed if routed in STREAMS else feed.stream
 
 
+def relevance_score(feed: Feed, title: str, summary: str) -> float:
+    """Return a normalized source-rule relevance score for one item."""
+    haystack = normalized_haystack(title, summary)
+    include_hits = count_phrases(haystack, feed.include_keywords)
+    boost_hits = count_phrases(haystack, feed.boost_keywords)
+    penalty_hits = count_phrases(haystack, feed.penalty_keywords)
+    exclude_hits = count_phrases(haystack, feed.exclude_keywords)
+    if exclude_hits:
+        return 0.0
+    stream_hits = keyword_score(feed.stream, haystack)
+    score = 0.35
+    score += min(include_hits, 4) * 0.16
+    score += min(boost_hits, 3) * 0.08
+    score += min(stream_hits, 4) * 0.06
+    score -= min(penalty_hits, 3) * 0.12
+    if feed.include_keywords and include_hits == 0:
+        score -= 0.2
+    return round(max(0.0, min(1.0, score)), 3)
+
+
 def item_score(feed: Feed, title: str, summary: str, published: datetime, now: datetime) -> float:
-    """Score an item by source priority, freshness and broad topic hits."""
+    """Score an item by source priority, freshness and source-rule relevance."""
     age_hours = max((now - published).total_seconds() / 3600, 0)
     freshness = max(0, 1 - age_hours / 72)
-    haystack = f"{title} {summary}".lower()
-    topic_hits = sum(1 for words in KEYWORDS.values() for word in words if word in haystack)
-    return round(feed.priority * 10 + freshness * 4 + min(topic_hits, 6) * 0.35, 3)
+    haystack = normalized_haystack(title, summary)
+    topic_hits = sum(1 for words in KEYWORDS.values() for word in words if word and contains_phrase(haystack, word))
+    relevance = relevance_score(feed, title, summary)
+    return round(feed.priority * 8 + freshness * 3 + relevance * 6 + min(topic_hits, 6) * 0.25, 3)
 
 
 def feed_nodes(root: ET.Element) -> list[ET.Element]:
@@ -321,6 +375,9 @@ def parse_feed(feed: Feed, payload: bytes, now: datetime) -> list[Item]:
         if not title or not url:
             continue
         summary = clean_text(text_of(node, ("description", "summary", "content")))
+        relevance = relevance_score(feed, title, summary)
+        if relevance < feed.min_relevance_score:
+            continue
         guid = clean_text(text_of(node, ("guid", "id")), 500) or url
         published = parse_date(text_of(node, ("pubDate", "published", "updated", "date")), now)
         stream = classify(feed, title, summary)
