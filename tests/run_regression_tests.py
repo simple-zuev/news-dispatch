@@ -8,19 +8,32 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TESTS = [
-    ROOT / "tests" / "test_filter_daily_signals.py",
-    ROOT / "tests" / "test_daily_radar_semantic_routing.py",
-]
+TEST_DIR = ROOT / "tests"
+RUNNER = Path(__file__).resolve()
+
+
+def regression_tests() -> list[Path]:
+    return [
+        path
+        for path in sorted(TEST_DIR.glob("test_*.py"))
+        if path.resolve() != RUNNER
+    ]
 
 
 def main() -> int:
-    for test_path in TESTS:
+    tests = regression_tests()
+    if not tests:
+        print("No regression tests found.")
+        return 1
+
+    for test_path in tests:
+        print(f"Running {test_path.relative_to(ROOT)}")
         result = subprocess.run([sys.executable, str(test_path)], cwd=ROOT)
         if result.returncode != 0:
             print(f"Regression test failed: {test_path.relative_to(ROOT)}")
             return result.returncode
-    print("Regression tests passed.")
+
+    print(f"Regression tests passed: {len(tests)} file(s).")
     return 0
 
 

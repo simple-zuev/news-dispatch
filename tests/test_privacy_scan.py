@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import importlib.util
 import sys
-import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,9 +20,9 @@ spec.loader.exec_module(privacy_scan)
 
 
 def scan_text(text: str) -> tuple[list[str], list[str]]:
-    with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".md", delete=False) as handle:
-        handle.write(text)
-        path = Path(handle.name)
+    path = ROOT / "validation" / ".tmp-privacy-scan-test.md"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
     try:
         return privacy_scan.scan_file(path)
     finally:
