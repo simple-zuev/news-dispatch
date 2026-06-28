@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "purpose": "Provider-agnostic source discovery queries. Results must be probed and scored before any source is promoted to sources/feeds.json.",
+  "streams": {
+    "finance": {
+      "regions": ["russia", "world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "банк россии финансы RSS",
+        "российский финансовый рынок RSS",
+        "central bank markets regulation RSS"
+      ],
+      "deny_terms": ["спорт", "шоу", "развлечения"]
+    },
+    "crypto-finance": {
+      "regions": ["russia", "world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "crypto regulation RSS",
+        "stablecoin exchange custody RSS",
+        "криптовалюта регулирование биржи RSS"
+      ],
+      "deny_terms": ["price prediction", "giveaway", "celebrity"]
+    },
+    "ai": {
+      "regions": ["russia", "world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "AI research regulation agents RSS",
+        "LLM agents developer tools RSS",
+        "искусственный интеллект нейросети RSS"
+      ],
+      "deny_terms": ["coupon", "deal", "movie"]
+    },
+    "tech-hardware-software": {
+      "regions": ["russia", "world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "hardware software security RSS",
+        "chips GPU CPU supply chain RSS",
+        "железо софт безопасность RSS"
+      ],
+      "deny_terms": ["coupon", "скидка", "распродажа"]
+    },
+    "gear-style-edc": {
+      "regions": ["world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "EDC gear design materials RSS",
+        "sneakers apparel watches bags RSS",
+        "вещи стиль EDC RSS"
+      ],
+      "deny_terms": ["coupon", "скидка", "celebrity"]
+    },
+    "moscow-city": {
+      "regions": ["moscow"],
+      "languages": ["ru"],
+      "queries": [
+        "Москва городские новости RSS",
+        "Москва транспорт метро афиша RSS",
+        "московские события места RSS"
+      ],
+      "deny_terms": ["футбол", "хоккей", "сша", "украина"]
+    },
+    "dj-audio-creative": {
+      "regions": ["world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "DJ technology controllers mixers RSS",
+        "Ableton plugins synth audio production RSS",
+        "DJ аудио контроллеры плагины RSS"
+      ],
+      "deny_terms": ["coupon", "deal", "celebrity"]
+    },
+    "science-discovery": {
+      "regions": ["russia", "world"],
+      "languages": ["ru", "en"],
+      "queries": [
+        "science discovery research RSS",
+        "physics biology space climate RSS",
+        "наука исследования открытия RSS"
+      ],
+      "deny_terms": ["weight loss tips", "celebrity"]
+    }
+  }
+}
