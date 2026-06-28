@@ -129,17 +129,40 @@ def keyword_hits(stream: str, text: str) -> list[str]:
     return hits
 
 
+def sample_match_stats(stream: str, sample_titles: list[str]) -> dict[str, Any]:
+    matched_titles = []
+    for title in sample_titles:
+        hits = keyword_hits(stream, title)
+        if hits:
+            matched_titles.append({
+                "title": title,
+                "keyword_hits": hits,
+            })
+    sample_size = len(sample_titles)
+    match_count = len(matched_titles)
+    ratio = round(match_count / sample_size, 3) if sample_size else 0.0
+    return {
+        "sample_size": sample_size,
+        "sample_match_count": match_count,
+        "sample_match_ratio": ratio,
+        "matched_sample_titles": matched_titles[:10],
+    }
+
+
 def score_candidate(stream: str, feed_url: str, probe: dict[str, Any], title: str = "", snippet: str = "") -> dict[str, Any]:
     raw_sample_titles = probe.get("sample_titles", [])
-    sample_titles = " ".join(str(item) for item in raw_sample_titles if str(item).strip()) if isinstance(raw_sample_titles, list) else ""
-    hits = keyword_hits(stream, " ".join([feed_url, title, snippet, str(probe.get("first_title", "")), sample_titles]))
+    sample_titles_list = [str(item) for item in raw_sample_titles if str(item).strip()] if isinstance(raw_sample_titles, list) else []
+    sample_titles_text = " ".join(sample_titles_list)
+    hits = keyword_hits(stream, " ".join([feed_url, title, snippet, str(probe.get("first_title", "")), sample_titles_text]))
     item_count = int(probe.get("item_count") or 0)
+    sample_stats = sample_match_stats(stream, sample_titles_list)
 
     if not probe.get("ok"):
         return {
             "candidate_status": "failed_probe",
             "score": 0.0,
             "keyword_hits": hits,
+            **sample_stats,
             "reason": str(probe.get("error") or "probe_failed"),
         }
 
@@ -148,19 +171,31 @@ def score_candidate(stream: str, feed_url: str, probe: dict[str, Any], title: st
             "candidate_status": "low_item_count",
             "score": 0.25,
             "keyword_hits": hits,
+            **sample_stats,
             "reason": "feed parsed, but item_count is below promotion threshold",
         }
 
-    score = 0.55
-    score += min(item_count, 20) / 100
-    score += min(len(hits), 5) * 0.06
+    sample_ratio = float(sample_stats["sample_match_ratio"])
+    status = "passed_probe" if sample_ratio >= 0.2 else "broad_feed_review_required"
+
+    score = 0.35
+    score += min(item_count, 20) * 0.0075
+    score += min(len(hits), 5) * 0.03
+    score += min(sample_ratio, 0.6) * 0.55
     score = round(min(score, 1.0), 3)
 
+    reason = (
+        "feed parsed with enough items and useful stream density; editorial/source-rule review still required"
+        if status == "passed_probe"
+        else "feed parsed, but sample density is low; source-rule filtering or section-level feed is required"
+    )
+
     return {
-        "candidate_status": "passed_probe",
+        "candidate_status": status,
         "score": score,
         "keyword_hits": hits,
-        "reason": "feed parsed and has enough items; editorial/source-rule review still required",
+        **sample_stats,
+        "reason": reason,
     }
 
 

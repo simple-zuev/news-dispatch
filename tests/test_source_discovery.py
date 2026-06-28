@@ -45,6 +45,21 @@ def test_keyword_hits_match_russian_stems() -> None:
     assert "улиц" in hits
 
 
+
+def test_sample_match_stats_measure_feed_density() -> None:
+    titles = [
+        "Один человек погиб при аварийной посадке самолета",
+        "Москва открыла новый участок метро",
+        "Движение ограничено на улицах города",
+        "МИД Турции сделал заявление",
+    ]
+    stats = discover.sample_match_stats("moscow-city", titles)
+    assert stats["sample_size"] == 4
+    assert stats["sample_match_count"] == 2
+    assert stats["sample_match_ratio"] == 0.5
+    assert len(stats["matched_sample_titles"]) == 2
+
+
 def test_candidate_scoring_passes_valid_feed_probe() -> None:
     probe = {
         "ok": True,
@@ -62,6 +77,8 @@ def test_candidate_scoring_passes_valid_feed_probe() -> None:
     result = discover.score_candidate("moscow-city", "https://example.com/rss.xml", probe)
     assert result["candidate_status"] == "passed_probe"
     assert result["score"] > 0.55
+    assert result["sample_match_count"] >= 2
+    assert result["sample_match_ratio"] > 0
     assert "москов" in result["keyword_hits"] or "москв" in result["keyword_hits"]
 
 
@@ -74,6 +91,7 @@ def test_candidate_scoring_rejects_failed_probe() -> None:
     result = discover.score_candidate("moscow-city", "https://example.com/rss.xml", probe)
     assert result["candidate_status"] == "failed_probe"
     assert result["score"] == 0.0
+    assert result["sample_match_ratio"] == 0.0
 
 
 def test_discovery_queries_cover_primary_streams() -> None:
@@ -97,6 +115,7 @@ def main() -> int:
     test_autodiscovered_feed_urls_from_html()
     test_common_feed_candidates_are_origin_scoped()
     test_keyword_hits_match_russian_stems()
+    test_sample_match_stats_measure_feed_density()
     test_candidate_scoring_passes_valid_feed_probe()
     test_candidate_scoring_rejects_failed_probe()
     test_discovery_queries_cover_primary_streams()
