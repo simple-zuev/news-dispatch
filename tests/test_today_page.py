@@ -105,6 +105,14 @@ def test_render_clusters_similar_signals() -> None:
     assert "https://example.com/item-2" in html
 
 
+
+def test_today_radar_css_has_cluster_materials_styles() -> None:
+    css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
+    assert "/* Today Radar analytical cards */" in css
+    assert ".cluster-materials" in css
+    assert ".latest-grid:has(.signal-card)" in css
+
+
 def test_card_stays_non_directive() -> None:
     html = build_today_page.render(sample_report())
     assert "не прогнозом и не инструкцией к действию" in html
@@ -116,6 +124,7 @@ def main() -> int:
     test_render_includes_required_links_and_boundary()
     test_render_includes_analytical_card_structure()
     test_render_clusters_similar_signals()
+    test_today_radar_css_has_cluster_materials_styles()
     test_card_stays_non_directive()
     print("today page tests passed")
     return 0
