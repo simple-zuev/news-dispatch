@@ -97,8 +97,12 @@ def test_render_clusters_similar_signals() -> None:
     assert "Кластеров: 1" in html
     assert "cluster 2 item(s)" in html
     assert "Источники в кластере: 2" in html
+    assert "Материалы кластера:" in html
+    assert "cluster-materials" in html
     assert "Example Regulator" in html
     assert "Example Media" in html
+    assert "https://example.com/item" in html
+    assert "https://example.com/item-2" in html
 
 
 def test_card_stays_non_directive() -> None:
