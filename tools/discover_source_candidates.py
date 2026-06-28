@@ -119,7 +119,9 @@ def keyword_hits(stream: str, text: str) -> list[str]:
 
 
 def score_candidate(stream: str, feed_url: str, probe: dict[str, Any], title: str = "", snippet: str = "") -> dict[str, Any]:
-    hits = keyword_hits(stream, " ".join([feed_url, title, snippet, str(probe.get("first_title", ""))]))
+    raw_sample_titles = probe.get("sample_titles", [])
+    sample_titles = " ".join(str(item) for item in raw_sample_titles if str(item).strip()) if isinstance(raw_sample_titles, list) else ""
+    hits = keyword_hits(stream, " ".join([feed_url, title, snippet, str(probe.get("first_title", "")), sample_titles]))
     item_count = int(probe.get("item_count") or 0)
 
     if not probe.get("ok"):

@@ -42,7 +42,12 @@ def test_candidate_scoring_passes_valid_feed_probe() -> None:
         "ok": True,
         "feed_type": "rss",
         "item_count": 12,
-        "first_title": "Москва открыла новый участок метро",
+        "first_title": "Один человек погиб при аварийной посадке самолета",
+        "sample_titles": [
+            "Один человек погиб при аварийной посадке самолета",
+            "Москва открыла новый участок метро",
+            "Движение временно закрыто на ряде улиц в центре Москвы",
+        ],
         "error": "",
     }
     result = discover.score_candidate("moscow-city", "https://example.com/rss.xml", probe)
