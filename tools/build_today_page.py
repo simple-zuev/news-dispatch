@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -51,6 +52,11 @@ STREAM_MONITORING = {
     "science-discovery": "Проверить публикацию, методологию, данные, независимое подтверждение и границы применимости результата.",
 }
 
+STOPWORDS = {
+    "the", "and", "for", "from", "with", "this", "that", "into", "over", "after", "before", "about", "news", "update", "updates",
+    "как", "что", "это", "для", "или", "при", "над", "под", "после", "перед", "новости", "обновление", "сигнал",
+}
+
 
 def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
@@ -85,7 +91,7 @@ def stream_label(slug: object) -> str:
     return STREAM_LABELS.get(text, text or "Без потока")
 
 
-def selected_items(report: dict[str, Any], limit: int = 12) -> list[dict[str, Any]]:
+def selected_items(report: dict[str, Any], limit: int = 18) -> list[dict[str, Any]]:
     items = [item for item in report.get("items", []) if item.get("selected")]
     if not items:
         items = [item for item in report.get("items", []) if item.get("source_rule_status") == "accepted_by_source_rules"]
@@ -108,6 +114,54 @@ def evidence_hits(item: dict[str, Any]) -> list[str]:
     return []
 
 
+def all_evidence_hits(item: dict[str, Any]) -> list[str]:
+    hits: list[str] = []
+    for key in ("include_hits", "boost_hits", "stream_keyword_hits"):
+        value = item.get(key)
+        if isinstance(value, list):
+            hits.extend(str(part) for part in value)
+    return hits
+
+
+def topic_terms(item: dict[str, Any]) -> set[str]:
+    haystack = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
+    terms = set(re.findall(r"[a-zа-я0-9]{3,}", haystack))
+    return {term for term in terms if term not in STOPWORDS}
+
+
+def topic_similarity(left: dict[str, Any], right: dict[str, Any]) -> float:
+    if stream_slug(left) != stream_slug(right):
+        return 0.0
+    left_terms = topic_terms(left)
+    right_terms = topic_terms(right)
+    if not left_terms or not right_terms:
+        return 0.0
+    overlap = len(left_terms & right_terms)
+    return overlap / min(len(left_terms), len(right_terms))
+
+
+def cluster_items(items: list[dict[str, Any]], limit: int = 12) -> list[list[dict[str, Any]]]:
+    clusters: list[list[dict[str, Any]]] = []
+    for item in items:
+        for cluster in clusters:
+            if topic_similarity(item, cluster[0]) >= 0.5:
+                cluster.append(item)
+                break
+        else:
+            clusters.append([item])
+    clusters = sorted(clusters, key=lambda cluster: numeric(cluster[0].get("final_score")), reverse=True)
+    return clusters[:limit]
+
+
+def cluster_sources(cluster: list[dict[str, Any]]) -> list[str]:
+    sources: list[str] = []
+    for item in cluster:
+        source = str(item.get("feed_title") or item.get("feed_id") or "Публичный источник")
+        if source not in sources:
+            sources.append(source)
+    return sources
+
+
 def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
@@ -121,17 +175,19 @@ def confirmation_level(item: dict[str, Any]) -> str:
     return f"{base}; source class: {source_class}, source type: {source_type}, rule status: {status}."
 
 
-def thesis(item: dict[str, Any]) -> str:
+def thesis(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
     title = str(item.get("title") or "Без заголовка")
     stream = stream_label(stream_slug(item))
+    if len(cluster) > 1:
+        return f"В потоке «{stream}» зафиксирован кластер публичных сигналов по теме: {title}"
     return f"В потоке «{stream}» зафиксирован публичный сигнал: {title}"
 
 
-def argument(item: dict[str, Any]) -> str:
-    source = item.get("feed_title") or item.get("feed_id") or "публичный источник"
+def argument(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
+    sources = cluster_sources(cluster)
     hits = evidence_hits(item)
     parts = [
-        f"Источник: {source}.",
+        f"Источники в кластере: {len(sources)} ({', '.join(sources[:4])}).",
         f"Итоговый score: {score(item.get('final_score'))}.",
         f"Relevance: {score(item.get('relevance_score'))}.",
     ]
@@ -148,8 +204,10 @@ def implication(item: dict[str, Any]) -> str:
     return effect + " Формулировка является зоной мониторинга, а не прогнозом и не инструкцией к действию."
 
 
-def uncertainty(item: dict[str, Any]) -> str:
-    if item.get("selected"):
+def uncertainty(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
+    if len(cluster) > 1:
+        rank_note = f"Кластер объединяет {len(cluster)} похожих items; это повышает видимость сигнала, но не подтверждает факт само по себе."
+    elif item.get("selected"):
         rank_note = "Сигнал выбран ранжированием Daily Radar."
     else:
         rank_note = "Сигнал прошёл source-rule отбор, но не был выбран как top-ranked item."
@@ -163,35 +221,38 @@ def monitoring(item: dict[str, Any]) -> str:
     )
 
 
-def card(item: dict[str, Any]) -> str:
+def card(cluster: list[dict[str, Any]]) -> str:
+    item = cluster[0]
     stream = stream_label(stream_slug(item))
-    source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
+    sources = cluster_sources(cluster)
     title = item.get("title") or "Без заголовка"
     url = item.get("url") or ""
     title_html = esc(title)
     if url:
         title_html = f'<a href="{esc(url)}">{title_html}</a>'
+    cluster_label = f"cluster {len(cluster)} item(s) · {len(sources)} source(s)"
 
     return f"""<article class="card signal-card">
-  <p class="label">{esc(stream)} · {esc(source)} · score {score(item.get("final_score"))} · relevance {score(item.get("relevance_score"))}</p>
+  <p class="label">{esc(stream)} · {esc(cluster_label)} · score {score(item.get("final_score"))} · relevance {score(item.get("relevance_score"))}</p>
   <h3>{title_html}</h3>
-  <p><strong>Тезис:</strong> {esc(thesis(item))}</p>
-  <p><strong>Аргумент:</strong> {esc(argument(item))}</p>
+  <p><strong>Тезис:</strong> {esc(thesis(item, cluster))}</p>
+  <p><strong>Аргумент:</strong> {esc(argument(item, cluster))}</p>
   <p><strong>Следствие/риск:</strong> {esc(implication(item))}</p>
   <p><strong>Уровень подтверждения:</strong> {esc(confirmation_level(item))}</p>
   <p><strong>Что отслеживать дальше:</strong> {esc(monitoring(item))}</p>
-  <p><strong>Неопределённость:</strong> {esc(uncertainty(item))}</p>
+  <p><strong>Неопределённость:</strong> {esc(uncertainty(item, cluster))}</p>
 </article>"""
 
 
 def cards_block(items: list[dict[str, Any]]) -> str:
     if not items:
         return '<article class="card empty-state"><p class="label">Нет данных</p><h3>Нет выбранных сигналов</h3><p>Свежие items не прошли первичный отбор.</p></article>'
-    return "\n".join(card(item) for item in items)
+    return "\n".join(card(cluster) for cluster in cluster_items(items))
 
 
 def render(report: dict[str, Any]) -> str:
     items = selected_items(report)
+    clusters = cluster_items(items)
     total = len(report.get("items", []))
     selected = len([item for item in report.get("items", []) if item.get("selected")])
     filtered = len([item for item in report.get("items", []) if item.get("source_rule_status") != "accepted_by_source_rules"])
@@ -215,9 +276,9 @@ def render(report: dict[str, Any]) -> str:
     <p class="hero-actions"><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
   </header>
   <main>
-    <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано: {selected}. Отфильтровано: {filtered}. Ошибок источников: {errors}.</p></section>
+    <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано: {selected}. Кластеров: {len(clusters)}. Отфильтровано: {filtered}. Ошибок источников: {errors}.</p></section>
     <section class="panel"><h2>Потоки</h2>{stream_summary(report)}</section>
-    <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже показывают первичную аналитическую рамку: тезис, аргумент, следствие/риск, уровень подтверждения, неопределённость и что отслеживать дальше.</p></section>
+    <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже сгруппированы в тематические кластеры и показывают первичную аналитическую рамку: тезис, аргумент, следствие/риск, уровень подтверждения, неопределённость и что отслеживать дальше.</p></section>
     <section class="grid latest-grid" aria-label="Today Radar cards">{cards_block(items)}</section>
     <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
   </main>
