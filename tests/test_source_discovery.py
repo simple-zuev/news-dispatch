@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,6 +71,50 @@ def test_sample_match_stats_measure_feed_density() -> None:
     assert len(stats["matched_sample_titles"]) == 2
 
 
+
+def test_deny_term_hits_are_reported() -> None:
+    hits = discover.deny_term_hits("crypto-finance", "Bitcoin giveaway and casino promotion")
+    assert "giveaway" in hits
+    assert "casino" in hits
+
+
+def test_load_search_results_accepts_top_level_list() -> None:
+    payload = [
+        {
+            "title": "AI source",
+            "url": "https://example.com/ai",
+            "snippet": "LLM agents developer tools",
+        }
+    ]
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "search-results.json"
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        results = discover.load_search_results(path, default_stream="ai")
+    assert len(results) == 1
+    assert results[0].stream == "ai"
+    assert results[0].url == "https://example.com/ai"
+
+
+def test_discovery_rules_cover_primary_streams() -> None:
+    data = discover.load_discovery_rules(ROOT / "sources" / "discovery-rules.json")
+    streams = data["streams"]
+    for slug in [
+        "finance",
+        "crypto-finance",
+        "ai",
+        "tech-hardware-software",
+        "gear-style-edc",
+        "moscow-city",
+        "dj-audio-creative",
+        "science-discovery",
+    ]:
+        assert slug in streams
+        assert isinstance(streams[slug]["strong_terms"], list)
+        assert isinstance(streams[slug]["weak_terms"], list)
+        assert isinstance(streams[slug]["deny_terms"], list)
+        assert streams[slug]["min_sample_ratio"] > 0
+
+
 def test_candidate_scoring_passes_valid_feed_probe() -> None:
     probe = {
         "ok": True,
@@ -88,6 +134,8 @@ def test_candidate_scoring_passes_valid_feed_probe() -> None:
     assert result["score"] > 0.55
     assert result["sample_match_count"] >= 2
     assert result["sample_match_ratio"] > 0
+    assert result["min_sample_ratio"] == 0.2
+    assert result["deny_term_hits"] == []
     assert "москов" in result["keyword_hits"] or "москв" in result["keyword_hits"]
 
 
@@ -126,6 +174,9 @@ def main() -> int:
     test_keyword_hits_match_russian_stems()
     test_keyword_hits_ignore_weak_moscow_false_positives()
     test_sample_match_stats_measure_feed_density()
+    test_deny_term_hits_are_reported()
+    test_load_search_results_accepts_top_level_list()
+    test_discovery_rules_cover_primary_streams()
     test_candidate_scoring_passes_valid_feed_probe()
     test_candidate_scoring_rejects_failed_probe()
     test_discovery_queries_cover_primary_streams()

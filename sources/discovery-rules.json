@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "purpose": "Per-stream source discovery scoring rules. These rules only affect candidate discovery and do not auto-promote sources to sources/feeds.json.",
+  "defaults": {
+    "strong_terms": [],
+    "stem_terms": [],
+    "weak_terms": [],
+    "deny_terms": [],
+    "min_sample_ratio": 0.2
+  },
+  "streams": {
+    "finance": {
+      "strong_terms": [
+        "central bank",
+        "finance",
+        "financial",
+        "inflation",
+        "rate",
+        "rates",
+        "bank",
+        "market",
+        "economy",
+        "mortgage",
+        "credit",
+        "deposit",
+        "банк россии",
+        "финансы",
+        "рынок",
+        "рубль"
+      ],
+      "stem_terms": [
+        "банк",
+        "ставк",
+        "инфляц",
+        "кредит",
+        "ипотек",
+        "вклад",
+        "эконом",
+        "рубл"
+      ],
+      "weak_terms": [],
+      "deny_terms": [
+        "спорт",
+        "шоу",
+        "развлечения",
+        "celebrity"
+      ],
+      "min_sample_ratio": 0.18
+    },
+    "crypto-finance": {
+      "strong_terms": [
+        "crypto",
+        "bitcoin",
+        "ethereum",
+        "stablecoin",
+        "tokenization",
+        "defi",
+        "exchange",
+        "custody",
+        "blockchain",
+        "aml",
+        "kyc",
+        "криптовалюта",
+        "биткоин",
+        "цифровой рубль"
+      ],
+      "stem_terms": [
+        "крипт",
+        "биткоин",
+        "эфир",
+        "стейбл",
+        "токен",
+        "блокчейн",
+        "бирж",
+        "кастоди",
+        "регулир"
+      ],
+      "weak_terms": [
+        "price",
+        "prediction"
+      ],
+      "deny_terms": [
+        "giveaway",
+        "airdrop",
+        "celebrity",
+        "casino"
+      ],
+      "min_sample_ratio": 0.18
+    },
+    "ai": {
+      "strong_terms": [
+        "ai",
+        "artificial intelligence",
+        "generative ai",
+        "llm",
+        "openai",
+        "anthropic",
+        "gemini",
+        "copilot",
+        "neural",
+        "machine learning",
+        "искусственный интеллект"
+      ],
+      "stem_terms": [
+        "нейросет",
+        "модель",
+        "агент",
+        "чатбот",
+        "генератив"
+      ],
+      "weak_terms": [
+        "model",
+        "agent"
+      ],
+      "deny_terms": [
+        "coupon",
+        "deal",
+        "movie",
+        "celebrity"
+      ],
+      "min_sample_ratio": 0.18
+    },
+    "tech-hardware-software": {
+      "strong_terms": [
+        "hardware",
+        "software",
+        "chip",
+        "cpu",
+        "gpu",
+        "laptop",
+        "smartphone",
+        "windows",
+        "linux",
+        "android",
+        "ios",
+        "benchmark",
+        "security",
+        "vulnerability"
+      ],
+      "stem_terms": [
+        "желез",
+        "софт",
+        "процессор",
+        "видеокарт",
+        "смартфон",
+        "ноутбук",
+        "уязвим",
+        "безопасн"
+      ],
+      "weak_terms": [
+        "pc"
+      ],
+      "deny_terms": [
+        "coupon",
+        "скидка",
+        "распродажа",
+        "celebrity"
+      ],
+      "min_sample_ratio": 0.18
+    },
+    "gear-style-edc": {
+      "strong_terms": [
+        "edc",
+        "sneaker",
+        "shoe",
+        "apparel",
+        "jacket",
+        "bag",
+        "watch",
+        "gear",
+        "materials",
+        "repairability"
+      ],
+      "stem_terms": [
+        "кроссов",
+        "одежд",
+        "куртк",
+        "рюкзак",
+        "сумк",
+        "материал",
+        "ремонт"
+      ],
+      "weak_terms": [
+        "wear",
+        "tool"
+      ],
+      "deny_terms": [
+        "coupon",
+        "скидка",
+        "распродажа",
+        "celebrity"
+      ],
+      "min_sample_ratio": 0.16
+    },
+    "moscow-city": {
+      "strong_terms": [
+        "moscow",
+        "metro",
+        "transport",
+        "москва",
+        "метро",
+        "мцд",
+        "афиша"
+      ],
+      "stem_terms": [
+        "москов",
+        "москв",
+        "метро",
+        "мцд",
+        "улиц",
+        "дорог",
+        "городск",
+        "транспорт",
+        "ярмарк",
+        "садов",
+        "кольц"
+      ],
+      "weak_terms": [
+        "бар",
+        "клуб",
+        "концерт",
+        "музей",
+        "парк",
+        "ресторан",
+        "выстав"
+      ],
+      "deny_terms": [
+        "футбол",
+        "хоккей",
+        "сша",
+        "украина"
+      ],
+      "min_sample_ratio": 0.2
+    },
+    "dj-audio-creative": {
+      "strong_terms": [
+        "dj",
+        "mixer",
+        "controller",
+        "cdj",
+        "turntable",
+        "rekordbox",
+        "serato",
+        "traktor",
+        "ableton",
+        "plugin",
+        "synth",
+        "audio",
+        "midi"
+      ],
+      "stem_terms": [
+        "микшер",
+        "контроллер",
+        "синтезатор",
+        "плагин",
+        "аудио"
+      ],
+      "weak_terms": [],
+      "deny_terms": [
+        "coupon",
+        "deal",
+        "celebrity",
+        "gossip"
+      ],
+      "min_sample_ratio": 0.16
+    },
+    "science-discovery": {
+      "strong_terms": [
+        "science",
+        "research",
+        "space",
+        "physics",
+        "biology",
+        "medicine",
+        "climate",
+        "robot",
+        "materials",
+        "biotech",
+        "study",
+        "paper"
+      ],
+      "stem_terms": [
+        "наук",
+        "исслед",
+        "космос",
+        "физик",
+        "биолог",
+        "медицин",
+        "климат",
+        "робот",
+        "материал"
+      ],
+      "weak_terms": [
+        "paper"
+      ],
+      "deny_terms": [
+        "weight loss tips",
+        "celebrity",
+        "astrology"
+      ],
+      "min_sample_ratio": 0.18
+    },
+    "general": {
+      "strong_terms": [],
+      "stem_terms": [],
+      "weak_terms": [],
+      "deny_terms": [],
+      "min_sample_ratio": 0.25
+    }
+  }
+}
