@@ -39,11 +39,46 @@ from stream_registry import stream_keywords, stream_slugs
 CONFIG_PATH = ROOT / "sources" / "feeds.json"
 STATE_PATH = DATA_DIR / "daily-radar-seen.json"
 REPORT_PATH = VALIDATION_DIR / "daily-radar-latest.json"
-USER_AGENT = "NewsDispatchDailyRadar/0.6 (+https://simple-zuev.github.io/news-dispatch/)"
+USER_AGENT = "NewsDispatchDailyRadar/0.7 (+https://simple-zuev.github.io/news-dispatch/)"
 STREAMS = set(stream_slugs())
 KEYWORDS = stream_keywords()
 MEDIA_LIMIT = 4
 MAX_SEEN_ITEMS = 3000
+
+EXPLICIT_STREAM_TERMS: dict[str, tuple[str, ...]] = {
+    "ai": (
+        "ai agent",
+        "ai agents",
+        "ai coding",
+        "artificial intelligence",
+        "claude code",
+        "copilot",
+        "gemini",
+        "generative ai",
+        "large language model",
+        "llm",
+        "openai",
+    ),
+    "crypto-finance": (
+        "bitcoin",
+        "blockchain",
+        "coinbase",
+        "crypto",
+        "cryptocurrency",
+        "ethereum",
+        "mi ca",
+        "mica",
+        "onchain",
+        "stablecoin",
+        "tokenization",
+    ),
+}
+
+SEMANTIC_ROUTE_DENY: dict[str, set[str]] = {
+    # Keep highly regulated finance/crypto sources in their configured lane unless
+    # an explicit crypto term appears in finance. Avoid broad automatic remapping.
+    "crypto-finance": {"finance"},
+}
 
 
 class FeedConfigError(NewsDispatchError):
@@ -197,14 +232,65 @@ def link_of(node: ET.Element) -> str:
     return ""
 
 
-def classify(feed: Feed, title: str, summary: str) -> str:
-    """Return the stream for an item.
+def normalized_haystack(title: str, summary: str) -> str:
+    text = f" {title} {summary} ".lower().replace("ё", "е")
+    for char in "'’`—–_/|:;,.!?()[]{}\n\t":
+        text = text.replace(char, " ")
+    return " ".join(text.split())
 
-    The current routing model is feed-owned. The function is intentionally kept
-    separate so later semantic routing can be introduced without changing the
-    rest of the collector.
+
+def contains_phrase(haystack: str, phrase: str) -> bool:
+    phrase = " ".join(phrase.lower().split())
+    return f" {phrase} " in f" {haystack} "
+
+
+def keyword_score(stream: str, haystack: str) -> int:
+    return sum(1 for word in KEYWORDS.get(stream, []) if word and contains_phrase(haystack, word))
+
+
+def explicit_stream_match(stream: str, haystack: str) -> bool:
+    return any(contains_phrase(haystack, phrase) for phrase in EXPLICIT_STREAM_TERMS.get(stream, ()))
+
+
+def semantic_candidate(feed_stream: str, haystack: str) -> str | None:
+    """Return a conservative content-owned stream override.
+
+    Routing remains feed-owned by default. A route changes only when explicit
+    stream terms are present or another stream has a materially stronger keyword
+    score than the feed's configured stream.
     """
-    return feed.stream
+    if feed_stream == "finance" and explicit_stream_match("crypto-finance", haystack):
+        return "crypto-finance"
+
+    for stream in ("ai", "crypto-finance"):
+        if stream == feed_stream:
+            continue
+        if feed_stream in SEMANTIC_ROUTE_DENY.get(stream, set()):
+            continue
+        if explicit_stream_match(stream, haystack):
+            return stream
+
+    scores = {stream: keyword_score(stream, haystack) for stream in STREAMS if stream != "general"}
+    if not scores:
+        return None
+    best_stream, best_score = max(scores.items(), key=lambda item: item[1])
+    feed_score = scores.get(feed_stream, 0)
+    if best_stream != feed_stream and best_score >= 3 and best_score >= feed_score + 2:
+        return best_stream
+    return None
+
+
+def classify(feed: Feed, title: str, summary: str) -> str:
+    """Return the stream for an item using conservative semantic routing.
+
+    The feed stream remains the safe default. Content-owned routing is allowed
+    only for high-signal cases, for example broad technology feeds producing
+    explicit AI-agent stories or finance feeds producing explicit crypto-market
+    stories.
+    """
+    haystack = normalized_haystack(title, summary)
+    routed = semantic_candidate(feed.stream, haystack)
+    return routed if routed in STREAMS else feed.stream
 
 
 def item_score(feed: Feed, title: str, summary: str, published: datetime, now: datetime) -> float:
@@ -398,7 +484,7 @@ def build(args: argparse.Namespace) -> int:
                 "count": len(stream_items),
                 "signals": [repo_path(path) for path in signal_paths],
                 "media_count": min(MEDIA_LIMIT, len(stream_items)),
-                "routing": "feed_owned",
+                "routing": "content_owned" if any(item.feed.stream != item.stream for item in stream_items) else "feed_owned",
             }
         )
         log(f"{stream}: {len(stream_items)} signal(s)")
@@ -428,13 +514,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     try:
         return build(parse_args(sys.argv[1:] if argv is None else argv))
-    except NewsDispatchError as exc:
-        print(f"[daily-radar] {exc}", file=sys.stderr)
-        return 1
-    except ValueError as exc:
-        print(f"[daily-radar] invalid argument: {exc}", file=sys.stderr)
-        return 1
+    except FeedConfigError as exc:
+        print(f"daily-radar: {exc}", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())
