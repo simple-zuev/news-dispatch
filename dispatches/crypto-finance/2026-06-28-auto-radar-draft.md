@@ -26,7 +26,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Криптофинансы: Россия и мир»: 3 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Криптофинансы: Россия и мир»: 5 публичных сигналов для редакционной проверки."
 tags:
   - "crypto-finance"
   - "market-structure"
@@ -39,14 +39,20 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.coindesk.com/business/2026/06/27/coinbase-and-okx-try-to-lure-in-binance-s-450m-eu-users-after-failing-to-secure-a-mica-license"
-  - "https://www.coindesk.com/markets/2026/06/27/polymarket-hack-updated-to-usd3-1-million-days-after-the-platform-promised-users-full-refunds"
-  - "https://cointelegraph.com/news/crypto-stocks-underperform-tech-market-slump?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/markets/2026/06/28/michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continues-to-fall"
+  - "https://www.coindesk.com/markets/2026/06/28/samson-mow-says-bitcoin-bottom-is-in-but-analysts-remain-divided"
+  - "https://cointelegraph.com/news/eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.theblock.co/post/406460/michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-billion-underwater?utm_source=rss&utm_medium=rss"
+  - "https://cointelegraph.com/markets/will-bitcoin-price-recover-in-july?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
 source_titles:
-  - "CoinDesk: Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license"
-  - "CoinDesk: Polymarket hack updated to $3.1 million days after the platform promised users full refunds"
-  - "Cointelegraph: Coinbase, Circle underperform Big Tech as crypto stock slump deepens"
+  - "CoinDesk: Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall"
+  - "CoinDesk: Samson Mow says bitcoin bottom is in despite skepticism from analysts"
+  - "Cointelegraph: EU watchdog EBA details big crypto fines as landmark laws bite"
+  - "The Block: Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater"
+  - "Cointelegraph: Will Bitcoin price recover in July?"
 source_types:
+  - "Криптофинансовое медиа"
+  - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -54,19 +60,25 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
+  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
+  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.coindesk.com/business/2026/06/27/coinbase-and-okx-try-to-lure-in-binance-s-450m-eu-users-after-failing-to-secure-a-mica-license"
-  - "https://www.coindesk.com/markets/2026/06/27/polymarket-hack-updated-to-usd3-1-million-days-after-the-platform-promised-users-full-refunds"
-  - "https://cointelegraph.com/news/crypto-stocks-underperform-tech-market-slump?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/markets/2026/06/28/michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continues-to-fall"
+  - "https://www.coindesk.com/markets/2026/06/28/samson-mow-says-bitcoin-bottom-is-in-but-analysts-remain-divided"
+  - "https://cointelegraph.com/news/eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.theblock.co/post/406460/michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-billion-underwater?utm_source=rss&utm_medium=rss"
 media_titles:
-  - "CoinDesk: Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license"
-  - "CoinDesk: Polymarket hack updated to $3.1 million days after the platform promised users full refunds"
-  - "Cointelegraph: Coinbase, Circle underperform Big Tech as crypto stock slump deepens"
+  - "CoinDesk: Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall"
+  - "CoinDesk: Samson Mow says bitcoin bottom is in despite skepticism from analysts"
+  - "Cointelegraph: EU watchdog EBA details big crypto fines as landmark laws bite"
+  - "The Block: Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
+  - "Криптофинансовое медиа"
 media_notes:
+  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -85,15 +97,19 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license — сообщение источника «CoinDesk: Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license»; требует проверки перед выводами.
-2. Polymarket hack updated to $3.1 million days after the platform promised users full refunds — сообщение источника «CoinDesk: Polymarket hack updated to $3.1 million days after the platform promised users full refunds»; требует проверки перед выводами.
-3. Coinbase, Circle underperform Big Tech as crypto stock slump deepens — сообщение источника «Cointelegraph: Coinbase, Circle underperform Big Tech as crypto stock slump deepens»; требует проверки перед выводами.
+1. Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall — сообщение источника «CoinDesk: Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall»; требует проверки перед выводами.
+2. Samson Mow says bitcoin bottom is in despite skepticism from analysts — сообщение источника «CoinDesk: Samson Mow says bitcoin bottom is in despite skepticism from analysts»; требует проверки перед выводами.
+3. EU watchdog EBA details big crypto fines as landmark laws bite — сообщение источника «Cointelegraph: EU watchdog EBA details big crypto fines as landmark laws bite»; требует проверки перед выводами.
+4. Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater — сообщение источника «The Block: Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater»; требует проверки перед выводами.
+5. Will Bitcoin price recover in July? — сообщение источника «Cointelegraph: Will Bitcoin price recover in July?»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license. Источник: CoinDesk: Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license. URL: https://www.coindesk.com/business/2026/06/27/coinbase-and-okx-try-to-lure-in-binance-s-450m-eu-users-after-failing-to-secure-a-mica-license
-- Polymarket hack updated to $3.1 million days after the platform promised users full refunds. Источник: CoinDesk: Polymarket hack updated to $3.1 million days after the platform promised users full refunds. URL: https://www.coindesk.com/markets/2026/06/27/polymarket-hack-updated-to-usd3-1-million-days-after-the-platform-promised-users-full-refunds
-- Coinbase, Circle underperform Big Tech as crypto stock slump deepens. Источник: Cointelegraph: Coinbase, Circle underperform Big Tech as crypto stock slump deepens. URL: https://cointelegraph.com/news/crypto-stocks-underperform-tech-market-slump?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall. Источник: CoinDesk: Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall. URL: https://www.coindesk.com/markets/2026/06/28/michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continues-to-fall
+- Samson Mow says bitcoin bottom is in despite skepticism from analysts. Источник: CoinDesk: Samson Mow says bitcoin bottom is in despite skepticism from analysts. URL: https://www.coindesk.com/markets/2026/06/28/samson-mow-says-bitcoin-bottom-is-in-but-analysts-remain-divided
+- EU watchdog EBA details big crypto fines as landmark laws bite. Источник: Cointelegraph: EU watchdog EBA details big crypto fines as landmark laws bite. URL: https://cointelegraph.com/news/eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater. Источник: The Block: Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater. URL: https://www.theblock.co/post/406460/michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-billion-underwater?utm_source=rss&utm_medium=rss
+- Will Bitcoin price recover in July?. Источник: Cointelegraph: Will Bitcoin price recover in July?. URL: https://cointelegraph.com/markets/will-bitcoin-price-recover-in-july?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
 
 ## Почему это важно
 
@@ -103,7 +119,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 5. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -111,9 +127,11 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license | source_reported_claim | CoinDesk: Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Polymarket hack updated to $3.1 million days after the platform promised users full refunds | source_reported_claim | CoinDesk: Polymarket hack updated to $3.1 million days after the platform promised users full refunds | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Coinbase, Circle underperform Big Tech as crypto stock slump deepens | source_reported_claim | Cointelegraph: Coinbase, Circle underperform Big Tech as crypto stock slump deepens | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall | source_reported_claim | CoinDesk: Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Samson Mow says bitcoin bottom is in despite skepticism from analysts | source_reported_claim | CoinDesk: Samson Mow says bitcoin bottom is in despite skepticism from analysts | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| EU watchdog EBA details big crypto fines as landmark laws bite | source_reported_claim | Cointelegraph: EU watchdog EBA details big crypto fines as landmark laws bite | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater | source_reported_claim | The Block: Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Will Bitcoin price recover in July? | source_reported_claim | Cointelegraph: Will Bitcoin price recover in July? | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

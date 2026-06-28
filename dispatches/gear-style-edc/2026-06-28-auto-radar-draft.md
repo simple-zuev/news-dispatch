@@ -25,7 +25,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Вещи, стиль и EDC»: 4 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Вещи, стиль и EDC»: 3 публичных сигналов для редакционной проверки."
 tags:
   - "gear-style-edc"
   - "consumer-use"
@@ -39,42 +39,34 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://sneakernews.com/2026/06/27/nike-vomero-premium-black-bright-crimson-hq2050-002/"
-  - "https://hypebeast.com/2026/6/adidas-originals-bape-exclusive-teamgeist-capsule-2026-fifa-world-cup-capsule-release-info"
-  - "https://hypebeast.com/2026/6/kiko-kostadniov-ss27-paris-fashion-week-runway-collection"
-  - "https://hypebeast.com/2026/6/amazon-mgm-studios-mahershala-ali-teaser-trailer-your-mother-your-mother-your-mother-release-info"
+  - "https://sneakernews.com/2026/06/28/sneaker-releases-june-28-july-4-2026/"
+  - "https://sneakernews.com/2026/06/28/air-jordan-1-low-golf-white-black-dd9315-120/"
+  - "https://sneakernews.com/2026/06/28/nike-vomero-premium-black-off-noir-anthracite-metallic-silver-hm5973-005/"
 source_titles:
-  - "Sneaker News: “Bright Crimson” Animates The Nike Vomero Premium"
-  - "Hypebeast: adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026"
-  - "Hypebeast: Kiko Kostadinov SS27 Distorts Materiality With \\\"EXTROFLEXION\\\""
-  - "Hypebeast: Mahershala Ali Goes Full Action Hero in Teaser Trailer for \\\"Your Mother Your Mother Your Mother\\\""
+  - "Sneaker News: Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases"
+  - "Sneaker News: The Spike-Less Air Jordan 1 Low Golf Cleans Up In White"
+  - "Sneaker News: The Nike Vomero Premium Turns Out The Lights"
 source_types:
   - "Специализированное медиа"
-  - "Культура / стиль"
-  - "Культура / стиль"
-  - "Культура / стиль"
+  - "Специализированное медиа"
+  - "Специализированное медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://sneakernews.com/2026/06/27/nike-vomero-premium-black-bright-crimson-hq2050-002/"
-  - "https://hypebeast.com/2026/6/adidas-originals-bape-exclusive-teamgeist-capsule-2026-fifa-world-cup-capsule-release-info"
-  - "https://hypebeast.com/2026/6/kiko-kostadniov-ss27-paris-fashion-week-runway-collection"
-  - "https://hypebeast.com/2026/6/amazon-mgm-studios-mahershala-ali-teaser-trailer-your-mother-your-mother-your-mother-release-info"
+  - "https://sneakernews.com/2026/06/28/sneaker-releases-june-28-july-4-2026/"
+  - "https://sneakernews.com/2026/06/28/air-jordan-1-low-golf-white-black-dd9315-120/"
+  - "https://sneakernews.com/2026/06/28/nike-vomero-premium-black-off-noir-anthracite-metallic-silver-hm5973-005/"
 media_titles:
-  - "Sneaker News: “Bright Crimson” Animates The Nike Vomero Premium"
-  - "Hypebeast: adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026"
-  - "Hypebeast: Kiko Kostadinov SS27 Distorts Materiality With \\\"EXTROFLEXION\\\""
-  - "Hypebeast: Mahershala Ali Goes Full Action Hero in Teaser Trailer for \\\"Your Mother Your Mother Your Mother\\\""
+  - "Sneaker News: Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases"
+  - "Sneaker News: The Spike-Less Air Jordan 1 Low Golf Cleans Up In White"
+  - "Sneaker News: The Nike Vomero Premium Turns Out The Lights"
 media_types:
   - "Специализированное медиа"
-  - "Культура / стиль"
-  - "Культура / стиль"
-  - "Культура / стиль"
+  - "Специализированное медиа"
+  - "Специализированное медиа"
 media_notes:
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -93,17 +85,15 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. “Bright Crimson” Animates The Nike Vomero Premium — сообщение источника «Sneaker News: “Bright Crimson” Animates The Nike Vomero Premium»; требует проверки перед выводами.
-2. adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026 — сообщение источника «Hypebeast: adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026»; требует проверки перед выводами.
-3. Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\" — сообщение источника «Hypebeast: Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\"»; требует проверки перед выводами.
-4. Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\" — сообщение источника «Hypebeast: Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\"»; требует проверки перед выводами.
+1. Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases — сообщение источника «Sneaker News: Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases»; требует проверки перед выводами.
+2. The Spike-Less Air Jordan 1 Low Golf Cleans Up In White — сообщение источника «Sneaker News: The Spike-Less Air Jordan 1 Low Golf Cleans Up In White»; требует проверки перед выводами.
+3. The Nike Vomero Premium Turns Out The Lights — сообщение источника «Sneaker News: The Nike Vomero Premium Turns Out The Lights»; требует проверки перед выводами.
 
 ## Что произошло
 
-- “Bright Crimson” Animates The Nike Vomero Premium. Источник: Sneaker News: “Bright Crimson” Animates The Nike Vomero Premium. URL: https://sneakernews.com/2026/06/27/nike-vomero-premium-black-bright-crimson-hq2050-002/
-- adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026. Источник: Hypebeast: adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026. URL: https://hypebeast.com/2026/6/adidas-originals-bape-exclusive-teamgeist-capsule-2026-fifa-world-cup-capsule-release-info
-- Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\". Источник: Hypebeast: Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\". URL: https://hypebeast.com/2026/6/kiko-kostadniov-ss27-paris-fashion-week-runway-collection
-- Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\". Источник: Hypebeast: Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\". URL: https://hypebeast.com/2026/6/amazon-mgm-studios-mahershala-ali-teaser-trailer-your-mother-your-mother-your-mother-release-info
+- Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases. Источник: Sneaker News: Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases. URL: https://sneakernews.com/2026/06/28/sneaker-releases-june-28-july-4-2026/
+- The Spike-Less Air Jordan 1 Low Golf Cleans Up In White. Источник: Sneaker News: The Spike-Less Air Jordan 1 Low Golf Cleans Up In White. URL: https://sneakernews.com/2026/06/28/air-jordan-1-low-golf-white-black-dd9315-120/
+- The Nike Vomero Premium Turns Out The Lights. Источник: Sneaker News: The Nike Vomero Premium Turns Out The Lights. URL: https://sneakernews.com/2026/06/28/nike-vomero-premium-black-off-noir-anthracite-metallic-silver-hm5973-005/
 
 ## Почему это важно
 
@@ -113,7 +103,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: public_media: 3, specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -121,10 +111,9 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| “Bright Crimson” Animates The Nike Vomero Premium | source_reported_claim | Sneaker News: “Bright Crimson” Animates The Nike Vomero Premium | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026 | source_reported_claim | Hypebeast: adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026 | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\" | source_reported_claim | Hypebeast: Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\" | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\" | source_reported_claim | Hypebeast: Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\" | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases | source_reported_claim | Sneaker News: Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Spike-Less Air Jordan 1 Low Golf Cleans Up In White | source_reported_claim | Sneaker News: The Spike-Less Air Jordan 1 Low Golf Cleans Up In White | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Nike Vomero Premium Turns Out The Lights | source_reported_claim | Sneaker News: The Nike Vomero Premium Turns Out The Lights | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

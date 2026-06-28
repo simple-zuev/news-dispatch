@@ -6,175 +6,174 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 22
-- Streams with retained signals: 5
+- Retained signals: 21
+- Streams with retained signals: 7
 - Fetch warnings: 0
+
+## ai
+
+- **Google ограничила доступ M**a к ИИ-моделям Gemini из-за высокой нагрузки на инфраструктуру**
+  - Topic: `general-monitoring`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-06-28/ai/b6a1e9ac9ccfdb9b-google---m-a----gemini.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## crypto-finance
 
-- **Coinbase and OKX try to lure in Binance’s EU users after it failed to secure a MiCA license**
-  - Topic: `regulation`
-  - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/4e519a8d52b349f5-coinbase-and-okx-try-to-lure-in-binance-s-eu-users-after-it-failed-to-se.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Polymarket hack updated to $3.1 million days after the platform promised users full refunds**
+- **Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall**
   - Topic: `market`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/e418d6eed945ce4a-polymarket-hack-updated-to-3-1-million-days-after-the-platform-promised.md`
+  - Signal path: `signals/2026-06-28/crypto-finance/6b0953a906bb326a-michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continu.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Coinbase, Circle underperform Big Tech as crypto stock slump deepens**
-  - Topic: `general-monitoring`
+- **Samson Mow says bitcoin bottom is in despite skepticism from analysts**
+  - Topic: `market`
+  - Source: `coindesk` / `specialized_media`
+  - Signal path: `signals/2026-06-28/crypto-finance/a96237353cb64246-samson-mow-says-bitcoin-bottom-is-in-despite-skepticism-from-analysts.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **EU watchdog EBA details big crypto fines as landmark laws bite**
+  - Topic: `ai-platforms`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/4c4ce5738c3db4f8-coinbase-circle-underperform-big-tech-as-crypto-stock-slump-deepens.md`
+  - Signal path: `signals/2026-06-28/crypto-finance/e8a7d164fa50ded8-eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater**
+  - Topic: `market`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-28/crypto-finance/24891853cb4c61d1-michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-bil.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Will Bitcoin price recover in July?**
+  - Topic: `market`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-06-28/crypto-finance/14cd6f83ada8d876-will-bitcoin-price-recover-in-july.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## finance
 
-- **Почему главная трагедия ЧМ-2026 случилась со сборной Ирана**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/5dd12dd385b06be5-2026.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Reuters рассказал, уйдет ли Вучич на «политическую пенсию»**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/5f887b490958ab11-reuters.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Киев оценил, сколько денег ему нужно от союзников до 2029 года**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/3496b9a5fb0e9656-2029.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Турция и Азербайджан подали заявку на включение пахлавы в список ЮНЕСКО**
+- **BIS: риски мировой экономики растут из-за ИИ, долгов и инфляции**
   - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/c55bbf7de992a472-kommersant-finance.md`
+  - Signal path: `signals/2026-06-28/finance/c3fa5807ad8b1b03-bis.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Правительство Израиля признало геноцид армян в Турции**
+- **В Финляндии раскрыли, как закрытая граница с Россией ударила по экономике**
   - Topic: `general-monitoring`
-  - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/b5b0a20b21799bfe-kommersant-finance.md`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-28/finance/afc8945d7378a224-rbc-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Дагестану и Чечне выделили 385 млн руб. на помощь пострадавшим от наводнений**
+- **Путин заявил о работе крупнейших НПЗ в России на максимальных мощностях**
   - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/53513360b640bc74-385.md`
+  - Signal path: `signals/2026-06-28/finance/1b2b901a00e61334-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **SpaceX рекордно быстро войдет в индекс NASDAQ 100**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-06-28/finance/394dc66530742fec-spacex------nasdaq-100.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## gear-style-edc
 
-- **“Bright Crimson” Animates The Nike Vomero Premium**
+- **Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases**
   - Topic: `general-monitoring`
   - Source: `sneaker-news` / `specialized_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/ae2263b31a328361-bright-crimson-animates-the-nike-vomero-premium.md`
+  - Signal path: `signals/2026-06-28/gear-style-edc/7a1ab6031b1359bb-cade-cunningham-s-nike-st-charge-nike-ja-3-animal-pack-and-this-week-s-b.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **adidas Originals and BAPE® Launch Exclusive Teamgeist Capsule for FIFA World Cup 2026**
-  - Topic: `general-monitoring`
-  - Source: `hypebeast` / `public_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/4a20d67f178bd35b-adidas-originals-and-bape-launch-exclusive-teamgeist-capsule-for-fifa-wo.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Kiko Kostadinov SS27 Distorts Materiality With \"EXTROFLEXION\"**
-  - Topic: `general-monitoring`
-  - Source: `hypebeast` / `public_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/7f800fb1bdff5f0b-kiko-kostadinov-ss27-distorts-materiality-with-extroflexion.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Mahershala Ali Goes Full Action Hero in Teaser Trailer for \"Your Mother Your Mother Your Mother\"**
+- **The Spike-Less Air Jordan 1 Low Golf Cleans Up In White**
   - Topic: `ai-platforms`
-  - Source: `hypebeast` / `public_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/e717e15a4c241f80-mahershala-ali-goes-full-action-hero-in-teaser-trailer-for-your-mother-y.md`
+  - Source: `sneaker-news` / `specialized_media`
+  - Signal path: `signals/2026-06-28/gear-style-edc/d5c75aee4d4f1865-the-spike-less-air-jordan-1-low-golf-cleans-up-in-white.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **The Nike Vomero Premium Turns Out The Lights**
+  - Topic: `general-monitoring`
+  - Source: `sneaker-news` / `specialized_media`
+  - Signal path: `signals/2026-06-28/gear-style-edc/a5b5fb509a588009-the-nike-vomero-premium-turns-out-the-lights.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+
+## moscow-city
+
+- **Первые летние свадьбы прошли на станции метро \"Маяковская\"**
+  - Topic: `general-monitoring`
+  - Source: `m24-moscow-news` / `public_media`
+  - Signal path: `signals/2026-06-28/moscow-city/a3c98a43531f78ae-m24-moscow-news.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Движение временно закрыто на ряде улиц в центре Москвы**
+  - Topic: `general-monitoring`
+  - Source: `m24-moscow-news` / `public_media`
+  - Signal path: `signals/2026-06-28/moscow-city/44fddfc2ade7c31c-m24-moscow-news.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## science-discovery
 
-- **Mountain lions changed everything in this tiny California preserve**
-  - Topic: `ai-platforms`
+- **James Webb uncovers exotic salt clouds on a mysterious pink world**
+  - Topic: `general-monitoring`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/05883dfc24132b6f-mountain-lions-changed-everything-in-this-tiny-california-preserve.md`
+  - Signal path: `signals/2026-06-28/science-discovery/6074677900f5c5e7-james-webb-uncovers-exotic-salt-clouds-on-a-mysterious-pink-world.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Yellowstone’s supervolcano may be fueled by something unexpected**
+- **Only one workout helped older adults lose fat without losing muscle**
   - Topic: `general-monitoring`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/8a5f9063269a2616-yellowstone-s-supervolcano-may-be-fueled-by-something-unexpected.md`
+  - Signal path: `signals/2026-06-28/science-discovery/fe5e42eff6a0d05c-only-one-workout-helped-older-adults-lose-fat-without-losing-muscle.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Astronomers found two rare super puff planets lighter than cotton candy**
+- **Common pesticide linked to more than double the risk of Parkinson’s disease**
   - Topic: `general-monitoring`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/7662ef3cbdaafd7c-astronomers-found-two-rare-super-puff-planets-lighter-than-cotton-candy.md`
+  - Signal path: `signals/2026-06-28/science-discovery/37ec5de2c511aae9-common-pesticide-linked-to-more-than-double-the-risk-of-parkinson-s-dise.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## tech-hardware-software
 
-- **China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers**
-  - Topic: `infrastructure`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/b1af60a9cc8130b7-china-s-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarc.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness**
+- **Lenovo says the 'RAMageddon' is the new normal, outlines survival guide — at ISC 2026 an exec said 'it will never be like it was last year'**
   - Topic: `ai-platforms`
   - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/9411cf90fb9c3f4f-ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github.md`
+  - Signal path: `signals/2026-06-28/tech-hardware-software/e9937f23f54abaff-lenovo-says-the-ramageddon-is-the-new-normal-outlines-survival-guide-at.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers**
+- **Intel's next-gen 52-core Nova Lake CPU could pull up to 474W — high-end LGA1954 motherboards may need three 8-pin power connectors to feed the monster**
   - Topic: `general-monitoring`
   - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/f00ebff95baee3a5-japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-asse.md`
+  - Signal path: `signals/2026-06-28/tech-hardware-software/c2dc358768de4435-intel-s-next-gen-52-core-nova-lake-cpu-could-pull-up-to-474w-high-end-lg.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью**
+- **AMD engineer 3D-prints Steam Machine-a-like with diagonal mobo mounting — parts include a Mini ITX motherboard, RTX 5060, and a flex ATX PSU**
   - Topic: `general-monitoring`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/ffc222e1d6fc6457-apple--spacex-----intel-14a.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения**
-  - Topic: `general-monitoring`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/f083925736d469cf-apple.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Gemini научился находить приложения в «Play Маркете» по команде в чате**
-  - Topic: `general-monitoring`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/e767a8fd2ed25ff1-gemini-----play.md`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-06-28/tech-hardware-software/fe321dde55dd7358-amd-engineer-3d-prints-steam-machine-a-like-with-diagonal-mobo-mounting.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.

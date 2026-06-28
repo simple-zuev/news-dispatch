@@ -1,5 +1,5 @@
 {
-  "total": 24,
+  "total": 25,
   "feeds": [
     {
       "id": "rbc-finance",
@@ -133,6 +133,13 @@
       "stream": "moscow-city",
       "enabled": false,
       "status": "disabled"
+    },
+    {
+      "id": "m24-moscow-news",
+      "title": "Москва 24",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
     },
     {
       "id": "dj-techtools",

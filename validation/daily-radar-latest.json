@@ -2,28 +2,38 @@
   "date": "2026-06-28",
   "generated": [
     {
+      "stream": "ai",
+      "status": "signals-only",
+      "count": 1,
+      "signals": [
+        "signals/2026-06-28/ai/b6a1e9ac9ccfdb9b-google---m-a----gemini.md"
+      ],
+      "media_count": 1,
+      "routing": "content_owned"
+    },
+    {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 3,
+      "count": 5,
       "signals": [
-        "signals/2026-06-28/crypto-finance/4e519a8d52b349f5-coinbase-and-okx-try-to-lure-in-binance-s-eu-users-after-it-failed-to-se.md",
-        "signals/2026-06-28/crypto-finance/e418d6eed945ce4a-polymarket-hack-updated-to-3-1-million-days-after-the-platform-promised.md",
-        "signals/2026-06-28/crypto-finance/4c4ce5738c3db4f8-coinbase-circle-underperform-big-tech-as-crypto-stock-slump-deepens.md"
+        "signals/2026-06-28/crypto-finance/6b0953a906bb326a-michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continu.md",
+        "signals/2026-06-28/crypto-finance/a96237353cb64246-samson-mow-says-bitcoin-bottom-is-in-despite-skepticism-from-analysts.md",
+        "signals/2026-06-28/crypto-finance/e8a7d164fa50ded8-eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite.md",
+        "signals/2026-06-28/crypto-finance/24891853cb4c61d1-michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-bil.md",
+        "signals/2026-06-28/crypto-finance/14cd6f83ada8d876-will-bitcoin-price-recover-in-july.md"
       ],
-      "media_count": 3,
+      "media_count": 4,
       "routing": "feed_owned"
     },
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 6,
+      "count": 4,
       "signals": [
-        "signals/2026-06-28/finance/5dd12dd385b06be5-2026.md",
-        "signals/2026-06-28/finance/5f887b490958ab11-reuters.md",
-        "signals/2026-06-28/finance/3496b9a5fb0e9656-2029.md",
-        "signals/2026-06-28/finance/c55bbf7de992a472-kommersant-finance.md",
-        "signals/2026-06-28/finance/b5b0a20b21799bfe-kommersant-finance.md",
-        "signals/2026-06-28/finance/53513360b640bc74-385.md"
+        "signals/2026-06-28/finance/c3fa5807ad8b1b03-bis.md",
+        "signals/2026-06-28/finance/afc8945d7378a224-rbc-finance.md",
+        "signals/2026-06-28/finance/1b2b901a00e61334-kommersant-finance.md",
+        "signals/2026-06-28/finance/394dc66530742fec-spacex------nasdaq-100.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -31,14 +41,24 @@
     {
       "stream": "gear-style-edc",
       "status": "signals-only",
-      "count": 4,
+      "count": 3,
       "signals": [
-        "signals/2026-06-28/gear-style-edc/ae2263b31a328361-bright-crimson-animates-the-nike-vomero-premium.md",
-        "signals/2026-06-28/gear-style-edc/4a20d67f178bd35b-adidas-originals-and-bape-launch-exclusive-teamgeist-capsule-for-fifa-wo.md",
-        "signals/2026-06-28/gear-style-edc/7f800fb1bdff5f0b-kiko-kostadinov-ss27-distorts-materiality-with-extroflexion.md",
-        "signals/2026-06-28/gear-style-edc/e717e15a4c241f80-mahershala-ali-goes-full-action-hero-in-teaser-trailer-for-your-mother-y.md"
+        "signals/2026-06-28/gear-style-edc/7a1ab6031b1359bb-cade-cunningham-s-nike-st-charge-nike-ja-3-animal-pack-and-this-week-s-b.md",
+        "signals/2026-06-28/gear-style-edc/d5c75aee4d4f1865-the-spike-less-air-jordan-1-low-golf-cleans-up-in-white.md",
+        "signals/2026-06-28/gear-style-edc/a5b5fb509a588009-the-nike-vomero-premium-turns-out-the-lights.md"
       ],
-      "media_count": 4,
+      "media_count": 3,
+      "routing": "feed_owned"
+    },
+    {
+      "stream": "moscow-city",
+      "status": "signals-only",
+      "count": 2,
+      "signals": [
+        "signals/2026-06-28/moscow-city/a3c98a43531f78ae-m24-moscow-news.md",
+        "signals/2026-06-28/moscow-city/44fddfc2ade7c31c-m24-moscow-news.md"
+      ],
+      "media_count": 2,
       "routing": "feed_owned"
     },
     {
@@ -46,9 +66,9 @@
       "status": "signals-only",
       "count": 3,
       "signals": [
-        "signals/2026-06-28/science-discovery/05883dfc24132b6f-mountain-lions-changed-everything-in-this-tiny-california-preserve.md",
-        "signals/2026-06-28/science-discovery/8a5f9063269a2616-yellowstone-s-supervolcano-may-be-fueled-by-something-unexpected.md",
-        "signals/2026-06-28/science-discovery/7662ef3cbdaafd7c-astronomers-found-two-rare-super-puff-planets-lighter-than-cotton-candy.md"
+        "signals/2026-06-28/science-discovery/6074677900f5c5e7-james-webb-uncovers-exotic-salt-clouds-on-a-mysterious-pink-world.md",
+        "signals/2026-06-28/science-discovery/fe5e42eff6a0d05c-only-one-workout-helped-older-adults-lose-fat-without-losing-muscle.md",
+        "signals/2026-06-28/science-discovery/37ec5de2c511aae9-common-pesticide-linked-to-more-than-double-the-risk-of-parkinson-s-dise.md"
       ],
       "media_count": 3,
       "routing": "feed_owned"
@@ -56,28 +76,20 @@
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 6,
+      "count": 3,
       "signals": [
-        "signals/2026-06-28/tech-hardware-software/b1af60a9cc8130b7-china-s-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarc.md",
-        "signals/2026-06-28/tech-hardware-software/9411cf90fb9c3f4f-ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github.md",
-        "signals/2026-06-28/tech-hardware-software/f00ebff95baee3a5-japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-asse.md",
-        "signals/2026-06-28/tech-hardware-software/ffc222e1d6fc6457-apple--spacex-----intel-14a.md",
-        "signals/2026-06-28/tech-hardware-software/f083925736d469cf-apple.md",
-        "signals/2026-06-28/tech-hardware-software/e767a8fd2ed25ff1-gemini-----play.md"
+        "signals/2026-06-28/tech-hardware-software/e9937f23f54abaff-lenovo-says-the-ramageddon-is-the-new-normal-outlines-survival-guide-at.md",
+        "signals/2026-06-28/tech-hardware-software/c2dc358768de4435-intel-s-next-gen-52-core-nova-lake-cpu-could-pull-up-to-474w-high-end-lg.md",
+        "signals/2026-06-28/tech-hardware-software/fe321dde55dd7358-amd-engineer-3d-prints-steam-machine-a-like-with-diagonal-mobo-mounting.md"
       ],
-      "media_count": 4,
+      "media_count": 3,
       "routing": "feed_owned"
     }
   ],
   "fetch_errors": [],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-28/crypto-finance/3bf54cd48fae3e24-securitize-expects-to-raise-400m-ahead-of-public-debut.md",
-      "reason": "deal_or_discount",
-      "stream": "crypto-finance"
-    },
-    {
-      "path": "signals/2026-06-28/crypto-finance/7cc799dabd2b4997-binance-posts-over-400m-in-weekly-net-outflows-as-mica-deadline-nears.md",
+      "path": "signals/2026-06-28/crypto-finance/50f531f9bbfd5ac1-sbi-s-289-million-bitbank-deal-is-symptomatic-of-japan-s-crypto-consolid.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     }

@@ -38,13 +38,13 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.sciencedaily.com/releases/2026/06/260620100424.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260622014317.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260626124659.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623014009.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260622014305.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260621111113.htm"
 source_titles:
-  - "ScienceDaily: Mountain lions changed everything in this tiny California preserve"
-  - "ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected"
-  - "ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy"
+  - "ScienceDaily: James Webb uncovers exotic salt clouds on a mysterious pink world"
+  - "ScienceDaily: Only one workout helped older adults lose fat without losing muscle"
+  - "ScienceDaily: Common pesticide linked to more than double the risk of Parkinson’s disease"
 source_types:
   - "Научное медиа"
   - "Научное медиа"
@@ -54,13 +54,13 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.sciencedaily.com/releases/2026/06/260620100424.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260622014317.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260626124659.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623014009.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260622014305.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260621111113.htm"
 media_titles:
-  - "ScienceDaily: Mountain lions changed everything in this tiny California preserve"
-  - "ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected"
-  - "ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy"
+  - "ScienceDaily: James Webb uncovers exotic salt clouds on a mysterious pink world"
+  - "ScienceDaily: Only one workout helped older adults lose fat without losing muscle"
+  - "ScienceDaily: Common pesticide linked to more than double the risk of Parkinson’s disease"
 media_types:
   - "Научное медиа"
   - "Научное медиа"
@@ -84,15 +84,15 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Mountain lions changed everything in this tiny California preserve — сообщение источника «ScienceDaily: Mountain lions changed everything in this tiny California preserve»; требует проверки перед выводами.
-2. Yellowstone’s supervolcano may be fueled by something unexpected — сообщение источника «ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected»; требует проверки перед выводами.
-3. Astronomers found two rare super puff planets lighter than cotton candy — сообщение источника «ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy»; требует проверки перед выводами.
+1. James Webb uncovers exotic salt clouds on a mysterious pink world — сообщение источника «ScienceDaily: James Webb uncovers exotic salt clouds on a mysterious pink world»; требует проверки перед выводами.
+2. Only one workout helped older adults lose fat without losing muscle — сообщение источника «ScienceDaily: Only one workout helped older adults lose fat without losing muscle»; требует проверки перед выводами.
+3. Common pesticide linked to more than double the risk of Parkinson’s disease — сообщение источника «ScienceDaily: Common pesticide linked to more than double the risk of Parkinson’s disease»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Mountain lions changed everything in this tiny California preserve. Источник: ScienceDaily: Mountain lions changed everything in this tiny California preserve. URL: https://www.sciencedaily.com/releases/2026/06/260620100424.htm
-- Yellowstone’s supervolcano may be fueled by something unexpected. Источник: ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected. URL: https://www.sciencedaily.com/releases/2026/06/260622014317.htm
-- Astronomers found two rare super puff planets lighter than cotton candy. Источник: ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy. URL: https://www.sciencedaily.com/releases/2026/06/260626124659.htm
+- James Webb uncovers exotic salt clouds on a mysterious pink world. Источник: ScienceDaily: James Webb uncovers exotic salt clouds on a mysterious pink world. URL: https://www.sciencedaily.com/releases/2026/06/260623014009.htm
+- Only one workout helped older adults lose fat without losing muscle. Источник: ScienceDaily: Only one workout helped older adults lose fat without losing muscle. URL: https://www.sciencedaily.com/releases/2026/06/260622014305.htm
+- Common pesticide linked to more than double the risk of Parkinson’s disease. Источник: ScienceDaily: Common pesticide linked to more than double the risk of Parkinson’s disease. URL: https://www.sciencedaily.com/releases/2026/06/260621111113.htm
 
 ## Почему это важно
 
@@ -110,9 +110,9 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Mountain lions changed everything in this tiny California preserve | source_reported_claim | ScienceDaily: Mountain lions changed everything in this tiny California preserve | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Yellowstone’s supervolcano may be fueled by something unexpected | source_reported_claim | ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Astronomers found two rare super puff planets lighter than cotton candy | source_reported_claim | ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| James Webb uncovers exotic salt clouds on a mysterious pink world | source_reported_claim | ScienceDaily: James Webb uncovers exotic salt clouds on a mysterious pink world | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Only one workout helped older adults lose fat without losing muscle | source_reported_claim | ScienceDaily: Only one workout helped older adults lose fat without losing muscle | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Common pesticide linked to more than double the risk of Parkinson’s disease | source_reported_claim | ScienceDaily: Common pesticide linked to more than double the risk of Parkinson’s disease | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
