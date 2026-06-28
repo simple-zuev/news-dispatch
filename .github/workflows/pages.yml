@@ -53,6 +53,11 @@ jobs:
       - name: Build radar pages
         run: python tools/build_radar_pages.py
 
+      - name: Build radar ranking report
+        run: |
+          python tools/build_daily_radar_ranking_report.py --timeout 8 --max-rows 200
+          cp validation/daily-radar-ranking-latest.json site/daily-radar-ranking-latest.json
+
       - name: Enhance static site
         run: python tools/enhance_site.py
 
