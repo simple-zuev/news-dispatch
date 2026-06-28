@@ -109,12 +109,23 @@ def fetch_page(url: str, timeout: float) -> str:
 
 
 def keyword_hits(stream: str, text: str) -> list[str]:
-    haystack = f" {normalize_text(text)} "
+    normalized = normalize_text(text)
+    haystack = f" {normalized} "
+    tokens = normalized.split()
     hits = []
     for word in stream_keywords().get(stream, []):
-        phrase = normalize_text(str(word))
-        if phrase and f" {phrase} " in haystack:
-            hits.append(str(word))
+        raw = str(word)
+        phrase = normalize_text(raw)
+        if not phrase:
+            continue
+        if " " in phrase:
+            matched = f" {phrase} " in haystack
+        elif len(phrase) >= 4:
+            matched = any(token == phrase or token.startswith(phrase) for token in tokens)
+        else:
+            matched = f" {phrase} " in haystack
+        if matched:
+            hits.append(raw)
     return hits
 
 
