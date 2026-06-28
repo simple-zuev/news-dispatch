@@ -77,7 +77,7 @@ def test_render_includes_analytical_card_structure() -> None:
 def test_card_stays_non_directive() -> None:
     html = build_today_page.render(sample_report())
     assert "не прогнозом и не инструкцией к действию" in html
-    assert "не рекомендация" in html
+    assert "операционная рекомендация" in html
     assert "Требуется сверка первоисточника" in html
 
 
