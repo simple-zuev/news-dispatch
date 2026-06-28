@@ -5,24 +5,24 @@
       "title": "Москва 24",
       "url": "https://www.m24.ru/rss.xml",
       "stream": "moscow-city",
-      "status": "candidate",
-      "rationale": "City-focused Moscow news outlet; must pass probe before enabling."
+      "status": "promoted-to-live-source",
+      "rationale": "City-focused Moscow outlet. curl probe returned valid RSS with 100 items; enabled with strict Moscow include/exclude rules."
     },
     {
       "id": "mskagency-candidate",
       "title": "Агентство Москва",
       "url": "https://www.mskagency.ru/rss",
       "stream": "moscow-city",
-      "status": "candidate",
-      "rationale": "Moscow city news agency candidate; must pass probe before enabling."
+      "status": "rejected-404",
+      "rationale": "curl probe returned HTTP 404 for the configured RSS URL; keep disabled until a valid endpoint is found."
     },
     {
       "id": "interfax-moscow-candidate",
       "title": "Интерфакс — Москва",
       "url": "https://www.interfax.ru/rss.asp",
       "stream": "moscow-city",
-      "status": "candidate",
-      "rationale": "General Interfax RSS candidate; must pass probe and source rules before enabling."
+      "status": "held-too-broad",
+      "rationale": "curl probe returned valid RSS, but the feed is too broad for moscow-city without additional section-level filtering."
     }
   ]
 }

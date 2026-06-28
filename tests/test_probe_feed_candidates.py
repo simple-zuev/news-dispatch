@@ -41,7 +41,10 @@ def test_load_moscow_candidates() -> None:
     rows = probe_feed_candidates.load_candidates(ROOT / "sources" / "feed-candidates.json", "moscow-city")
     assert len(rows) >= 2
     assert all(row["stream"] == "moscow-city" for row in rows)
-    assert all(row["status"] == "candidate" for row in rows)
+    statuses = {row["id"]: row["status"] for row in rows}
+    assert statuses["m24-news-candidate"] == "promoted-to-live-source"
+    assert statuses["mskagency-candidate"] == "rejected-404"
+    assert statuses["interfax-moscow-candidate"] == "held-too-broad"
 
 
 def main() -> int:

@@ -14,10 +14,7 @@ EXEMPT_STREAMS = {
     "general",  # Cross-domain special stream, not a primary source category.
 }
 
-TEMPORARILY_PAUSED_STREAMS = {
-    # No stable active Moscow feed is configured yet. The public page must show a diagnostic empty state.
-    "moscow-city",
-}
+TEMPORARILY_PAUSED_STREAMS: set[str] = set()
 
 
 def load_json(path: Path) -> dict:
