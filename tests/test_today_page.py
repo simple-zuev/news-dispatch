@@ -27,9 +27,11 @@ def sample_report() -> dict:
             {
                 "selected": True,
                 "source_rule_status": "accepted_by_source_rules",
+                "source_class": "regulator",
+                "source_type": "official",
                 "configured_stream": "crypto-finance",
                 "routed_stream": "crypto-finance",
-                "feed_title": "Example Source",
+                "feed_title": "Example Regulator",
                 "title": "Central bank updates digital asset rules",
                 "url": "https://example.com/item",
                 "final_score": 1.25,
@@ -58,19 +60,31 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "не инвестиционная" in html
 
 
-def test_render_includes_selected_card_evidence() -> None:
+def test_render_includes_analytical_card_structure() -> None:
     html = build_today_page.render(sample_report())
     assert "Central bank updates digital asset rules" in html
-    assert "Example Source" in html
+    assert "Example Regulator" in html
     assert "score 1.25" in html
     assert "relevance 0.82" in html
-    assert "Ключевые совпадения" in html
-    assert "нужна русская нормализация" in html
+    assert "Тезис:" in html
+    assert "Аргумент:" in html
+    assert "Следствие/риск:" in html
+    assert "Уровень подтверждения:" in html
+    assert "Что отслеживать дальше:" in html
+    assert "Неопределённость:" in html
+
+
+def test_card_stays_non_directive() -> None:
+    html = build_today_page.render(sample_report())
+    assert "не прогнозом и не инструкцией к действию" in html
+    assert "операционная рекомендация" in html
+    assert "Требуется сверка первоисточника" in html
 
 
 def main() -> int:
     test_render_includes_required_links_and_boundary()
-    test_render_includes_selected_card_evidence()
+    test_render_includes_analytical_card_structure()
+    test_card_stays_non_directive()
     print("today page tests passed")
     return 0
 
