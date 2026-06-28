@@ -65,6 +65,9 @@ jobs:
       - name: Apply editorial home layout
         run: python tools/apply_editorial_home_layout.py
 
+      - name: Apply empty states
+        run: python tools/apply_empty_states.py
+
       - name: Validate reader output
         run: python tools/validate_reader_output.py
 
