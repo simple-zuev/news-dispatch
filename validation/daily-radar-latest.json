@@ -4,16 +4,13 @@
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 6,
+      "count": 3,
       "signals": [
-        "signals/2026-06-28/crypto-finance/74b297bf9a011fb4-grayscale-s-pandl-hopes-strategy-sells-3b-in-bitcoin-to-restore-confiden.md",
-        "signals/2026-06-28/crypto-finance/c0c8fa3532ec685e-strategy-s-valuation-has-fallen-below-the-value-of-its-bitcoin-holdings.md",
-        "signals/2026-06-28/crypto-finance/a3876956df78ee4f-why-a-selloff-in-gold-and-silver-is-dragging-bitcoin-down.md",
-        "signals/2026-06-28/crypto-finance/885b3561210bf2c3-secondfi-maps-recovery-path-after-2-4-million-cardano-wallet-exploit-aim.md",
-        "signals/2026-06-28/crypto-finance/ee7841fec2b0766b-bitcoin-unspent-transaction-outputs-signal-capitulation-underway-analyst.md",
-        "signals/2026-06-28/crypto-finance/d4a4943e5a9dfffc-base-post-mortem-reveals-sequencer-bug-behind-back-to-back-outages.md"
+        "signals/2026-06-28/crypto-finance/4e519a8d52b349f5-coinbase-and-okx-try-to-lure-in-binance-s-eu-users-after-it-failed-to-se.md",
+        "signals/2026-06-28/crypto-finance/e418d6eed945ce4a-polymarket-hack-updated-to-3-1-million-days-after-the-platform-promised.md",
+        "signals/2026-06-28/crypto-finance/4c4ce5738c3db4f8-coinbase-circle-underperform-big-tech-as-crypto-stock-slump-deepens.md"
       ],
-      "media_count": 4,
+      "media_count": 3,
       "routing": "feed_owned"
     },
     {
@@ -21,12 +18,12 @@
       "status": "signals-only",
       "count": 6,
       "signals": [
-        "signals/2026-06-28/finance/6cd4f9ddcd4cb0c7-usaid.md",
-        "signals/2026-06-28/finance/c0d89902c4455c9e-rbc-finance.md",
-        "signals/2026-06-28/finance/6cb0d027c629b37e-rbc-finance.md",
-        "signals/2026-06-28/finance/3833bc7faa946ee7-kommersant-finance.md",
-        "signals/2026-06-28/finance/241247af0ecc0ece-1000.md",
-        "signals/2026-06-28/finance/643ff6511ddc1c71-kommersant-finance.md"
+        "signals/2026-06-28/finance/5dd12dd385b06be5-2026.md",
+        "signals/2026-06-28/finance/5f887b490958ab11-reuters.md",
+        "signals/2026-06-28/finance/3496b9a5fb0e9656-2029.md",
+        "signals/2026-06-28/finance/c55bbf7de992a472-kommersant-finance.md",
+        "signals/2026-06-28/finance/b5b0a20b21799bfe-kommersant-finance.md",
+        "signals/2026-06-28/finance/53513360b640bc74-385.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -34,13 +31,12 @@
     {
       "stream": "gear-style-edc",
       "status": "signals-only",
-      "count": 5,
+      "count": 4,
       "signals": [
-        "signals/2026-06-28/gear-style-edc/56ddc223a76cc03c-the-air-jordan-1-low-golf-blows-off-steam.md",
-        "signals/2026-06-28/gear-style-edc/4fe437a4e681c6b6-textured-mesh-wraps-the-nike-air-max-90-light-smoke-grey.md",
-        "signals/2026-06-28/gear-style-edc/93b69093ae99a5d8-nike-basketball-flips-the-christmas-script-with-the-kobe-6-protro-coals.md",
-        "signals/2026-06-28/gear-style-edc/57b1928b9c684e1e-the-jordan-spizike-low-heads-to-unc-for-a-round-of-golf.md",
-        "signals/2026-06-28/gear-style-edc/48352f28db9ead61-soshiotsuki-ss27-subverts-tailoring-with-dal-inspired-melting-silhouette.md"
+        "signals/2026-06-28/gear-style-edc/ae2263b31a328361-bright-crimson-animates-the-nike-vomero-premium.md",
+        "signals/2026-06-28/gear-style-edc/4a20d67f178bd35b-adidas-originals-and-bape-launch-exclusive-teamgeist-capsule-for-fifa-wo.md",
+        "signals/2026-06-28/gear-style-edc/7f800fb1bdff5f0b-kiko-kostadinov-ss27-distorts-materiality-with-extroflexion.md",
+        "signals/2026-06-28/gear-style-edc/e717e15a4c241f80-mahershala-ali-goes-full-action-hero-in-teaser-trailer-for-your-mother-y.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -48,14 +44,13 @@
     {
       "stream": "science-discovery",
       "status": "signals-only",
-      "count": 4,
+      "count": 3,
       "signals": [
-        "signals/2026-06-28/science-discovery/3878a0c04b5425ef-hawaii-is-turning-ocean-plastic-and-fishing-nets-into-roads.md",
-        "signals/2026-06-28/science-discovery/5fd282184062040e-nplus1.md",
-        "signals/2026-06-28/science-discovery/b30d0d601f683762-new-vitamin-b12-therapy-shows-promise-against-deadly-brain-cancer.md",
-        "signals/2026-06-28/science-discovery/78a73b647bce16dc-massive-study-links-teen-marijuana-use-to-double-the-risk-of-serious-men.md"
+        "signals/2026-06-28/science-discovery/05883dfc24132b6f-mountain-lions-changed-everything-in-this-tiny-california-preserve.md",
+        "signals/2026-06-28/science-discovery/8a5f9063269a2616-yellowstone-s-supervolcano-may-be-fueled-by-something-unexpected.md",
+        "signals/2026-06-28/science-discovery/7662ef3cbdaafd7c-astronomers-found-two-rare-super-puff-planets-lighter-than-cotton-candy.md"
       ],
-      "media_count": 4,
+      "media_count": 3,
       "routing": "feed_owned"
     },
     {
@@ -63,12 +58,12 @@
       "status": "signals-only",
       "count": 6,
       "signals": [
-        "signals/2026-06-28/tech-hardware-software/1be5ccc86d7ccabf-anthropic-fable-5.md",
-        "signals/2026-06-28/tech-hardware-software/bae4778e34a0b2e6-3dnews.md",
-        "signals/2026-06-28/tech-hardware-software/7ef0bd95b4f0a082-100.md",
-        "signals/2026-06-28/tech-hardware-software/03936e6b5e8c734d-ram-crisis-provokes-enthusiast-to-try-windows-11-on-ddr1-era-hardware-ot.md",
-        "signals/2026-06-28/tech-hardware-software/597505d762f31fd3-apple-reportedly-lobbies-uncle-sam-for-access-to-chinese-memory-chips-te.md",
-        "signals/2026-06-28/tech-hardware-software/cccc3bfe6395dc87-steam-machine-scalping-hits-3-000-on-ebay-as-sellers-list-preorder-reser.md"
+        "signals/2026-06-28/tech-hardware-software/b1af60a9cc8130b7-china-s-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarc.md",
+        "signals/2026-06-28/tech-hardware-software/9411cf90fb9c3f4f-ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github.md",
+        "signals/2026-06-28/tech-hardware-software/f00ebff95baee3a5-japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-asse.md",
+        "signals/2026-06-28/tech-hardware-software/ffc222e1d6fc6457-apple--spacex-----intel-14a.md",
+        "signals/2026-06-28/tech-hardware-software/f083925736d469cf-apple.md",
+        "signals/2026-06-28/tech-hardware-software/e767a8fd2ed25ff1-gemini-----play.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -77,14 +72,14 @@
   "fetch_errors": [],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-28/crypto-finance/348f785ba740905f-bitcoin-falls-below-60-000-on-track-for-a-rare-back-to-back-quarterly-lo.md",
+      "path": "signals/2026-06-28/crypto-finance/3bf54cd48fae3e24-securitize-expects-to-raise-400m-ahead-of-public-debut.md",
       "reason": "deal_or_discount",
       "stream": "crypto-finance"
     },
     {
-      "path": "signals/2026-06-28/gear-style-edc/70db7e743be76d76-dc-studios-supergirl-secures-18-million-usd-on-domestic-opening-day.md",
+      "path": "signals/2026-06-28/crypto-finance/7cc799dabd2b4997-binance-posts-over-400m-in-weekly-net-outflows-as-mica-deadline-nears.md",
       "reason": "deal_or_discount",
-      "stream": "gear-style-edc"
+      "stream": "crypto-finance"
     }
   ]
 }

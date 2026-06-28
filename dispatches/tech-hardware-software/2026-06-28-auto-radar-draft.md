@@ -39,19 +39,19 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://3dnews.ru/1144243"
-  - "https://3dnews.ru/1144247"
-  - "https://3dnews.ru/1144246"
-  - "https://www.tomshardware.com/software/windows/ram-crisis-provokes-enthusiast-to-try-windows-11-on-ddr1-era-hardware-other-key-vintage-components-included-the-core-2-q6600-and-ati-radeon-hd-4650-agp"
-  - "https://www.tomshardware.com/tech-industry/apple-reportedly-lobbies-uncle-sam-for-access-to-chinese-memory-chips-tech-giant-allegedly-wants-to-buy-from-blacklisted-cxmt"
-  - "https://www.tomshardware.com/video-games/console-gaming/steam-machine-scalping-hits-usd3-000-on-ebay-as-sellers-list-preorder-reservations-scalpers-already-flipping-queues-for-2x-the-msrp-of-the-2tb-model"
+  - "https://www.tomshardware.com/pc-components/cpus/chinas-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarch-architecture-40w-chip-with-ddr4-ecc-and-32-pcie-lanes-targets-cheap-smb-file-database-and-web-servers"
+  - "https://www.tomshardware.com/tech-industry/cyber-security/ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github-repositories-mozillas-0din-team-shows-how-claude-code-can-be-exploited-by-its-own-helpfulness"
+  - "https://www.tomshardware.com/desktops/pc-building/japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-assemble-and-play-with-tiny-motherboards-cases-and-cpus-are-coming-after-tarlin-inks-collab-with-the-big-four-pc-parts-makers"
+  - "https://3dnews.ru/1144245"
+  - "https://3dnews.ru/1144242"
+  - "https://3dnews.ru/1144235"
 source_titles:
-  - "3DNews: Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе"
-  - "3DNews: Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ"
-  - "3DNews: Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами"
-  - "Tom's Hardware: RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP"
-  - "Tom's Hardware: Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT"
-  - "Tom's Hardware: Steam Machine scalping hits $3,000 on eBay as sellers list preorder reservations — scalpers already flipping queues for 2X the MSRP of the 2TB model"
+  - "Tom's Hardware: China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers"
+  - "Tom's Hardware: AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness"
+  - "Tom's Hardware: Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers"
+  - "3DNews: Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью"
+  - "3DNews: Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения"
+  - "3DNews: Gemini научился находить приложения в «Play Маркете» по команде в чате"
 source_types:
   - "Технологическое медиа"
   - "Технологическое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://3dnews.ru/1144243"
-  - "https://3dnews.ru/1144247"
-  - "https://3dnews.ru/1144246"
-  - "https://www.tomshardware.com/software/windows/ram-crisis-provokes-enthusiast-to-try-windows-11-on-ddr1-era-hardware-other-key-vintage-components-included-the-core-2-q6600-and-ati-radeon-hd-4650-agp"
+  - "https://www.tomshardware.com/pc-components/cpus/chinas-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarch-architecture-40w-chip-with-ddr4-ecc-and-32-pcie-lanes-targets-cheap-smb-file-database-and-web-servers"
+  - "https://www.tomshardware.com/tech-industry/cyber-security/ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github-repositories-mozillas-0din-team-shows-how-claude-code-can-be-exploited-by-its-own-helpfulness"
+  - "https://www.tomshardware.com/desktops/pc-building/japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-assemble-and-play-with-tiny-motherboards-cases-and-cpus-are-coming-after-tarlin-inks-collab-with-the-big-four-pc-parts-makers"
+  - "https://3dnews.ru/1144245"
 media_titles:
-  - "3DNews: Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе"
-  - "3DNews: Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ"
-  - "3DNews: Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами"
-  - "Tom's Hardware: RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP"
+  - "Tom's Hardware: China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers"
+  - "Tom's Hardware: AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness"
+  - "Tom's Hardware: Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers"
+  - "3DNews: Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью"
 media_types:
   - "Технологическое медиа"
   - "Технологическое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе — сообщение источника «3DNews: Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе»; требует проверки перед выводами.
-2. Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ — сообщение источника «3DNews: Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ»; требует проверки перед выводами.
-3. Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами — сообщение источника «3DNews: Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами»; требует проверки перед выводами.
-4. RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP — сообщение источника «Tom's Hardware: RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP»; требует проверки перед выводами.
-5. Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT — сообщение источника «Tom's Hardware: Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT»; требует проверки перед выводами.
+1. China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers — сообщение источника «Tom's Hardware: China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers»; требует проверки перед выводами.
+2. AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness — сообщение источника «Tom's Hardware: AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness»; требует проверки перед выводами.
+3. Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers — сообщение источника «Tom's Hardware: Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers»; требует проверки перед выводами.
+4. Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью — сообщение источника «3DNews: Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью»; требует проверки перед выводами.
+5. Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения — сообщение источника «3DNews: Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе. Источник: 3DNews: Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе. URL: https://3dnews.ru/1144243
-- Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ. Источник: 3DNews: Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ. URL: https://3dnews.ru/1144247
-- Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами. Источник: 3DNews: Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами. URL: https://3dnews.ru/1144246
-- RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP. Источник: Tom's Hardware: RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP. URL: https://www.tomshardware.com/software/windows/ram-crisis-provokes-enthusiast-to-try-windows-11-on-ddr1-era-hardware-other-key-vintage-components-included-the-core-2-q6600-and-ati-radeon-hd-4650-agp
-- Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT. Источник: Tom's Hardware: Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT. URL: https://www.tomshardware.com/tech-industry/apple-reportedly-lobbies-uncle-sam-for-access-to-chinese-memory-chips-tech-giant-allegedly-wants-to-buy-from-blacklisted-cxmt
-- Steam Machine scalping hits $3,000 on eBay as sellers list preorder reservations — scalpers already flipping queues for 2X the MSRP of the 2TB model. Источник: Tom's Hardware: Steam Machine scalping hits $3,000 on eBay as sellers list preorder reservations — scalpers already flipping queues for 2X the MSRP of the 2TB model. URL: https://www.tomshardware.com/video-games/console-gaming/steam-machine-scalping-hits-usd3-000-on-ebay-as-sellers-list-preorder-reservations-scalpers-already-flipping-queues-for-2x-the-msrp-of-the-2tb-model
+- China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers. Источник: Tom's Hardware: China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers. URL: https://www.tomshardware.com/pc-components/cpus/chinas-loongson-launches-homegrown-16-core-server-cpu-built-on-loongarch-architecture-40w-chip-with-ddr4-ecc-and-32-pcie-lanes-targets-cheap-smb-file-database-and-web-servers
+- AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness. Источник: Tom's Hardware: AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness. URL: https://www.tomshardware.com/tech-industry/cyber-security/ai-coding-agents-can-be-tricked-into-installing-malware-via-clean-github-repositories-mozillas-0din-team-shows-how-claude-code-can-be-exploited-by-its-own-helpfulness
+- Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers. Источник: Tom's Hardware: Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers. URL: https://www.tomshardware.com/desktops/pc-building/japanese-firm-launches-hyper-realistic-capsule-toy-pc-parts-you-can-assemble-and-play-with-tiny-motherboards-cases-and-cpus-are-coming-after-tarlin-inks-collab-with-the-big-four-pc-parts-makers
+- Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью. Источник: 3DNews: Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью. URL: https://3dnews.ru/1144245
+- Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения. Источник: 3DNews: Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения. URL: https://3dnews.ru/1144242
+- Gemini научился находить приложения в «Play Маркете» по команде в чате. Источник: 3DNews: Gemini научился находить приложения в «Play Маркете» по команде в чате. URL: https://3dnews.ru/1144235
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе | source_reported_claim | 3DNews: Ограничения на доступ к ИИ-модели Anthropic Fable 5 будут сняты на следующей неделе | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ | source_reported_claim | 3DNews: Китайский стартап готовится запустить в серию лазерный уничтожитель комаров с ИИ | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами | source_reported_claim | 3DNews: Дональд Трамп пригрозил 100-процентными пошлинами тем странам, которые будут облагать цифровые услуги американских компаний налогами | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP | source_reported_claim | Tom's Hardware: RAM crisis provokes enthusiast to try Windows 11 on DDR1-era hardware — other key vintage components included the Core 2 Q6600 and ATI Radeon HD 4650 AGP | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT | source_reported_claim | Tom's Hardware: Apple reportedly lobbies Uncle Sam for access to Chinese memory chips — tech giant allegedly wants to buy from blacklisted CXMT | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Steam Machine scalping hits $3,000 on eBay as sellers list preorder reservations — scalpers already flipping queues for 2X the MSRP of the 2TB model | source_reported_claim | Tom's Hardware: Steam Machine scalping hits $3,000 on eBay as sellers list preorder reservations — scalpers already flipping queues for 2X the MSRP of the 2TB model | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers | source_reported_claim | Tom's Hardware: China’s Loongson launches homegrown 16-core server CPU built on LoongArch architecture — 40W chip with DDR4 ECC and 32 PCIe lanes targets cheap SMB file, database, and web servers | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness | source_reported_claim | Tom's Hardware: AI coding agents can be tricked into installing malware via 'clean' GitHub repositories — Mozilla's 0din team shows how Claude Code can be exploited by its own helpfulness | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers | source_reported_claim | Tom's Hardware: Japanese firm launches hyper-realistic capsule toy PC parts ‘you can assemble and play with’ — tiny motherboards, cases, and CPUs are coming after Tarlin inks collab with the ‘big four’ PC parts makers | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью | source_reported_claim | 3DNews: Apple и SpaceX получат возможность протестировать технологию Intel 14A этой осенью | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения | source_reported_claim | 3DNews: Акции компаний технологического сектора в минувшую пятницу снижались в цене по всему миру, но Apple шла против течения | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Gemini научился находить приложения в «Play Маркете» по команде в чате | source_reported_claim | 3DNews: Gemini научился находить приложения в «Play Маркете» по команде в чате | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

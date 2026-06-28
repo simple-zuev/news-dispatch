@@ -25,7 +25,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Наука и открытия»: 4 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Наука и открытия»: 3 публичных сигналов для редакционной проверки."
 tags:
   - "science-discovery"
   - "research-evidence"
@@ -38,17 +38,14 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.sciencedaily.com/releases/2026/06/260625014830.htm"
-  - "https://nplus1.ru/news/2026/06/28/too-good-to-be-true"
-  - "https://www.sciencedaily.com/releases/2026/06/260622091518.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260622091515.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260620100424.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260622014317.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260626124659.htm"
 source_titles:
-  - "ScienceDaily: Hawaii is turning ocean plastic and fishing nets into roads"
-  - "N+1: Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала"
-  - "ScienceDaily: New vitamin B12 therapy shows promise against deadly brain cancer"
-  - "ScienceDaily: Massive study links teen marijuana use to double the risk of serious mental illness"
+  - "ScienceDaily: Mountain lions changed everything in this tiny California preserve"
+  - "ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected"
+  - "ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy"
 source_types:
-  - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
@@ -56,24 +53,19 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.sciencedaily.com/releases/2026/06/260625014830.htm"
-  - "https://nplus1.ru/news/2026/06/28/too-good-to-be-true"
-  - "https://www.sciencedaily.com/releases/2026/06/260622091518.htm"
-  - "https://www.sciencedaily.com/releases/2026/06/260622091515.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260620100424.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260622014317.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260626124659.htm"
 media_titles:
-  - "ScienceDaily: Hawaii is turning ocean plastic and fishing nets into roads"
-  - "N+1: Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала"
-  - "ScienceDaily: New vitamin B12 therapy shows promise against deadly brain cancer"
-  - "ScienceDaily: Massive study links teen marijuana use to double the risk of serious mental illness"
+  - "ScienceDaily: Mountain lions changed everything in this tiny California preserve"
+  - "ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected"
+  - "ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy"
 media_types:
   - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
-  - "Научное медиа"
 media_notes:
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -92,17 +84,15 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Hawaii is turning ocean plastic and fishing nets into roads — сообщение источника «ScienceDaily: Hawaii is turning ocean plastic and fishing nets into roads»; требует проверки перед выводами.
-2. Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала — сообщение источника «N+1: Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала»; требует проверки перед выводами.
-3. New vitamin B12 therapy shows promise against deadly brain cancer — сообщение источника «ScienceDaily: New vitamin B12 therapy shows promise against deadly brain cancer»; требует проверки перед выводами.
-4. Massive study links teen marijuana use to double the risk of serious mental illness — сообщение источника «ScienceDaily: Massive study links teen marijuana use to double the risk of serious mental illness»; требует проверки перед выводами.
+1. Mountain lions changed everything in this tiny California preserve — сообщение источника «ScienceDaily: Mountain lions changed everything in this tiny California preserve»; требует проверки перед выводами.
+2. Yellowstone’s supervolcano may be fueled by something unexpected — сообщение источника «ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected»; требует проверки перед выводами.
+3. Astronomers found two rare super puff planets lighter than cotton candy — сообщение источника «ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Hawaii is turning ocean plastic and fishing nets into roads. Источник: ScienceDaily: Hawaii is turning ocean plastic and fishing nets into roads. URL: https://www.sciencedaily.com/releases/2026/06/260625014830.htm
-- Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала. Источник: N+1: Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала. URL: https://nplus1.ru/news/2026/06/28/too-good-to-be-true
-- New vitamin B12 therapy shows promise against deadly brain cancer. Источник: ScienceDaily: New vitamin B12 therapy shows promise against deadly brain cancer. URL: https://www.sciencedaily.com/releases/2026/06/260622091518.htm
-- Massive study links teen marijuana use to double the risk of serious mental illness. Источник: ScienceDaily: Massive study links teen marijuana use to double the risk of serious mental illness. URL: https://www.sciencedaily.com/releases/2026/06/260622091515.htm
+- Mountain lions changed everything in this tiny California preserve. Источник: ScienceDaily: Mountain lions changed everything in this tiny California preserve. URL: https://www.sciencedaily.com/releases/2026/06/260620100424.htm
+- Yellowstone’s supervolcano may be fueled by something unexpected. Источник: ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected. URL: https://www.sciencedaily.com/releases/2026/06/260622014317.htm
+- Astronomers found two rare super puff planets lighter than cotton candy. Источник: ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy. URL: https://www.sciencedaily.com/releases/2026/06/260626124659.htm
 
 ## Почему это важно
 
@@ -112,7 +102,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: research_media: 3, specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: research_media: 3. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -120,10 +110,9 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Hawaii is turning ocean plastic and fishing nets into roads | source_reported_claim | ScienceDaily: Hawaii is turning ocean plastic and fishing nets into roads | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала | source_reported_claim | N+1: Статью о повышенной эффективности химиотерапии по утрам отозвали из журнала | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| New vitamin B12 therapy shows promise against deadly brain cancer | source_reported_claim | ScienceDaily: New vitamin B12 therapy shows promise against deadly brain cancer | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Massive study links teen marijuana use to double the risk of serious mental illness | source_reported_claim | ScienceDaily: Massive study links teen marijuana use to double the risk of serious mental illness | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Mountain lions changed everything in this tiny California preserve | source_reported_claim | ScienceDaily: Mountain lions changed everything in this tiny California preserve | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Yellowstone’s supervolcano may be fueled by something unexpected | source_reported_claim | ScienceDaily: Yellowstone’s supervolcano may be fueled by something unexpected | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Astronomers found two rare super puff planets lighter than cotton candy | source_reported_claim | ScienceDaily: Astronomers found two rare super puff planets lighter than cotton candy | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

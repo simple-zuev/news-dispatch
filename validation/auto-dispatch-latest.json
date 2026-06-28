@@ -3,7 +3,7 @@
   "generated": [
     {
       "stream": "crypto-finance",
-      "signals": 6,
+      "signals": 3,
       "path": "dispatches/crypto-finance/2026-06-28-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
@@ -17,14 +17,14 @@
     },
     {
       "stream": "gear-style-edc",
-      "signals": 5,
+      "signals": 4,
       "path": "dispatches/gear-style-edc/2026-06-28-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "science-discovery",
-      "signals": 4,
+      "signals": 3,
       "path": "dispatches/science-discovery/2026-06-28-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
