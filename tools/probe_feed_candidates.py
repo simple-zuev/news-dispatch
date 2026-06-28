@@ -56,7 +56,7 @@ def child_text(node: ET.Element, names: tuple[str, ...]) -> str:
     return ""
 
 
-def sample_titles(nodes: list[ET.Element], limit: int = 12) -> list[str]:
+def sample_titles(nodes: list[ET.Element], limit: int = 30) -> list[str]:
     titles: list[str] = []
     for node in nodes[:limit]:
         title = child_text(node, ("title",))

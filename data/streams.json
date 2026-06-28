@@ -8,8 +8,30 @@
       "strict": true,
       "review_level": "strict_publication_review",
       "min_publish_items": 2,
-      "regions": ["russia", "world"],
-      "keywords": ["rate", "inflation", "central bank", "bank", "market", "economy", "mortgage", "credit", "deposit", "рубль", "банк", "цб", "ставк", "инфляц", "кредит", "ипотек", "вклад", "эконом"]
+      "regions": [
+        "russia",
+        "world"
+      ],
+      "keywords": [
+        "rate",
+        "inflation",
+        "central bank",
+        "bank",
+        "market",
+        "economy",
+        "mortgage",
+        "credit",
+        "deposit",
+        "рубль",
+        "банк",
+        "цб",
+        "ставк",
+        "инфляц",
+        "кредит",
+        "ипотек",
+        "вклад",
+        "эконом"
+      ]
     },
     {
       "slug": "crypto-finance",
@@ -19,8 +41,28 @@
       "strict": true,
       "review_level": "strict_publication_review",
       "min_publish_items": 2,
-      "regions": ["russia", "world"],
-      "keywords": ["crypto", "bitcoin", "ethereum", "stablecoin", "tokenization", "defi", "exchange", "custody", "blockchain", "крипт", "биткоин", "эфир", "стейбл", "токен", "блокчейн", "цифровой рубль"]
+      "regions": [
+        "russia",
+        "world"
+      ],
+      "keywords": [
+        "crypto",
+        "bitcoin",
+        "ethereum",
+        "stablecoin",
+        "tokenization",
+        "defi",
+        "exchange",
+        "custody",
+        "blockchain",
+        "крипт",
+        "биткоин",
+        "эфир",
+        "стейбл",
+        "токен",
+        "блокчейн",
+        "цифровой рубль"
+      ]
     },
     {
       "slug": "ai",
@@ -30,8 +72,30 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["russia", "world", "global"],
-      "keywords": ["ai", "artificial intelligence", "model", "llm", "agent", "openai", "anthropic", "gemini", "copilot", "neural", "gpu", "npu", "ии", "нейросет", "модель", "агент", "чатбот"]
+      "regions": [
+        "russia",
+        "world",
+        "global"
+      ],
+      "keywords": [
+        "ai",
+        "artificial intelligence",
+        "model",
+        "llm",
+        "agent",
+        "openai",
+        "anthropic",
+        "gemini",
+        "copilot",
+        "neural",
+        "gpu",
+        "npu",
+        "ии",
+        "нейросет",
+        "модель",
+        "агент",
+        "чатбот"
+      ]
     },
     {
       "slug": "tech-hardware-software",
@@ -41,8 +105,34 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["russia", "world", "global"],
-      "keywords": ["hardware", "software", "chip", "cpu", "gpu", "pc", "laptop", "smartphone", "windows", "linux", "android", "ios", "benchmark", "security", "желез", "софт", "процессор", "видеокарт", "смартфон", "ноутбук", "уязвим"]
+      "regions": [
+        "russia",
+        "world",
+        "global"
+      ],
+      "keywords": [
+        "hardware",
+        "software",
+        "chip",
+        "cpu",
+        "gpu",
+        "pc",
+        "laptop",
+        "smartphone",
+        "windows",
+        "linux",
+        "android",
+        "ios",
+        "benchmark",
+        "security",
+        "желез",
+        "софт",
+        "процессор",
+        "видеокарт",
+        "смартфон",
+        "ноутбук",
+        "уязвим"
+      ]
     },
     {
       "slug": "gear-style-edc",
@@ -52,8 +142,28 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["world", "global"],
-      "keywords": ["edc", "sneaker", "shoe", "apparel", "jacket", "bag", "watch", "tool", "wear", "кроссов", "одежд", "куртк", "рюкзак", "сумк", "часы", "материал"]
+      "regions": [
+        "world",
+        "global"
+      ],
+      "keywords": [
+        "edc",
+        "sneaker",
+        "shoe",
+        "apparel",
+        "jacket",
+        "bag",
+        "watch",
+        "tool",
+        "wear",
+        "кроссов",
+        "одежд",
+        "куртк",
+        "рюкзак",
+        "сумк",
+        "часы",
+        "материал"
+      ]
     },
     {
       "slug": "moscow-city",
@@ -63,8 +173,40 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["moscow"],
-      "keywords": ["moscow", "москва", "restaurant", "bar", "club", "exhibition", "concert", "venue", "metro", "transport", "афиша", "выстав", "концерт", "бар", "ресторан", "клуб", "транспорт"]
+      "regions": [
+        "moscow"
+      ],
+      "keywords": [
+        "moscow",
+        "москва",
+        "restaurant",
+        "bar",
+        "club",
+        "exhibition",
+        "concert",
+        "venue",
+        "metro",
+        "transport",
+        "афиша",
+        "выстав",
+        "концерт",
+        "бар",
+        "ресторан",
+        "клуб",
+        "транспорт",
+        "москов",
+        "москв",
+        "метро",
+        "мцд",
+        "улиц",
+        "дорог",
+        "городск",
+        "ярмарк",
+        "садов",
+        "кольц",
+        "парк",
+        "музей"
+      ]
     },
     {
       "slug": "dj-audio-creative",
@@ -74,8 +216,30 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["world", "global"],
-      "keywords": ["dj", "mixer", "controller", "cdj", "turntable", "rekordbox", "serato", "traktor", "ableton", "plugin", "synth", "audio", "midi", "микшер", "контроллер", "синтезатор", "плагин", "аудио"]
+      "regions": [
+        "world",
+        "global"
+      ],
+      "keywords": [
+        "dj",
+        "mixer",
+        "controller",
+        "cdj",
+        "turntable",
+        "rekordbox",
+        "serato",
+        "traktor",
+        "ableton",
+        "plugin",
+        "synth",
+        "audio",
+        "midi",
+        "микшер",
+        "контроллер",
+        "синтезатор",
+        "плагин",
+        "аудио"
+      ]
     },
     {
       "slug": "science-discovery",
@@ -85,8 +249,33 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 2,
-      "regions": ["russia", "world", "global"],
-      "keywords": ["science", "research", "paper", "space", "physics", "biology", "medicine", "climate", "robot", "materials", "biotech", "наук", "исслед", "космос", "физик", "биолог", "медицин", "климат", "робот", "материал"]
+      "regions": [
+        "russia",
+        "world",
+        "global"
+      ],
+      "keywords": [
+        "science",
+        "research",
+        "paper",
+        "space",
+        "physics",
+        "biology",
+        "medicine",
+        "climate",
+        "robot",
+        "materials",
+        "biotech",
+        "наук",
+        "исслед",
+        "космос",
+        "физик",
+        "биолог",
+        "медицин",
+        "климат",
+        "робот",
+        "материал"
+      ]
     },
     {
       "slug": "general",
@@ -96,17 +285,37 @@
       "strict": false,
       "review_level": "standard_public_review",
       "min_publish_items": 4,
-      "regions": ["global"],
+      "regions": [
+        "global"
+      ],
       "keywords": []
     }
   ],
   "legacy_streams": {
-    "work": ["ai", "tech-hardware-software"],
-    "digital-assets-infrastructure": ["crypto-finance"],
-    "home-environment": ["gear-style-edc", "moscow-city"],
-    "gear": ["gear-style-edc", "tech-hardware-software"],
-    "city-culture": ["moscow-city"],
-    "audio-creative": ["dj-audio-creative"],
-    "horizon": ["science-discovery", "ai"]
+    "work": [
+      "ai",
+      "tech-hardware-software"
+    ],
+    "digital-assets-infrastructure": [
+      "crypto-finance"
+    ],
+    "home-environment": [
+      "gear-style-edc",
+      "moscow-city"
+    ],
+    "gear": [
+      "gear-style-edc",
+      "tech-hardware-software"
+    ],
+    "city-culture": [
+      "moscow-city"
+    ],
+    "audio-creative": [
+      "dj-audio-creative"
+    ],
+    "horizon": [
+      "science-discovery",
+      "ai"
+    ]
   }
 }
