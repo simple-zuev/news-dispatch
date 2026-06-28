@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+"""Regression checks for public-safety scanner false positives."""
+
+from __future__ import annotations
+
+import importlib.util
+import sys
+import tempfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+TOOLS = ROOT / "tools"
+MODULE_PATH = TOOLS / "privacy_scan.py"
+
+sys.path.insert(0, str(TOOLS))
+spec = importlib.util.spec_from_file_location("privacy_scan", MODULE_PATH)
+assert spec is not None and spec.loader is not None
+privacy_scan = importlib.util.module_from_spec(spec)
+sys.modules["privacy_scan"] = privacy_scan
+spec.loader.exec_module(privacy_scan)
+
+
+def scan_text(text: str) -> tuple[list[str], list[str]]:
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".md", delete=False) as handle:
+        handle.write(text)
+        path = Path(handle.name)
+    try:
+        return privacy_scan.scan_file(path)
+    finally:
+        path.unlink(missing_ok=True)
+
+
+def test_phone_like_ignores_url_digit_fragments() -> None:
+    url = "https://www.rbc.ru/sport/28/06/2026/6a41522e9a79477751613cda"
+    blockers, warnings = scan_text(f'- "{url}"\n')
+    assert blockers == []
+    assert warnings == []
+
+
+def test_phone_like_still_blocks_visible_phone() -> None:
+    visible_number = "+" + "7" + " " + "999" + " " + "123" + " " + "45" + " " + "67"
+    blockers, _warnings = scan_text(f"Contact: {visible_number}\n")
+    assert any("phone_like" in item for item in blockers)
+
+
+def main() -> int:
+    test_phone_like_ignores_url_digit_fragments()
+    test_phone_like_still_blocks_visible_phone()
+    print("privacy scan tests passed")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
