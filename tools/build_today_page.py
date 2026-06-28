@@ -162,6 +162,19 @@ def cluster_sources(cluster: list[dict[str, Any]]) -> list[str]:
     return sources
 
 
+def cluster_materials(cluster: list[dict[str, Any]]) -> str:
+    rows: list[str] = []
+    for index, item in enumerate(cluster, start=1):
+        source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
+        title = item.get("title") or "Без заголовка"
+        url = item.get("url") or ""
+        title_html = esc(title)
+        if url:
+            title_html = f'<a href="{esc(url)}">{title_html}</a>'
+        rows.append(f"<li><strong>{index}. {esc(source)}:</strong> {title_html}</li>")
+    return '<ul class="cluster-materials">' + "".join(rows) + "</ul>"
+
+
 def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
@@ -240,6 +253,8 @@ def card(cluster: list[dict[str, Any]]) -> str:
   <p><strong>Следствие/риск:</strong> {esc(implication(item))}</p>
   <p><strong>Уровень подтверждения:</strong> {esc(confirmation_level(item))}</p>
   <p><strong>Что отслеживать дальше:</strong> {esc(monitoring(item))}</p>
+  <p><strong>Материалы кластера:</strong></p>
+  {cluster_materials(cluster)}
   <p><strong>Неопределённость:</strong> {esc(uncertainty(item, cluster))}</p>
 </article>"""
 
