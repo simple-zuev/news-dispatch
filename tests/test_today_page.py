@@ -40,6 +40,21 @@ def sample_report() -> dict:
                 "translation_required": True,
             },
             {
+                "selected": True,
+                "source_rule_status": "accepted_by_source_rules",
+                "source_class": "public_media",
+                "source_type": "media",
+                "configured_stream": "crypto-finance",
+                "routed_stream": "crypto-finance",
+                "feed_title": "Example Media",
+                "title": "Digital asset rules updated by central bank",
+                "url": "https://example.com/item-2",
+                "final_score": 1.10,
+                "relevance_score": 0.76,
+                "include_hits": ["central bank", "digital asset"],
+                "translation_required": True,
+            },
+            {
                 "selected": False,
                 "source_rule_status": "rejected_by_exclude_keywords",
                 "configured_stream": "finance",
@@ -63,7 +78,6 @@ def test_render_includes_required_links_and_boundary() -> None:
 def test_render_includes_analytical_card_structure() -> None:
     html = build_today_page.render(sample_report())
     assert "Central bank updates digital asset rules" in html
-    assert "Example Regulator" in html
     assert "score 1.25" in html
     assert "relevance 0.82" in html
     assert "Тезис:" in html
@@ -72,6 +86,19 @@ def test_render_includes_analytical_card_structure() -> None:
     assert "Уровень подтверждения:" in html
     assert "Что отслеживать дальше:" in html
     assert "Неопределённость:" in html
+
+
+def test_render_clusters_similar_signals() -> None:
+    items = build_today_page.selected_items(sample_report())
+    clusters = build_today_page.cluster_items(items)
+    assert len(clusters) == 1
+    assert len(clusters[0]) == 2
+    html = build_today_page.render(sample_report())
+    assert "Кластеров: 1" in html
+    assert "cluster 2 item(s)" in html
+    assert "Источники в кластере: 2" in html
+    assert "Example Regulator" in html
+    assert "Example Media" in html
 
 
 def test_card_stays_non_directive() -> None:
@@ -84,6 +111,7 @@ def test_card_stays_non_directive() -> None:
 def main() -> int:
     test_render_includes_required_links_and_boundary()
     test_render_includes_analytical_card_structure()
+    test_render_clusters_similar_signals()
     test_card_stays_non_directive()
     print("today page tests passed")
     return 0
