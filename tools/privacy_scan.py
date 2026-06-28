@@ -70,6 +70,8 @@ ALLOWLIST_PATTERNS = [
     re.compile(r"Open Graph", re.IGNORECASE),
 ]
 
+URL_PATTERN = re.compile(r"https?://\S+", re.IGNORECASE)
+
 REPO_SIGNAL_PATH_PATTERN = re.compile(
     r"(?:^|[\"'\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'\s]+\.md(?:[\"'\s,]|$)",
     re.IGNORECASE,
@@ -101,6 +103,18 @@ def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
     return False
 
 
+def hard_scan_line(name: str, line: str) -> str:
+    """Return the string to scan for a hard pattern.
+
+    URL path fragments can contain long digit groups that look like phone numbers.
+    Keep phone detection strict for visible text while removing URLs before the
+    phone-like check. Other hard blockers still scan the original line.
+    """
+    if name == "phone_like":
+        return URL_PATTERN.sub("", line)
+    return line
+
+
 def format_finding(path: Path, line_no: int, name: str, line: str) -> str:
     return f"{path.relative_to(ROOT)}:{line_no}: {name}: {line.strip()[:220]}"
 
@@ -118,7 +132,7 @@ def scan_file(path: Path) -> tuple[list[str], list[str]]:
         for name, pattern in HARD_PATTERNS:
             if should_skip_hard_pattern(path, name, line):
                 continue
-            if pattern.search(line):
+            if pattern.search(hard_scan_line(name, line)):
                 blockers.append(format_finding(path, line_no, name, line))
         for name, pattern in SOFT_PATTERNS:
             if pattern.search(line):
