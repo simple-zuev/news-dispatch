@@ -16,7 +16,10 @@ jobs:
           python-version: '3.12'
 
       - name: Check core syntax
-        run: python -m py_compile tools/*.py
+        run: python -m py_compile tools/*.py tests/*.py
+
+      - name: Run signal filter regression tests
+        run: python tests/test_filter_daily_signals.py
 
       - name: Smoke-test dispatch synthesis
         run: |
