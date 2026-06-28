@@ -9,7 +9,7 @@ import sys
 import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -26,6 +26,7 @@ class ProbeResult:
     feed_type: str = ""
     item_count: int = 0
     first_title: str = ""
+    sample_titles: list[str] = field(default_factory=list)
     error: str = ""
     http_status: int | None = None
 
@@ -36,6 +37,7 @@ class ProbeResult:
             "feed_type": self.feed_type,
             "item_count": self.item_count,
             "first_title": self.first_title,
+            "sample_titles": self.sample_titles,
             "error": self.error,
             "http_status": self.http_status,
         }
@@ -54,6 +56,15 @@ def child_text(node: ET.Element, names: tuple[str, ...]) -> str:
     return ""
 
 
+def sample_titles(nodes: list[ET.Element], limit: int = 12) -> list[str]:
+    titles: list[str] = []
+    for node in nodes[:limit]:
+        title = child_text(node, ("title",))
+        if title:
+            titles.append(title)
+    return titles
+
+
 def parse_feed_xml(text: str, url: str = "") -> ProbeResult:
     try:
         root = ET.fromstring(text.encode("utf-8"))
@@ -66,13 +77,15 @@ def parse_feed_xml(text: str, url: str = "") -> ProbeResult:
         if channel is None:
             return ProbeResult(url=url, ok=False, error="rss_without_channel")
         items = channel.findall("item")
-        first_title = child_text(items[0], ("title",)) if items else ""
-        return ProbeResult(url=url, ok=bool(items), feed_type="rss", item_count=len(items), first_title=first_title)
+        titles = sample_titles(items)
+        first_title = titles[0] if titles else ""
+        return ProbeResult(url=url, ok=bool(items), feed_type="rss", item_count=len(items), first_title=first_title, sample_titles=titles)
 
     if root_name == "feed":
         entries = [node for node in list(root) if strip_ns(node.tag).lower() == "entry"]
-        first_title = child_text(entries[0], ("title",)) if entries else ""
-        return ProbeResult(url=url, ok=bool(entries), feed_type="atom", item_count=len(entries), first_title=first_title)
+        titles = sample_titles(entries)
+        first_title = titles[0] if titles else ""
+        return ProbeResult(url=url, ok=bool(entries), feed_type="atom", item_count=len(entries), first_title=first_title, sample_titles=titles)
 
     return ProbeResult(url=url, ok=False, error=f"unsupported_root: {root_name}")
 

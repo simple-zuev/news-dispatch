@@ -26,6 +26,7 @@ def test_parse_rss_feed() -> None:
     assert result.feed_type == "rss"
     assert result.item_count == 2
     assert result.first_title == "First item"
+    assert result.sample_titles == ["First item", "Second item"]
 
 
 def test_parse_atom_feed() -> None:
@@ -35,6 +36,7 @@ def test_parse_atom_feed() -> None:
     assert result.feed_type == "atom"
     assert result.item_count == 1
     assert result.first_title == "Atom item"
+    assert result.sample_titles == ["Atom item"]
 
 
 def test_load_moscow_candidates() -> None:
