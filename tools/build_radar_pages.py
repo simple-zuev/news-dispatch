@@ -14,6 +14,7 @@ from stream_registry import streams as registry_streams
 SITE_DIR = ROOT / "site"
 RADAR_DIR = SITE_DIR / "radar"
 RADAR_PATH = ROOT / "validation" / "daily-radar-latest.json"
+SOURCES_PATH = ROOT / "sources" / "feeds.json"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 
 
@@ -76,6 +77,28 @@ def stream_data() -> list[dict[str, Any]]:
     return rows
 
 
+def source_status_by_stream() -> dict[str, dict[str, Any]]:
+    data = load_json(SOURCES_PATH)
+    result: dict[str, dict[str, Any]] = {}
+    for feed in data.get("feeds", []):
+        if not isinstance(feed, dict):
+            continue
+        stream = str(feed.get("stream") or "").strip()
+        if not stream:
+            continue
+        row = result.setdefault(stream, {"active": [], "disabled": []})
+        source = {
+            "id": str(feed.get("id") or ""),
+            "title": str(feed.get("title") or feed.get("id") or "Источник"),
+            "reason": str(feed.get("disabled_reason") or "Отключён в конфигурации источников."),
+        }
+        if feed.get("enabled") is False:
+            row["disabled"].append(source)
+        else:
+            row["active"].append(source)
+    return result
+
+
 def radar_items() -> dict[str, list[dict[str, str]]]:
     data = load_json(RADAR_PATH)
     result: dict[str, list[dict[str, str]]] = {}
@@ -130,19 +153,51 @@ def signal_card(row: dict[str, str]) -> str:
 </article>"""
 
 
-def stream_card(stream: dict[str, Any], count: int) -> str:
+def stream_card(stream: dict[str, Any], count: int, source_status: dict[str, Any]) -> str:
     slug = str(stream["slug"])
     title = str(stream["title"])
     description = str(stream.get("description", ""))
+    active = len(source_status.get("active", []))
+    disabled = len(source_status.get("disabled", []))
+    source_note = f"{active} active / {disabled} paused sources"
     return f"""<article class=\"card\">
-  <p class=\"label\">{count} сигналов</p>
+  <p class=\"label\">{count} сигналов · {html.escape(source_note)}</p>
   <h3><a href=\"{html.escape(slug)}.html\">{html.escape(title)}</a></h3>
   <p>{html.escape(description)}</p>
 </article>"""
 
 
-def index_page(streams: list[dict[str, Any]], items: dict[str, list[dict[str, str]]]) -> str:
-    cards = "\n".join(stream_card(stream, len(items.get(str(stream["slug"]), []))) for stream in streams)
+def disabled_sources_list(disabled: list[dict[str, str]]) -> str:
+    if not disabled:
+        return ""
+    rows = "".join(
+        f"<li><strong>{html.escape(source.get('title', 'Источник'))}:</strong> {html.escape(source.get('reason', 'Отключён.'))}</li>"
+        for source in disabled[:6]
+    )
+    return f"<ul class=\"cluster-materials\">{rows}</ul>"
+
+
+def empty_state(stream: dict[str, Any], source_status: dict[str, Any]) -> str:
+    active = source_status.get("active", [])
+    disabled = source_status.get("disabled", [])
+    if active:
+        reason = "Активные источники есть, но в последнем Daily Radar run свежие материалы не прошли фильтры, source rules или порог релевантности."
+    elif disabled:
+        reason = "Все известные источники рубрики сейчас отключены или нестабильны; для восстановления нужны рабочие feed endpoints или fallback-источники."
+    else:
+        reason = "Для этой рубрики пока не задано активных источников в sources/feeds.json."
+    return f"""<article class=\"card empty-state\">
+  <p class=\"label\">Нет свежих сигналов</p>
+  <h3>Почему рубрика пустая</h3>
+  <p>{html.escape(reason)}</p>
+  <p>Активные источники: {len(active)}. Отключённые источники: {len(disabled)}.</p>
+  {disabled_sources_list(disabled)}
+  <p>Это диагностическое состояние, а не редакционный вывод.</p>
+</article>"""
+
+
+def index_page(streams: list[dict[str, Any]], items: dict[str, list[dict[str, str]]], source_status: dict[str, dict[str, Any]]) -> str:
+    cards = "\n".join(stream_card(stream, len(items.get(str(stream["slug"]), [])), source_status.get(str(stream["slug"]), {})) for stream in streams)
     return f"""<!doctype html>
 <html lang=\"ru\">
 {head("Дайджест — Свежие сигналы", "Публичный радар сигналов по темам.")}
@@ -154,9 +209,9 @@ def index_page(streams: list[dict[str, Any]], items: dict[str, list[dict[str, st
 """
 
 
-def stream_page(stream: dict[str, Any], rows: list[dict[str, str]]) -> str:
+def stream_page(stream: dict[str, Any], rows: list[dict[str, str]], source_status: dict[str, Any]) -> str:
     cards = "\n".join(signal_card(row) for row in rows)
-    empty = "" if cards else "<p>В этой теме сейчас нет свежих сигналов.</p>"
+    content = f"<section class=\"grid\">{cards}</section>" if cards else empty_state(stream, source_status)
     title = str(stream["title"])
     description = str(stream.get("description", ""))
     return f"""<!doctype html>
@@ -164,7 +219,7 @@ def stream_page(stream: dict[str, Any], rows: list[dict[str, str]]) -> str:
 {head(f"Дайджест — Свежие сигналы — {title}", description)}
 <body>
   <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Свежие сигналы</a><p class=\"eyebrow\">Радар темы</p><h1>{html.escape(title)}</h1><p class=\"lede\">{html.escape(description)}</p></header>
-  <main><section class=\"grid\">{cards}</section>{empty}</main>
+  <main>{content}</main>
 </body>
 </html>
 """
@@ -176,10 +231,11 @@ def main() -> int:
         page.unlink()
     streams = stream_data()
     items = radar_items()
-    (RADAR_DIR / "index.html").write_text(index_page(streams, items), encoding="utf-8")
+    source_status = source_status_by_stream()
+    (RADAR_DIR / "index.html").write_text(index_page(streams, items, source_status), encoding="utf-8")
     for stream in streams:
         slug = str(stream["slug"])
-        (RADAR_DIR / f"{slug}.html").write_text(stream_page(stream, items.get(slug, [])), encoding="utf-8")
+        (RADAR_DIR / f"{slug}.html").write_text(stream_page(stream, items.get(slug, []), source_status.get(slug, {})), encoding="utf-8")
     print(f"Built radar pages for {len(streams)} stream(s).")
     return 0
 
