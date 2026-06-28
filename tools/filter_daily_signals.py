@@ -25,9 +25,15 @@ MEDIA_LIMIT = 4
 
 GLOBAL_TITLE_DENY: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\b(deal|deals|discount|sale|coupon|price\s+cut|slashed|woot|record-low\s+price|now\s+just|prime\s+day)\b", re.I), "deal_or_discount"),
-    (re.compile(r"(?:\$|£|€)\s?\d{2,}", re.I), "deal_or_discount"),
     (re.compile(r"\breview\b", re.I), "review_or_buying_guide"),
 ]
+
+CONSUMER_PRICE_DEAL_DENY: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"\b(now\s+just|just|only|drops?\s+to|down\s+to|from\s+(?:\$|£|€)|save|saving|off)\b.{0,80}(?:\$|£|€)\s?\d{2,}", re.I), "deal_or_discount"),
+    (re.compile(r"(?:\$|£|€)\s?\d{2,}.{0,80}\b(now\s+just|just|only|drops?\s+to|down\s+to|save|saving|off)\b", re.I), "deal_or_discount"),
+]
+
+CONSUMER_DEAL_STREAMS = {"gear-style-edc", "tech-hardware-software"}
 
 STREAM_DENY: dict[str, list[tuple[re.Pattern[str], str]]] = {
     "ai": [
@@ -151,6 +157,24 @@ def signal_stream(path: Path, meta: dict[str, Any]) -> str:
     return path.parts[2] if len(path.parts) > 2 else "unknown"
 
 
+def deny_reason_for_signal(title: str, stream: str, domains: str = "", path_text: str = "") -> str | None:
+    """Return a conservative reject reason for one signal, or None if it should stay."""
+    haystack = f"{title} {domains} {path_text}"
+    if not has_enough_context(title):
+        return "low_information_title"
+    for pattern, reason in GLOBAL_TITLE_DENY:
+        if pattern.search(title):
+            return reason
+    if stream in CONSUMER_DEAL_STREAMS:
+        for pattern, reason in CONSUMER_PRICE_DEAL_DENY:
+            if pattern.search(title):
+                return reason
+    for pattern, reason in STREAM_DENY.get(stream, []):
+        if pattern.search(haystack):
+            return reason
+    return None
+
+
 def deny_reason(path: Path) -> tuple[str | None, str]:
     full_path = ROOT / path
     if not full_path.exists():
@@ -160,17 +184,8 @@ def deny_reason(path: Path) -> tuple[str | None, str]:
     title = str(meta.get("title", ""))
     stream = signal_stream(path, meta)
     domains = " ".join(list_value(meta, "domains"))
-    haystack = f"{title} {domains} {path.as_posix()}"
-
-    if not has_enough_context(title):
-        return "low_information_title", stream
-    for pattern, reason in GLOBAL_TITLE_DENY:
-        if pattern.search(title):
-            return reason, stream
-    for pattern, reason in STREAM_DENY.get(stream, []):
-        if pattern.search(haystack):
-            return reason, stream
-    return None, stream
+    reason = deny_reason_for_signal(title=title, stream=stream, domains=domains, path_text=path.as_posix())
+    return reason, stream
 
 
 def update_report(report: dict[str, Any], removed: dict[str, dict[str, str]]) -> dict[str, Any]:
