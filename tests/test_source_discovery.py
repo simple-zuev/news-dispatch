@@ -46,6 +46,15 @@ def test_keyword_hits_match_russian_stems() -> None:
 
 
 
+
+def test_keyword_hits_ignore_weak_moscow_false_positives() -> None:
+    text = "Клубничный оттенок Луны и Музей Мирового океана попали в федеральную повестку."
+    hits = discover.keyword_hits("moscow-city", text)
+    assert "клуб" not in hits
+    assert "музей" not in hits
+    assert hits == []
+
+
 def test_sample_match_stats_measure_feed_density() -> None:
     titles = [
         "Один человек погиб при аварийной посадке самолета",
@@ -115,6 +124,7 @@ def main() -> int:
     test_autodiscovered_feed_urls_from_html()
     test_common_feed_candidates_are_origin_scoped()
     test_keyword_hits_match_russian_stems()
+    test_keyword_hits_ignore_weak_moscow_false_positives()
     test_sample_match_stats_measure_feed_density()
     test_candidate_scoring_passes_valid_feed_probe()
     test_candidate_scoring_rejects_failed_probe()

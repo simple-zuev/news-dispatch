@@ -34,6 +34,34 @@ FEED_TYPES = {
     "application/feed+json",
 }
 
+DISCOVERY_STEM_TERMS: dict[str, set[str]] = {
+    "moscow-city": {
+        "москов",
+        "москв",
+        "метро",
+        "мцд",
+        "улиц",
+        "дорог",
+        "городск",
+        "транспорт",
+        "ярмарк",
+        "садов",
+        "кольц",
+    },
+}
+
+DISCOVERY_WEAK_TERMS: dict[str, set[str]] = {
+    "moscow-city": {
+        "бар",
+        "клуб",
+        "концерт",
+        "музей",
+        "парк",
+        "ресторан",
+        "выстав",
+    },
+}
+
 
 @dataclass(frozen=True)
 class SearchResult:
@@ -112,18 +140,21 @@ def keyword_hits(stream: str, text: str) -> list[str]:
     normalized = normalize_text(text)
     haystack = f" {normalized} "
     tokens = normalized.split()
+    stem_terms = DISCOVERY_STEM_TERMS.get(stream, set())
+    weak_terms = DISCOVERY_WEAK_TERMS.get(stream, set())
+
     hits = []
     for word in stream_keywords().get(stream, []):
         raw = str(word)
         phrase = normalize_text(raw)
-        if not phrase:
+        if not phrase or phrase in weak_terms:
             continue
         if " " in phrase:
             matched = f" {phrase} " in haystack
-        elif len(phrase) >= 4:
+        elif phrase in stem_terms:
             matched = any(token == phrase or token.startswith(phrase) for token in tokens)
         else:
-            matched = f" {phrase} " in haystack
+            matched = any(token == phrase for token in tokens)
         if matched:
             hits.append(raw)
     return hits
