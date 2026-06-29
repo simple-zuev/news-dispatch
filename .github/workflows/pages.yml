@@ -47,57 +47,8 @@ jobs:
       - name: Validate published editorial content
         run: python tools/validate_published.py
 
-      - name: Render static site
-        run: python tools/render_site.py
-
-      - name: Build radar pages
-        run: python tools/build_radar_pages.py
-
-      - name: Build radar ranking report
-        run: |
-          python tools/build_daily_radar_ranking_report.py --timeout 8 --max-rows 200
-          cp validation/daily-radar-ranking-latest.json site/daily-radar-ranking-latest.json
-
-      - name: Build reader policy artifact
-        run: |
-          python tools/build_reader_policy.py
-          cp validation/reader-policy-latest.json site/reader-policy-latest.json
-
-      - name: Build Today Radar page
-        run: python tools/build_today_page.py
-
-      - name: Enhance static site
-        run: python tools/enhance_site.py
-
-      - name: Enrich media registry
-        run: python tools/enrich_media_registry.py
-
-      - name: Validate media registry
-        run: python tools/validate_media_registry.py
-
-      - name: Apply media previews
-        run: python tools/apply_media_previews.py
-
-      - name: Apply reader sections
-        run: python tools/apply_reader_sections.py
-
-      - name: Apply reader structure
-        run: python tools/apply_reader_structure.py
-
-      - name: Apply editorial home layout
-        run: python tools/apply_editorial_home_layout.py
-
-      - name: Apply Today Radar link
-        run: python tools/apply_today_link.py
-
-      - name: Apply empty states
-        run: python tools/apply_empty_states.py
-
-      - name: Validate reader output
-        run: python tools/validate_reader_output.py
-
-      - name: Run privacy scan
-        run: python tools/privacy_scan.py
+      - name: Build static reader site
+        run: python tools/build_site.py --ranking-mode live --media-mode live
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
