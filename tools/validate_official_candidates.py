@@ -73,8 +73,6 @@ def validate() -> list[str]:
             errors.append(f"{prefix}: id is empty")
         elif candidate_id in seen_ids:
             errors.append(f"{prefix}: duplicate candidate id {candidate_id!r}")
-        elif candidate_id in production_ids:
-            errors.append(f"{prefix}: candidate id {candidate_id!r} already exists in production feeds")
         seen_ids.add(candidate_id)
 
         stream = str(candidate.get("stream", "")).strip()

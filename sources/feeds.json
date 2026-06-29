@@ -16,58 +16,12 @@
       "priority": 0.78,
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "банк",
-        "банки",
-        "цб",
-        "ставка",
-        "рубль",
-        "доллар",
-        "евро",
-        "рынок",
-        "биржа",
-        "акции",
-        "облигации",
-        "инфляция",
-        "кредит",
-        "вклад",
-        "налог",
-        "бюджет",
-        "экономика",
-        "финансы"
-      ],
-      "exclude_keywords": [
-        "спорт",
-        "футбол",
-        "хоккей",
-        "чм",
-        "тренер",
-        "сборная",
-        "матч",
-        "кино",
-        "сериал",
-        "шоу"
-      ],
-      "boost_keywords": [
-        "банк россии",
-        "ключевая ставка",
-        "валютный рынок",
-        "санкции",
-        "регулирование"
-      ],
-      "penalty_keywords": [
-        "развлечения",
-        "лайфстайл",
-        "погода"
-      ],
+      "include_keywords": ["банк", "банки", "цб", "ставка", "рубль", "доллар", "евро", "рынок", "биржа", "акции", "облигации", "инфляция", "кредит", "вклад", "налог", "бюджет", "экономика", "финансы"],
+      "exclude_keywords": ["спорт", "футбол", "хоккей", "чм", "тренер", "сборная", "матч", "кино", "сериал", "шоу"],
+      "boost_keywords": ["банк россии", "ключевая ставка", "валютный рынок", "санкции", "регулирование"],
+      "penalty_keywords": ["развлечения", "лайфстайл", "погода"],
       "min_relevance_score": 0.45,
-      "tags": [
-        "russia",
-        "finance",
-        "business",
-        "banks",
-        "markets"
-      ]
+      "tags": ["russia", "finance", "business", "banks", "markets"]
     },
     {
       "id": "kommersant-finance",
@@ -79,58 +33,12 @@
       "priority": 0.76,
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "банк",
-        "банки",
-        "цб",
-        "ставка",
-        "рубль",
-        "доллар",
-        "евро",
-        "рынок",
-        "биржа",
-        "акции",
-        "облигации",
-        "инфляция",
-        "кредит",
-        "вклад",
-        "налог",
-        "бюджет",
-        "экономика",
-        "финансы",
-        "бизнес"
-      ],
-      "exclude_keywords": [
-        "спорт",
-        "футбол",
-        "хоккей",
-        "чм",
-        "тренер",
-        "сборная",
-        "матч",
-        "кино",
-        "сериал",
-        "шоу"
-      ],
-      "boost_keywords": [
-        "банк россии",
-        "ключевая ставка",
-        "валютный рынок",
-        "санкции",
-        "регулирование"
-      ],
-      "penalty_keywords": [
-        "общество",
-        "культура",
-        "происшествия"
-      ],
+      "include_keywords": ["банк", "банки", "цб", "ставка", "рубль", "доллар", "евро", "рынок", "биржа", "акции", "облигации", "инфляция", "кредит", "вклад", "налог", "бюджет", "экономика", "финансы", "бизнес"],
+      "exclude_keywords": ["спорт", "футбол", "хоккей", "чм", "тренер", "сборная", "матч", "кино", "сериал", "шоу"],
+      "boost_keywords": ["банк россии", "ключевая ставка", "валютный рынок", "санкции", "регулирование"],
+      "penalty_keywords": ["общество", "культура", "происшествия"],
       "min_relevance_score": 0.45,
-      "tags": [
-        "russia",
-        "finance",
-        "business",
-        "policy"
-      ]
+      "tags": ["russia", "finance", "business", "policy"]
     },
     {
       "id": "cbr-news",
@@ -142,22 +50,9 @@
       "priority": 0.94,
       "language": "ru",
       "translation_required": false,
-      "boost_keywords": [
-        "ключевая ставка",
-        "надзор",
-        "регулирование",
-        "банк",
-        "рынок",
-        "инфляция"
-      ],
+      "boost_keywords": ["ключевая ставка", "надзор", "регулирование", "банк", "рынок", "инфляция"],
       "min_relevance_score": 0.2,
-      "tags": [
-        "russia",
-        "finance",
-        "rates",
-        "regulation",
-        "banks"
-      ]
+      "tags": ["russia", "finance", "rates", "regulation", "banks"]
     },
     {
       "id": "coindesk",
@@ -169,40 +64,11 @@
       "priority": 0.82,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "bitcoin",
-        "crypto",
-        "ethereum",
-        "stablecoin",
-        "tokenization",
-        "exchange",
-        "etf",
-        "sec",
-        "mica",
-        "defi",
-        "custody"
-      ],
-      "exclude_keywords": [
-        "price prediction",
-        "celebrity",
-        "sports"
-      ],
-      "boost_keywords": [
-        "regulation",
-        "lawsuit",
-        "filing",
-        "exchange",
-        "stablecoin",
-        "custody"
-      ],
+      "include_keywords": ["bitcoin", "crypto", "ethereum", "stablecoin", "tokenization", "exchange", "etf", "sec", "mica", "defi", "custody"],
+      "exclude_keywords": ["price prediction", "celebrity", "sports"],
+      "boost_keywords": ["regulation", "lawsuit", "filing", "exchange", "stablecoin", "custody"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "crypto",
-        "bitcoin",
-        "ethereum",
-        "markets",
-        "regulation"
-      ]
+      "tags": ["crypto", "bitcoin", "ethereum", "markets", "regulation"]
     },
     {
       "id": "cointelegraph",
@@ -214,37 +80,11 @@
       "priority": 0.72,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "bitcoin",
-        "crypto",
-        "ethereum",
-        "stablecoin",
-        "token",
-        "exchange",
-        "blockchain",
-        "regulation"
-      ],
-      "exclude_keywords": [
-        "price prediction",
-        "giveaway",
-        "celebrity"
-      ],
-      "boost_keywords": [
-        "regulation",
-        "enforcement",
-        "stablecoin",
-        "exchange",
-        "custody",
-        "wallet"
-      ],
+      "include_keywords": ["bitcoin", "crypto", "ethereum", "stablecoin", "token", "exchange", "blockchain", "regulation"],
+      "exclude_keywords": ["price prediction", "giveaway", "celebrity"],
+      "boost_keywords": ["regulation", "enforcement", "stablecoin", "exchange", "custody", "wallet"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "crypto",
-        "bitcoin",
-        "ethereum",
-        "blockchain",
-        "markets"
-      ]
+      "tags": ["crypto", "bitcoin", "ethereum", "blockchain", "markets"]
     },
     {
       "id": "the-block",
@@ -256,39 +96,11 @@
       "priority": 0.78,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "crypto",
-        "bitcoin",
-        "ethereum",
-        "stablecoin",
-        "exchange",
-        "custody",
-        "market",
-        "tokenization",
-        "regulation"
-      ],
-      "exclude_keywords": [
-        "price prediction",
-        "airdrop",
-        "giveaway",
-        "celebrity",
-        "nft art"
-      ],
-      "boost_keywords": [
-        "market structure",
-        "regulation",
-        "custody",
-        "stablecoin",
-        "exchange"
-      ],
+      "include_keywords": ["crypto", "bitcoin", "ethereum", "stablecoin", "exchange", "custody", "market", "tokenization", "regulation"],
+      "exclude_keywords": ["price prediction", "airdrop", "giveaway", "celebrity", "nft art"],
+      "boost_keywords": ["market structure", "regulation", "custody", "stablecoin", "exchange"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "crypto",
-        "market-structure",
-        "exchanges",
-        "stablecoins",
-        "regulation"
-      ]
+      "tags": ["crypto", "market-structure", "exchanges", "stablecoins", "regulation"]
     },
     {
       "id": "crypto-finance-sec-press-releases",
@@ -300,59 +112,11 @@
       "priority": 0.88,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "crypto",
-        "cryptocurrency",
-        "crypto asset",
-        "crypto assets",
-        "digital asset",
-        "digital assets",
-        "bitcoin",
-        "ethereum",
-        "stablecoin",
-        "token",
-        "tokens",
-        "exchange",
-        "custody",
-        "custodian",
-        "broker-dealer",
-        "market structure",
-        "etf",
-        "enforcement",
-        "securities law"
-      ],
-      "exclude_keywords": [
-        "municipal securities",
-        "accounting",
-        "auditor",
-        "whistleblower",
-        "insider trading",
-        "public company",
-        "shareholder",
-        "financial reporting",
-        "investment adviser",
-        "mutual fund",
-        "penny stock"
-      ],
-      "boost_keywords": [
-        "digital assets",
-        "crypto assets",
-        "bitcoin etf",
-        "spot bitcoin",
-        "stablecoin",
-        "exchange",
-        "custody",
-        "market structure",
-        "enforcement action"
-      ],
+      "include_keywords": ["crypto", "cryptocurrency", "crypto asset", "crypto assets", "digital asset", "digital assets", "bitcoin", "ethereum", "stablecoin", "token", "tokens", "exchange", "custody", "custodian", "broker-dealer", "market structure", "etf", "enforcement", "securities law"],
+      "exclude_keywords": ["municipal securities", "accounting", "auditor", "whistleblower", "insider trading", "public company", "shareholder", "financial reporting", "investment adviser", "mutual fund", "penny stock"],
+      "boost_keywords": ["digital assets", "crypto assets", "bitcoin etf", "spot bitcoin", "stablecoin", "exchange", "custody", "market structure", "enforcement action"],
       "min_relevance_score": 0.45,
-      "tags": [
-        "crypto",
-        "regulation",
-        "sec",
-        "enforcement",
-        "official"
-      ]
+      "tags": ["crypto", "regulation", "sec", "enforcement", "official"]
     },
     {
       "id": "the-verge-ai",
@@ -366,31 +130,10 @@
       "disabled_reason": "Broad feed produced cross-topic noise in Daily Radar; keep disabled until per-section filtering exists.",
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "ai",
-        "artificial intelligence",
-        "openai",
-        "anthropic",
-        "gemini",
-        "copilot",
-        "llm",
-        "agent"
-      ],
-      "exclude_keywords": [
-        "movie",
-        "tv",
-        "phone review",
-        "deal",
-        "discount"
-      ],
+      "include_keywords": ["ai", "artificial intelligence", "openai", "anthropic", "gemini", "copilot", "llm", "agent"],
+      "exclude_keywords": ["movie", "tv", "phone review", "deal", "discount"],
       "min_relevance_score": 0.5,
-      "tags": [
-        "ai",
-        "platforms",
-        "search",
-        "agents",
-        "consumer-tech"
-      ]
+      "tags": ["ai", "platforms", "search", "agents", "consumer-tech"]
     },
     {
       "id": "github-blog-ai",
@@ -402,28 +145,10 @@
       "priority": 0.84,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "ai",
-        "copilot",
-        "developer",
-        "code",
-        "security",
-        "repository",
-        "github"
-      ],
-      "boost_keywords": [
-        "copilot",
-        "agent",
-        "security",
-        "developer tools"
-      ],
+      "include_keywords": ["ai", "copilot", "developer", "code", "security", "repository", "github"],
+      "boost_keywords": ["copilot", "agent", "security", "developer tools"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "ai",
-        "developer-tools",
-        "coding",
-        "software"
-      ]
+      "tags": ["ai", "developer-tools", "coding", "software"]
     },
     {
       "id": "microsoft-blog-ai",
@@ -435,27 +160,10 @@
       "priority": 0.8,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "ai",
-        "copilot",
-        "azure",
-        "agent",
-        "model",
-        "cloud"
-      ],
-      "boost_keywords": [
-        "copilot",
-        "azure ai",
-        "agent",
-        "model"
-      ],
+      "include_keywords": ["ai", "copilot", "azure", "agent", "model", "cloud"],
+      "boost_keywords": ["copilot", "azure ai", "agent", "model"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "ai",
-        "microsoft",
-        "cloud",
-        "agents"
-      ]
+      "tags": ["ai", "microsoft", "cloud", "agents"]
     },
     {
       "id": "mit-tech-review-ai",
@@ -467,40 +175,11 @@
       "priority": 0.82,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "ai",
-        "artificial intelligence",
-        "model",
-        "llm",
-        "safety",
-        "research",
-        "robot",
-        "automation"
-      ],
-      "exclude_keywords": [
-        "climate",
-        "battery",
-        "energy",
-        "biotech",
-        "gene",
-        "health",
-        "space",
-        "quantum",
-        "chip"
-      ],
-      "boost_keywords": [
-        "safety",
-        "research",
-        "policy",
-        "model"
-      ],
+      "include_keywords": ["ai", "artificial intelligence", "model", "llm", "safety", "research", "robot", "automation"],
+      "exclude_keywords": ["climate", "battery", "energy", "biotech", "gene", "health", "space", "quantum", "chip"],
+      "boost_keywords": ["safety", "research", "policy", "model"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "ai",
-        "research",
-        "safety",
-        "horizon"
-      ]
+      "tags": ["ai", "research", "safety", "horizon"]
     },
     {
       "id": "ars-technica-tech",
@@ -512,40 +191,11 @@
       "priority": 0.86,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "software",
-        "hardware",
-        "security",
-        "chip",
-        "windows",
-        "linux",
-        "server",
-        "platform",
-        "policy",
-        "science"
-      ],
-      "exclude_keywords": [
-        "baseball",
-        "sports",
-        "movie",
-        "tv",
-        "deal"
-      ],
-      "boost_keywords": [
-        "security",
-        "chip",
-        "platform",
-        "supply chain",
-        "vulnerability"
-      ],
+      "include_keywords": ["software", "hardware", "security", "chip", "windows", "linux", "server", "platform", "policy", "science"],
+      "exclude_keywords": ["baseball", "sports", "movie", "tv", "deal"],
+      "boost_keywords": ["security", "chip", "platform", "supply chain", "vulnerability"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "hardware",
-        "software",
-        "science",
-        "policy",
-        "security"
-      ]
+      "tags": ["hardware", "software", "science", "policy", "security"]
     },
     {
       "id": "3dnews",
@@ -557,44 +207,11 @@
       "priority": 0.84,
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "процессор",
-        "видеокарта",
-        "чип",
-        "сервер",
-        "пк",
-        "windows",
-        "linux",
-        "intel",
-        "amd",
-        "nvidia",
-        "apple",
-        "google",
-        "софт",
-        "безопасность"
-      ],
-      "exclude_keywords": [
-        "скидка",
-        "распродажа",
-        "игра",
-        "кино"
-      ],
-      "boost_keywords": [
-        "сервер",
-        "чип",
-        "безопасность",
-        "производство",
-        "поставки"
-      ],
+      "include_keywords": ["процессор", "видеокарта", "чип", "сервер", "пк", "windows", "linux", "intel", "amd", "nvidia", "apple", "google", "софт", "безопасность"],
+      "exclude_keywords": ["скидка", "распродажа", "игра", "кино"],
+      "boost_keywords": ["сервер", "чип", "безопасность", "производство", "поставки"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "hardware",
-        "software",
-        "pc",
-        "components",
-        "reviews",
-        "russia"
-      ]
+      "tags": ["hardware", "software", "pc", "components", "reviews", "russia"]
     },
     {
       "id": "tomshardware",
@@ -606,40 +223,11 @@
       "priority": 0.78,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "cpu",
-        "gpu",
-        "chip",
-        "memory",
-        "server",
-        "pc",
-        "hardware",
-        "intel",
-        "amd",
-        "nvidia",
-        "benchmark"
-      ],
-      "exclude_keywords": [
-        "deal",
-        "coupon",
-        "discount",
-        "sale",
-        "gaming chair"
-      ],
-      "boost_keywords": [
-        "server",
-        "chip",
-        "memory",
-        "supply",
-        "manufacturing"
-      ],
+      "include_keywords": ["cpu", "gpu", "chip", "memory", "server", "pc", "hardware", "intel", "amd", "nvidia", "benchmark"],
+      "exclude_keywords": ["deal", "coupon", "discount", "sale", "gaming chair"],
+      "boost_keywords": ["server", "chip", "memory", "supply", "manufacturing"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "hardware",
-        "pc",
-        "components",
-        "benchmarks"
-      ]
+      "tags": ["hardware", "pc", "components", "benchmarks"]
     },
     {
       "id": "apple-newsroom-tech",
@@ -651,30 +239,10 @@
       "priority": 0.78,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "apple",
-        "ios",
-        "mac",
-        "iphone",
-        "ipad",
-        "vision",
-        "developer",
-        "privacy",
-        "security"
-      ],
-      "boost_keywords": [
-        "developer",
-        "privacy",
-        "security",
-        "platform"
-      ],
+      "include_keywords": ["apple", "ios", "mac", "iphone", "ipad", "vision", "developer", "privacy", "security"],
+      "boost_keywords": ["developer", "privacy", "security", "platform"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "apple",
-        "platforms",
-        "hardware",
-        "software"
-      ]
+      "tags": ["apple", "platforms", "hardware", "software"]
     },
     {
       "id": "nvidia-blog-tech",
@@ -686,31 +254,10 @@
       "priority": 0.78,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "nvidia",
-        "gpu",
-        "ai",
-        "chip",
-        "data center",
-        "driver",
-        "cuda",
-        "robotics"
-      ],
-      "boost_keywords": [
-        "data center",
-        "gpu",
-        "cuda",
-        "chip",
-        "inference"
-      ],
+      "include_keywords": ["nvidia", "gpu", "ai", "chip", "data center", "driver", "cuda", "robotics"],
+      "boost_keywords": ["data center", "gpu", "cuda", "chip", "inference"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "nvidia",
-        "hardware",
-        "chips",
-        "gpu",
-        "ai"
-      ]
+      "tags": ["nvidia", "hardware", "chips", "gpu", "ai"]
     },
     {
       "id": "sneaker-news",
@@ -722,26 +269,10 @@
       "priority": 0.68,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "sneaker",
-        "footwear",
-        "nike",
-        "adidas",
-        "new balance",
-        "asics",
-        "jordan"
-      ],
-      "exclude_keywords": [
-        "deal",
-        "discount",
-        "coupon"
-      ],
+      "include_keywords": ["sneaker", "footwear", "nike", "adidas", "new balance", "asics", "jordan"],
+      "exclude_keywords": ["deal", "discount", "coupon"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "sneakers",
-        "footwear",
-        "style"
-      ]
+      "tags": ["sneakers", "footwear", "style"]
     },
     {
       "id": "hypebeast",
@@ -753,43 +284,12 @@
       "priority": 0.66,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "design",
-        "fashion",
-        "watch",
-        "sneaker",
-        "bag",
-        "furniture",
-        "material",
-        "collection"
-      ],
-      "exclude_keywords": [
-        "movie",
-        "trailer",
-        "album",
-        "celebrity",
-        "ticket",
-        "deal"
-      ],
-      "boost_keywords": [
-        "material",
-        "technical apparel",
-        "watch",
-        "bag",
-        "furniture",
-        "design collaboration"
-      ],
-      "penalty_keywords": [
-        "music video",
-        "entertainment"
-      ],
+      "include_keywords": ["design", "fashion", "watch", "sneaker", "bag", "furniture", "material", "collection"],
+      "exclude_keywords": ["movie", "trailer", "album", "celebrity", "ticket", "deal"],
+      "boost_keywords": ["material", "technical apparel", "watch", "bag", "furniture", "design collaboration"],
+      "penalty_keywords": ["music video", "entertainment"],
       "min_relevance_score": 0.4,
-      "tags": [
-        "style",
-        "sneakers",
-        "apparel",
-        "culture"
-      ]
+      "tags": ["style", "sneakers", "apparel", "culture"]
     },
     {
       "id": "mos-ru-news",
@@ -803,24 +303,9 @@
       "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until a stable official Moscow feed or fallback source is added.",
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "москва",
-        "транспорт",
-        "метро",
-        "мцд",
-        "город",
-        "услуги",
-        "строительство",
-        "дороги"
-      ],
+      "include_keywords": ["москва", "транспорт", "метро", "мцд", "город", "услуги", "строительство", "дороги"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "moscow",
-        "city",
-        "transport",
-        "services",
-        "events"
-      ]
+      "tags": ["moscow", "city", "transport", "services", "events"]
     },
     {
       "id": "the-village",
@@ -834,28 +319,10 @@
       "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until the feed is stable or replaced.",
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "москва",
-        "город",
-        "транспорт",
-        "район",
-        "сервис",
-        "культура",
-        "инфраструктура"
-      ],
-      "exclude_keywords": [
-        "рецепт",
-        "афиша",
-        "скидка"
-      ],
+      "include_keywords": ["москва", "город", "транспорт", "район", "сервис", "культура", "инфраструктура"],
+      "exclude_keywords": ["рецепт", "афиша", "скидка"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "moscow",
-        "city",
-        "venues",
-        "food",
-        "culture"
-      ]
+      "tags": ["moscow", "city", "venues", "food", "culture"]
     },
     {
       "id": "m24-moscow-news",
@@ -867,55 +334,11 @@
       "priority": 0.66,
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "москва",
-        "москов",
-        "столиц",
-        "метро",
-        "мцд",
-        "транспорт",
-        "город",
-        "район",
-        "улиц",
-        "дорог",
-        "парк",
-        "выстав",
-        "концерт",
-        "фестиваль",
-        "ресторан",
-        "бар",
-        "клуб",
-        "сервис",
-        "инфраструктур"
-      ],
-      "exclude_keywords": [
-        "ленобласт",
-        "петербург",
-        "футбол",
-        "хоккей",
-        "чемпионат мира",
-        "трамп",
-        "сша",
-        "украин",
-        "военн"
-      ],
-      "boost_keywords": [
-        "москва",
-        "метро",
-        "мцд",
-        "московский транспорт",
-        "городские сервисы",
-        "афиша"
-      ],
+      "include_keywords": ["москва", "москов", "столиц", "метро", "мцд", "транспорт", "город", "район", "улиц", "дорог", "парк", "выстав", "концерт", "фестиваль", "ресторан", "бар", "клуб", "сервис", "инфраструктур"],
+      "exclude_keywords": ["ленобласт", "петербург", "футбол", "хоккей", "чемпионат мира", "трамп", "сша", "украин", "военн"],
+      "boost_keywords": ["москва", "метро", "мцд", "московский транспорт", "городские сервисы", "афиша"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "moscow",
-        "city",
-        "transport",
-        "services",
-        "events",
-        "culture"
-      ]
+      "tags": ["moscow", "city", "transport", "services", "events", "culture"]
     },
     {
       "id": "dj-techtools",
@@ -927,30 +350,10 @@
       "priority": 0.78,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "dj",
-        "controller",
-        "mixer",
-        "turntable",
-        "rekordbox",
-        "traktor",
-        "serato",
-        "audio",
-        "performance"
-      ],
-      "exclude_keywords": [
-        "deal",
-        "coupon",
-        "discount"
-      ],
+      "include_keywords": ["dj", "controller", "mixer", "turntable", "rekordbox", "traktor", "serato", "audio", "performance"],
+      "exclude_keywords": ["deal", "coupon", "discount"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "dj",
-        "controllers",
-        "software",
-        "performance",
-        "audio"
-      ]
+      "tags": ["dj", "controllers", "software", "performance", "audio"]
     },
     {
       "id": "create-digital-music",
@@ -962,36 +365,11 @@
       "priority": 0.76,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "synth",
-        "plugin",
-        "ableton",
-        "audio",
-        "music",
-        "controller",
-        "creative",
-        "sound",
-        "midi"
-      ],
-      "exclude_keywords": [
-        "deal",
-        "coupon",
-        "discount"
-      ],
-      "boost_keywords": [
-        "ableton",
-        "synth",
-        "plugin",
-        "controller"
-      ],
+      "include_keywords": ["synth", "plugin", "ableton", "audio", "music", "controller", "creative", "sound", "midi"],
+      "exclude_keywords": ["deal", "coupon", "discount"],
+      "boost_keywords": ["ableton", "synth", "plugin", "controller"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "audio",
-        "music-production",
-        "synth",
-        "plugins",
-        "creative-tech"
-      ]
+      "tags": ["audio", "music-production", "synth", "plugins", "creative-tech"]
     },
     {
       "id": "nature-news",
@@ -1005,24 +383,9 @@
       "disabled_reason": "Feed produced XML parse errors during production Daily Radar run; keep paused until replaced by a valid feed endpoint.",
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "research",
-        "study",
-        "scientists",
-        "biology",
-        "physics",
-        "climate",
-        "space",
-        "medicine"
-      ],
+      "include_keywords": ["research", "study", "scientists", "biology", "physics", "climate", "space", "medicine"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "science",
-        "research",
-        "biology",
-        "medicine",
-        "physics"
-      ]
+      "tags": ["science", "research", "biology", "medicine", "physics"]
     },
     {
       "id": "science-daily",
@@ -1034,35 +397,11 @@
       "priority": 0.72,
       "language": "en",
       "translation_required": true,
-      "include_keywords": [
-        "study",
-        "research",
-        "scientists",
-        "biology",
-        "space",
-        "climate",
-        "health",
-        "physics",
-        "neuroscience"
-      ],
-      "exclude_keywords": [
-        "weight loss tips",
-        "celebrity"
-      ],
-      "boost_keywords": [
-        "peer-reviewed",
-        "research",
-        "study",
-        "scientists"
-      ],
+      "include_keywords": ["study", "research", "scientists", "biology", "space", "climate", "health", "physics", "neuroscience"],
+      "exclude_keywords": ["weight loss tips", "celebrity"],
+      "boost_keywords": ["peer-reviewed", "research", "study", "scientists"],
       "min_relevance_score": 0.35,
-      "tags": [
-        "science",
-        "research",
-        "discoveries",
-        "medicine",
-        "space"
-      ]
+      "tags": ["science", "research", "discoveries", "medicine", "space"]
     },
     {
       "id": "nplus1",
@@ -1074,29 +413,10 @@
       "priority": 0.76,
       "language": "ru",
       "translation_required": false,
-      "include_keywords": [
-        "ученые",
-        "исследование",
-        "биология",
-        "космос",
-        "физика",
-        "медицина",
-        "археология",
-        "экология"
-      ],
-      "boost_keywords": [
-        "исследование",
-        "ученые",
-        "эксперимент"
-      ],
+      "include_keywords": ["ученые", "исследование", "биология", "космос", "физика", "медицина", "археология", "экология"],
+      "boost_keywords": ["исследование", "ученые", "эксперимент"],
       "min_relevance_score": 0.3,
-      "tags": [
-        "science",
-        "research",
-        "russia",
-        "space",
-        "biology"
-      ]
+      "tags": ["science", "research", "russia", "space", "biology"]
     }
   ]
 }
