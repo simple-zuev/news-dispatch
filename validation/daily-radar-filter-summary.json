@@ -1,16 +1,20 @@
 {
   "date": "2026-06-29",
-  "generated_count": 24,
-  "kept_count": 24,
-  "filtered_count": 0,
-  "filtered_by_reason": {},
-  "filtered_by_stream": {},
+  "generated_count": 32,
+  "kept_count": 31,
+  "filtered_count": 1,
+  "filtered_by_reason": {
+    "deal_or_discount": 1
+  },
+  "filtered_by_stream": {
+    "crypto-finance": 1
+  },
   "remaining_by_stream": {
-    "ai": 2,
-    "crypto-finance": 9,
-    "finance": 2,
-    "gear-style-edc": 4,
-    "moscow-city": 2,
+    "ai": 4,
+    "crypto-finance": 8,
+    "finance": 7,
+    "gear-style-edc": 6,
+    "moscow-city": 1,
     "tech-hardware-software": 5
   }
 }
