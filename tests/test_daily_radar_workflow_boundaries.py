@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""Regression guard for Daily Radar workflow publication boundaries."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+WORKFLOW = ROOT / ".github" / "workflows" / "daily-radar.yml"
+
+
+def test_daily_radar_does_not_push_to_main() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    forbidden = [
+        "HEAD:main",
+        "git push origin main",
+        "git push origin HEAD:main",
+    ]
+    offenders = [marker for marker in forbidden if marker in text]
+    assert offenders == [], "Daily Radar must not push generated artifacts directly to main: " + ", ".join(offenders)
+
+
+def test_daily_radar_uses_automation_pr_branch() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "pull-requests: write" in text
+    assert "DAILY_RADAR_BRANCH: automation/daily-radar" in text
+    assert "git push --force-with-lease origin HEAD:${DAILY_RADAR_BRANCH}" in text
+    assert "gh pr create" in text
+
+
+def main() -> int:
+    test_daily_radar_does_not_push_to_main()
+    test_daily_radar_uses_automation_pr_branch()
+    print("daily radar workflow boundary tests passed")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
