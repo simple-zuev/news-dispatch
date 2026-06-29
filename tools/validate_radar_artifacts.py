@@ -10,6 +10,8 @@ REQUIRED = [
     "validation/daily-radar-latest.json",
     "validation/daily-radar-filter-summary.json",
     "validation/source-health-latest.json",
+    "validation/source-governance-latest.json",
+    "validation/source-governance-latest.md",
     "validation/reviewed-radar-latest.md",
     "validation/candidate-dispatch-latest.md",
 ]
@@ -32,6 +34,16 @@ def main() -> int:
         feeds = source_health.get("feeds", [])
         if source_health.get("total") != len(feeds):
             errors.append("source-health total must equal feed count")
+        source_governance = load_json("validation/source-governance-latest.json")
+        if source_governance.get("status") != "pre-publication source governance artifact":
+            errors.append("source-governance status must mark pre-publication artifact")
+        if not isinstance(source_governance.get("streams", []), list):
+            errors.append("source-governance streams must be a list")
+        if not isinstance(source_governance.get("feeds", []), list):
+            errors.append("source-governance feeds must be a list")
+        governance_md = (ROOT / "validation/source-governance-latest.md").read_text(encoding="utf-8")
+        if "Status: pre-publication source governance artifact." not in governance_md:
+            errors.append("source-governance markdown missing pre-publication status")
         reviewed = (ROOT / "validation/reviewed-radar-latest.md").read_text(encoding="utf-8")
         candidate = (ROOT / "validation/candidate-dispatch-latest.md").read_text(encoding="utf-8")
         if "Status: pre-publication review artifact." not in reviewed:
