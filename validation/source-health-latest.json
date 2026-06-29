@@ -1,5 +1,5 @@
 {
-  "total": 25,
+  "total": 26,
   "feeds": [
     {
       "id": "rbc-finance",
@@ -39,6 +39,13 @@
     {
       "id": "the-block",
       "title": "The Block",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "crypto-finance-sec-press-releases",
+      "title": "SEC Press Releases",
       "stream": "crypto-finance",
       "enabled": true,
       "status": "ok"
