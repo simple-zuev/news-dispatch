@@ -10,7 +10,7 @@
     },
     {
       "stream": "finance",
-      "signals": 1,
+      "signals": 2,
       "path": "validation/auto-dispatches/finance/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
@@ -19,13 +19,6 @@
       "stream": "gear-style-edc",
       "signals": 3,
       "path": "validation/auto-dispatches/gear-style-edc/2026-06-29-auto-radar-draft.md",
-      "publication_mode": "draft_only",
-      "status": "draft"
-    },
-    {
-      "stream": "tech-hardware-software",
-      "signals": 2,
-      "path": "validation/auto-dispatches/tech-hardware-software/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     }

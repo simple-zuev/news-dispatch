@@ -39,33 +39,33 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://sneakernews.com/2026/06/29/song-for-the-mute-and-adidas-preview-spring-summer-2027-collection/"
-  - "https://sneakernews.com/2026/06/29/nike-air-force-1-low-se-suede-and-patent-leather/"
-  - "https://sneakernews.com/2026/06/29/jordan-triangle-dongdan-iv7236-200/"
+  - "https://sneakernews.com/2026/06/29/celine-paris-reebok-shoes/"
+  - "https://sneakernews.com/2026/06/29/song-for-the-mute-adidas-paris-fashion-week-ss27/"
+  - "https://hypebeast.com/2026/6/prada-gentle-monster-collaboration-2026-release-date-info"
 source_titles:
+  - "Sneaker News: CELINE And Reebok Debut High-Fashion Collab For Nurses"
   - "Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection"
-  - "Sneaker News: The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack"
-  - "Sneaker News: The Jordan Triangle Suits Up For The “Dongdan” Showcase"
+  - "Hypebeast: Gentle Monster Flips the Prada Logo for Debut Collaboration"
 source_types:
   - "Специализированное медиа"
   - "Специализированное медиа"
-  - "Специализированное медиа"
+  - "Культура / стиль"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://sneakernews.com/2026/06/29/song-for-the-mute-and-adidas-preview-spring-summer-2027-collection/"
-  - "https://sneakernews.com/2026/06/29/nike-air-force-1-low-se-suede-and-patent-leather/"
-  - "https://sneakernews.com/2026/06/29/jordan-triangle-dongdan-iv7236-200/"
+  - "https://sneakernews.com/2026/06/29/celine-paris-reebok-shoes/"
+  - "https://sneakernews.com/2026/06/29/song-for-the-mute-adidas-paris-fashion-week-ss27/"
+  - "https://hypebeast.com/2026/6/prada-gentle-monster-collaboration-2026-release-date-info"
 media_titles:
+  - "Sneaker News: CELINE And Reebok Debut High-Fashion Collab For Nurses"
   - "Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection"
-  - "Sneaker News: The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack"
-  - "Sneaker News: The Jordan Triangle Suits Up For The “Dongdan” Showcase"
+  - "Hypebeast: Gentle Monster Flips the Prada Logo for Debut Collaboration"
 media_types:
   - "Специализированное медиа"
   - "Специализированное медиа"
-  - "Специализированное медиа"
+  - "Культура / стиль"
 media_notes:
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -85,15 +85,15 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Song For The Mute And adidas Preview Spring/Summer 2027 Collection — сообщение источника «Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection»; требует проверки перед выводами.
-2. The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack — сообщение источника «Sneaker News: The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack»; требует проверки перед выводами.
-3. The Jordan Triangle Suits Up For The “Dongdan” Showcase — сообщение источника «Sneaker News: The Jordan Triangle Suits Up For The “Dongdan” Showcase»; требует проверки перед выводами.
+1. CELINE And Reebok Debut High-Fashion Collab For Nurses — сообщение источника «Sneaker News: CELINE And Reebok Debut High-Fashion Collab For Nurses»; требует проверки перед выводами.
+2. Song For The Mute And adidas Preview Spring/Summer 2027 Collection — сообщение источника «Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection»; требует проверки перед выводами.
+3. Gentle Monster Flips the Prada Logo for Debut Collaboration — сообщение источника «Hypebeast: Gentle Monster Flips the Prada Logo for Debut Collaboration»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Song For The Mute And adidas Preview Spring/Summer 2027 Collection. Источник: Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection. URL: https://sneakernews.com/2026/06/29/song-for-the-mute-and-adidas-preview-spring-summer-2027-collection/
-- The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack. Источник: Sneaker News: The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack. URL: https://sneakernews.com/2026/06/29/nike-air-force-1-low-se-suede-and-patent-leather/
-- The Jordan Triangle Suits Up For The “Dongdan” Showcase. Источник: Sneaker News: The Jordan Triangle Suits Up For The “Dongdan” Showcase. URL: https://sneakernews.com/2026/06/29/jordan-triangle-dongdan-iv7236-200/
+- CELINE And Reebok Debut High-Fashion Collab For Nurses. Источник: Sneaker News: CELINE And Reebok Debut High-Fashion Collab For Nurses. URL: https://sneakernews.com/2026/06/29/celine-paris-reebok-shoes/
+- Song For The Mute And adidas Preview Spring/Summer 2027 Collection. Источник: Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection. URL: https://sneakernews.com/2026/06/29/song-for-the-mute-adidas-paris-fashion-week-ss27/
+- Gentle Monster Flips the Prada Logo for Debut Collaboration. Источник: Hypebeast: Gentle Monster Flips the Prada Logo for Debut Collaboration. URL: https://hypebeast.com/2026/6/prada-gentle-monster-collaboration-2026-release-date-info
 
 ## Почему это важно
 
@@ -103,7 +103,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: public_media: 1, specialized_media: 2. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -111,9 +111,9 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
+| CELINE And Reebok Debut High-Fashion Collab For Nurses | source_reported_claim | Sneaker News: CELINE And Reebok Debut High-Fashion Collab For Nurses | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 | Song For The Mute And adidas Preview Spring/Summer 2027 Collection | source_reported_claim | Sneaker News: Song For The Mute And adidas Preview Spring/Summer 2027 Collection | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack | source_reported_claim | Sneaker News: The Patent Leather Nike Air Force 1 Movement Continues With New Women’s Pack | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| The Jordan Triangle Suits Up For The “Dongdan” Showcase | source_reported_claim | Sneaker News: The Jordan Triangle Suits Up For The “Dongdan” Showcase | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Gentle Monster Flips the Prada Logo for Debut Collaboration | source_reported_claim | Hypebeast: Gentle Monster Flips the Prada Logo for Debut Collaboration | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
