@@ -26,31 +26,33 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Железо и программное обеспечение»: 4 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Железо и программное обеспечение»: 5 публичных сигналов для редакционной проверки."
 tags:
   - "tech-hardware-software"
   - "infrastructure"
   - "auto-draft"
   - "radar"
 claim_types:
-  - "confirmed_fact"
   - "source_reported_claim"
   - "editorial_inference"
 confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://blogs.nvidia.com/blog/palantir-secure-ai-us-agencies-nemotron-open-models/"
-  - "https://3dnews.ru/1144271"
-  - "https://3dnews.ru/1144268"
-  - "https://3dnews.ru/1144254"
+  - "https://www.tomshardware.com/tech-industry/semiconductors/south-korea-unveils-usd520-billion-investment-plan-with-samsung-and-sk-hynix-to-expand-memory-chip-dominance-plan-includes-four-new-fabs-and-hbm-facilities-amid-strong-government-support"
+  - "https://3dnews.ru/1144280"
+  - "https://www.tomshardware.com/desktops/gaming-pcs/steamroller-becomes-first-prebuilt-gaming-pc-to-ship-with-steamos-ryzen-9600x-radeon-rx-7600-16gb-ddr5-ram-system-available-for-preorder-at-usd1-299"
+  - "https://3dnews.ru/1144283"
+  - "https://www.tomshardware.com/tech-industry/samsung-sk-hynix-and-micron-sued-over-alleged-dram-price-fixing-amid-record-memory-costs"
 source_titles:
-  - "NVIDIA Blog: Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron"
-  - "3DNews: Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей"
-  - "3DNews: Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании"
-  - "3DNews: К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra"
+  - "Tom's Hardware: South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support"
+  - "3DNews: Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D"
+  - "Tom's Hardware: Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299"
+  - "3DNews: Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора"
+  - "Tom's Hardware: Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production"
 source_types:
-  - "Официальный блог"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
@@ -59,18 +61,19 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
+  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://blogs.nvidia.com/blog/palantir-secure-ai-us-agencies-nemotron-open-models/"
-  - "https://3dnews.ru/1144271"
-  - "https://3dnews.ru/1144268"
-  - "https://3dnews.ru/1144254"
+  - "https://www.tomshardware.com/tech-industry/semiconductors/south-korea-unveils-usd520-billion-investment-plan-with-samsung-and-sk-hynix-to-expand-memory-chip-dominance-plan-includes-four-new-fabs-and-hbm-facilities-amid-strong-government-support"
+  - "https://3dnews.ru/1144280"
+  - "https://www.tomshardware.com/desktops/gaming-pcs/steamroller-becomes-first-prebuilt-gaming-pc-to-ship-with-steamos-ryzen-9600x-radeon-rx-7600-16gb-ddr5-ram-system-available-for-preorder-at-usd1-299"
+  - "https://3dnews.ru/1144283"
 media_titles:
-  - "NVIDIA Blog: Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron"
-  - "3DNews: Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей"
-  - "3DNews: Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании"
-  - "3DNews: К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra"
+  - "Tom's Hardware: South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support"
+  - "3DNews: Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D"
+  - "Tom's Hardware: Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299"
+  - "3DNews: Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора"
 media_types:
-  - "Официальный блог"
+  - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
@@ -94,17 +97,19 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron — сообщение источника «NVIDIA Blog: Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron»; требует проверки перед выводами.
-2. Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей — сообщение источника «3DNews: Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей»; требует проверки перед выводами.
-3. Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании — сообщение источника «3DNews: Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании»; требует проверки перед выводами.
-4. К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra — сообщение источника «3DNews: К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra»; требует проверки перед выводами.
+1. South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support — сообщение источника «Tom's Hardware: South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support»; требует проверки перед выводами.
+2. Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D — сообщение источника «3DNews: Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D»; требует проверки перед выводами.
+3. Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299 — сообщение источника «Tom's Hardware: Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299»; требует проверки перед выводами.
+4. Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора — сообщение источника «3DNews: Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора»; требует проверки перед выводами.
+5. Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production — сообщение источника «Tom's Hardware: Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron. Источник: NVIDIA Blog: Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron. URL: https://blogs.nvidia.com/blog/palantir-secure-ai-us-agencies-nemotron-open-models/
-- Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей. Источник: 3DNews: Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей. URL: https://3dnews.ru/1144271
-- Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании. Источник: 3DNews: Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании. URL: https://3dnews.ru/1144268
-- К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra. Источник: 3DNews: К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra. URL: https://3dnews.ru/1144254
+- South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support. Источник: Tom's Hardware: South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support. URL: https://www.tomshardware.com/tech-industry/semiconductors/south-korea-unveils-usd520-billion-investment-plan-with-samsung-and-sk-hynix-to-expand-memory-chip-dominance-plan-includes-four-new-fabs-and-hbm-facilities-amid-strong-government-support
+- Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D. Источник: 3DNews: Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D. URL: https://3dnews.ru/1144280
+- Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299. Источник: Tom's Hardware: Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299. URL: https://www.tomshardware.com/desktops/gaming-pcs/steamroller-becomes-first-prebuilt-gaming-pc-to-ship-with-steamos-ryzen-9600x-radeon-rx-7600-16gb-ddr5-ram-system-available-for-preorder-at-usd1-299
+- Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора. Источник: 3DNews: Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора. URL: https://3dnews.ru/1144283
+- Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production. Источник: Tom's Hardware: Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production. URL: https://www.tomshardware.com/tech-industry/samsung-sk-hynix-and-micron-sued-over-alleged-dram-price-fixing-amid-record-memory-costs
 
 ## Почему это важно
 
@@ -114,7 +119,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: official_source: 1, specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 5. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -122,10 +127,11 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron | source_reported_claim | NVIDIA Blog: Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей | source_reported_claim | 3DNews: Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании | source_reported_claim | 3DNews: Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra | source_reported_claim | 3DNews: К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support | source_reported_claim | Tom's Hardware: South Korea unveils $520 billion investment plan with Samsung and SK Hynix to expand memory chip dominance — plan includes four new fabs and HBM facilities, amid strong government support | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D | source_reported_claim | 3DNews: Gigabyte выпустила плату B850 Aorus Elite X3D с оптимизациями для Ryzen X3D | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299 | source_reported_claim | Tom's Hardware: Steamroller becomes first prebuilt gaming PC to ship with SteamOS — Ryzen 9600X, Radeon RX 7600, 16GB DDR5 RAM system available for preorder at $1,299 | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора | source_reported_claim | 3DNews: Asus выпустила 12,3-дюймовый сенсорный экран ROG Strix XG129C для ПК по цене полноразмерного монитора | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production | source_reported_claim | Tom's Hardware: Samsung, SK hynix, and Micron sued over alleged DRAM price fixing amid record memory costs — lawsuit claims coordinated HBM shift was cover to curtail DDR3 and DDR4 production | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

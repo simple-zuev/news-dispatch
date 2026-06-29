@@ -1,13 +1,14 @@
 ---
-title: "Москва: события и места: черновик обзора сигналов за 2026-06-29"
+title: "Искусственный интеллект: черновик обзора сигналов за 2026-06-29"
 date: "2026-06-29"
 period: "2026-06-29"
-stream: "moscow-city"
+stream: "ai"
 type: "daily"
-primary_rubric: "city-culture"
+primary_rubric: "product-platform"
 rubrics:
-  - "city-culture"
-  - "consumer-use"
+  - "product-platform"
+  - "research-evidence"
+  - "security-abuse"
 issue_type: "daily-radar-review"
 language: "ru"
 status: "draft"
@@ -25,40 +26,39 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Москва: события и места»: 2 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Искусственный интеллект»: 2 публичных сигналов для редакционной проверки."
 tags:
-  - "moscow-city"
-  - "city-culture"
+  - "ai"
+  - "product-platform"
   - "auto-draft"
   - "radar"
 claim_types:
   - "source_reported_claim"
   - "editorial_inference"
-  - "community_signal"
 confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.m24.ru/news/29062026/915288"
-  - "https://www.m24.ru/news/29062026/915149"
+  - "https://www.technologyreview.com/2026/06/29/1139635/agent-confidence-on-the-technical-frontier/"
+  - "https://www.technologyreview.com/2026/06/29/1139834/the-download-metric-weaknesses-ai-elephant-warnings/"
 source_titles:
-  - "Москва 24: Рэпер Lil Pump впервые даст большой сольный концерт в Москве"
-  - "Москва 24: Убийцы омского студента специально приехали в город для преступления"
+  - "MIT Technology Review: Agent confidence on the technical frontier"
+  - "MIT Technology Review: The Download: metric weaknesses and AI elephant warnings"
 source_types:
-  - "Городское медиа"
-  - "Городское медиа"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.m24.ru/news/29062026/915288"
-  - "https://www.m24.ru/news/29062026/915149"
+  - "https://www.technologyreview.com/2026/06/29/1139635/agent-confidence-on-the-technical-frontier/"
+  - "https://www.technologyreview.com/2026/06/29/1139834/the-download-metric-weaknesses-ai-elephant-warnings/"
 media_titles:
-  - "Москва 24: Рэпер Lil Pump впервые даст большой сольный концерт в Москве"
-  - "Москва 24: Убийцы омского студента специально приехали в город для преступления"
+  - "MIT Technology Review: Agent confidence on the technical frontier"
+  - "MIT Technology Review: The Download: metric weaknesses and AI elephant warnings"
 media_types:
-  - "Городское медиа"
-  - "Городское медиа"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
 media_notes:
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -69,21 +69,21 @@ privacy_review: "auto_passed_public_sources_only"
 editorial_review: "automatic_draft_needs_human_review"
 ---
 
-# Москва: события и места: черновик обзора сигналов за 2026-06-29
+# Искусственный интеллект: черновик обзора сигналов за 2026-06-29
 
 ## Лид
 
-Это автоматический черновик по теме «Москва: события и места». Он собирает публичные сигналы за период и помогает редактору быстро понять, какие события стоит проверить дальше. Черновик не является опубликованным выпуском и не содержит итоговых рекомендаций.
+Это автоматический черновик по теме «Искусственный интеллект». Он собирает публичные сигналы за период и помогает редактору быстро понять, какие события стоит проверить дальше. Черновик не является опубликованным выпуском и не содержит итоговых рекомендаций.
 
 ## Главное
 
-1. Рэпер Lil Pump впервые даст большой сольный концерт в Москве — сообщение источника «Москва 24: Рэпер Lil Pump впервые даст большой сольный концерт в Москве»; требует проверки перед выводами.
-2. Убийцы омского студента специально приехали в город для преступления — сообщение источника «Москва 24: Убийцы омского студента специально приехали в город для преступления»; требует проверки перед выводами.
+1. Agent confidence on the technical frontier — сообщение источника «MIT Technology Review: Agent confidence on the technical frontier»; требует проверки перед выводами.
+2. The Download: metric weaknesses and AI elephant warnings — сообщение источника «MIT Technology Review: The Download: metric weaknesses and AI elephant warnings»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Рэпер Lil Pump впервые даст большой сольный концерт в Москве. Источник: Москва 24: Рэпер Lil Pump впервые даст большой сольный концерт в Москве. URL: https://www.m24.ru/news/29062026/915288
-- Убийцы омского студента специально приехали в город для преступления. Источник: Москва 24: Убийцы омского студента специально приехали в город для преступления. URL: https://www.m24.ru/news/29062026/915149
+- Agent confidence on the technical frontier. Источник: MIT Technology Review: Agent confidence on the technical frontier. URL: https://www.technologyreview.com/2026/06/29/1139635/agent-confidence-on-the-technical-frontier/
+- The Download: metric weaknesses and AI elephant warnings. Источник: MIT Technology Review: The Download: metric weaknesses and AI elephant warnings. URL: https://www.technologyreview.com/2026/06/29/1139834/the-download-metric-weaknesses-ai-elephant-warnings/
 
 ## Почему это важно
 
@@ -101,8 +101,8 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Рэпер Lil Pump впервые даст большой сольный концерт в Москве | source_reported_claim | Москва 24: Рэпер Lil Pump впервые даст большой сольный концерт в Москве | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Убийцы омского студента специально приехали в город для преступления | source_reported_claim | Москва 24: Убийцы омского студента специально приехали в город для преступления | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Agent confidence on the technical frontier | source_reported_claim | MIT Technology Review: Agent confidence on the technical frontier | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Download: metric weaknesses and AI elephant warnings | source_reported_claim | MIT Technology Review: The Download: metric weaknesses and AI elephant warnings | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

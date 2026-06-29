@@ -39,19 +39,19 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.coindesk.com/business/2026/06/29/fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and-crypto"
-  - "https://www.coindesk.com/business/2026/06/29/crypto-exchange-bitmex-removes-ceo-cfo-and-head-of-growth"
-  - "https://www.theblock.co/post/406502/indias-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-stablecoin-supply-report?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/markets/2026/06/29/bitcoin-hovers-below-usd60-000-as-crypto-braces-for-a-pivotal-week"
-  - "https://www.theblock.co/post/406470/kiwoom-securities-bithumb?utm_source=rss&utm_medium=rss"
-  - "https://cointelegraph.com/news/kiwoom-stake-bithumb-exchange?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/business/2026/06/29/wall-street-s-bny-expands-stablecoin-services-for-institutions-starting-with-circle-s-usdc"
+  - "https://cointelegraph.com/features/from-bitcoin-critics-to-blockchain-believers-the-5-biggest-crypto-backflips?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/tech/2026/06/29/vitalik-buterin-says-crypto-s-most-powerful-idea-is-still-nowhere-near-ready"
+  - "https://www.coindesk.com/tech/2026/06/29/bitcoin-dips-to-usd59-700-as-iran-de-escalation-lifts-stocks-but-not-crypto"
+  - "https://www.theblock.co/post/405670/blackrock-ethena-partnership-usde?utm_source=rss&utm_medium=rss"
+  - "https://www.theblock.co/post/406516/bitcoin-clings-to-key-support-level-as-weekly-us-spot-etf-outflows-hit-1-8b-and-fed-rate-hike-bets-mount-analysts?utm_source=rss&utm_medium=rss"
 source_titles:
-  - "CoinDesk: FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto"
-  - "CoinDesk: Crypto exchange BitMEX loses CEO, CFO and head of growth"
-  - "The Block: India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report"
-  - "CoinDesk: Bitcoin hovers below $60,000 as crypto braces for a pivotal week"
-  - "The Block: South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report"
-  - "Cointelegraph: Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report"
+  - "CoinDesk: Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC"
+  - "Cointelegraph: From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips"
+  - "CoinDesk: Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use"
+  - "CoinDesk: Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest"
+  - "The Block: BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products"
+  - "The Block: Bitcoin clings to key support level as weekly US spot ETF outflows hit $1.8B and Fed rate hike bets mount: analysts"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.coindesk.com/business/2026/06/29/fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and-crypto"
-  - "https://www.coindesk.com/business/2026/06/29/crypto-exchange-bitmex-removes-ceo-cfo-and-head-of-growth"
-  - "https://www.theblock.co/post/406502/indias-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-stablecoin-supply-report?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/markets/2026/06/29/bitcoin-hovers-below-usd60-000-as-crypto-braces-for-a-pivotal-week"
+  - "https://www.coindesk.com/business/2026/06/29/wall-street-s-bny-expands-stablecoin-services-for-institutions-starting-with-circle-s-usdc"
+  - "https://cointelegraph.com/features/from-bitcoin-critics-to-blockchain-believers-the-5-biggest-crypto-backflips?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/tech/2026/06/29/vitalik-buterin-says-crypto-s-most-powerful-idea-is-still-nowhere-near-ready"
+  - "https://www.coindesk.com/tech/2026/06/29/bitcoin-dips-to-usd59-700-as-iran-de-escalation-lifts-stocks-but-not-crypto"
 media_titles:
-  - "CoinDesk: FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto"
-  - "CoinDesk: Crypto exchange BitMEX loses CEO, CFO and head of growth"
-  - "The Block: India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report"
-  - "CoinDesk: Bitcoin hovers below $60,000 as crypto braces for a pivotal week"
+  - "CoinDesk: Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC"
+  - "Cointelegraph: From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips"
+  - "CoinDesk: Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use"
+  - "CoinDesk: Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto — сообщение источника «CoinDesk: FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto»; требует проверки перед выводами.
-2. Crypto exchange BitMEX loses CEO, CFO and head of growth — сообщение источника «CoinDesk: Crypto exchange BitMEX loses CEO, CFO and head of growth»; требует проверки перед выводами.
-3. India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report — сообщение источника «The Block: India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report»; требует проверки перед выводами.
-4. Bitcoin hovers below $60,000 as crypto braces for a pivotal week — сообщение источника «CoinDesk: Bitcoin hovers below $60,000 as crypto braces for a pivotal week»; требует проверки перед выводами.
-5. South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report — сообщение источника «The Block: South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report»; требует проверки перед выводами.
+1. Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC — сообщение источника «CoinDesk: Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC»; требует проверки перед выводами.
+2. From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips — сообщение источника «Cointelegraph: From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips»; требует проверки перед выводами.
+3. Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use — сообщение источника «CoinDesk: Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use»; требует проверки перед выводами.
+4. Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest — сообщение источника «CoinDesk: Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest»; требует проверки перед выводами.
+5. BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products — сообщение источника «The Block: BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products»; требует проверки перед выводами.
 
 ## Что произошло
 
-- FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto. Источник: CoinDesk: FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto. URL: https://www.coindesk.com/business/2026/06/29/fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and-crypto
-- Crypto exchange BitMEX loses CEO, CFO and head of growth. Источник: CoinDesk: Crypto exchange BitMEX loses CEO, CFO and head of growth. URL: https://www.coindesk.com/business/2026/06/29/crypto-exchange-bitmex-removes-ceo-cfo-and-head-of-growth
-- India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report. Источник: The Block: India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report. URL: https://www.theblock.co/post/406502/indias-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-stablecoin-supply-report?utm_source=rss&utm_medium=rss
-- Bitcoin hovers below $60,000 as crypto braces for a pivotal week. Источник: CoinDesk: Bitcoin hovers below $60,000 as crypto braces for a pivotal week. URL: https://www.coindesk.com/markets/2026/06/29/bitcoin-hovers-below-usd60-000-as-crypto-braces-for-a-pivotal-week
-- South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report. Источник: The Block: South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report. URL: https://www.theblock.co/post/406470/kiwoom-securities-bithumb?utm_source=rss&utm_medium=rss
-- Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report. Источник: Cointelegraph: Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report. URL: https://cointelegraph.com/news/kiwoom-stake-bithumb-exchange?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC. Источник: CoinDesk: Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC. URL: https://www.coindesk.com/business/2026/06/29/wall-street-s-bny-expands-stablecoin-services-for-institutions-starting-with-circle-s-usdc
+- From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips. Источник: Cointelegraph: From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips. URL: https://cointelegraph.com/features/from-bitcoin-critics-to-blockchain-believers-the-5-biggest-crypto-backflips?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use. Источник: CoinDesk: Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use. URL: https://www.coindesk.com/tech/2026/06/29/vitalik-buterin-says-crypto-s-most-powerful-idea-is-still-nowhere-near-ready
+- Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest. Источник: CoinDesk: Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest. URL: https://www.coindesk.com/tech/2026/06/29/bitcoin-dips-to-usd59-700-as-iran-de-escalation-lifts-stocks-but-not-crypto
+- BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products. Источник: The Block: BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products. URL: https://www.theblock.co/post/405670/blackrock-ethena-partnership-usde?utm_source=rss&utm_medium=rss
+- Bitcoin clings to key support level as weekly US spot ETF outflows hit $1.8B and Fed rate hike bets mount: analysts. Источник: The Block: Bitcoin clings to key support level as weekly US spot ETF outflows hit $1.8B and Fed rate hike bets mount: analysts. URL: https://www.theblock.co/post/406516/bitcoin-clings-to-key-support-level-as-weekly-us-spot-etf-outflows-hit-1-8b-and-fed-rate-hike-bets-mount-analysts?utm_source=rss&utm_medium=rss
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto | source_reported_claim | CoinDesk: FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Crypto exchange BitMEX loses CEO, CFO and head of growth | source_reported_claim | CoinDesk: Crypto exchange BitMEX loses CEO, CFO and head of growth | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report | source_reported_claim | The Block: India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Bitcoin hovers below $60,000 as crypto braces for a pivotal week | source_reported_claim | CoinDesk: Bitcoin hovers below $60,000 as crypto braces for a pivotal week | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report | source_reported_claim | The Block: South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report | source_reported_claim | Cointelegraph: Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC | source_reported_claim | CoinDesk: Wall Street's BNY expands stablecoin services for institutions, starting with Circle's USDC | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips | source_reported_claim | Cointelegraph: From Bitcoin critics to blockchain believers: The 5 biggest crypto backflips | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use | source_reported_claim | CoinDesk: Vitalik Buterin says crypto’s most powerful idea isn't nearly ready for use | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest | source_reported_claim | CoinDesk: Live updates: bitcoin back below $60,000 after brief bounce on Strategy's latest | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products | source_reported_claim | The Block: BlackRock’s Aladdin platform adds deeper support for Ethena’s stablecoin products | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Bitcoin clings to key support level as weekly US spot ETF outflows hit $1.8B and Fed rate hike bets mount: analysts | source_reported_claim | The Block: Bitcoin clings to key support level as weekly US spot ETF outflows hit $1.8B and Fed rate hike bets mount: analysts | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

@@ -2,19 +2,30 @@
   "date": "2026-06-29",
   "generated": [
     {
+      "stream": "ai",
+      "status": "signals-only",
+      "count": 2,
+      "signals": [
+        "signals/2026-06-29/ai/7401eebcf5f39059-agent-confidence-on-the-technical-frontier.md",
+        "signals/2026-06-29/ai/04fc822f835a7be3-the-download-metric-weaknesses-and-ai-elephant-warnings.md"
+      ],
+      "media_count": 2,
+      "routing": "feed_owned"
+    },
+    {
       "stream": "crypto-finance",
       "status": "signals-only",
       "count": 9,
       "signals": [
-        "signals/2026-06-29/crypto-finance/e8c60fe68934041e-fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and.md",
-        "signals/2026-06-29/crypto-finance/5fce0edfc7debe9d-crypto-exchange-bitmex-loses-ceo-cfo-and-head-of-growth.md",
-        "signals/2026-06-29/crypto-finance/a7feba16ad19201b-india-s-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-st.md",
-        "signals/2026-06-29/crypto-finance/73ce3df604bc4ad1-bitcoin-hovers-below-60-000-as-crypto-braces-for-a-pivotal-week.md",
-        "signals/2026-06-29/crypto-finance/40c11c23f9473320-south-korea-s-kiwoom-securities-to-acquire-stake-in-bithumb-crypto-excha.md",
-        "signals/2026-06-29/crypto-finance/2fc33935fc96be10-kiwoom-eyes-bithumb-stake-as-korean-brokerages-push-into-crypto-report.md",
-        "signals/2026-06-29/crypto-finance/38ae777214a5fffc-ethereum-zkrollup-project-loopring-sunsets-dex-citing-lack-of-meaningful.md",
-        "signals/2026-06-29/crypto-finance/8fcba54282627a3b-btc-price-rsi-prints-key-2026-signal-five-things-to-know-in-bitcoin-this.md",
-        "signals/2026-06-29/crypto-finance/4c5f2a2187a7bb9a-vitalik-buterin-says-obfuscation-could-unlock-private-onchain-crypto-vot.md"
+        "signals/2026-06-29/crypto-finance/2d8f49fc275a6f22-wall-street-s-bny-expands-stablecoin-services-for-institutions-starting.md",
+        "signals/2026-06-29/crypto-finance/4e5c6c9046b0cf84-from-bitcoin-critics-to-blockchain-believers-the-5-biggest-crypto-backfl.md",
+        "signals/2026-06-29/crypto-finance/27127ca61917b588-vitalik-buterin-says-crypto-s-most-powerful-idea-isn-t-nearly-ready-for.md",
+        "signals/2026-06-29/crypto-finance/dd5bbe4d11a1b14a-live-updates-bitcoin-back-below-60-000-after-brief-bounce-on-strategy-s.md",
+        "signals/2026-06-29/crypto-finance/9cc07ac6b74d522a-blackrock-s-aladdin-platform-adds-deeper-support-for-ethena-s-stablecoin.md",
+        "signals/2026-06-29/crypto-finance/2c810cfe19cf2c00-bitcoin-clings-to-key-support-level-as-weekly-us-spot-etf-outflows-hit-1.md",
+        "signals/2026-06-29/crypto-finance/e758619645c0d61e-strategy-pauses-bitcoin-buys-establishes-1b-digital-credit-repurchase-pr.md",
+        "signals/2026-06-29/crypto-finance/dbe8f30438363a17-prediction-market-operational-consolidation-could-spur-m-a-wave-bernstei.md",
+        "signals/2026-06-29/crypto-finance/f39989b8ac530206-strategy-unveils-capital-framework-to-preserve-bitcoin-exposure-pay-divi.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -22,30 +33,23 @@
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 8,
+      "count": 2,
       "signals": [
-        "signals/2026-06-29/finance/df97523e6aa4a16b-kommersant-finance.md",
-        "signals/2026-06-29/finance/416d63390916fc70-rbc-finance.md",
-        "signals/2026-06-29/finance/ceda04bd355d934f-kommersant-finance.md",
-        "signals/2026-06-29/finance/e10a65bdd23035cc-cbr-news.md",
-        "signals/2026-06-29/finance/d87712a99cc0b1fd-17-19--2026.md",
-        "signals/2026-06-29/finance/18060958977ef24c-kommersant-finance.md",
-        "signals/2026-06-29/finance/568a532c2c23346c-cbr-news.md",
-        "signals/2026-06-29/finance/ee933730eb3a59fd-oracle------2001.md"
+        "signals/2026-06-29/finance/27c2287561f31d12-cbr-news.md",
+        "signals/2026-06-29/finance/a0c03947943e5dbc-kommersant-finance.md"
       ],
-      "media_count": 4,
+      "media_count": 2,
       "routing": "feed_owned"
     },
     {
       "stream": "gear-style-edc",
       "status": "signals-only",
-      "count": 5,
+      "count": 4,
       "signals": [
-        "signals/2026-06-29/gear-style-edc/626f7113231452c4-the-nike-air-max-tl-2-5-wears-vibrant-dusty-cactus-trim.md",
-        "signals/2026-06-29/gear-style-edc/ae92928ddd4392b7-the-nike-dunk-low-suits-up-for-gameday.md",
-        "signals/2026-06-29/gear-style-edc/89ddefb739c3f75d-palace-skateboards-celebrates-the-detroit-tigers-with-a-seven-piece-313.md",
-        "signals/2026-06-29/gear-style-edc/dba80a77a60cd086-wooyoungmi-ss27-translates-the-korean-concept-of-heung-into-a-sentient-w.md",
-        "signals/2026-06-29/gear-style-edc/d80f5c2470f1be01-celine-spring-2027-menswear-plays-in-the-friction-of-tough-tender.md"
+        "signals/2026-06-29/gear-style-edc/fd1bb22548a9e998-nike-is-releasing-an-air-force-1-low-for-the-mlb-all-star-game.md",
+        "signals/2026-06-29/gear-style-edc/c3e77b778b369ba6-studio-nicholson-debuts-at-paris-fashion-week-with-its-ss27-collection.md",
+        "signals/2026-06-29/gear-style-edc/3cf9c173c256d7cd-bape-s-mary-jane-sta-fuses-sta-streetwear-with-a-feminine-low-top-silhou.md",
+        "signals/2026-06-29/gear-style-edc/c3ae7afec48510ac-the-nike-moon-shoe-og-cacao-wow-is-a-faithful-recreation-of-the-waffle-s.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -53,52 +57,28 @@
     {
       "stream": "moscow-city",
       "status": "signals-only",
-      "count": 3,
+      "count": 2,
       "signals": [
-        "signals/2026-06-29/moscow-city/46365940e2edb091-m24-moscow-news.md",
-        "signals/2026-06-29/moscow-city/9a51d7f10c293466-6.md",
-        "signals/2026-06-29/moscow-city/429a67f86c2038f2-m24-moscow-news.md"
+        "signals/2026-06-29/moscow-city/2d9b6b34a32ae905-lil-pump.md",
+        "signals/2026-06-29/moscow-city/d48bbaed6eb2d568-m24-moscow-news.md"
       ],
-      "media_count": 3,
-      "routing": "feed_owned"
-    },
-    {
-      "stream": "science-discovery",
-      "status": "signals-only",
-      "count": 3,
-      "signals": [
-        "signals/2026-06-29/science-discovery/46d317c565e29fe1-millions-take-omega-3-fish-oil-for-brain-health-but-a-new-study-found-no.md",
-        "signals/2026-06-29/science-discovery/43da7252e92f3eb8-these-fat-filled-brain-cells-may-be-making-multiple-sclerosis-worse.md",
-        "signals/2026-06-29/science-discovery/d9ec23e8477c070c-brain-activity-under-anesthesia-challenges-what-we-know-about-consciousn.md"
-      ],
-      "media_count": 3,
+      "media_count": 2,
       "routing": "feed_owned"
     },
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 4,
+      "count": 5,
       "signals": [
-        "signals/2026-06-29/tech-hardware-software/e32b6bfc0436d5b8-open-models-closed-environments-palantir-brings-secure-ai-to-us-agencies.md",
-        "signals/2026-06-29/tech-hardware-software/31a6892b1e6ae412-3dnews.md",
-        "signals/2026-06-29/tech-hardware-software/30d4d526c0839686-apple-------500.md",
-        "signals/2026-06-29/tech-hardware-software/556e1b23e895051f-2028--apple--mac-studio----m7-ultra.md"
+        "signals/2026-06-29/tech-hardware-software/6986a13abe8dd9bc-south-korea-unveils-520-billion-investment-plan-with-samsung-and-sk-hyni.md",
+        "signals/2026-06-29/tech-hardware-software/8fa9bb9b4b594ceb-gigabyte---b850-aorus-elite-x3d----ryzen-x3d.md",
+        "signals/2026-06-29/tech-hardware-software/05eea989d7801595-steamroller-becomes-first-prebuilt-gaming-pc-to-ship-with-steamos-ryzen.md",
+        "signals/2026-06-29/tech-hardware-software/392d6e5bc6795395-asus--12-3----rog-strix-xg129c.md",
+        "signals/2026-06-29/tech-hardware-software/f366fbd15bd2601a-samsung-sk-hynix-and-micron-sued-over-alleged-dram-price-fixing-amid-rec.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     }
   ],
-  "fetch_errors": [],
-  "filtered_signals": [
-    {
-      "path": "signals/2026-06-29/tech-hardware-software/2aaf7e3926554fc8-save-a-massive-1-100-on-this-rtx-5080-gaming-pc-with-a-9800x3d-from-hp-n.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    },
-    {
-      "path": "signals/2026-06-29/tech-hardware-software/5691dbc6e6f0717c-pick-up-hoto-s-ultra-useful-3d-printing-tool-for-just-29-save-40-on-this.md",
-      "reason": "deal_or_discount",
-      "stream": "tech-hardware-software"
-    }
-  ]
+  "fetch_errors": []
 }
