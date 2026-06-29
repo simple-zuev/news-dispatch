@@ -15,18 +15,21 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: daily-radar
   cancel-in-progress: false
 
 jobs:
-  collect-commit:
+  collect-propose:
     runs-on: ubuntu-latest
     env:
       DAILY_RADAR_MAX_ITEMS: ${{ inputs.max_items || '56' }}
       DAILY_RADAR_MIN_ITEMS: "2"
       DAILY_RADAR_LOOKBACK_HOURS: "36"
+      DAILY_RADAR_BRANCH: automation/daily-radar
+      DAILY_RADAR_PR_TITLE: "dispatch: update daily radar content"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,26 +55,47 @@ jobs:
       - name: Run privacy scan
         run: python tools/privacy_scan.py
 
-      - name: Commit Daily Radar content changes
+      - name: Commit Daily Radar content changes to automation branch
+        id: commit
         run: |
           git config user.name "news-dispatch-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add signals data validation dispatches
+          git add signals data validation
           if git diff --cached --quiet --exit-code; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "No signal, draft or report changes to commit."
             git reset --hard HEAD
             exit 0
           fi
+          git checkout -B "${DAILY_RADAR_BRANCH}"
           git commit -m "dispatch: update daily radar content"
-          git reset --hard HEAD
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git rebase origin/main
-            if git push origin HEAD:main; then
-              exit 0
-            fi
-            echo "Push attempt ${attempt} failed; retrying after rebase."
-            sleep 2
-          done
-          echo "Daily Radar push failed after retries."
-          exit 1
+          git push --force-with-lease origin HEAD:${DAILY_RADAR_BRANCH}
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update Daily Radar pull request
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body_file="/tmp/daily-radar-pr-body.md"
+          cat > "$body_file" <<'EOF'
+          Automated Daily Radar generated signal and validation artifacts.
+
+          Boundary:
+          - generated changes are proposed through this PR;
+          - this workflow does not push generated content directly to main;
+          - auto-radar draft outputs belong under validation/auto-dispatches/;
+          - publication to dispatches/ remains a separate policy-gated step.
+          EOF
+
+          if gh pr view "${DAILY_RADAR_BRANCH}" --base main --json number >/dev/null 2>&1; then
+            pr_number="$(gh pr view "${DAILY_RADAR_BRANCH}" --base main --json number --jq .number)"
+            gh pr edit "$pr_number" --title "${DAILY_RADAR_PR_TITLE}" --body-file "$body_file"
+            echo "Updated Daily Radar PR #${pr_number}."
+          else
+            gh pr create \
+              --base main \
+              --head "${DAILY_RADAR_BRANCH}" \
+              --title "${DAILY_RADAR_PR_TITLE}" \
+              --body-file "$body_file"
+          fi
