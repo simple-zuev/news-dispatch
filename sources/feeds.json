@@ -97,6 +97,7 @@
       "language": "en",
       "translation_required": true,
       "include_keywords": ["crypto", "bitcoin", "ethereum", "stablecoin", "exchange", "custody", "market", "tokenization", "regulation"],
+      "exclude_keywords": ["price prediction", "airdrop", "giveaway", "celebrity", "nft art"],
       "boost_keywords": ["market structure", "regulation", "custody", "stablecoin", "exchange"],
       "min_relevance_score": 0.35,
       "tags": ["crypto", "market-structure", "exchanges", "stablecoins", "regulation"]
@@ -159,6 +160,7 @@
       "language": "en",
       "translation_required": true,
       "include_keywords": ["ai", "artificial intelligence", "model", "llm", "safety", "research", "robot", "automation"],
+      "exclude_keywords": ["climate", "battery", "energy", "biotech", "gene", "health", "space", "quantum", "chip"],
       "boost_keywords": ["safety", "research", "policy", "model"],
       "min_relevance_score": 0.35,
       "tags": ["ai", "research", "safety", "horizon"]
@@ -261,13 +263,14 @@
       "title": "Hypebeast",
       "url": "https://hypebeast.com/feed",
       "stream": "gear-style-edc",
-      "source_type": "Культура / стиль",
-      "source_class": "public_media",
-      "priority": 0.62,
+      "source_type": "Специализированное медиа / стиль",
+      "source_class": "specialized_media",
+      "priority": 0.66,
       "language": "en",
       "translation_required": true,
       "include_keywords": ["design", "fashion", "watch", "sneaker", "bag", "furniture", "material", "collection"],
       "exclude_keywords": ["movie", "trailer", "album", "celebrity", "ticket", "deal"],
+      "boost_keywords": ["material", "technical apparel", "watch", "bag", "furniture", "design collaboration"],
       "penalty_keywords": ["music video", "entertainment"],
       "min_relevance_score": 0.4,
       "tags": ["style", "sneakers", "apparel", "culture"]
