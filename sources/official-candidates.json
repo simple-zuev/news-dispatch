@@ -1,0 +1,108 @@
+{
+  "status": "pre-production source candidate registry",
+  "purpose": "Track candidate official or high-trust sources before they are promoted into sources/feeds.json.",
+  "promotion_policy": [
+    "Candidates must not be consumed by Daily Radar until promoted into sources/feeds.json through a separate reviewed PR.",
+    "Candidate URLs must be manually verified for stable RSS or Atom output before promotion.",
+    "Each promoted source must keep a source_class, keyword gates and an editorial rationale.",
+    "Official-source candidates should be preferred for streams with zero enabled official coverage in validation/source-governance-latest.*."
+  ],
+  "allowed_statuses": [
+    "candidate",
+    "needs_verification",
+    "rejected",
+    "promoted"
+  ],
+  "candidates": [
+    {
+      "id": "crypto-finance-official-source-gap",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "status": "needs_verification",
+      "title": "Official crypto-finance regulator / exchange / enforcement feed candidate",
+      "candidate_url": "",
+      "candidate_url_status": "missing",
+      "rationale": "Source governance reports zero enabled official-source coverage for crypto-finance. Add a stable official regulator, exchange, court, enforcement or standards feed only after URL verification.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content",
+        "confirm source ownership and official status",
+        "define include_keywords and exclude_keywords before promotion",
+        "confirm the source improves confirmation rather than adds market-noise"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "notes": "Do not promote generic market-price feeds as official confirmation sources."
+    },
+    {
+      "id": "moscow-city-official-source-gap",
+      "stream": "moscow-city",
+      "source_class": "official_source",
+      "status": "needs_verification",
+      "title": "Stable official Moscow city feed replacement or fallback",
+      "candidate_url": "",
+      "candidate_url_status": "missing",
+      "rationale": "mos-ru-news is disabled after repeated production timeouts, leaving moscow-city without enabled official-source coverage.",
+      "verification_requirements": [
+        "verify a stable official Moscow RSS or Atom endpoint",
+        "confirm it does not timeout in production-like fetches",
+        "define city-service, transport and infrastructure keyword gates",
+        "keep mos-ru-news disabled unless stability is demonstrated"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "notes": "A stable official fallback is preferable to re-enabling a timeout-prone feed."
+    },
+    {
+      "id": "science-discovery-research-source-gap",
+      "stream": "science-discovery",
+      "source_class": "research_media",
+      "status": "needs_verification",
+      "title": "Stable research journal or institutional science feed candidate",
+      "candidate_url": "",
+      "candidate_url_status": "missing",
+      "rationale": "nature-news is disabled after XML parse errors; science-discovery keeps only one enabled high-trust research source.",
+      "verification_requirements": [
+        "verify valid RSS or Atom XML",
+        "confirm source is a research journal, institution or high-trust science publication",
+        "define research-focused gates and exclude low-signal health/lifestyle topics",
+        "confirm generated signals include source attribution suitable for pre-publication review"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "notes": "Do not re-enable nature-news until its endpoint parses reliably."
+    },
+    {
+      "id": "dj-audio-official-source-gap",
+      "stream": "dj-audio-creative",
+      "source_class": "official_source",
+      "status": "candidate",
+      "title": "Official audio software / hardware vendor release feed candidate",
+      "candidate_url": "",
+      "candidate_url_status": "missing",
+      "rationale": "dj-audio-creative has specialized media coverage but no official-source confirmation layer for product releases or platform changes.",
+      "verification_requirements": [
+        "verify stable official vendor news or release feed",
+        "confirm source is not a marketing-only landing page without dated entries",
+        "define keyword gates for release, controller, mixer, plugin, driver and compatibility updates",
+        "ensure vendor source is not over-weighted as neutral editorial confirmation"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "notes": "Official vendor feeds should complement, not replace, specialized media coverage."
+    },
+    {
+      "id": "gear-style-edc-official-source-gap",
+      "stream": "gear-style-edc",
+      "source_class": "official_source",
+      "status": "candidate",
+      "title": "Official brand / platform release feed candidate for gear-style-edc",
+      "candidate_url": "",
+      "candidate_url_status": "missing",
+      "rationale": "gear-style-edc has public/specialized style coverage but no official-source confirmation layer for release and collaboration signals.",
+      "verification_requirements": [
+        "verify stable official brand, retailer or platform feed",
+        "confirm dated release entries and durable URLs",
+        "define keyword gates for product releases, design, material, watch, bag, footwear and technical apparel",
+        "avoid turning brand marketing copy into editorial conclusion without corroboration"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "notes": "Official brand feeds are useful as confirmation signals but require editorial framing."
+    }
+  ]
+}
