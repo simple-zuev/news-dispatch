@@ -1,13 +1,11 @@
 {
   "date": "2026-06-29",
-  "generated_count": 12,
-  "kept_count": 12,
+  "generated_count": 4,
+  "kept_count": 4,
   "filtered_count": 0,
   "filtered_by_reason": {},
   "filtered_by_stream": {},
   "remaining_by_stream": {
-    "crypto-finance": 7,
-    "finance": 2,
-    "gear-style-edc": 3
+    "crypto-finance": 4
   }
 }

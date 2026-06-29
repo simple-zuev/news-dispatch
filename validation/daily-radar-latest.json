@@ -4,40 +4,14 @@
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 7,
+      "count": 4,
       "signals": [
-        "signals/2026-06-29/crypto-finance/69ecfe481226977f-blackrock-pushes-deeper-into-defi-with-ethena-integration-sending-ena-up.md",
-        "signals/2026-06-29/crypto-finance/7408dd982647ddef-dollar-u-s-treasury-yield-market-positions-may-carry-glimmer-of-hope-for.md",
-        "signals/2026-06-29/crypto-finance/f23f18c72b84011e-private-keys-not-smart-contracts-caused-40-of-crypto-s-16-billion-hack-l.md",
-        "signals/2026-06-29/crypto-finance/c1aa7636aca72cf5-bitcoin-put-call-ratio-hits-1-year-high-are-bears-preparing-for-drop-to.md",
-        "signals/2026-06-29/crypto-finance/24db1274bc66a349-the-funding-why-crypto-vcs-are-expanding-beyond-crypto.md",
-        "signals/2026-06-29/crypto-finance/7119b5588f7b3c45-bullish-bitcoin-rsi-divergence-has-analysts-calling-for-2022-style-bear.md",
-        "signals/2026-06-29/crypto-finance/96e8d75003deeabc-binance-booted-from-eu-ethlabs-rises-up-to-save-ethereum-hodler-s-digest.md"
+        "signals/2026-06-29/crypto-finance/669065903034baca-bitcoin-falls-into-a-technical-no-man-s-land-as-major-support-levels-sit.md",
+        "signals/2026-06-29/crypto-finance/11fc115375efdef6-white-house-to-speak-with-law-enforcement-groups-to-push-crypto-s-clarit.md",
+        "signals/2026-06-29/crypto-finance/2e2455556ebc9ce1-strategy-opens-door-to-selling-billions-of-bitcoin-under-new-capital-pla.md",
+        "signals/2026-06-29/crypto-finance/0e391f337d6a5839-sec-wraps-up-nanobit-crypto-fraud-case-in-final-judgment-ordering-over-5.md"
       ],
       "media_count": 4,
-      "routing": "feed_owned"
-    },
-    {
-      "stream": "finance",
-      "status": "signals-only",
-      "count": 2,
-      "signals": [
-        "signals/2026-06-29/finance/09b50c142f93b555-rbc-finance.md",
-        "signals/2026-06-29/finance/b84418be19bd00ee-kommersant-finance.md"
-      ],
-      "media_count": 2,
-      "routing": "feed_owned"
-    },
-    {
-      "stream": "gear-style-edc",
-      "status": "signals-only",
-      "count": 3,
-      "signals": [
-        "signals/2026-06-29/gear-style-edc/800b48f59d6f719b-celine-and-reebok-debut-high-fashion-collab-for-nurses.md",
-        "signals/2026-06-29/gear-style-edc/071e5da7f3b18ba5-song-for-the-mute-and-adidas-preview-spring-summer-2027-collection.md",
-        "signals/2026-06-29/gear-style-edc/c5477eccbcf3f268-gentle-monster-flips-the-prada-logo-for-debut-collaboration.md"
-      ],
-      "media_count": 3,
       "routing": "feed_owned"
     }
   ],
