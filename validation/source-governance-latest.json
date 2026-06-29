@@ -1,0 +1,517 @@
+{
+  "status": "pre-publication source governance artifact",
+  "total_sources": 25,
+  "enabled_sources": 21,
+  "disabled_sources": 4,
+  "class_counts": {
+    "official_source": 6,
+    "public_media": 8,
+    "research_media": 2,
+    "specialized_media": 9
+  },
+  "enabled_class_counts": {
+    "official_source": 5,
+    "public_media": 6,
+    "research_media": 1,
+    "specialized_media": 9
+  },
+  "streams": [
+    {
+      "stream": "ai",
+      "total_sources": 4,
+      "enabled_sources": 3,
+      "disabled_sources": 1,
+      "class_counts": {
+        "official_source": 2,
+        "public_media": 2
+      },
+      "enabled_class_counts": {
+        "official_source": 2,
+        "public_media": 1
+      },
+      "enabled_official_sources": 2,
+      "enabled_high_trust_sources": 2,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "crypto-finance",
+      "total_sources": 3,
+      "enabled_sources": 3,
+      "disabled_sources": 0,
+      "class_counts": {
+        "specialized_media": 3
+      },
+      "enabled_class_counts": {
+        "specialized_media": 3
+      },
+      "enabled_official_sources": 0,
+      "enabled_high_trust_sources": 0,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "dj-audio-creative",
+      "total_sources": 2,
+      "enabled_sources": 2,
+      "disabled_sources": 0,
+      "class_counts": {
+        "specialized_media": 2
+      },
+      "enabled_class_counts": {
+        "specialized_media": 2
+      },
+      "enabled_official_sources": 0,
+      "enabled_high_trust_sources": 0,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "finance",
+      "total_sources": 3,
+      "enabled_sources": 3,
+      "disabled_sources": 0,
+      "class_counts": {
+        "official_source": 1,
+        "public_media": 2
+      },
+      "enabled_class_counts": {
+        "official_source": 1,
+        "public_media": 2
+      },
+      "enabled_official_sources": 1,
+      "enabled_high_trust_sources": 1,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "gear-style-edc",
+      "total_sources": 2,
+      "enabled_sources": 2,
+      "disabled_sources": 0,
+      "class_counts": {
+        "public_media": 1,
+        "specialized_media": 1
+      },
+      "enabled_class_counts": {
+        "public_media": 1,
+        "specialized_media": 1
+      },
+      "enabled_official_sources": 0,
+      "enabled_high_trust_sources": 0,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "moscow-city",
+      "total_sources": 3,
+      "enabled_sources": 1,
+      "disabled_sources": 2,
+      "class_counts": {
+        "official_source": 1,
+        "public_media": 2
+      },
+      "enabled_class_counts": {
+        "public_media": 1
+      },
+      "enabled_official_sources": 0,
+      "enabled_high_trust_sources": 0,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "science-discovery",
+      "total_sources": 3,
+      "enabled_sources": 2,
+      "disabled_sources": 1,
+      "class_counts": {
+        "research_media": 2,
+        "specialized_media": 1
+      },
+      "enabled_class_counts": {
+        "research_media": 1,
+        "specialized_media": 1
+      },
+      "enabled_official_sources": 0,
+      "enabled_high_trust_sources": 1,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "tech-hardware-software",
+      "total_sources": 5,
+      "enabled_sources": 5,
+      "disabled_sources": 0,
+      "class_counts": {
+        "official_source": 2,
+        "public_media": 1,
+        "specialized_media": 2
+      },
+      "enabled_class_counts": {
+        "official_source": 2,
+        "public_media": 1,
+        "specialized_media": 2
+      },
+      "enabled_official_sources": 2,
+      "enabled_high_trust_sources": 2,
+      "enabled_fetch_errors": 0
+    }
+  ],
+  "feeds": [
+    {
+      "id": "github-blog-ai",
+      "title": "GitHub Blog",
+      "stream": "ai",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 7,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "microsoft-blog-ai",
+      "title": "Microsoft Blog",
+      "stream": "ai",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.8,
+      "include_keyword_count": 6,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "mit-tech-review-ai",
+      "title": "MIT Technology Review",
+      "stream": "ai",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.82,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 0,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "missing_exclude_keywords"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "the-verge-ai",
+      "title": "The Verge",
+      "stream": "ai",
+      "source_class": "public_media",
+      "enabled": false,
+      "health_status": "disabled",
+      "priority": 0.86,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 5,
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Broad feed produced cross-topic noise in Daily Radar; keep disabled until per-section filtering exists."
+    },
+    {
+      "id": "coindesk",
+      "title": "CoinDesk",
+      "stream": "crypto-finance",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.82,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "cointelegraph",
+      "title": "Cointelegraph",
+      "stream": "crypto-finance",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.72,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "the-block",
+      "title": "The Block",
+      "stream": "crypto-finance",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 9,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "create-digital-music",
+      "title": "Create Digital Music",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.76,
+      "include_keyword_count": 9,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "dj-techtools",
+      "title": "DJ TechTools",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 9,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "cbr-news",
+      "title": "Банк России",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.94,
+      "include_keyword_count": 0,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "kommersant-finance",
+      "title": "Коммерсантъ",
+      "stream": "finance",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.76,
+      "include_keyword_count": 19,
+      "exclude_keyword_count": 10,
+      "risk_flags": [
+        "public_media_needs_corroboration"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "rbc-finance",
+      "title": "РБК",
+      "stream": "finance",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 18,
+      "exclude_keyword_count": 10,
+      "risk_flags": [
+        "public_media_needs_corroboration"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "hypebeast",
+      "title": "Hypebeast",
+      "stream": "gear-style-edc",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.62,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 6,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "sneaker-news",
+      "title": "Sneaker News",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.68,
+      "include_keyword_count": 7,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "m24-moscow-news",
+      "title": "Москва 24",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.66,
+      "include_keyword_count": 19,
+      "exclude_keyword_count": 9,
+      "risk_flags": [
+        "public_media_needs_corroboration"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "mos-ru-news",
+      "title": "mos.ru",
+      "stream": "moscow-city",
+      "source_class": "official_source",
+      "enabled": false,
+      "health_status": "disabled",
+      "priority": 0.76,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 0,
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until a stable official Moscow feed or fallback source is added."
+    },
+    {
+      "id": "the-village",
+      "title": "The Village",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": false,
+      "health_status": "disabled",
+      "priority": 0.68,
+      "include_keyword_count": 7,
+      "exclude_keyword_count": 3,
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until the feed is stable or replaced."
+    },
+    {
+      "id": "nature-news",
+      "title": "Nature",
+      "stream": "science-discovery",
+      "source_class": "research_media",
+      "enabled": false,
+      "health_status": "disabled",
+      "priority": 0.88,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 0,
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Feed produced XML parse errors during production Daily Radar run; keep paused until replaced by a valid feed endpoint."
+    },
+    {
+      "id": "nplus1",
+      "title": "N+1",
+      "stream": "science-discovery",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.76,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "science-daily",
+      "title": "ScienceDaily",
+      "stream": "science-discovery",
+      "source_class": "research_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.72,
+      "include_keyword_count": 9,
+      "exclude_keyword_count": 2,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "3dnews",
+      "title": "3DNews",
+      "stream": "tech-hardware-software",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "apple-newsroom-tech",
+      "title": "Apple Newsroom",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 9,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "ars-technica-tech",
+      "title": "Ars Technica",
+      "stream": "tech-hardware-software",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.86,
+      "include_keyword_count": 10,
+      "exclude_keyword_count": 5,
+      "risk_flags": [
+        "public_media_needs_corroboration"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "nvidia-blog-tech",
+      "title": "NVIDIA Blog",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 8,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "tomshardware",
+      "title": "Tom's Hardware",
+      "stream": "tech-hardware-software",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 5,
+      "risk_flags": [],
+      "disabled_reason": ""
+    }
+  ],
+  "risk_counts": {
+    "disabled": 4,
+    "low_priority_enabled": 1,
+    "missing_exclude_keywords": 1,
+    "public_media_needs_corroboration": 6
+  },
+  "recommendations": [
+    "crypto-finance: add or restore official-source coverage for stronger confirmation.",
+    "dj-audio-creative: add or restore official-source coverage for stronger confirmation.",
+    "gear-style-edc: add or restore official-source coverage for stronger confirmation.",
+    "moscow-city: add or restore official-source coverage for stronger confirmation.",
+    "science-discovery: add or restore official-source coverage for stronger confirmation.",
+    "Disabled official sources require replacement or a stable fallback: mos-ru-news.",
+    "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, hypebeast, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance."
+  ]
+}

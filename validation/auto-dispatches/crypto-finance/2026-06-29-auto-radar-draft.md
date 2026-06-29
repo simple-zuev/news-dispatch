@@ -39,19 +39,19 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead"
-  - "https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing"
-  - "https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework"
-  - "https://www.theblock.co/post/406599/jpmorgan-execs-draw-comparison-between-yield-stablecoins-shadow-banking?utm_source=rss&utm_medium=rss"
-  - "https://www.theblock.co/post/406538/bitmine-lifts-ethereum-treasury-to-5-7-million-eth-through-challenging-weekly-slide-joins-russell-1000?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/business/2026/06/29/blackrock-pushes-deeper-into-defi-with-ethena-integration-sending-ena-up-8"
+  - "https://www.coindesk.com/daybook-us/2026/06/29/dollar-u-s-treasury-yield-market-positions-may-carry-glimmer-of-hope-for-bitcoin"
+  - "https://www.coindesk.com/tech/2026/06/29/private-keys-not-smart-contracts-caused-40-of-crypto-s-usd16-billion-hack-losses-here-s-whats-being-done"
+  - "https://cointelegraph.com/markets/bitcoin-put-call-ratio-hits-1-year-high-are-bears-preparing-for-drop-to-55k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.theblock.co/post/406472/the-funding-why-crypto-vcs-are-expanding-beyond-crypto?utm_source=rss&utm_medium=rss"
+  - "https://cointelegraph.com/markets/bitcoin-rsi-bullish-divergence-sees-analysis-call-2022-bottom-repeat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
 source_titles:
-  - "The Block: Arkham launches ranking system for prediction market traders"
-  - "CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead"
-  - "CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing"
-  - "CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework"
-  - "The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’"
-  - "The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000"
+  - "CoinDesk: BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8%"
+  - "CoinDesk: Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin"
+  - "CoinDesk: Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done."
+  - "Cointelegraph: Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K?"
+  - "The Block: The Funding: Why crypto VCs are expanding beyond crypto"
+  - "Cointelegraph: Bullish Bitcoin RSI divergence has analysts calling for 2022-style bear market bottom"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead"
-  - "https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing"
-  - "https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework"
+  - "https://www.coindesk.com/business/2026/06/29/blackrock-pushes-deeper-into-defi-with-ethena-integration-sending-ena-up-8"
+  - "https://www.coindesk.com/daybook-us/2026/06/29/dollar-u-s-treasury-yield-market-positions-may-carry-glimmer-of-hope-for-bitcoin"
+  - "https://www.coindesk.com/tech/2026/06/29/private-keys-not-smart-contracts-caused-40-of-crypto-s-usd16-billion-hack-losses-here-s-whats-being-done"
+  - "https://cointelegraph.com/markets/bitcoin-put-call-ratio-hits-1-year-high-are-bears-preparing-for-drop-to-55k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
 media_titles:
-  - "The Block: Arkham launches ranking system for prediction market traders"
-  - "CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead"
-  - "CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing"
-  - "CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework"
+  - "CoinDesk: BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8%"
+  - "CoinDesk: Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin"
+  - "CoinDesk: Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done."
+  - "Cointelegraph: Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K?"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Arkham launches ranking system for prediction market traders — сообщение источника «The Block: Arkham launches ranking system for prediction market traders»; требует проверки перед выводами.
-2. New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead — сообщение источника «CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead»; требует проверки перед выводами.
-3. Crypto analytics firm Chainalysis proposes standards for blockchain tracing — сообщение источника «CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing»; требует проверки перед выводами.
-4. JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework — сообщение источника «CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework»; требует проверки перед выводами.
-5. JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ — сообщение источника «The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’»; требует проверки перед выводами.
+1. BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8% — сообщение источника «CoinDesk: BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8%»; требует проверки перед выводами.
+2. Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin — сообщение источника «CoinDesk: Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin»; требует проверки перед выводами.
+3. Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done. — сообщение источника «CoinDesk: Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done.»; требует проверки перед выводами.
+4. Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K? — сообщение источника «Cointelegraph: Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K?»; требует проверки перед выводами.
+5. The Funding: Why crypto VCs are expanding beyond crypto — сообщение источника «The Block: The Funding: Why crypto VCs are expanding beyond crypto»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Arkham launches ranking system for prediction market traders. Источник: The Block: Arkham launches ranking system for prediction market traders. URL: https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss
-- New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead. Источник: CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead. URL: https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead
-- Crypto analytics firm Chainalysis proposes standards for blockchain tracing. Источник: CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing. URL: https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing
-- JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework. Источник: CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework. URL: https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework
-- JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’. Источник: The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’. URL: https://www.theblock.co/post/406599/jpmorgan-execs-draw-comparison-between-yield-stablecoins-shadow-banking?utm_source=rss&utm_medium=rss
-- Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000. Источник: The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000. URL: https://www.theblock.co/post/406538/bitmine-lifts-ethereum-treasury-to-5-7-million-eth-through-challenging-weekly-slide-joins-russell-1000?utm_source=rss&utm_medium=rss
+- BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8%. Источник: CoinDesk: BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8%. URL: https://www.coindesk.com/business/2026/06/29/blackrock-pushes-deeper-into-defi-with-ethena-integration-sending-ena-up-8
+- Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin. Источник: CoinDesk: Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin. URL: https://www.coindesk.com/daybook-us/2026/06/29/dollar-u-s-treasury-yield-market-positions-may-carry-glimmer-of-hope-for-bitcoin
+- Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done.. Источник: CoinDesk: Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done.. URL: https://www.coindesk.com/tech/2026/06/29/private-keys-not-smart-contracts-caused-40-of-crypto-s-usd16-billion-hack-losses-here-s-whats-being-done
+- Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K?. Источник: Cointelegraph: Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K?. URL: https://cointelegraph.com/markets/bitcoin-put-call-ratio-hits-1-year-high-are-bears-preparing-for-drop-to-55k?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- The Funding: Why crypto VCs are expanding beyond crypto. Источник: The Block: The Funding: Why crypto VCs are expanding beyond crypto. URL: https://www.theblock.co/post/406472/the-funding-why-crypto-vcs-are-expanding-beyond-crypto?utm_source=rss&utm_medium=rss
+- Bullish Bitcoin RSI divergence has analysts calling for 2022-style bear market bottom. Источник: Cointelegraph: Bullish Bitcoin RSI divergence has analysts calling for 2022-style bear market bottom. URL: https://cointelegraph.com/markets/bitcoin-rsi-bullish-divergence-sees-analysis-call-2022-bottom-repeat?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Arkham launches ranking system for prediction market traders | source_reported_claim | The Block: Arkham launches ranking system for prediction market traders | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead | source_reported_claim | CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Crypto analytics firm Chainalysis proposes standards for blockchain tracing | source_reported_claim | CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework | source_reported_claim | CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ | source_reported_claim | The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000 | source_reported_claim | The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000 | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8% | source_reported_claim | CoinDesk: BlackRock pushes deeper into DeFi with Ethena integration, sending ENA up 8% | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin | source_reported_claim | CoinDesk: Dollar, U.S. Treasury yield market positions may carry glimmer of hope for bitcoin | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done. | source_reported_claim | CoinDesk: Private keys, not smart contracts, caused 40% of crypto's $16 billion hack losses. Here's whats being done. | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K? | source_reported_claim | Cointelegraph: Bitcoin put-call ratio hits 1-year high: Are bears preparing for drop to $55K? | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Funding: Why crypto VCs are expanding beyond crypto | source_reported_claim | The Block: The Funding: Why crypto VCs are expanding beyond crypto | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Bullish Bitcoin RSI divergence has analysts calling for 2022-style bear market bottom | source_reported_claim | Cointelegraph: Bullish Bitcoin RSI divergence has analysts calling for 2022-style bear market bottom | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
