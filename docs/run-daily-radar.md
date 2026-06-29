@@ -44,6 +44,8 @@ A successful Daily Radar run does not publish anything. It only prepares signal,
 
 Daily Radar must not write auto-generated radar drafts into `dispatches/`. New automatic draft outputs belong under `validation/auto-dispatches/`.
 
+Scheduled Daily Radar runs must not push generated state directly into `main`. They should propose generated changes through the `automation/daily-radar` pull request branch so validation and review remain visible before merge.
+
 Promotion to `dispatches/` is manual and must use `templates/promotion-checklist.md`.
 
 ## Repository boundary
@@ -58,3 +60,5 @@ Use these directories consistently:
 - `site/` — generated reader output from `tools/build_site.py`.
 
 The regression guard `tests/test_no_auto_drafts_in_dispatches.py` fails if `*auto-radar-draft.md` appears under `dispatches/` again.
+
+The regression guard `tests/test_daily_radar_workflow_boundaries.py` fails if the Daily Radar workflow starts pushing generated changes directly to `main` again.
