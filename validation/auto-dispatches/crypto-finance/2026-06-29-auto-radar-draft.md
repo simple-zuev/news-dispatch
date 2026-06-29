@@ -39,19 +39,19 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.theblock.co/post/406581/bny-circle-expand-partnership-adding-mint-burn-capabilities-usdc?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/business/2026/06/29/bitcoin-lending-is-entering-a-new-institutional-era-according-to-silicon-valley-bank"
-  - "https://www.coindesk.com/business/2026/06/29/mica-july-1-deadline-could-leave-10-million-crypto-users-searching-for-a-new-platform-in-the-eu"
-  - "https://www.coindesk.com/policy/2026/06/29/europe-s-unlicensed-crypto-firms-face-wipeout-as-final-regulatory-deadline-falls"
-  - "https://www.theblock.co/post/406554/binance-founder-cz-mica-application-fully-compliant-near-approval-political-forces-intervened?utm_source=rss&utm_medium=rss"
-  - "https://www.theblock.co/post/406568/strategy-mstr-strc-shares-recover-after-brutal-week-saylor-unveils-new-buyback-plans?utm_source=rss&utm_medium=rss"
+  - "https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead"
+  - "https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing"
+  - "https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework"
+  - "https://www.theblock.co/post/406599/jpmorgan-execs-draw-comparison-between-yield-stablecoins-shadow-banking?utm_source=rss&utm_medium=rss"
+  - "https://www.theblock.co/post/406538/bitmine-lifts-ethereum-treasury-to-5-7-million-eth-through-challenging-weekly-slide-joins-russell-1000?utm_source=rss&utm_medium=rss"
 source_titles:
-  - "The Block: BNY and Circle expand partnership, adding mint and burn capabilities for USDC"
-  - "CoinDesk: Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank"
-  - "CoinDesk: MiCA's looming deadline could leave 10 million crypto users without a platform in the EU"
-  - "CoinDesk: Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits"
-  - "The Block: Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened"
-  - "The Block: Strategy’s MSTR, STRC shares recover after brutal week as Saylor unveils new buyback plans"
+  - "The Block: Arkham launches ranking system for prediction market traders"
+  - "CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead"
+  - "CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing"
+  - "CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework"
+  - "The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’"
+  - "The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.theblock.co/post/406581/bny-circle-expand-partnership-adding-mint-burn-capabilities-usdc?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/business/2026/06/29/bitcoin-lending-is-entering-a-new-institutional-era-according-to-silicon-valley-bank"
-  - "https://www.coindesk.com/business/2026/06/29/mica-july-1-deadline-could-leave-10-million-crypto-users-searching-for-a-new-platform-in-the-eu"
-  - "https://www.coindesk.com/policy/2026/06/29/europe-s-unlicensed-crypto-firms-face-wipeout-as-final-regulatory-deadline-falls"
+  - "https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead"
+  - "https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing"
+  - "https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework"
 media_titles:
-  - "The Block: BNY and Circle expand partnership, adding mint and burn capabilities for USDC"
-  - "CoinDesk: Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank"
-  - "CoinDesk: MiCA's looming deadline could leave 10 million crypto users without a platform in the EU"
-  - "CoinDesk: Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits"
+  - "The Block: Arkham launches ranking system for prediction market traders"
+  - "CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead"
+  - "CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing"
+  - "CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. BNY and Circle expand partnership, adding mint and burn capabilities for USDC — сообщение источника «The Block: BNY and Circle expand partnership, adding mint and burn capabilities for USDC»; требует проверки перед выводами.
-2. Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank — сообщение источника «CoinDesk: Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank»; требует проверки перед выводами.
-3. MiCA's looming deadline could leave 10 million crypto users without a platform in the EU — сообщение источника «CoinDesk: MiCA's looming deadline could leave 10 million crypto users without a platform in the EU»; требует проверки перед выводами.
-4. Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits — сообщение источника «CoinDesk: Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits»; требует проверки перед выводами.
-5. Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened — сообщение источника «The Block: Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened»; требует проверки перед выводами.
+1. Arkham launches ranking system for prediction market traders — сообщение источника «The Block: Arkham launches ranking system for prediction market traders»; требует проверки перед выводами.
+2. New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead — сообщение источника «CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead»; требует проверки перед выводами.
+3. Crypto analytics firm Chainalysis proposes standards for blockchain tracing — сообщение источника «CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing»; требует проверки перед выводами.
+4. JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework — сообщение источника «CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework»; требует проверки перед выводами.
+5. JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ — сообщение источника «The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’»; требует проверки перед выводами.
 
 ## Что произошло
 
-- BNY and Circle expand partnership, adding mint and burn capabilities for USDC. Источник: The Block: BNY and Circle expand partnership, adding mint and burn capabilities for USDC. URL: https://www.theblock.co/post/406581/bny-circle-expand-partnership-adding-mint-burn-capabilities-usdc?utm_source=rss&utm_medium=rss
-- Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank. Источник: CoinDesk: Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank. URL: https://www.coindesk.com/business/2026/06/29/bitcoin-lending-is-entering-a-new-institutional-era-according-to-silicon-valley-bank
-- MiCA's looming deadline could leave 10 million crypto users without a platform in the EU. Источник: CoinDesk: MiCA's looming deadline could leave 10 million crypto users without a platform in the EU. URL: https://www.coindesk.com/business/2026/06/29/mica-july-1-deadline-could-leave-10-million-crypto-users-searching-for-a-new-platform-in-the-eu
-- Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits. Источник: CoinDesk: Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits. URL: https://www.coindesk.com/policy/2026/06/29/europe-s-unlicensed-crypto-firms-face-wipeout-as-final-regulatory-deadline-falls
-- Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened. Источник: The Block: Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened. URL: https://www.theblock.co/post/406554/binance-founder-cz-mica-application-fully-compliant-near-approval-political-forces-intervened?utm_source=rss&utm_medium=rss
-- Strategy’s MSTR, STRC shares recover after brutal week as Saylor unveils new buyback plans. Источник: The Block: Strategy’s MSTR, STRC shares recover after brutal week as Saylor unveils new buyback plans. URL: https://www.theblock.co/post/406568/strategy-mstr-strc-shares-recover-after-brutal-week-saylor-unveils-new-buyback-plans?utm_source=rss&utm_medium=rss
+- Arkham launches ranking system for prediction market traders. Источник: The Block: Arkham launches ranking system for prediction market traders. URL: https://www.theblock.co/post/406604/arkham-launches-ranking-system-for-prediction-market-traders?utm_source=rss&utm_medium=rss
+- New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead. Источник: CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead. URL: https://www.coindesk.com/markets/2026/06/29/new-mica-regime-in-europe-u-s-jobs-report-for-june-crypto-week-ahead
+- Crypto analytics firm Chainalysis proposes standards for blockchain tracing. Источник: CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing. URL: https://www.coindesk.com/policy/2026/06/29/crypto-analytics-firm-chainalysis-proposes-standards-for-blockchain-tracing
+- JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework. Источник: CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework. URL: https://www.coindesk.com/policy/2026/06/29/jpmorgan-backs-u-s-crypto-bill-but-warns-repeatedly-of-risks-in-digital-asset-framework
+- JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’. Источник: The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’. URL: https://www.theblock.co/post/406599/jpmorgan-execs-draw-comparison-between-yield-stablecoins-shadow-banking?utm_source=rss&utm_medium=rss
+- Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000. Источник: The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000. URL: https://www.theblock.co/post/406538/bitmine-lifts-ethereum-treasury-to-5-7-million-eth-through-challenging-weekly-slide-joins-russell-1000?utm_source=rss&utm_medium=rss
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| BNY and Circle expand partnership, adding mint and burn capabilities for USDC | source_reported_claim | The Block: BNY and Circle expand partnership, adding mint and burn capabilities for USDC | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank | source_reported_claim | CoinDesk: Bitcoin lending is entering a new institutional era, according to Silicon Valley Bank | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| MiCA's looming deadline could leave 10 million crypto users without a platform in the EU | source_reported_claim | CoinDesk: MiCA's looming deadline could leave 10 million crypto users without a platform in the EU | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits | source_reported_claim | CoinDesk: Europe’s unlicensed crypto firms face ‘wipeout’ as MiCA deadline hits | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened | source_reported_claim | The Block: Binance founder CZ says MiCA application was ‘fully compliant’ and near approval before political forces intervened | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Strategy’s MSTR, STRC shares recover after brutal week as Saylor unveils new buyback plans | source_reported_claim | The Block: Strategy’s MSTR, STRC shares recover after brutal week as Saylor unveils new buyback plans | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Arkham launches ranking system for prediction market traders | source_reported_claim | The Block: Arkham launches ranking system for prediction market traders | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead | source_reported_claim | CoinDesk: New MiCA regime in Europe, U.S. jobs report for June: Crypto Week Ahead | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Crypto analytics firm Chainalysis proposes standards for blockchain tracing | source_reported_claim | CoinDesk: Crypto analytics firm Chainalysis proposes standards for blockchain tracing | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework | source_reported_claim | CoinDesk: JPMorgan backs U.S. crypto bill but warns of risks in digital asset framework | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ | source_reported_claim | The Block: JPMorgan execs draw comparison between yield stablecoins and ‘shadow banking’ | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000 | source_reported_claim | The Block: Bitmine lifts Ethereum treasury to 5.7 million ETH through ‘challenging’ weekly slide, joins Russell 1000 | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
