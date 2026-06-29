@@ -6,8 +6,8 @@ This report summarizes source coverage, reliability flags and editorial review n
 
 ## Summary
 
-- Total sources: 25
-- Enabled sources: 21
+- Total sources: 26
+- Enabled sources: 22
 - Disabled sources: 4
 
 ## Stream coverage
@@ -15,7 +15,7 @@ This report summarizes source coverage, reliability flags and editorial review n
 | Stream | Enabled / total | Enabled official | Enabled high-trust | Fetch errors |
 |---|---:|---:|---:|---:|
 | ai | 3 / 4 | 2 | 2 | 0 |
-| crypto-finance | 3 / 3 | 0 | 0 | 0 |
+| crypto-finance | 4 / 4 | 1 | 1 | 0 |
 | dj-audio-creative | 2 / 2 | 0 | 0 | 0 |
 | finance | 3 / 3 | 1 | 1 | 0 |
 | gear-style-edc | 2 / 2 | 0 | 0 | 0 |
@@ -30,7 +30,6 @@ This report summarizes source coverage, reliability flags and editorial review n
 
 ## Recommendations
 
-- crypto-finance: add or restore official-source coverage for stronger confirmation.
 - dj-audio-creative: add or restore official-source coverage for stronger confirmation.
 - gear-style-edc: add or restore official-source coverage for stronger confirmation.
 - moscow-city: add or restore official-source coverage for stronger confirmation.

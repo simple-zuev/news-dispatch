@@ -18,11 +18,11 @@
       "id": "crypto-finance-sec-press-releases",
       "stream": "crypto-finance",
       "source_class": "official_source",
-      "status": "needs_verification",
+      "status": "promoted",
       "title": "SEC Press Releases RSS Feed",
       "candidate_url": "https://www.sec.gov/news/pressreleases.rss",
-      "candidate_url_status": "unverified",
-      "rationale": "SEC Press Releases are official regulatory announcements and can strengthen crypto-finance confirmation for enforcement, rulemaking and market-structure items. The SEC Press Releases page exposes a Press Releases RSS Feed link, but promotion still requires a production fetch/parse test and crypto-specific keyword gates.",
+      "candidate_url_status": "verified",
+      "rationale": "SEC Press Releases are official regulatory announcements and now provide production crypto-finance official-source coverage after local runtime probing confirmed HTTP 200, RSS output and non-empty items. The production feed uses crypto-specific keyword gates to reduce broad SEC announcement noise.",
       "verification_requirements": [
         "confirm the URL returns stable RSS or Atom content in the production fetch environment",
         "confirm SEC source ownership and official status from the .gov source page",
@@ -33,9 +33,9 @@
       "promotion_target": "sources/feeds.json",
       "evidence": [
         "SEC Press Releases page identifies the page as an official SEC.gov page and links to a Press Releases RSS Feed.",
-        "Research note: raw RSS fetch still needs runtime validation before production promotion."
+        "Local candidate probe with certifi CA bundle confirmed HTTP 200, application/rss+xml, rss feed_type and 25 items."
       ],
-      "notes": "Do not promote until runtime parsing is confirmed and crypto-specific gates are defined."
+      "notes": "Promoted into sources/feeds.json with strict crypto/regulatory keyword gates."
     },
     {
       "id": "crypto-finance-official-source-gap",

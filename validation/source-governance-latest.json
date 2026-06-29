@@ -1,16 +1,16 @@
 {
   "status": "pre-publication source governance artifact",
-  "total_sources": 25,
-  "enabled_sources": 21,
+  "total_sources": 26,
+  "enabled_sources": 22,
   "disabled_sources": 4,
   "class_counts": {
-    "official_source": 6,
+    "official_source": 7,
     "public_media": 7,
     "research_media": 2,
     "specialized_media": 10
   },
   "enabled_class_counts": {
-    "official_source": 5,
+    "official_source": 6,
     "public_media": 5,
     "research_media": 1,
     "specialized_media": 10
@@ -35,17 +35,19 @@
     },
     {
       "stream": "crypto-finance",
-      "total_sources": 3,
-      "enabled_sources": 3,
+      "total_sources": 4,
+      "enabled_sources": 4,
       "disabled_sources": 0,
       "class_counts": {
+        "official_source": 1,
         "specialized_media": 3
       },
       "enabled_class_counts": {
+        "official_source": 1,
         "specialized_media": 3
       },
-      "enabled_official_sources": 0,
-      "enabled_high_trust_sources": 0,
+      "enabled_official_sources": 1,
+      "enabled_high_trust_sources": 1,
       "enabled_fetch_errors": 0
     },
     {
@@ -228,6 +230,19 @@
       "priority": 0.72,
       "include_keyword_count": 8,
       "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "crypto-finance-sec-press-releases",
+      "title": "SEC Press Releases",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "unknown",
+      "priority": 0.88,
+      "include_keyword_count": 19,
+      "exclude_keyword_count": 11,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -498,7 +513,6 @@
     "public_media_needs_corroboration": 5
   },
   "recommendations": [
-    "crypto-finance: add or restore official-source coverage for stronger confirmation.",
     "dj-audio-creative: add or restore official-source coverage for stronger confirmation.",
     "gear-style-edc: add or restore official-source coverage for stronger confirmation.",
     "moscow-city: add or restore official-source coverage for stronger confirmation.",
