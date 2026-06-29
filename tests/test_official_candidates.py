@@ -29,16 +29,22 @@ def test_gap_streams_are_represented() -> None:
     assert {"crypto-finance", "moscow-city", "science-discovery", "dj-audio-creative", "gear-style-edc"} <= streams
 
 
-def test_not_promoted_by_default() -> None:
+def test_candidate_lifecycle_consistency() -> None:
     data = module.load_json(module.CANDIDATES_PATH)
-    assert all(item["status"] != "promoted" for item in data["candidates"])
-    assert all(item["promotion_target"] == "sources/feeds.json" for item in data["candidates"])
+    production_ids = module.feed_ids()
+    for item in data["candidates"]:
+        assert item["promotion_target"] == "sources/feeds.json"
+        if item["status"] == "promoted":
+            assert item["id"] in production_ids
+            assert item["candidate_url_status"] == "verified"
+        else:
+            assert item["id"] not in production_ids
 
 
 def main() -> int:
     test_registry_validates()
     test_gap_streams_are_represented()
-    test_not_promoted_by_default()
+    test_candidate_lifecycle_consistency()
     print("official candidate tests passed")
     return 0
 

@@ -103,6 +103,22 @@
       "tags": ["crypto", "market-structure", "exchanges", "stablecoins", "regulation"]
     },
     {
+      "id": "crypto-finance-sec-press-releases",
+      "title": "SEC Press Releases",
+      "url": "https://www.sec.gov/news/pressreleases.rss",
+      "stream": "crypto-finance",
+      "source_type": "Официальный источник / регулятор",
+      "source_class": "official_source",
+      "priority": 0.88,
+      "language": "en",
+      "translation_required": true,
+      "include_keywords": ["crypto", "cryptocurrency", "crypto asset", "crypto assets", "digital asset", "digital assets", "bitcoin", "ethereum", "stablecoin", "token", "tokens", "exchange", "custody", "custodian", "broker-dealer", "market structure", "etf", "enforcement", "securities law"],
+      "exclude_keywords": ["municipal securities", "accounting", "auditor", "whistleblower", "insider trading", "public company", "shareholder", "financial reporting", "investment adviser", "mutual fund", "penny stock"],
+      "boost_keywords": ["digital assets", "crypto assets", "bitcoin etf", "spot bitcoin", "stablecoin", "exchange", "custody", "market structure", "enforcement action"],
+      "min_relevance_score": 0.45,
+      "tags": ["crypto", "regulation", "sec", "enforcement", "official"]
+    },
+    {
       "id": "the-verge-ai",
       "title": "The Verge",
       "url": "https://www.theverge.com/rss/index.xml",
