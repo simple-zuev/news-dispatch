@@ -16,10 +16,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from core import DISPATCH_DIR, ROOT, VALIDATION_DIR, coalesce, parse_front_matter_file, yaml_quote
+from core import ROOT, VALIDATION_DIR, coalesce, parse_front_matter_file, yaml_quote
 from stream_registry import streams as registry_streams
 
 RADAR_PATH = VALIDATION_DIR / "daily-radar-latest.json"
+AUTO_DISPATCH_DIR = VALIDATION_DIR / "auto-dispatches"
 REPORT_PATH = VALIDATION_DIR / "auto-dispatch-latest.json"
 MAX_SIGNALS_PER_STREAM = 6
 
@@ -151,7 +152,13 @@ def yaml_list(values: list[str]) -> str:
 
 
 def output_path(stream: str, day: str) -> Path:
-    return DISPATCH_DIR / stream / f"{day}-auto-radar-draft.md"
+    """Return the generated draft workspace path for one stream/day.
+
+    Auto-radar drafts are operational validation artifacts, not editorial
+    dispatch files.  Keep them outside ``dispatches/`` so the reader-facing
+    content tree contains only deliberate editorial material.
+    """
+    return AUTO_DISPATCH_DIR / stream / f"{day}-auto-radar-draft.md"
 
 
 def source_summary(signals: list[Signal]) -> str:
