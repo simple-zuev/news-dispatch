@@ -39,17 +39,17 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://3dnews.ru/1144298"
+  - "https://arstechnica.com/ai/2026/06/south-korea-to-spend-1t-on-more-memory-chip-production-and-humanoid-robots/"
 source_titles:
-  - "3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10"
+  - "Ars Technica: South Korea to spend $1T on more memory chip production and humanoid robots"
 source_types:
   - "Технологическое медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://3dnews.ru/1144298"
+  - "https://arstechnica.com/ai/2026/06/south-korea-to-spend-1t-on-more-memory-chip-production-and-humanoid-robots/"
 media_titles:
-  - "3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10"
+  - "Ars Technica: South Korea to spend $1T on more memory chip production and humanoid robots"
 media_types:
   - "Технологическое медиа"
 media_notes:
@@ -69,11 +69,11 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 — сообщение источника «3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10»; требует проверки перед выводами.
+1. South Korea to spend $1T on more memory chip production and humanoid robots — сообщение источника «Ars Technica: South Korea to spend $1T on more memory chip production and humanoid robots»; требует проверки перед выводами.
 
 ## Что произошло
 
-- AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10. Источник: 3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10. URL: https://3dnews.ru/1144298
+- South Korea to spend $1T on more memory chip production and humanoid robots. Источник: Ars Technica: South Korea to spend $1T on more memory chip production and humanoid robots. URL: https://arstechnica.com/ai/2026/06/south-korea-to-spend-1t-on-more-memory-chip-production-and-humanoid-robots/
 
 ## Почему это важно
 
@@ -83,7 +83,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: public_media: 1. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -91,7 +91,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 | source_reported_claim | 3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| South Korea to spend $1T on more memory chip production and humanoid robots | source_reported_claim | Ars Technica: South Korea to spend $1T on more memory chip production and humanoid robots | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
