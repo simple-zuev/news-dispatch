@@ -15,6 +15,8 @@ The run must produce or update:
 - `validation/daily-radar-latest.json`
 - `validation/daily-radar-filter-summary.json`
 - `validation/source-health-latest.json`
+- `validation/source-governance-latest.json`
+- `validation/source-governance-latest.md`
 - `validation/reviewed-radar-latest.md`
 - `validation/candidate-dispatch-latest.md`
 - `validation/auto-dispatch-latest.json`
@@ -29,6 +31,7 @@ validate_feeds.py
 Daily Radar collection
 signal filtering
 source health generation
+source governance report generation
 reviewed radar generation
 candidate dispatch generation
 candidate dispatch validation
@@ -40,7 +43,7 @@ The run is valid only if every step exits successfully.
 
 ## Publication boundary
 
-A successful Daily Radar run does not publish anything. It only prepares signal, review, candidate and draft-only artifacts under `signals/`, `data/` and `validation/`.
+A successful Daily Radar run does not publish anything. It only prepares signal, review, candidate, source governance and draft-only artifacts under `signals/`, `data/` and `validation/`.
 
 Daily Radar must not write auto-generated radar drafts into `dispatches/`. New automatic draft outputs belong under `validation/auto-dispatches/`.
 
