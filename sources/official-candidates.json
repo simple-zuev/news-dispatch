@@ -15,14 +15,37 @@
   ],
   "candidates": [
     {
+      "id": "crypto-finance-sec-press-releases",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "status": "needs_verification",
+      "title": "SEC Press Releases RSS Feed",
+      "candidate_url": "https://www.sec.gov/news/pressreleases.rss",
+      "candidate_url_status": "unverified",
+      "rationale": "SEC Press Releases are official regulatory announcements and can strengthen crypto-finance confirmation for enforcement, rulemaking and market-structure items. The SEC Press Releases page exposes a Press Releases RSS Feed link, but promotion still requires a production fetch/parse test and crypto-specific keyword gates.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm SEC source ownership and official status from the .gov source page",
+        "define include_keywords for crypto, digital assets, exchange, custody, enforcement, rulemaking and market structure",
+        "define exclude_keywords to avoid broad public-company and generic securities noise",
+        "confirm Daily Radar output improves confirmation rather than flooding finance/crypto-finance with generic SEC announcements"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "SEC Press Releases page identifies the page as an official SEC.gov page and links to a Press Releases RSS Feed.",
+        "Research note: raw RSS fetch still needs runtime validation before production promotion."
+      ],
+      "notes": "Do not promote until runtime parsing is confirmed and crypto-specific gates are defined."
+    },
+    {
       "id": "crypto-finance-official-source-gap",
       "stream": "crypto-finance",
       "source_class": "official_source",
       "status": "needs_verification",
-      "title": "Official crypto-finance regulator / exchange / enforcement feed candidate",
+      "title": "Additional official crypto-finance regulator / exchange / enforcement feed candidate",
       "candidate_url": "",
       "candidate_url_status": "missing",
-      "rationale": "Source governance reports zero enabled official-source coverage for crypto-finance. Add a stable official regulator, exchange, court, enforcement or standards feed only after URL verification.",
+      "rationale": "Source governance reports zero enabled official-source coverage for crypto-finance. Additional stable official regulator, exchange, court, enforcement or standards feeds may be useful only after URL verification.",
       "verification_requirements": [
         "confirm the URL returns stable RSS or Atom content",
         "confirm source ownership and official status",
