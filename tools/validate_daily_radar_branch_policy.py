@@ -30,7 +30,8 @@ def main() -> None:
     req("DAILY_RADAR_BRANCH: automation/daily-radar" in workflow, "workflow must keep persistent automation branch name")
     req("gh pr create" in workflow, "workflow must create Daily Radar PRs")
     req("--delete-branch" not in workflow, "Daily Radar workflow must not delete the persistent automation branch")
-    req("dispatches/" not in workflow, "Daily Radar workflow must not publish dispatches directly")
+    req("git add signals data validation" in workflow, "Daily Radar workflow must stage only Daily Radar artifact roots")
+    req("git add dispatches" not in workflow, "Daily Radar workflow must not stage dispatches for publication")
 
     print("Daily Radar automation branch policy validation: OK")
 
