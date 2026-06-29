@@ -26,7 +26,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Железо и программное обеспечение»: 2 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Железо и программное обеспечение»: 1 публичных сигналов для редакционной проверки."
 tags:
   - "tech-hardware-software"
   - "infrastructure"
@@ -39,28 +39,20 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://arstechnica.com/science/2026/06/quera-promises-thousands-of-error-corrected-qubits-by-2029/"
-  - "https://www.tomshardware.com/pc-components/gpu-drivers/cuda-emulator-for-amd-gpus-zluda-loses-funding-with-v6-release-embattled-project-goes-back-to-hobby-status-but-now-includes-32-bit-physx-support"
+  - "https://3dnews.ru/1144298"
 source_titles:
-  - "Ars Technica: Quantum computing startup says it will leapfrog everybody"
-  - "Tom's Hardware: CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support"
+  - "3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10"
 source_types:
-  - "Технологическое медиа"
   - "Технологическое медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://arstechnica.com/science/2026/06/quera-promises-thousands-of-error-corrected-qubits-by-2029/"
-  - "https://www.tomshardware.com/pc-components/gpu-drivers/cuda-emulator-for-amd-gpus-zluda-loses-funding-with-v6-release-embattled-project-goes-back-to-hobby-status-but-now-includes-32-bit-physx-support"
+  - "https://3dnews.ru/1144298"
 media_titles:
-  - "Ars Technica: Quantum computing startup says it will leapfrog everybody"
-  - "Tom's Hardware: CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support"
+  - "3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10"
 media_types:
   - "Технологическое медиа"
-  - "Технологическое медиа"
 media_notes:
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
 visuals: []
 visual_titles: []
@@ -77,13 +69,11 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Quantum computing startup says it will leapfrog everybody — сообщение источника «Ars Technica: Quantum computing startup says it will leapfrog everybody»; требует проверки перед выводами.
-2. CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support — сообщение источника «Tom's Hardware: CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support»; требует проверки перед выводами.
+1. AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 — сообщение источника «3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Quantum computing startup says it will leapfrog everybody. Источник: Ars Technica: Quantum computing startup says it will leapfrog everybody. URL: https://arstechnica.com/science/2026/06/quera-promises-thousands-of-error-corrected-qubits-by-2029/
-- CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support. Источник: Tom's Hardware: CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support. URL: https://www.tomshardware.com/pc-components/gpu-drivers/cuda-emulator-for-amd-gpus-zluda-loses-funding-with-v6-release-embattled-project-goes-back-to-hobby-status-but-now-includes-32-bit-physx-support
+- AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10. Источник: 3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10. URL: https://3dnews.ru/1144298
 
 ## Почему это важно
 
@@ -93,7 +83,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: public_media: 1, specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -101,8 +91,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Quantum computing startup says it will leapfrog everybody | source_reported_claim | Ars Technica: Quantum computing startup says it will leapfrog everybody | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support | source_reported_claim | Tom's Hardware: CUDA emulator for AMD GPUs Zluda loses funding with v6 release — embattled project goes back to hobby status but now includes 32-bit PhysX support | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 | source_reported_claim | 3DNews: AMD выпустила драйвер Radeon с решением проблем с установкой на Windows 10 | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

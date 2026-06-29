@@ -1,11 +1,18 @@
 {
   "date": "2026-06-29",
-  "generated_count": 4,
-  "kept_count": 4,
-  "filtered_count": 0,
-  "filtered_by_reason": {},
-  "filtered_by_stream": {},
+  "generated_count": 11,
+  "kept_count": 10,
+  "filtered_count": 1,
+  "filtered_by_reason": {
+    "sports_or_entertainment": 1
+  },
+  "filtered_by_stream": {
+    "tech-hardware-software": 1
+  },
   "remaining_by_stream": {
-    "crypto-finance": 4
+    "crypto-finance": 4,
+    "finance": 1,
+    "gear-style-edc": 4,
+    "tech-hardware-software": 1
   }
 }

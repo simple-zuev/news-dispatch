@@ -39,15 +39,15 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.coindesk.com/markets/2026/06/29/bitcoin-falls-into-a-technical-no-man-s-land-as-major-support-levels-sit-miles-away"
-  - "https://www.coindesk.com/policy/2026/06/29/white-house-to-speak-with-law-enforcement-groups-to-push-crypto-s-clarity-act"
-  - "https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means"
-  - "https://www.theblock.co/post/406613/sec-wraps-up-nanobit-crypto-fraud-case-final-judgment-ordering-5-million-fines?utm_source=rss&utm_medium=rss"
+  - "https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve"
+  - "https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth"
+  - "https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend"
 source_titles:
-  - "CoinDesk: Bitcoin falls into a technical no man’s land as major support levels sit miles away"
-  - "CoinDesk: White House to speak with law enforcement groups to push Crypto's Clarity Act"
-  - "CoinDesk: Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means"
-  - "The Block: SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines"
+  - "The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election"
+  - "CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve"
+  - "CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH"
+  - "CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -59,15 +59,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.coindesk.com/markets/2026/06/29/bitcoin-falls-into-a-technical-no-man-s-land-as-major-support-levels-sit-miles-away"
-  - "https://www.coindesk.com/policy/2026/06/29/white-house-to-speak-with-law-enforcement-groups-to-push-crypto-s-clarity-act"
-  - "https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means"
-  - "https://www.theblock.co/post/406613/sec-wraps-up-nanobit-crypto-fraud-case-final-judgment-ordering-5-million-fines?utm_source=rss&utm_medium=rss"
+  - "https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve"
+  - "https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth"
+  - "https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend"
 media_titles:
-  - "CoinDesk: Bitcoin falls into a technical no man’s land as major support levels sit miles away"
-  - "CoinDesk: White House to speak with law enforcement groups to push Crypto's Clarity Act"
-  - "CoinDesk: Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means"
-  - "The Block: SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines"
+  - "The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election"
+  - "CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve"
+  - "CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH"
+  - "CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -93,17 +93,17 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Bitcoin falls into a technical no man’s land as major support levels sit miles away — сообщение источника «CoinDesk: Bitcoin falls into a technical no man’s land as major support levels sit miles away»; требует проверки перед выводами.
-2. White House to speak with law enforcement groups to push Crypto's Clarity Act — сообщение источника «CoinDesk: White House to speak with law enforcement groups to push Crypto's Clarity Act»; требует проверки перед выводами.
-3. Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means — сообщение источника «CoinDesk: Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means»; требует проверки перед выводами.
-4. SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines — сообщение источника «The Block: SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines»; требует проверки перед выводами.
+1. TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election — сообщение источника «The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election»; требует проверки перед выводами.
+2. Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve — сообщение источника «CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve»; требует проверки перед выводами.
+3. Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH — сообщение источника «CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH»; требует проверки перед выводами.
+4. Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend — сообщение источника «CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Bitcoin falls into a technical no man’s land as major support levels sit miles away. Источник: CoinDesk: Bitcoin falls into a technical no man’s land as major support levels sit miles away. URL: https://www.coindesk.com/markets/2026/06/29/bitcoin-falls-into-a-technical-no-man-s-land-as-major-support-levels-sit-miles-away
-- White House to speak with law enforcement groups to push Crypto's Clarity Act. Источник: CoinDesk: White House to speak with law enforcement groups to push Crypto's Clarity Act. URL: https://www.coindesk.com/policy/2026/06/29/white-house-to-speak-with-law-enforcement-groups-to-push-crypto-s-clarity-act
-- Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means. Источник: CoinDesk: Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means. URL: https://www.coindesk.com/markets/2026/06/29/strategy-opens-the-door-to-selling-bitcoin-under-new-capital-plan-here-s-what-it-means
-- SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines. Источник: The Block: SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines. URL: https://www.theblock.co/post/406613/sec-wraps-up-nanobit-crypto-fraud-case-final-judgment-ordering-5-million-fines?utm_source=rss&utm_medium=rss
+- TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election. Источник: The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election. URL: https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss
+- Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve. Источник: CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve. URL: https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve
+- Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH. Источник: CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH. URL: https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth
+- Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend. Источник: CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend. URL: https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend
 
 ## Почему это важно
 
@@ -121,10 +121,10 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Bitcoin falls into a technical no man’s land as major support levels sit miles away | source_reported_claim | CoinDesk: Bitcoin falls into a technical no man’s land as major support levels sit miles away | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| White House to speak with law enforcement groups to push Crypto's Clarity Act | source_reported_claim | CoinDesk: White House to speak with law enforcement groups to push Crypto's Clarity Act | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means | source_reported_claim | CoinDesk: Strategy opens door to selling billions of bitcoin under new capital plan. Here's what it means | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines | source_reported_claim | The Block: SEC wraps up NanoBit crypto fraud case in final judgment, ordering over $5 million in fines | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election | source_reported_claim | The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve | source_reported_claim | CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH | source_reported_claim | CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend | source_reported_claim | CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

@@ -239,7 +239,7 @@
       "stream": "crypto-finance",
       "source_class": "official_source",
       "enabled": true,
-      "health_status": "unknown",
+      "health_status": "ok",
       "priority": 0.88,
       "include_keyword_count": 19,
       "exclude_keyword_count": 11,
