@@ -116,6 +116,9 @@ jobs:
           assert isinstance(loaded.get('items'), list)
           PY
 
+      - name: Build reader policy artifact
+        run: python tools/build_reader_policy.py
+
       - name: Build Today Radar page
         run: python tools/build_today_page.py
 
@@ -161,4 +164,11 @@ jobs:
         with:
           name: daily-radar-ranking-report
           path: validation/daily-radar-ranking-latest.json
+          retention-days: 7
+
+      - name: Upload reader policy report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: reader-policy-report
+          path: validation/reader-policy-latest.json
           retention-days: 7
