@@ -28,9 +28,16 @@ def test_daily_radar_uses_automation_pr_branch() -> None:
     assert "gh pr create" in text
 
 
+def test_daily_radar_uses_owner_qualified_pr_head() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "DAILY_RADAR_PR_HEAD: ${{ github.repository_owner }}:${{ env.DAILY_RADAR_BRANCH }}" in text
+    assert '--head "${DAILY_RADAR_PR_HEAD}"' in text
+
+
 def main() -> int:
     test_daily_radar_does_not_push_to_main()
     test_daily_radar_uses_automation_pr_branch()
+    test_daily_radar_uses_owner_qualified_pr_head()
     print("daily radar workflow boundary tests passed")
     return 0
 
