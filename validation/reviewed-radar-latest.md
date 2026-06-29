@@ -1,4 +1,4 @@
-# Reviewed Radar Report — 2026-06-28
+# Reviewed Radar Report — 2026-06-29
 
 Status: pre-publication review artifact.
 
@@ -6,174 +6,248 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 21
-- Streams with retained signals: 7
+- Retained signals: 32
+- Streams with retained signals: 6
 - Fetch warnings: 0
-
-## ai
-
-- **Google ограничила доступ M**a к ИИ-моделям Gemini из-за высокой нагрузки на инфраструктуру**
-  - Topic: `general-monitoring`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-28/ai/b6a1e9ac9ccfdb9b-google---m-a----gemini.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## crypto-finance
 
-- **Michael Saylor teases more bitcoin buying even as Strategy stock continues to fall**
-  - Topic: `market`
+- **FundBank becomes IRACE Digital in bid to bridge traditional finance and crypto**
+  - Topic: `general-monitoring`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/6b0953a906bb326a-michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continu.md`
+  - Signal path: `signals/2026-06-29/crypto-finance/e8c60fe68934041e-fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Samson Mow says bitcoin bottom is in despite skepticism from analysts**
-  - Topic: `market`
+- **Crypto exchange BitMEX loses CEO, CFO and head of growth**
+  - Topic: `general-monitoring`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/a96237353cb64246-samson-mow-says-bitcoin-bottom-is-in-despite-skepticism-from-analysts.md`
+  - Signal path: `signals/2026-06-29/crypto-finance/5fce0edfc7debe9d-crypto-exchange-bitmex-loses-ceo-cfo-and-head-of-growth.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **EU watchdog EBA details big crypto fines as landmark laws bite**
-  - Topic: `ai-platforms`
+- **India’s USDT premium tops 8.5% as crypto remittance crackdown squeezes stablecoin supply: report**
+  - Topic: `general-monitoring`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-29/crypto-finance/a7feba16ad19201b-india-s-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-st.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Bitcoin hovers below $60,000 as crypto braces for a pivotal week**
+  - Topic: `market`
+  - Source: `coindesk` / `specialized_media`
+  - Signal path: `signals/2026-06-29/crypto-finance/73ce3df604bc4ad1-bitcoin-hovers-below-60-000-as-crypto-braces-for-a-pivotal-week.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **South Korea’s Kiwoom Securities to acquire stake in Bithumb crypto exchange: report**
+  - Topic: `general-monitoring`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-06-29/crypto-finance/40c11c23f9473320-south-korea-s-kiwoom-securities-to-acquire-stake-in-bithumb-crypto-excha.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Kiwoom eyes Bithumb stake as Korean brokerages push into crypto: Report**
+  - Topic: `general-monitoring`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/e8a7d164fa50ded8-eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite.md`
+  - Signal path: `signals/2026-06-29/crypto-finance/2fc33935fc96be10-kiwoom-eyes-bithumb-stake-as-korean-brokerages-push-into-crypto-report.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Michael Saylor signals another bitcoin buy as Strategy sits about $13 billion underwater**
+- **Ethereum zkRollup project Loopring sunsets DEX, citing lack of meaningful adoption**
   - Topic: `market`
   - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/24891853cb4c61d1-michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-bil.md`
+  - Signal path: `signals/2026-06-29/crypto-finance/38ae777214a5fffc-ethereum-zkrollup-project-loopring-sunsets-dex-citing-lack-of-meaningful.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Will Bitcoin price recover in July?**
+- **BTC price RSI prints key 2026 signal: Five things to know in Bitcoin this week**
   - Topic: `market`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-28/crypto-finance/14cd6f83ada8d876-will-bitcoin-price-recover-in-july.md`
+  - Signal path: `signals/2026-06-29/crypto-finance/8fcba54282627a3b-btc-price-rsi-prints-key-2026-signal-five-things-to-know-in-bitcoin-this.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Vitalik Buterin says obfuscation could unlock private onchain crypto voting**
+  - Topic: `ai-platforms`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-06-29/crypto-finance/4c5f2a2187a7bb9a-vitalik-buterin-says-obfuscation-could-unlock-private-onchain-crypto-vot.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## finance
 
-- **BIS: риски мировой экономики растут из-за ИИ, долгов и инфляции**
-  - Topic: `general-monitoring`
+- **ЦБ в восемь раз сократит продажи валюты вне бюджетного правила**
+  - Topic: `regulation`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/c3fa5807ad8b1b03-bis.md`
+  - Signal path: `signals/2026-06-29/finance/df97523e6aa4a16b-kommersant-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **В Финляндии раскрыли, как закрытая граница с Россией ударила по экономике**
+- **Вьюгин назвал условие перетока средств с депозитов на фондовый рынок**
   - Topic: `general-monitoring`
   - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/afc8945d7378a224-rbc-finance.md`
+  - Signal path: `signals/2026-06-29/finance/416d63390916fc70-rbc-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Путин заявил о работе крупнейших НПЗ в России на максимальных мощностях**
+- **ЦБ учтет ситуацию на топливном рынке в июльском прогнозе по инфляции**
   - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/1b2b901a00e61334-kommersant-finance.md`
+  - Signal path: `signals/2026-06-29/finance/ceda04bd355d934f-kommersant-finance.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **SpaceX рекордно быстро войдет в индекс NASDAQ 100**
+- **Интерактивное представление актуальных статистических данных**
   - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-29/finance/e10a65bdd23035cc-cbr-news.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **О ключевых итогах пленарного заседания Группы разработки финансовых мер борьбы с отмыванием денег (ФАТФ) 17 – 19 июня 2026 года**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-29/finance/d87712a99cc0b1fd-17-19--2026.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Власти Китая пересматривают правила экспорта и импорта золота**
+  - Topic: `regulation`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-28/finance/394dc66530742fec-spacex------nasdaq-100.md`
+  - Signal path: `signals/2026-06-29/finance/18060958977ef24c-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Проекты нормативных документов Банка России для публичного обсуждения**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-29/finance/568a532c2c23346c-cbr-news.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Акции Oracle за неделю упали максимально с 2001 года**
+  - Topic: `general-monitoring`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-29/finance/ee933730eb3a59fd-oracle------2001.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## gear-style-edc
 
-- **Cade Cunningham’s Nike ST Charge, Nike Ja 3 “Animal Pack” And This Week’s Best Releases**
-  - Topic: `general-monitoring`
-  - Source: `sneaker-news` / `specialized_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/7a1ab6031b1359bb-cade-cunningham-s-nike-st-charge-nike-ja-3-animal-pack-and-this-week-s-b.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **The Spike-Less Air Jordan 1 Low Golf Cleans Up In White**
+- **The Nike Air Max TL 2.5 Wears Vibrant “Dusty Cactus” Trim**
   - Topic: `ai-platforms`
   - Source: `sneaker-news` / `specialized_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/d5c75aee4d4f1865-the-spike-less-air-jordan-1-low-golf-cleans-up-in-white.md`
+  - Signal path: `signals/2026-06-29/gear-style-edc/626f7113231452c4-the-nike-air-max-tl-2-5-wears-vibrant-dusty-cactus-trim.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **The Nike Vomero Premium Turns Out The Lights**
+- **The Nike Dunk Low Suits Up For “Gameday”**
   - Topic: `general-monitoring`
   - Source: `sneaker-news` / `specialized_media`
-  - Signal path: `signals/2026-06-28/gear-style-edc/a5b5fb509a588009-the-nike-vomero-premium-turns-out-the-lights.md`
+  - Signal path: `signals/2026-06-29/gear-style-edc/ae92928ddd4392b7-the-nike-dunk-low-suits-up-for-gameday.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Palace Skateboards Celebrates the Detroit Tigers With a Seven-Piece \"313\" Capsule**
+  - Topic: `general-monitoring`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-29/gear-style-edc/89ddefb739c3f75d-palace-skateboards-celebrates-the-detroit-tigers-with-a-seven-piece-313.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Wooyoungmi SS27 Translates the Korean Concept of \"Heung\" Into a Sentient Wardrobe**
+  - Topic: `general-monitoring`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-29/gear-style-edc/dba80a77a60cd086-wooyoungmi-ss27-translates-the-korean-concept-of-heung-into-a-sentient-w.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Celine Spring 2027 Menswear Plays in the Friction of “Tough & Tender”**
+  - Topic: `general-monitoring`
+  - Source: `hypebeast` / `public_media`
+  - Signal path: `signals/2026-06-29/gear-style-edc/d80f5c2470f1be01-celine-spring-2027-menswear-plays-in-the-friction-of-tough-tender.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## moscow-city
 
-- **Первые летние свадьбы прошли на станции метро \"Маяковская\"**
+- **На трех станциях столичного метро отремонтировали облицовку путевых стен**
   - Topic: `general-monitoring`
   - Source: `m24-moscow-news` / `public_media`
-  - Signal path: `signals/2026-06-28/moscow-city/a3c98a43531f78ae-m24-moscow-news.md`
+  - Signal path: `signals/2026-06-29/moscow-city/46365940e2edb091-m24-moscow-news.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Движение временно закрыто на ряде улиц в центре Москвы**
+- **Станция \"Парк культуры\" Кольцевой линии метро изменит режим работы с 6 июля**
   - Topic: `general-monitoring`
   - Source: `m24-moscow-news` / `public_media`
-  - Signal path: `signals/2026-06-28/moscow-city/44fddfc2ade7c31c-m24-moscow-news.md`
+  - Signal path: `signals/2026-06-29/moscow-city/9a51d7f10c293466-6.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Движение ограничат на ряде столичных улиц из-за ночного велофестиваля**
+  - Topic: `general-monitoring`
+  - Source: `m24-moscow-news` / `public_media`
+  - Signal path: `signals/2026-06-29/moscow-city/429a67f86c2038f2-m24-moscow-news.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## science-discovery
 
-- **James Webb uncovers exotic salt clouds on a mysterious pink world**
-  - Topic: `general-monitoring`
+- **Millions take omega-3 fish oil for brain health but a new study found no benefit**
+  - Topic: `ai-platforms`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/6074677900f5c5e7-james-webb-uncovers-exotic-salt-clouds-on-a-mysterious-pink-world.md`
+  - Signal path: `signals/2026-06-29/science-discovery/46d317c565e29fe1-millions-take-omega-3-fish-oil-for-brain-health-but-a-new-study-found-no.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Only one workout helped older adults lose fat without losing muscle**
-  - Topic: `general-monitoring`
+- **These fat-filled brain cells may be making multiple sclerosis worse**
+  - Topic: `ai-platforms`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/fe5e42eff6a0d05c-only-one-workout-helped-older-adults-lose-fat-without-losing-muscle.md`
+  - Signal path: `signals/2026-06-29/science-discovery/43da7252e92f3eb8-these-fat-filled-brain-cells-may-be-making-multiple-sclerosis-worse.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Common pesticide linked to more than double the risk of Parkinson’s disease**
-  - Topic: `general-monitoring`
+- **Brain activity under anesthesia challenges what we know about consciousness**
+  - Topic: `ai-platforms`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-28/science-discovery/37ec5de2c511aae9-common-pesticide-linked-to-more-than-double-the-risk-of-parkinson-s-dise.md`
+  - Signal path: `signals/2026-06-29/science-discovery/d9ec23e8477c070c-brain-activity-under-anesthesia-challenges-what-we-know-about-consciousn.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## tech-hardware-software
 
-- **Lenovo says the 'RAMageddon' is the new normal, outlines survival guide — at ISC 2026 an exec said 'it will never be like it was last year'**
+- **Open Models, Closed Environments: Palantir Brings Secure AI to US Agencies With NVIDIA Nemotron**
   - Topic: `ai-platforms`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/e9937f23f54abaff-lenovo-says-the-ramageddon-is-the-new-normal-outlines-survival-guide-at.md`
+  - Source: `nvidia-blog-tech` / `official_source`
+  - Signal path: `signals/2026-06-29/tech-hardware-software/e32b6bfc0436d5b8-open-models-closed-environments-palantir-brings-secure-ai-to-us-agencies.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Разработчики ИИ-моделей не торопятся перекладывать расходы на карман конечных пользователей**
+  - Topic: `general-monitoring`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-06-29/tech-hardware-software/31a6892b1e6ae412-3dnews.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Intel's next-gen 52-core Nova Lake CPU could pull up to 474W — high-end LGA1954 motherboards may need three 8-pin power connectors to feed the monster**
+- **Сегодня Apple начнёт сражение с патентным троллем за $500 млн в Верховном суде Великобритании**
   - Topic: `general-monitoring`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/c2dc358768de4435-intel-s-next-gen-52-core-nova-lake-cpu-could-pull-up-to-474w-high-end-lg.md`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-06-29/tech-hardware-software/30d4d526c0839686-apple-------500.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **AMD engineer 3D-prints Steam Machine-a-like with diagonal mobo mounting — parts include a Mini ITX motherboard, RTX 5060, and a flex ATX PSU**
+- **К 2028 году Apple обновит Mac Studio, оснастив систему процессором M7 Ultra**
   - Topic: `general-monitoring`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-28/tech-hardware-software/fe321dde55dd7358-amd-engineer-3d-prints-steam-machine-a-like-with-diagonal-mobo-mounting.md`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-06-29/tech-hardware-software/556e1b23e895051f-2028--apple--mac-studio----m7-ultra.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.

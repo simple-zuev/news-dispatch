@@ -1,52 +1,45 @@
 {
-  "date": "2026-06-28",
+  "date": "2026-06-29",
   "generated": [
     {
-      "stream": "ai",
-      "signals": 1,
-      "path": "dispatches/ai/2026-06-28-auto-radar-draft.md",
-      "publication_mode": "draft_only",
-      "status": "draft"
-    },
-    {
       "stream": "crypto-finance",
-      "signals": 5,
-      "path": "dispatches/crypto-finance/2026-06-28-auto-radar-draft.md",
+      "signals": 6,
+      "path": "dispatches/crypto-finance/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "finance",
-      "signals": 4,
-      "path": "dispatches/finance/2026-06-28-auto-radar-draft.md",
+      "signals": 6,
+      "path": "dispatches/finance/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "gear-style-edc",
-      "signals": 3,
-      "path": "dispatches/gear-style-edc/2026-06-28-auto-radar-draft.md",
+      "signals": 5,
+      "path": "dispatches/gear-style-edc/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "moscow-city",
-      "signals": 2,
-      "path": "dispatches/moscow-city/2026-06-28-auto-radar-draft.md",
+      "signals": 3,
+      "path": "dispatches/moscow-city/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "science-discovery",
       "signals": 3,
-      "path": "dispatches/science-discovery/2026-06-28-auto-radar-draft.md",
+      "path": "dispatches/science-discovery/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "tech-hardware-software",
-      "signals": 3,
-      "path": "dispatches/tech-hardware-software/2026-06-28-auto-radar-draft.md",
+      "signals": 4,
+      "path": "dispatches/tech-hardware-software/2026-06-29-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     }

@@ -1,26 +1,20 @@
 {
-  "date": "2026-06-28",
+  "date": "2026-06-29",
   "generated": [
-    {
-      "stream": "ai",
-      "status": "signals-only",
-      "count": 1,
-      "signals": [
-        "signals/2026-06-28/ai/b6a1e9ac9ccfdb9b-google---m-a----gemini.md"
-      ],
-      "media_count": 1,
-      "routing": "content_owned"
-    },
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 5,
+      "count": 9,
       "signals": [
-        "signals/2026-06-28/crypto-finance/6b0953a906bb326a-michael-saylor-teases-more-bitcoin-buying-even-as-strategy-stock-continu.md",
-        "signals/2026-06-28/crypto-finance/a96237353cb64246-samson-mow-says-bitcoin-bottom-is-in-despite-skepticism-from-analysts.md",
-        "signals/2026-06-28/crypto-finance/e8a7d164fa50ded8-eu-watchdog-eba-details-big-crypto-fines-as-landmark-laws-bite.md",
-        "signals/2026-06-28/crypto-finance/24891853cb4c61d1-michael-saylor-signals-another-bitcoin-buy-as-strategy-sits-about-13-bil.md",
-        "signals/2026-06-28/crypto-finance/14cd6f83ada8d876-will-bitcoin-price-recover-in-july.md"
+        "signals/2026-06-29/crypto-finance/e8c60fe68934041e-fundbank-becomes-irace-digital-in-bid-to-bridge-traditional-finance-and.md",
+        "signals/2026-06-29/crypto-finance/5fce0edfc7debe9d-crypto-exchange-bitmex-loses-ceo-cfo-and-head-of-growth.md",
+        "signals/2026-06-29/crypto-finance/a7feba16ad19201b-india-s-usdt-premium-tops-8-5-as-crypto-remittance-crackdown-squeezes-st.md",
+        "signals/2026-06-29/crypto-finance/73ce3df604bc4ad1-bitcoin-hovers-below-60-000-as-crypto-braces-for-a-pivotal-week.md",
+        "signals/2026-06-29/crypto-finance/40c11c23f9473320-south-korea-s-kiwoom-securities-to-acquire-stake-in-bithumb-crypto-excha.md",
+        "signals/2026-06-29/crypto-finance/2fc33935fc96be10-kiwoom-eyes-bithumb-stake-as-korean-brokerages-push-into-crypto-report.md",
+        "signals/2026-06-29/crypto-finance/38ae777214a5fffc-ethereum-zkrollup-project-loopring-sunsets-dex-citing-lack-of-meaningful.md",
+        "signals/2026-06-29/crypto-finance/8fcba54282627a3b-btc-price-rsi-prints-key-2026-signal-five-things-to-know-in-bitcoin-this.md",
+        "signals/2026-06-29/crypto-finance/4c5f2a2187a7bb9a-vitalik-buterin-says-obfuscation-could-unlock-private-onchain-crypto-vot.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -28,12 +22,16 @@
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 4,
+      "count": 8,
       "signals": [
-        "signals/2026-06-28/finance/c3fa5807ad8b1b03-bis.md",
-        "signals/2026-06-28/finance/afc8945d7378a224-rbc-finance.md",
-        "signals/2026-06-28/finance/1b2b901a00e61334-kommersant-finance.md",
-        "signals/2026-06-28/finance/394dc66530742fec-spacex------nasdaq-100.md"
+        "signals/2026-06-29/finance/df97523e6aa4a16b-kommersant-finance.md",
+        "signals/2026-06-29/finance/416d63390916fc70-rbc-finance.md",
+        "signals/2026-06-29/finance/ceda04bd355d934f-kommersant-finance.md",
+        "signals/2026-06-29/finance/e10a65bdd23035cc-cbr-news.md",
+        "signals/2026-06-29/finance/d87712a99cc0b1fd-17-19--2026.md",
+        "signals/2026-06-29/finance/18060958977ef24c-kommersant-finance.md",
+        "signals/2026-06-29/finance/568a532c2c23346c-cbr-news.md",
+        "signals/2026-06-29/finance/ee933730eb3a59fd-oracle------2001.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -41,24 +39,27 @@
     {
       "stream": "gear-style-edc",
       "status": "signals-only",
-      "count": 3,
+      "count": 5,
       "signals": [
-        "signals/2026-06-28/gear-style-edc/7a1ab6031b1359bb-cade-cunningham-s-nike-st-charge-nike-ja-3-animal-pack-and-this-week-s-b.md",
-        "signals/2026-06-28/gear-style-edc/d5c75aee4d4f1865-the-spike-less-air-jordan-1-low-golf-cleans-up-in-white.md",
-        "signals/2026-06-28/gear-style-edc/a5b5fb509a588009-the-nike-vomero-premium-turns-out-the-lights.md"
+        "signals/2026-06-29/gear-style-edc/626f7113231452c4-the-nike-air-max-tl-2-5-wears-vibrant-dusty-cactus-trim.md",
+        "signals/2026-06-29/gear-style-edc/ae92928ddd4392b7-the-nike-dunk-low-suits-up-for-gameday.md",
+        "signals/2026-06-29/gear-style-edc/89ddefb739c3f75d-palace-skateboards-celebrates-the-detroit-tigers-with-a-seven-piece-313.md",
+        "signals/2026-06-29/gear-style-edc/dba80a77a60cd086-wooyoungmi-ss27-translates-the-korean-concept-of-heung-into-a-sentient-w.md",
+        "signals/2026-06-29/gear-style-edc/d80f5c2470f1be01-celine-spring-2027-menswear-plays-in-the-friction-of-tough-tender.md"
       ],
-      "media_count": 3,
+      "media_count": 4,
       "routing": "feed_owned"
     },
     {
       "stream": "moscow-city",
       "status": "signals-only",
-      "count": 2,
+      "count": 3,
       "signals": [
-        "signals/2026-06-28/moscow-city/a3c98a43531f78ae-m24-moscow-news.md",
-        "signals/2026-06-28/moscow-city/44fddfc2ade7c31c-m24-moscow-news.md"
+        "signals/2026-06-29/moscow-city/46365940e2edb091-m24-moscow-news.md",
+        "signals/2026-06-29/moscow-city/9a51d7f10c293466-6.md",
+        "signals/2026-06-29/moscow-city/429a67f86c2038f2-m24-moscow-news.md"
       ],
-      "media_count": 2,
+      "media_count": 3,
       "routing": "feed_owned"
     },
     {
@@ -66,9 +67,9 @@
       "status": "signals-only",
       "count": 3,
       "signals": [
-        "signals/2026-06-28/science-discovery/6074677900f5c5e7-james-webb-uncovers-exotic-salt-clouds-on-a-mysterious-pink-world.md",
-        "signals/2026-06-28/science-discovery/fe5e42eff6a0d05c-only-one-workout-helped-older-adults-lose-fat-without-losing-muscle.md",
-        "signals/2026-06-28/science-discovery/37ec5de2c511aae9-common-pesticide-linked-to-more-than-double-the-risk-of-parkinson-s-dise.md"
+        "signals/2026-06-29/science-discovery/46d317c565e29fe1-millions-take-omega-3-fish-oil-for-brain-health-but-a-new-study-found-no.md",
+        "signals/2026-06-29/science-discovery/43da7252e92f3eb8-these-fat-filled-brain-cells-may-be-making-multiple-sclerosis-worse.md",
+        "signals/2026-06-29/science-discovery/d9ec23e8477c070c-brain-activity-under-anesthesia-challenges-what-we-know-about-consciousn.md"
       ],
       "media_count": 3,
       "routing": "feed_owned"
@@ -76,22 +77,28 @@
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 3,
+      "count": 4,
       "signals": [
-        "signals/2026-06-28/tech-hardware-software/e9937f23f54abaff-lenovo-says-the-ramageddon-is-the-new-normal-outlines-survival-guide-at.md",
-        "signals/2026-06-28/tech-hardware-software/c2dc358768de4435-intel-s-next-gen-52-core-nova-lake-cpu-could-pull-up-to-474w-high-end-lg.md",
-        "signals/2026-06-28/tech-hardware-software/fe321dde55dd7358-amd-engineer-3d-prints-steam-machine-a-like-with-diagonal-mobo-mounting.md"
+        "signals/2026-06-29/tech-hardware-software/e32b6bfc0436d5b8-open-models-closed-environments-palantir-brings-secure-ai-to-us-agencies.md",
+        "signals/2026-06-29/tech-hardware-software/31a6892b1e6ae412-3dnews.md",
+        "signals/2026-06-29/tech-hardware-software/30d4d526c0839686-apple-------500.md",
+        "signals/2026-06-29/tech-hardware-software/556e1b23e895051f-2028--apple--mac-studio----m7-ultra.md"
       ],
-      "media_count": 3,
+      "media_count": 4,
       "routing": "feed_owned"
     }
   ],
   "fetch_errors": [],
   "filtered_signals": [
     {
-      "path": "signals/2026-06-28/crypto-finance/50f531f9bbfd5ac1-sbi-s-289-million-bitbank-deal-is-symptomatic-of-japan-s-crypto-consolid.md",
+      "path": "signals/2026-06-29/tech-hardware-software/2aaf7e3926554fc8-save-a-massive-1-100-on-this-rtx-5080-gaming-pc-with-a-9800x3d-from-hp-n.md",
       "reason": "deal_or_discount",
-      "stream": "crypto-finance"
+      "stream": "tech-hardware-software"
+    },
+    {
+      "path": "signals/2026-06-29/tech-hardware-software/5691dbc6e6f0717c-pick-up-hoto-s-ultra-useful-3d-printing-tool-for-just-29-save-40-on-this.md",
+      "reason": "deal_or_discount",
+      "stream": "tech-hardware-software"
     }
   ]
 }
