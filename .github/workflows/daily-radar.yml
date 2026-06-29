@@ -88,8 +88,8 @@ jobs:
           - publication to dispatches/ remains a separate policy-gated step.
           EOF
 
-          if gh pr view "${DAILY_RADAR_BRANCH}" --base main --json number >/dev/null 2>&1; then
-            pr_number="$(gh pr view "${DAILY_RADAR_BRANCH}" --base main --json number --jq .number)"
+          pr_number="$(gh pr list --head "${DAILY_RADAR_BRANCH}" --base main --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$pr_number" ]; then
             gh pr edit "$pr_number" --title "${DAILY_RADAR_PR_TITLE}" --body-file "$body_file"
             echo "Updated Daily Radar PR #${pr_number}."
           else
