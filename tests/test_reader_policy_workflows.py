@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
 PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
+BUILD_SITE = ROOT / "tools" / "build_site.py"
 
 
 def read(path: Path) -> str:
@@ -19,37 +20,38 @@ def assert_ordered(text: str, markers: list[str]) -> None:
     assert positions == sorted(positions), markers
 
 
-def test_validate_builds_policy_after_ranking_before_today() -> None:
+def test_build_site_keeps_policy_after_ranking_before_today() -> None:
+    text = read(BUILD_SITE)
+    build_body = text[text.index("def build(args") :]
+    assert_ordered(
+        build_body,
+        [
+            "build_ranking(args)",
+            "build_reader_policy()",
+            'run_tool("build_today_page.py")',
+        ],
+    )
+    assert "copy_to_site(READER_POLICY_REPORT)" in text
+    assert "copy_to_site(RANKING_REPORT)" in text
+
+
+def test_validate_uses_deterministic_site_orchestrator() -> None:
     text = read(VALIDATE_WORKFLOW)
-    assert_ordered(
-        text,
-        [
-            "Build offline radar ranking fixture",
-            "Build reader policy artifact",
-            "Build Today Radar page",
-        ],
-    )
-    assert "run: python tools/build_reader_policy.py" in text
+    assert "run: python tools/build_site.py --ranking-mode fixture --media-mode skip" in text
     assert "path: validation/reader-policy-latest.json" in text
+    assert "path: validation/daily-radar-ranking-latest.json" in text
 
 
-def test_pages_publishes_policy_next_to_today_and_ranking() -> None:
+def test_pages_uses_live_site_orchestrator() -> None:
     text = read(PAGES_WORKFLOW)
-    assert_ordered(
-        text,
-        [
-            "Build radar ranking report",
-            "Build reader policy artifact",
-            "Build Today Radar page",
-        ],
-    )
-    assert "cp validation/daily-radar-ranking-latest.json site/daily-radar-ranking-latest.json" in text
-    assert "cp validation/reader-policy-latest.json site/reader-policy-latest.json" in text
+    assert "run: python tools/build_site.py --ranking-mode live --media-mode live" in text
+    assert "path: site/" in text
 
 
 def main() -> int:
-    test_validate_builds_policy_after_ranking_before_today()
-    test_pages_publishes_policy_next_to_today_and_ranking()
+    test_build_site_keeps_policy_after_ranking_before_today()
+    test_validate_uses_deterministic_site_orchestrator()
+    test_pages_uses_live_site_orchestrator()
     print("reader policy workflow tests passed")
     return 0
 
