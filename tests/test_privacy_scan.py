@@ -42,9 +42,30 @@ def test_phone_like_still_blocks_visible_phone() -> None:
     assert any("phone_like" in item for item in blockers)
 
 
+def test_public_private_keys_security_coverage_is_allowed() -> None:
+    blockers, warnings = scan_text("- Private keys, not smart contracts, caused crypto hack losses.\n")
+    assert blockers == []
+    assert warnings == []
+
+
+def test_public_private_keys_url_is_allowed() -> None:
+    url = "https://www.coindesk.com/tech/private-keys-not-smart-contracts-caused-hack-losses"
+    blockers, warnings = scan_text(f'- "{url}"\n')
+    assert blockers == []
+    assert warnings == []
+
+
+def test_private_key_assignment_is_still_blocked() -> None:
+    blockers, _warnings = scan_text("private_key: should-not-be-public\n")
+    assert any("possible_secret_keyword" in item for item in blockers)
+
+
 def main() -> int:
     test_phone_like_ignores_url_digit_fragments()
     test_phone_like_still_blocks_visible_phone()
+    test_public_private_keys_security_coverage_is_allowed()
+    test_public_private_keys_url_is_allowed()
+    test_private_key_assignment_is_still_blocked()
     print("privacy scan tests passed")
     return 0
 

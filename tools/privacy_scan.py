@@ -71,6 +71,8 @@ ALLOWLIST_PATTERNS = [
 ]
 
 URL_PATTERN = re.compile(r"https?://\S+", re.IGNORECASE)
+PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN = re.compile(r"\bprivate[-\s]+keys\b", re.IGNORECASE)
+PRIVATE_KEY_ASSIGNMENT_PATTERN = re.compile(r"(?i)private[_-]?key\s*[:=]")
 
 REPO_SIGNAL_PATH_PATTERN = re.compile(
     r"(?:^|[\"'\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'\s]+\.md(?:[\"'\s,]|$)",
@@ -95,10 +97,24 @@ def is_allowlisted(line: str) -> bool:
     return any(pattern.search(line) for pattern in ALLOWLIST_PATTERNS)
 
 
+def is_public_private_keys_topic(line: str) -> bool:
+    """Allow public coverage of private-key security incidents, not secrets.
+
+    The scanner must block real private_key assignments and PEM private key
+    blocks, but public article titles and URLs often contain the plural phrase
+    "private keys" as a security topic.
+    """
+    if PRIVATE_KEY_ASSIGNMENT_PATTERN.search(line):
+        return False
+    return bool(PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN.search(line))
+
+
 def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
     """Avoid known generated-report false positives while keeping hard checks strict."""
     rel = path.relative_to(ROOT).as_posix()
     if name == "phone_like" and rel.startswith("validation/") and REPO_SIGNAL_PATH_PATTERN.search(line):
+        return True
+    if name == "possible_secret_keyword" and is_public_private_keys_topic(line):
         return True
     return False
 
