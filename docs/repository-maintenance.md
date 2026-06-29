@@ -8,6 +8,7 @@
 - `Deploy News Dispatch Pages` используется для push в `main` и перед деплоем выполняет тот же базовый контур проверок.
 - После merge не должно быть двух одинаковых post-merge validation runs по одному commit. Для `main` основным post-merge контуром является Pages workflow.
 - `Daily Radar Signals` обновляет публичные сигналы, служебные отчёты и draft-only материалы. Он не публикует финальные выпуски автоматически.
+- Сборка статического reader site должна проходить через `tools/build_site.py`, чтобы порядок render/enhance/apply/validate не был скрыт в YAML workflow.
 
 ## Ветки и pull request
 
@@ -15,9 +16,21 @@
 - После merge такие ветки нужно удалять через GitHub UI.
 - Заголовки PR должны быть содержательными. Если connector создаёт технический заголовок вроде `p53`, его нужно переименовать вручную.
 
+## Контентные и runtime-границы
+
+Не смешивать редакционные материалы, runtime-артефакты и сгенерированный сайт.
+
+- `dispatches/` — дерево осознанных редакционных dispatch-файлов. Автоматически созданные radar drafts не должны появляться в этой директории.
+- `validation/auto-dispatches/` — рабочая зона для новых автоматически созданных draft-only radar drafts.
+- `validation/auto-dispatches/archive/` — архив исторических автоматически созданных draft-only radar drafts, перенесённых из `dispatches/`.
+- `validation/*-latest.*` — служебные отчёты последнего запуска pipeline. Они не являются публикациями.
+- `signals/` — публичный журнал radar-сигналов. Signal подтверждает факт появления материала в публичном источнике, но не подтверждает интерпретацию или влияние.
+- `site/` — сгенерированный reader output. Он не является source of truth для редакционного содержания.
+
 ## Контент
 
 - Черновики, созданные автоматически, остаются `status: draft` и `publication_mode: draft_only`.
+- Автоматический radar draft может быть promoted в `dispatches/` только вручную и только после редакционной проверки, source governance, privacy scan и publication validation.
 - Публичные материалы должны проходить validation, source governance и privacy scan.
 - Не удалять опубликованные материалы ради уборки без отдельного решения.
 
@@ -33,9 +46,12 @@
 - Дублирующиеся workflow-триггеры, выполняющие одну и ту же проверку на одном событии.
 - Устаревшие документы, противоречащие текущей архитектуре.
 - Временные CI-эксперименты, не отражённые в редакционных правилах.
+- Сгенерированные auto-radar drafts в `dispatches/`.
+- Локальные `__pycache__/`, временные build-файлы и непроверенные generated outputs.
 
 ## Что не считается мусором
 
-- Draft-only материалы, если они нужны для редакционной проверки.
+- Draft-only материалы в `validation/auto-dispatches/`, если они нужны для редакционной проверки.
+- Historical auto-radar drafts в `validation/auto-dispatches/archive/`, если они нужны как журнал миграции и аудита.
 - Validation artifacts в `validation/`, если они используются workflow.
 - Сигналы в `signals/`, если они являются публичным журналом радара.
