@@ -5,15 +5,15 @@
   "disabled_sources": 4,
   "class_counts": {
     "official_source": 6,
-    "public_media": 8,
+    "public_media": 7,
     "research_media": 2,
-    "specialized_media": 9
+    "specialized_media": 10
   },
   "enabled_class_counts": {
     "official_source": 5,
-    "public_media": 6,
+    "public_media": 5,
     "research_media": 1,
-    "specialized_media": 9
+    "specialized_media": 10
   },
   "streams": [
     {
@@ -86,12 +86,10 @@
       "enabled_sources": 2,
       "disabled_sources": 0,
       "class_counts": {
-        "public_media": 1,
-        "specialized_media": 1
+        "specialized_media": 2
       },
       "enabled_class_counts": {
-        "public_media": 1,
-        "specialized_media": 1
+        "specialized_media": 2
       },
       "enabled_official_sources": 0,
       "enabled_high_trust_sources": 0,
@@ -186,10 +184,9 @@
       "health_status": "ok",
       "priority": 0.82,
       "include_keyword_count": 8,
-      "exclude_keyword_count": 0,
+      "exclude_keyword_count": 9,
       "risk_flags": [
-        "public_media_needs_corroboration",
-        "missing_exclude_keywords"
+        "public_media_needs_corroboration"
       ],
       "disabled_reason": ""
     },
@@ -243,7 +240,7 @@
       "health_status": "ok",
       "priority": 0.78,
       "include_keyword_count": 9,
-      "exclude_keyword_count": 0,
+      "exclude_keyword_count": 5,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -320,16 +317,13 @@
       "id": "hypebeast",
       "title": "Hypebeast",
       "stream": "gear-style-edc",
-      "source_class": "public_media",
+      "source_class": "specialized_media",
       "enabled": true,
       "health_status": "ok",
-      "priority": 0.62,
+      "priority": 0.66,
       "include_keyword_count": 8,
       "exclude_keyword_count": 6,
-      "risk_flags": [
-        "public_media_needs_corroboration",
-        "low_priority_enabled"
-      ],
+      "risk_flags": [],
       "disabled_reason": ""
     },
     {
@@ -501,9 +495,7 @@
   ],
   "risk_counts": {
     "disabled": 4,
-    "low_priority_enabled": 1,
-    "missing_exclude_keywords": 1,
-    "public_media_needs_corroboration": 6
+    "public_media_needs_corroboration": 5
   },
   "recommendations": [
     "crypto-finance: add or restore official-source coverage for stronger confirmation.",
@@ -512,6 +504,6 @@
     "moscow-city: add or restore official-source coverage for stronger confirmation.",
     "science-discovery: add or restore official-source coverage for stronger confirmation.",
     "Disabled official sources require replacement or a stable fallback: mos-ru-news.",
-    "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, hypebeast, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance."
+    "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance."
   ]
 }

@@ -26,9 +26,7 @@ This report summarizes source coverage, reliability flags and editorial review n
 ## Risk flags
 
 - disabled: 4
-- low_priority_enabled: 1
-- missing_exclude_keywords: 1
-- public_media_needs_corroboration: 6
+- public_media_needs_corroboration: 5
 
 ## Recommendations
 
@@ -38,4 +36,4 @@ This report summarizes source coverage, reliability flags and editorial review n
 - moscow-city: add or restore official-source coverage for stronger confirmation.
 - science-discovery: add or restore official-source coverage for stronger confirmation.
 - Disabled official sources require replacement or a stable fallback: mos-ru-news.
-- Public-media signals should be corroborated before editorial promotion: ars-technica-tech, hypebeast, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance.
+- Public-media signals should be corroborated before editorial promotion: ars-technica-tech, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance.
