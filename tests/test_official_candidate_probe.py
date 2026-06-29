@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import importlib.util
+import ssl
 import sys
+import urllib.error
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,19 +40,28 @@ def test_build_report_counts_statuses() -> None:
         module.ProbeResult("a", "finance", "official_source", "https://example.com/a.xml", "ok", 200, "application/rss+xml", "rss", 3, 10, ""),
         module.ProbeResult("b", "finance", "official_source", "", "skipped", None, "", "", 0, 0, "candidate_url is empty"),
         module.ProbeResult("c", "finance", "official_source", "https://example.com/c.xml", "failed", None, "", "", 0, 10, "error"),
+        module.ProbeResult("d", "finance", "official_source", "https://example.com/d.xml", "tls_error", None, "", "", 0, 10, "certificate verify failed"),
     ]
     report = module.build_report(results)
     assert report["status"] == "pre-production candidate feed probe"
-    assert report["total_candidates_with_url"] == 2
+    assert report["total_candidates_with_url"] == 3
     assert report["ok"] == 1
     assert report["skipped"] == 1
     assert report["failed"] == 1
+    assert report["tls_error"] == 1
+
+
+def test_classifies_tls_errors() -> None:
+    reason = ssl.SSLCertVerificationError("certificate verify failed: unable to get local issuer certificate")
+    error = urllib.error.URLError(reason)
+    assert module.is_tls_error(error)
 
 
 def main() -> int:
     test_detects_rss_items()
     test_detects_atom_entries()
     test_build_report_counts_statuses()
+    test_classifies_tls_errors()
     print("official candidate probe tests passed")
     return 0
 
