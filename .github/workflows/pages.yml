@@ -58,6 +58,11 @@ jobs:
           python tools/build_daily_radar_ranking_report.py --timeout 8 --max-rows 200
           cp validation/daily-radar-ranking-latest.json site/daily-radar-ranking-latest.json
 
+      - name: Build reader policy artifact
+        run: |
+          python tools/build_reader_policy.py
+          cp validation/reader-policy-latest.json site/reader-policy-latest.json
+
       - name: Build Today Radar page
         run: python tools/build_today_page.py
 
