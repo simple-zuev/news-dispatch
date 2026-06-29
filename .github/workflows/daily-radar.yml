@@ -76,6 +76,7 @@ jobs:
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          DAILY_RADAR_PR_HEAD: ${{ github.repository_owner }}:${{ env.DAILY_RADAR_BRANCH }}
         run: |
           body_file="/tmp/daily-radar-pr-body.md"
           cat > "$body_file" <<'EOF'
@@ -84,6 +85,7 @@ jobs:
           Boundary:
           - generated changes are proposed through this PR;
           - this workflow does not push generated content directly to main;
+          - source governance artifacts are pre-publication validation artifacts;
           - auto-radar draft outputs belong under validation/auto-dispatches/;
           - publication to dispatches/ remains a separate policy-gated step.
           EOF
@@ -95,7 +97,7 @@ jobs:
           else
             gh pr create \
               --base main \
-              --head "${DAILY_RADAR_BRANCH}" \
+              --head "${DAILY_RADAR_PR_HEAD}" \
               --title "${DAILY_RADAR_PR_TITLE}" \
               --body-file "$body_file"
           fi
