@@ -1,13 +1,16 @@
 {
-  "date": "2026-06-29",
-  "generated_count": 3,
-  "kept_count": 3,
+  "date": "2026-06-30",
+  "generated_count": 24,
+  "kept_count": 24,
   "filtered_count": 0,
   "filtered_by_reason": {},
   "filtered_by_stream": {},
   "remaining_by_stream": {
-    "crypto-finance": 1,
+    "ai": 1,
+    "crypto-finance": 9,
+    "finance": 8,
     "gear-style-edc": 1,
-    "tech-hardware-software": 1
+    "science-discovery": 2,
+    "tech-hardware-software": 3
   }
 }
