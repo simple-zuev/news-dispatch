@@ -26,7 +26,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Криптофинансы: Россия и мир»: 4 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Криптофинансы: Россия и мир»: 1 публичных сигналов для редакционной проверки."
 tags:
   - "crypto-finance"
   - "market-structure"
@@ -39,44 +39,20 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve"
-  - "https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth"
-  - "https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend"
+  - "https://www.coindesk.com/markets/2026/06/29/usdt-jumps-to-8-5-premium-in-india-after-crypto-payment-crackdown"
 source_titles:
-  - "The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election"
-  - "CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve"
-  - "CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH"
-  - "CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend"
+  - "CoinDesk: Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown"
 source_types:
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss"
-  - "https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve"
-  - "https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth"
-  - "https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend"
+  - "https://www.coindesk.com/markets/2026/06/29/usdt-jumps-to-8-5-premium-in-india-after-crypto-payment-crackdown"
 media_titles:
-  - "The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election"
-  - "CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve"
-  - "CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH"
-  - "CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend"
+  - "CoinDesk: Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown"
 media_types:
   - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
-  - "Криптофинансовое медиа"
 media_notes:
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
-  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
 visuals: []
 visual_titles: []
@@ -93,17 +69,11 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election — сообщение источника «The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election»; требует проверки перед выводами.
-2. Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve — сообщение источника «CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve»; требует проверки перед выводами.
-3. Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH — сообщение источника «CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH»; требует проверки перед выводами.
-4. Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend — сообщение источника «CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend»; требует проверки перед выводами.
+1. Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown — сообщение источника «CoinDesk: Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown»; требует проверки перед выводами.
 
 ## Что произошло
 
-- TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election. Источник: The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election. URL: https://www.theblock.co/post/406621/td-cowen-crypto-market-structure-bill-clarity-act?utm_source=rss&utm_medium=rss
-- Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve. Источник: CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve. URL: https://www.coindesk.com/business/2026/06/29/ukraine-transfers-usd8-3-million-in-seized-crypto-amid-potential-plans-for-strategic-reserve
-- Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH. Источник: CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH. URL: https://www.coindesk.com/business/2026/06/29/tom-lee-blames-crypto-weakness-on-quarter-end-window-dressing-as-bitmine-adds-another-usd43-million-of-eth
-- Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend. Источник: CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend. URL: https://www.coindesk.com/markets/2026/06/29/saylor-s-strategy-initiates-buybacks-bitcoin-monetization-program-lifts-strc-dividend
+- Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown. Источник: CoinDesk: Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown. URL: https://www.coindesk.com/markets/2026/06/29/usdt-jumps-to-8-5-premium-in-india-after-crypto-payment-crackdown
 
 ## Почему это важно
 
@@ -113,7 +83,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: specialized_media: 4. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -121,10 +91,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election | source_reported_claim | The Block: TD Cowen says crypto market structure bill passage ‘far from assured’ before midterm election | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve | source_reported_claim | CoinDesk: Ukraine transfers $8.3 million in seized crypto amid potential plans for strategic reserve | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH | source_reported_claim | CoinDesk: Tom Lee blames crypto weakness on quarter-end 'window dressing' as Bitmine adds another $43 million of ETH | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend | source_reported_claim | CoinDesk: Saylor's Strategy initiates buybacks and bitcoin monetization program, lifts STRC dividend | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown | source_reported_claim | CoinDesk: Tether's USDT jumps to 8.5% premium in India after crypto payment crackdown | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
