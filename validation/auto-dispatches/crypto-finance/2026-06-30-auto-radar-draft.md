@@ -39,19 +39,19 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.coindesk.com/markets/2026/06/30/bitcoin-s-52-week-correlation-with-usd-jpy-hits-0-90-undercutting-carry-trade-theory"
-  - "https://www.coindesk.com/markets/2026/06/30/ether-solana-and-dogecoin-slide-as-strategy-s-bitcoin-sales-plan-pressures-market"
-  - "https://www.coindesk.com/policy/2026/06/30/dubai-set-for-crypto-firm-influx-as-mica-deadline-pushes-companies-to-reassess-europe"
-  - "https://www.theblock.co/post/406546/uk-sets-capital-market-abuse-rules-landmark-crypto-framework?utm_source=rss&utm_medium=rss"
-  - "https://www.theblock.co/post/406639/chinese-billionaire-sentenced-30-years?utm_source=rss&utm_medium=rss"
-  - "https://cointelegraph.com/news/ionic-digital-nasdaq-direct-listing-ai-pivot?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.coindesk.com/markets/2026/06/30/bitcoin-nears-2024-lows-as-options-traders-pay-up-for-downside-protection"
+  - "https://www.coindesk.com/policy/2026/06/30/uk-to-lower-stablecoin-capital-buffers-undercutting-eu-s-mica-requirements"
+  - "https://www.coindesk.com/policy/2026/06/30/sec-wins-usd5-5-million-default-judgment-over-alleged-fake-crypto-platform-nanobit"
+  - "https://www.theblock.co/post/406675/hollywood-director-carl-rinsch-sentenced-to-30-months-for-diverting-11-million-in-tv-production-funds-to-stock-options-crypto-and-luxury-purchases?utm_source=rss&utm_medium=rss"
+  - "https://cointelegraph.com/news/esma-challenge-binance-serving-certain-eu-users-post-mica?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://cointelegraph.com/news/solana-company-to-back-kazakhstans-6b-crypto-megacity-ambition?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
 source_titles:
-  - "CoinDesk: Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory"
-  - "CoinDesk: Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market"
-  - "CoinDesk: Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe"
-  - "The Block: UK sets capital, market abuse rules in landmark crypto framework"
-  - "The Block: Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto"
-  - "Cointelegraph: Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot"
+  - "CoinDesk: Bitcoin nears 2024 lows as options traders pay up for downside protection"
+  - "CoinDesk: UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements"
+  - "CoinDesk: SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit"
+  - "The Block: Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases"
+  - "Cointelegraph: ESMA MiCA warning puts Binance EU service changes under scrutiny"
+  - "Cointelegraph: Solana Company to back Kazakhstan’s $6B crypto megacity ambition"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.coindesk.com/markets/2026/06/30/bitcoin-s-52-week-correlation-with-usd-jpy-hits-0-90-undercutting-carry-trade-theory"
-  - "https://www.coindesk.com/markets/2026/06/30/ether-solana-and-dogecoin-slide-as-strategy-s-bitcoin-sales-plan-pressures-market"
-  - "https://www.coindesk.com/policy/2026/06/30/dubai-set-for-crypto-firm-influx-as-mica-deadline-pushes-companies-to-reassess-europe"
-  - "https://www.theblock.co/post/406546/uk-sets-capital-market-abuse-rules-landmark-crypto-framework?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/markets/2026/06/30/bitcoin-nears-2024-lows-as-options-traders-pay-up-for-downside-protection"
+  - "https://www.coindesk.com/policy/2026/06/30/uk-to-lower-stablecoin-capital-buffers-undercutting-eu-s-mica-requirements"
+  - "https://www.coindesk.com/policy/2026/06/30/sec-wins-usd5-5-million-default-judgment-over-alleged-fake-crypto-platform-nanobit"
+  - "https://www.theblock.co/post/406675/hollywood-director-carl-rinsch-sentenced-to-30-months-for-diverting-11-million-in-tv-production-funds-to-stock-options-crypto-and-luxury-purchases?utm_source=rss&utm_medium=rss"
 media_titles:
-  - "CoinDesk: Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory"
-  - "CoinDesk: Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market"
-  - "CoinDesk: Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe"
-  - "The Block: UK sets capital, market abuse rules in landmark crypto framework"
+  - "CoinDesk: Bitcoin nears 2024 lows as options traders pay up for downside protection"
+  - "CoinDesk: UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements"
+  - "CoinDesk: SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit"
+  - "The Block: Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory — сообщение источника «CoinDesk: Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory»; требует проверки перед выводами.
-2. Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market — сообщение источника «CoinDesk: Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market»; требует проверки перед выводами.
-3. Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe — сообщение источника «CoinDesk: Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe»; требует проверки перед выводами.
-4. UK sets capital, market abuse rules in landmark crypto framework — сообщение источника «The Block: UK sets capital, market abuse rules in landmark crypto framework»; требует проверки перед выводами.
-5. Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto — сообщение источника «The Block: Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto»; требует проверки перед выводами.
+1. Bitcoin nears 2024 lows as options traders pay up for downside protection — сообщение источника «CoinDesk: Bitcoin nears 2024 lows as options traders pay up for downside protection»; требует проверки перед выводами.
+2. UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements — сообщение источника «CoinDesk: UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements»; требует проверки перед выводами.
+3. SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit — сообщение источника «CoinDesk: SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit»; требует проверки перед выводами.
+4. Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases — сообщение источника «The Block: Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases»; требует проверки перед выводами.
+5. ESMA MiCA warning puts Binance EU service changes under scrutiny — сообщение источника «Cointelegraph: ESMA MiCA warning puts Binance EU service changes under scrutiny»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory. Источник: CoinDesk: Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory. URL: https://www.coindesk.com/markets/2026/06/30/bitcoin-s-52-week-correlation-with-usd-jpy-hits-0-90-undercutting-carry-trade-theory
-- Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market. Источник: CoinDesk: Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market. URL: https://www.coindesk.com/markets/2026/06/30/ether-solana-and-dogecoin-slide-as-strategy-s-bitcoin-sales-plan-pressures-market
-- Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe. Источник: CoinDesk: Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe. URL: https://www.coindesk.com/policy/2026/06/30/dubai-set-for-crypto-firm-influx-as-mica-deadline-pushes-companies-to-reassess-europe
-- UK sets capital, market abuse rules in landmark crypto framework. Источник: The Block: UK sets capital, market abuse rules in landmark crypto framework. URL: https://www.theblock.co/post/406546/uk-sets-capital-market-abuse-rules-landmark-crypto-framework?utm_source=rss&utm_medium=rss
-- Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto. Источник: The Block: Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto. URL: https://www.theblock.co/post/406639/chinese-billionaire-sentenced-30-years?utm_source=rss&utm_medium=rss
-- Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot. Источник: Cointelegraph: Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot. URL: https://cointelegraph.com/news/ionic-digital-nasdaq-direct-listing-ai-pivot?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Bitcoin nears 2024 lows as options traders pay up for downside protection. Источник: CoinDesk: Bitcoin nears 2024 lows as options traders pay up for downside protection. URL: https://www.coindesk.com/markets/2026/06/30/bitcoin-nears-2024-lows-as-options-traders-pay-up-for-downside-protection
+- UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements. Источник: CoinDesk: UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements. URL: https://www.coindesk.com/policy/2026/06/30/uk-to-lower-stablecoin-capital-buffers-undercutting-eu-s-mica-requirements
+- SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit. Источник: CoinDesk: SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit. URL: https://www.coindesk.com/policy/2026/06/30/sec-wins-usd5-5-million-default-judgment-over-alleged-fake-crypto-platform-nanobit
+- Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases. Источник: The Block: Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases. URL: https://www.theblock.co/post/406675/hollywood-director-carl-rinsch-sentenced-to-30-months-for-diverting-11-million-in-tv-production-funds-to-stock-options-crypto-and-luxury-purchases?utm_source=rss&utm_medium=rss
+- ESMA MiCA warning puts Binance EU service changes under scrutiny. Источник: Cointelegraph: ESMA MiCA warning puts Binance EU service changes under scrutiny. URL: https://cointelegraph.com/news/esma-challenge-binance-serving-certain-eu-users-post-mica?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- Solana Company to back Kazakhstan’s $6B crypto megacity ambition. Источник: Cointelegraph: Solana Company to back Kazakhstan’s $6B crypto megacity ambition. URL: https://cointelegraph.com/news/solana-company-to-back-kazakhstans-6b-crypto-megacity-ambition?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory | source_reported_claim | CoinDesk: Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market | source_reported_claim | CoinDesk: Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe | source_reported_claim | CoinDesk: Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| UK sets capital, market abuse rules in landmark crypto framework | source_reported_claim | The Block: UK sets capital, market abuse rules in landmark crypto framework | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto | source_reported_claim | The Block: Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot | source_reported_claim | Cointelegraph: Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Bitcoin nears 2024 lows as options traders pay up for downside protection | source_reported_claim | CoinDesk: Bitcoin nears 2024 lows as options traders pay up for downside protection | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements | source_reported_claim | CoinDesk: UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit | source_reported_claim | CoinDesk: SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases | source_reported_claim | The Block: Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| ESMA MiCA warning puts Binance EU service changes under scrutiny | source_reported_claim | Cointelegraph: ESMA MiCA warning puts Binance EU service changes under scrutiny | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Solana Company to back Kazakhstan’s $6B crypto megacity ambition | source_reported_claim | Cointelegraph: Solana Company to back Kazakhstan’s $6B crypto megacity ambition | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

@@ -25,7 +25,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Наука и открытия»: 2 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Наука и открытия»: 3 публичных сигналов для редакционной проверки."
 tags:
   - "science-discovery"
   - "research-evidence"
@@ -38,27 +38,35 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://nplus1.ru/news/2026/06/30/proteomic-analysis-of-homo-naledi"
-  - "https://www.sciencedaily.com/releases/2026/06/260630020521.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260630020231.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623011230.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623083121.htm"
 source_titles:
-  - "N+1: В зубах 20 Homo naledi не нашли характерных для мужчин белков"
-  - "ScienceDaily: Scientists may have finally found how Alzheimer's spreads through the brain"
+  - "ScienceDaily: Scientists say creatine may help fight depression"
+  - "ScienceDaily: A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami"
+  - "ScienceDaily: Why scientists fear we're missing evidence of extraterrestrial life"
 source_types:
+  - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
+  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://nplus1.ru/news/2026/06/30/proteomic-analysis-of-homo-naledi"
-  - "https://www.sciencedaily.com/releases/2026/06/260630020521.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260630020231.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623011230.htm"
+  - "https://www.sciencedaily.com/releases/2026/06/260623083121.htm"
 media_titles:
-  - "N+1: В зубах 20 Homo naledi не нашли характерных для мужчин белков"
-  - "ScienceDaily: Scientists may have finally found how Alzheimer's spreads through the brain"
+  - "ScienceDaily: Scientists say creatine may help fight depression"
+  - "ScienceDaily: A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami"
+  - "ScienceDaily: Why scientists fear we're missing evidence of extraterrestrial life"
 media_types:
   - "Научное медиа"
   - "Научное медиа"
+  - "Научное медиа"
 media_notes:
+  - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
 visuals: []
@@ -76,13 +84,15 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. В зубах 20 Homo naledi не нашли характерных для мужчин белков — сообщение источника «N+1: В зубах 20 Homo naledi не нашли характерных для мужчин белков»; требует проверки перед выводами.
-2. Scientists may have finally found how Alzheimer's spreads through the brain — сообщение источника «ScienceDaily: Scientists may have finally found how Alzheimer's spreads through the brain»; требует проверки перед выводами.
+1. Scientists say creatine may help fight depression — сообщение источника «ScienceDaily: Scientists say creatine may help fight depression»; требует проверки перед выводами.
+2. A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami — сообщение источника «ScienceDaily: A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami»; требует проверки перед выводами.
+3. Why scientists fear we're missing evidence of extraterrestrial life — сообщение источника «ScienceDaily: Why scientists fear we're missing evidence of extraterrestrial life»; требует проверки перед выводами.
 
 ## Что произошло
 
-- В зубах 20 Homo naledi не нашли характерных для мужчин белков. Источник: N+1: В зубах 20 Homo naledi не нашли характерных для мужчин белков. URL: https://nplus1.ru/news/2026/06/30/proteomic-analysis-of-homo-naledi
-- Scientists may have finally found how Alzheimer's spreads through the brain. Источник: ScienceDaily: Scientists may have finally found how Alzheimer's spreads through the brain. URL: https://www.sciencedaily.com/releases/2026/06/260630020521.htm
+- Scientists say creatine may help fight depression. Источник: ScienceDaily: Scientists say creatine may help fight depression. URL: https://www.sciencedaily.com/releases/2026/06/260630020231.htm
+- A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami. Источник: ScienceDaily: A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami. URL: https://www.sciencedaily.com/releases/2026/06/260623011230.htm
+- Why scientists fear we're missing evidence of extraterrestrial life. Источник: ScienceDaily: Why scientists fear we're missing evidence of extraterrestrial life. URL: https://www.sciencedaily.com/releases/2026/06/260623083121.htm
 
 ## Почему это важно
 
@@ -92,7 +102,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: research_media: 1, specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: research_media: 3. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -100,8 +110,9 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| В зубах 20 Homo naledi не нашли характерных для мужчин белков | source_reported_claim | N+1: В зубах 20 Homo naledi не нашли характерных для мужчин белков | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Scientists may have finally found how Alzheimer's spreads through the brain | source_reported_claim | ScienceDaily: Scientists may have finally found how Alzheimer's spreads through the brain | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Scientists say creatine may help fight depression | source_reported_claim | ScienceDaily: Scientists say creatine may help fight depression | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami | source_reported_claim | ScienceDaily: A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Why scientists fear we're missing evidence of extraterrestrial life | source_reported_claim | ScienceDaily: Why scientists fear we're missing evidence of extraterrestrial life | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

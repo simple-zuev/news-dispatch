@@ -23,22 +23,22 @@
       "status": "draft"
     },
     {
-      "stream": "gear-style-edc",
+      "stream": "moscow-city",
       "signals": 1,
-      "path": "validation/auto-dispatches/gear-style-edc/2026-06-30-auto-radar-draft.md",
+      "path": "validation/auto-dispatches/moscow-city/2026-06-30-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "science-discovery",
-      "signals": 2,
+      "signals": 3,
       "path": "validation/auto-dispatches/science-discovery/2026-06-30-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "tech-hardware-software",
-      "signals": 3,
+      "signals": 4,
       "path": "validation/auto-dispatches/tech-hardware-software/2026-06-30-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
