@@ -86,7 +86,19 @@ def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
 
 def load_policy(report: dict[str, Any], path: Path = POLICY_PATH) -> dict[str, Any]:
     if path.exists():
-        return json.loads(path.read_text(encoding="utf-8"))
+        policy = json.loads(path.read_text(encoding="utf-8"))
+        report_keys = {
+            item_key(item)
+            for item in report.get("items", [])
+            if isinstance(item, dict)
+        }
+        policy_keys = {
+            str(decision.get("item_key"))
+            for decision in policy.get("decisions", [])
+            if isinstance(decision, dict) and decision.get("item_key")
+        }
+        if report_keys and report_keys <= policy_keys:
+            return policy
     return build_policy_report(report)
 
 

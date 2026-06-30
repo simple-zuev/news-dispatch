@@ -2,7 +2,7 @@
 
 .editorial-home-topline {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.75fr);
   gap: 18px;
   align-items: stretch;
   margin: 0 0 24px;
@@ -35,7 +35,7 @@
 
 .editorial-home-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.75fr);
   gap: 18px;
   padding: clamp(24px, 4vw, 38px);
   background: var(--ink);
@@ -51,9 +51,11 @@
 .editorial-hero-main h2 {
   max-width: 860px;
   margin: 0;
-  font-size: clamp(2.15rem, 5.8vw, 5.45rem);
-  line-height: 0.92;
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 4.8vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .editorial-hero-main p {
@@ -113,7 +115,7 @@
 
 .editorial-home-lanes {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   gap: 14px;
   margin: 0 0 24px;
 }
@@ -130,8 +132,9 @@
 .editorial-home-lanes h3 {
   margin: 0 0 12px;
   font-size: 1.35rem;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  line-height: 1.14;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .editorial-home-lanes h3 a {

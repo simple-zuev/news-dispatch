@@ -114,9 +114,17 @@ main {
 h1 {
   margin: 0;
   max-width: 980px;
-  font-size: clamp(3.45rem, 10vw, 8.4rem);
-  line-height: 0.88;
-  letter-spacing: -0.07em;
+  font-size: clamp(2.6rem, 7.5vw, 6.2rem);
+  line-height: 1;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.masthead.compact h1 {
+  max-width: 920px;
+  font-size: clamp(2.25rem, 5.4vw, 4.55rem);
+  line-height: 1.06;
 }
 
 .lede {
@@ -270,7 +278,7 @@ main {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 16px;
   padding: 28px 0;
 }
@@ -304,6 +312,13 @@ main {
   background: linear-gradient(180deg, var(--card), rgba(155, 77, 34, 0.045));
 }
 
+.signal-card .label,
+.draft-review-card .label {
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+
 .signal-card .label::before {
   content: "";
   display: inline-block;
@@ -322,14 +337,17 @@ main {
 
 .card .label {
   margin: 0;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .card h3,
 .stream-card h3 {
   margin: 0 0 14px;
   font-size: 1.45rem;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
+  line-height: 1.16;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .card h3 a,
@@ -352,9 +370,48 @@ main {
   font-size: 0.98rem;
 }
 
+.signal-summary {
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+.signal-raw-title,
+.signal-safety,
+.signal-source-link,
+.draft-source-path {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.signal-raw-label {
+  display: inline-flex;
+  margin-right: 0.5em;
+  padding: 0.12em 0.45em;
+  color: var(--card);
+  background: var(--accent);
+  border-radius: 999px;
+  font-size: 0.72em;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.signal-source-link a {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.draft-review-card {
+  border-color: rgba(31, 78, 95, 0.24);
+  background: linear-gradient(180deg, var(--card), rgba(31, 78, 95, 0.055));
+}
+
 .stream-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
   gap: 14px;
   padding: 28px 0;
 }
@@ -406,7 +463,7 @@ main {
 .source-grid,
 .reader-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 16px;
 }
 
@@ -438,14 +495,16 @@ main {
 
 .article-hero h1 {
   max-width: 980px;
-  font-size: clamp(2.7rem, 8vw, 6.4rem);
-  line-height: 0.92;
+  font-size: clamp(2.2rem, 5.8vw, 4.8rem);
+  line-height: 1.04;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .article-body {
   display: grid;
-  grid-template-columns: minmax(0, 780px) minmax(120px, 1fr);
-  column-gap: 64px;
+  grid-template-columns: minmax(0, 780px);
+  column-gap: 0;
   align-items: start;
 }
 
@@ -458,6 +517,7 @@ main {
 .article-body h3 {
   letter-spacing: -0.035em;
   line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .article-body h1 {
@@ -492,16 +552,20 @@ main {
   padding-left: 1.2rem;
 }
 
-.article-body table {
+.table-scroll {
   width: 100%;
   margin: 20px 0 30px;
-  border-collapse: collapse;
-  background: var(--card);
+  overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 14px;
-  overflow: hidden;
-  display: block;
-  overflow-x: auto;
+  background: var(--card);
+}
+
+.article-body table {
+  width: 100%;
+  min-width: 720px;
+  margin: 0;
+  border-collapse: collapse;
 }
 
 .article-body thead {
