@@ -45,6 +45,7 @@ jobs:
         run: |
           python tools/validate_daily_radar_branch_policy.py
           python tools/validate_synthesis_publication_gate.py
+          python tools/validate_synthesis_quality_gate.py
 
       - name: Validate published editorial content
         run: python tools/validate_published.py
