@@ -36,7 +36,9 @@ jobs:
         run: python tools/validate_source_rules.py
 
       - name: Validate Daily Radar branch policy
-        run: python tools/validate_daily_radar_branch_policy.py
+        run: |
+          python tools/validate_daily_radar_branch_policy.py
+          python tools/validate_synthesis_publication_gate.py
 
       - name: Validate published editorial content
         run: python tools/validate_published.py
