@@ -22,192 +22,178 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 24
+- Retained signals: 22
 - Streams with retained signals: 6
 - Fetch warnings: 0
 
 ## ai
 
-- **OpenAI мельком продемонстрировала ИИ-устройство, связанное с моделью Codex**
-  - Topic: `ai-platforms`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-30/ai/c9f99add044c629f-openai--------codex.md`
+- **Building tech in the world’s secret R&D hub**
+  - Topic: `general-monitoring`
+  - Source: `mit-tech-review-ai` / `public_media`
+  - Signal path: `signals/2026-06-30/ai/a107d0aeb9abd179-building-tech-in-the-world-s-secret-r-d-hub.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## crypto-finance
 
-- **Bitcoin's correlation with dollar-yen rate hits -0.90, undercutting 'carry trade' theory**
+- **Bitcoin nears 2024 lows as options traders pay up for downside protection**
   - Topic: `market`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/187a07d63306f49a-bitcoin-s-correlation-with-dollar-yen-rate-hits-0-90-undercutting-carry.md`
+  - Signal path: `signals/2026-06-30/crypto-finance/9a97ad19a41d155b-bitcoin-nears-2024-lows-as-options-traders-pay-up-for-downside-protectio.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Ether, solana and dogecoin slide as Strategy's bitcoin sales plan pressures market**
-  - Topic: `market`
+- **UK to lower stablecoin capital buffers, undercutting EU's MiCA requirements**
+  - Topic: `general-monitoring`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/0d2b84780cfddbca-ether-solana-and-dogecoin-slide-as-strategy-s-bitcoin-sales-plan-pressur.md`
+  - Signal path: `signals/2026-06-30/crypto-finance/c9260eadc38a72ec-uk-to-lower-stablecoin-capital-buffers-undercutting-eu-s-mica-requiremen.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Dubai set for crypto firm influx as MiCA deadline pushes companies to reassess Europe**
-  - Topic: `ai-platforms`
+- **SEC wins $5.5 million default judgment over alleged fake crypto platform NanoBit**
+  - Topic: `general-monitoring`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/d90470d0b33693e8-dubai-set-for-crypto-firm-influx-as-mica-deadline-pushes-companies-to-re.md`
+  - Signal path: `signals/2026-06-30/crypto-finance/36466c5cb96059b0-sec-wins-5-5-million-default-judgment-over-alleged-fake-crypto-platform.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **UK sets capital, market abuse rules in landmark crypto framework**
-  - Topic: `market`
+- **Hollywood director Carl Rinsch sentenced to 30 months for diverting $11 million in TV production funds to stock options, crypto and luxury purchases**
+  - Topic: `general-monitoring`
   - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/247e1852a9d3373b-uk-sets-capital-market-abuse-rules-in-landmark-crypto-framework.md`
+  - Signal path: `signals/2026-06-30/crypto-finance/45ee597662acba17-hollywood-director-carl-rinsch-sentenced-to-30-months-for-diverting-11-m.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Self-exiled Chinese billionaire sentenced to 30 years for fraud involving crypto**
-  - Topic: `ai-platforms`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/09efd5a6d9029d9c-self-exiled-chinese-billionaire-sentenced-to-30-years-for-fraud-involvin.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Celsius-linked Bitcoin miner Ionic Digital seeks Nasdaq direct listing amid AI pivot**
-  - Topic: `market`
-  - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/61597850be292f64-celsius-linked-bitcoin-miner-ionic-digital-seeks-nasdaq-direct-listing-a.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Kalshi hit with 14-day restraining order in Michigan, blocking sports prediction markets in state**
-  - Topic: `market`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/f8ca193d47bd0226-kalshi-hit-with-14-day-restraining-order-in-michigan-blocking-sports-pre.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Cathie Wood’s ARK adds $43.5M in crypto stocks amid market dip**
-  - Topic: `market`
-  - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/b8950a4b6c245d8e-cathie-wood-s-ark-adds-43-5m-in-crypto-stocks-amid-market-dip.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Australia’s crypto travel rule is coming into effect: Here’s what's changing**
+- **ESMA MiCA warning puts Binance EU service changes under scrutiny**
   - Topic: `general-monitoring`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-06-30/crypto-finance/5f16c1047406e0b2-australia-s-crypto-travel-rule-is-coming-into-effect-here-s-what-s-chang.md`
+  - Signal path: `signals/2026-06-30/crypto-finance/de354c698bee8882-esma-mica-warning-puts-binance-eu-service-changes-under-scrutiny.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Solana Company to back Kazakhstan’s $6B crypto megacity ambition**
+  - Topic: `general-monitoring`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-06-30/crypto-finance/1e23c197b88301bf-solana-company-to-back-kazakhstan-s-6b-crypto-megacity-ambition.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## finance
 
-- **ЦБ установил новые правила расчета стоимости ремонта по ОСАГО**
+- **Рашевский назвал условия для нового инвестцикла в угольной отрасли**
+  - Topic: `general-monitoring`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-30/finance/aedf9414a6f19d32-rbc-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Банк России сообщил, что вырабатывает стратегию защиты по иску Euroclear**
   - Topic: `regulation`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-30/finance/38e7469e38a0d32c-euroclear.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Акционеры ВТБ одобрили дополнительную эмиссию акций**
+  - Topic: `general-monitoring`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-06-30/finance/88d76b7a6629c8a8-rbc-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Euroclear оспорил решение по иску ЦБ в бельгийском суде**
+  - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-30/finance/e808f115964d7b42-kommersant-finance.md`
+  - Signal path: `signals/2026-06-30/finance/b71edf9da8058bb1-euroclear.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Греф заявил о «переохлаждении экономики» России из-за высокой ставки ЦБ**
-  - Topic: `market`
+- **Информация об операциях РЕПО (13:29)**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-30/finance/fbeda2895caa651f-13-29.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Указание Банка России от 14.01.2026 № 7284-У**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-06-30/finance/4062c5df89230184-14-01-2026-7284.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Угольные компании до конца года вернут в бюджет более 50 млрд рублей**
+  - Topic: `general-monitoring`
   - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-06-30/finance/40766173daa47ff5-kommersant-finance.md`
+  - Signal path: `signals/2026-06-30/finance/6ac1ba348848f834-50.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Euroclear подал иск Банку России в бельгийский суд**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-30/finance/e120aa22206494a1-euroclear.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Акционеры Сбербанка утвердили выплату рекордных дивидендов**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-30/finance/4d13831d72bce00e-rbc-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Курс японской иены обвалился до минимума за четыре десятилетия**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-06-30/finance/6002640b80a1a27f-rbc-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Гетерогенность влияния бюджетного импульса на инфляцию в регионах России**
-  - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-30/finance/3227c609768b01b3-cbr-news.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Параметры аукционов РЕПО в рублях**
-  - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-30/finance/8c36e84cad1fb52b-cbr-news.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Обзор рынка ипотечного жилищного кредитования за май 2026 года**
-  - Topic: `general-monitoring`
-  - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-06-30/finance/c97681c8f4affdbc-2026.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
 
-## gear-style-edc
+## moscow-city
 
-- **Nike Extends The Laces On This SE Air Max 95**
-  - Topic: `ai-platforms`
-  - Source: `sneaker-news` / `specialized_media`
-  - Signal path: `signals/2026-06-30/gear-style-edc/f5826fe63400cc8d-nike-extends-the-laces-on-this-se-air-max-95.md`
+- **Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары**
+  - Topic: `general-monitoring`
+  - Source: `m24-moscow-news` / `public_media`
+  - Signal path: `signals/2026-06-30/moscow-city/bdcce80fc15abfab-m24-moscow-news.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## science-discovery
 
-- **В зубах 20 Homo naledi не нашли характерных для мужчин белков**
+- **Scientists say creatine may help fight depression**
   - Topic: `general-monitoring`
-  - Source: `nplus1` / `specialized_media`
-  - Signal path: `signals/2026-06-30/science-discovery/fe134523d119c535-20-homo-naledi.md`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-06-30/science-discovery/948ba7a42e9639de-scientists-say-creatine-may-help-fight-depression.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Scientists may have finally found how Alzheimer's spreads through the brain**
-  - Topic: `ai-platforms`
+- **A massive asteroid slammed into the North Sea and triggered a 330-foot tsunami**
+  - Topic: `general-monitoring`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-06-30/science-discovery/cc53ed1a91d5b1e1-scientists-may-have-finally-found-how-alzheimer-s-spreads-through-the-br.md`
+  - Signal path: `signals/2026-06-30/science-discovery/d1e98df7e9d62d72-a-massive-asteroid-slammed-into-the-north-sea-and-triggered-a-330-foot-t.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Why scientists fear we're missing evidence of extraterrestrial life**
+  - Topic: `general-monitoring`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-06-30/science-discovery/e75f4237604737f8-why-scientists-fear-we-re-missing-evidence-of-extraterrestrial-life.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## tech-hardware-software
 
-- **Designer turns discontinued E-Ink dev board into a 60Hz Game Boy handheld — dual-core chip runs at 100% to power handheld, 960x540 display employs ultra-low-cost ESP32-S3 microcontroller**
+- **Meta fights soaring hardware costs by reusing old DDR4 server memory in new DDR5-only servers — custom CXL 2.0 chip marries legacy DDR4-2400 with cutting-edge DDR5-6400**
   - Topic: `infrastructure`
   - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-06-30/tech-hardware-software/eca207176cec4cd6-designer-turns-discontinued-e-ink-dev-board-into-a-60hz-game-boy-handhel.md`
+  - Signal path: `signals/2026-06-30/tech-hardware-software/6d94c29ecb568a98-meta-fights-soaring-hardware-costs-by-reusing-old-ddr4-server-memory-in.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Apple ускорила выпуск обновлений безопасности в свете растущей угрозы со стороны ИИ**
-  - Topic: `general-monitoring`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-30/tech-hardware-software/a65d4a8a3e7779f3-apple.md`
+- **HamsterOS jams a 32-bit GUI operating system in a single 1.44 MB floppy disk — retro OS for 386-era hardware should make for easy living with DOS machines and software**
+  - Topic: `infrastructure`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-06-30/tech-hardware-software/2c10798f07311885-hamsteros-jams-a-32-bit-gui-operating-system-in-a-single-1-44-mb-floppy.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Секреты Apple растеклись по миру: хакеры опубликовали изображения iPhone 18 Pro и другие данные, похищенные у Tata Electronics**
-  - Topic: `general-monitoring`
+- **Хакеры нашли способ проникать в Gmail через штатный механизм Chrome**
+  - Topic: `ai-platforms`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-06-30/tech-hardware-software/2b1fc8a3c681c7a2-apple-------iphone-18-pro------tata-electronics.md`
+  - Signal path: `signals/2026-06-30/tech-hardware-software/9b4f93f2db744cca-gmail----chrome.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **Taiwan raids Supermicro and two supply-chain partners in widening Nvidia smuggling probe — nine sites hit as six people summoned for questioning**
+  - Topic: `ai-platforms`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-06-30/tech-hardware-software/0169805bfffc0505-taiwan-raids-supermicro-and-two-supply-chain-partners-in-widening-nvidia.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.

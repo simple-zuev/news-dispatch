@@ -1,14 +1,13 @@
 ---
-title: "Искусственный интеллект: черновик обзора сигналов за 2026-06-30"
+title: "Москва: события и места: черновик обзора сигналов за 2026-06-30"
 date: "2026-06-30"
 period: "2026-06-30"
-stream: "ai"
+stream: "moscow-city"
 type: "daily"
-primary_rubric: "product-platform"
+primary_rubric: "city-culture"
 rubrics:
-  - "product-platform"
-  - "research-evidence"
-  - "security-abuse"
+  - "city-culture"
+  - "consumer-use"
 issue_type: "daily-radar-review"
 language: "ru"
 status: "draft"
@@ -26,32 +25,33 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Искусственный интеллект»: 1 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Москва: события и места»: 1 публичных сигналов для редакционной проверки."
 tags:
-  - "ai"
-  - "product-platform"
+  - "moscow-city"
+  - "city-culture"
   - "auto-draft"
   - "radar"
 claim_types:
   - "source_reported_claim"
   - "editorial_inference"
+  - "community_signal"
 confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.technologyreview.com/2026/06/30/1139661/building-tech-in-the-worlds-secret-rd-hub/"
+  - "https://www.m24.ru/news/30062026/915612"
 source_titles:
-  - "MIT Technology Review: Building tech in the world’s secret R&D hub"
+  - "Москва 24: Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары"
 source_types:
-  - "Технологическое медиа"
+  - "Городское медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.technologyreview.com/2026/06/30/1139661/building-tech-in-the-worlds-secret-rd-hub/"
+  - "https://www.m24.ru/news/30062026/915612"
 media_titles:
-  - "MIT Technology Review: Building tech in the world’s secret R&D hub"
+  - "Москва 24: Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары"
 media_types:
-  - "Технологическое медиа"
+  - "Городское медиа"
 media_notes:
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
 visuals: []
@@ -61,19 +61,19 @@ privacy_review: "auto_passed_public_sources_only"
 editorial_review: "automatic_draft_needs_human_review"
 ---
 
-# Искусственный интеллект: черновик обзора сигналов за 2026-06-30
+# Москва: события и места: черновик обзора сигналов за 2026-06-30
 
 ## Лид
 
-Это автоматический черновик по теме «Искусственный интеллект». Он собирает публичные сигналы за период и помогает редактору быстро понять, какие события стоит проверить дальше. Черновик не является опубликованным выпуском и не содержит итоговых рекомендаций.
+Это автоматический черновик по теме «Москва: события и места». Он собирает публичные сигналы за период и помогает редактору быстро понять, какие события стоит проверить дальше. Черновик не является опубликованным выпуском и не содержит итоговых рекомендаций.
 
 ## Главное
 
-1. Building tech in the world’s secret R&D hub — сообщение источника «MIT Technology Review: Building tech in the world’s secret R&D hub»; требует проверки перед выводами.
+1. Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары — сообщение источника «Москва 24: Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Building tech in the world’s secret R&D hub. Источник: MIT Technology Review: Building tech in the world’s secret R&D hub. URL: https://www.technologyreview.com/2026/06/30/1139661/building-tech-in-the-worlds-secret-rd-hub/
+- Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары. Источник: Москва 24: Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары. URL: https://www.m24.ru/news/30062026/915612
 
 ## Почему это важно
 
@@ -91,7 +91,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Building tech in the world’s secret R&D hub | source_reported_claim | MIT Technology Review: Building tech in the world’s secret R&D hub | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары | source_reported_claim | Москва 24: Москвичам начали раздавать воду на вокзалах и станциях МЦД из-за жары | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
