@@ -244,6 +244,11 @@ def build_hero(feature: dict[str, str]) -> str:
     <p>Только материалы, прошедшие редакционную проверку и public-safety контур.</p>
   </article>
   <article>
+    <p class="label">Review only</p>
+    <h3><a href="drafts.html">Черновики к проверке</a></h3>
+    <p>Draft-only материалы из validation. Это не публикации и не финальные выводы.</p>
+  </article>
+  <article>
     <p class="label">Навигация</p>
     <h3><a href="streams/index.html">Темы</a></h3>
     <p>Финансы, криптофинансы, ИИ, железо и софт, Москва, EDC, аудио и наука.</p>

@@ -15,6 +15,10 @@ SITE_DIR = ROOT / "site"
 RADAR_DIR = SITE_DIR / "radar"
 RADAR_PATH = ROOT / "validation" / "daily-radar-latest.json"
 SOURCES_PATH = ROOT / "sources" / "feeds.json"
+AUTO_DISPATCH_LATEST = ROOT / "validation" / "auto-dispatch-latest.json"
+AUTO_DISPATCH_DIR = ROOT / "validation" / "auto-dispatches"
+CURATED_DRAFT_DIR = ROOT / "validation" / "curated-drafts"
+DRAFTS_PATH = SITE_DIR / "drafts.html"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 
 
@@ -58,11 +62,76 @@ def parse_front_matter(text: str) -> dict[str, Any]:
     return meta
 
 
+def parse_document(text: str) -> tuple[dict[str, Any], str]:
+    if not text.startswith("---\n"):
+        return {}, text
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        return {}, text
+    return parse_front_matter(text), text[end + 5 :]
+
+
 def first_value(meta: dict[str, Any], key: str, default: str = "") -> str:
     value = meta.get(key, default)
     if isinstance(value, list):
         return str(value[0]) if value else default
     return str(value or default)
+
+
+def list_value(meta: dict[str, Any], key: str) -> list[str]:
+    value = meta.get(key, [])
+    if isinstance(value, list):
+        return [str(item) for item in value if str(item).strip()]
+    scalar = str(value).strip()
+    return [scalar] if scalar else []
+
+
+def source_name(source_title: str) -> str:
+    if ":" in source_title:
+        return source_title.split(":", 1)[0].strip()
+    return source_title.strip()
+
+
+def first_section_paragraph(body: str, heading: str) -> str:
+    lines = body.splitlines()
+    in_section = False
+    chunks: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            if in_section:
+                break
+            in_section = stripped[3:].strip() == heading
+            continue
+        if not in_section:
+            continue
+        if not stripped:
+            if chunks:
+                break
+            continue
+        if stripped.startswith("#"):
+            break
+        chunks.append(stripped.removeprefix("- ").strip())
+    return " ".join(chunks).strip()
+
+
+def draft_excerpt(body: str, fallback: str) -> str:
+    for heading in ("Лид", "Почему это важно", "Статус"):
+        excerpt = first_section_paragraph(body, heading)
+        if excerpt:
+            return excerpt
+    cleaned = " ".join(line.strip() for line in body.splitlines() if line.strip() and not line.startswith("#"))
+    return cleaned[:280] if cleaned else fallback
+
+
+def signal_reader_summary(meta: dict[str, Any], body: str, title: str, source_title: str) -> tuple[str, bool]:
+    summary = first_value(meta, "summary")
+    if not summary:
+        summary = first_section_paragraph(body, "Что произошло")
+    if summary:
+        return summary, False
+    source = source_name(source_title) or "публичный источник"
+    return f"{source} передал в RSS/Atom заголовок: «{title}». Это сырой сигнал; контекст, последствия и интерпретации требуют проверки.", True
 
 
 def stream_data() -> list[dict[str, Any]]:
@@ -75,6 +144,9 @@ def stream_data() -> list[dict[str, Any]]:
             "label": str(item.get("label", "Редакционная проверка")),
         })
     return rows
+
+
+STREAM_BY_SLUG = {item["slug"]: item for item in stream_data()}
 
 
 def source_status_by_stream() -> dict[str, dict[str, Any]]:
@@ -113,44 +185,114 @@ def radar_items() -> dict[str, list[dict[str, str]]]:
             path = ROOT / str(path_text)
             if not path.exists():
                 continue
-            meta = parse_front_matter(path.read_text(encoding="utf-8"))
+            meta, body = parse_document(path.read_text(encoding="utf-8"))
+            title = first_value(meta, "title", path.stem.replace("-", " "))
+            source = first_value(meta, "source_titles", first_value(meta, "sources", "Публичный источник"))
+            summary, raw_title_only = signal_reader_summary(meta, body, title, source)
             result[stream].append({
-                "title": first_value(meta, "title", path.stem.replace("-", " ")),
+                "title": title,
                 "date": first_value(meta, "date"),
-                "source": first_value(meta, "source_titles", first_value(meta, "sources", "Публичный источник")),
+                "source": source,
                 "url": first_value(meta, "sources"),
                 "source_class": first_value(meta, "source_class", "public_source"),
+                "status": first_value(meta, "status", "draft"),
+                "stream": stream,
+                "summary": summary,
+                "raw_title_only": "yes" if raw_title_only else "",
             })
     for rows in result.values():
         rows.sort(key=lambda item: (item["date"], item["title"]), reverse=True)
     return result
 
 
-def head(title: str, description: str) -> str:
+def head(title: str, description: str, css_href: str = "../styles/main.css") -> str:
     return f"""<head>
   <meta charset=\"utf-8\">
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
   <title>{html.escape(title)}</title>
   <meta name=\"description\" content=\"{html.escape(description)}\">
-  <link rel=\"stylesheet\" href=\"../styles/main.css\">
+  <link rel=\"stylesheet\" href=\"{html.escape(css_href)}\">
 </head>"""
 
 
 def signal_card(row: dict[str, str]) -> str:
     source = row.get("source") or "Публичный источник"
-    label = " · ".join(part for part in [row.get("date", ""), row.get("source_class", ""), source] if part)
+    stream = STREAM_BY_SLUG.get(row.get("stream", ""), {})
+    stream_title = str(stream.get("title", row.get("stream", "")))
+    label = " · ".join(part for part in [row.get("date", ""), stream_title, row.get("source_class", ""), source_name(source), f"status: {row.get('status', 'draft')}"] if part)
     link = row.get("url", "")
     title = row.get("title", "Сигнал")
-    title_html = html.escape(title)
+    heading_text = f"Публичный сигнал: {source_name(source)}" if source_name(source) else "Публичный сигнал"
     if link:
-        heading = f'<h3><a href="{html.escape(link, quote=True)}">{title_html}</a></h3>'
+        heading = f'<h3><a href="{html.escape(link, quote=True)}">{html.escape(heading_text)}</a></h3>'
     else:
-        heading = f"<h3>{title_html}</h3>"
+        heading = f"<h3>{html.escape(heading_text)}</h3>"
+    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if row.get("raw_title_only") else ""
     return f"""<article class=\"card signal-card\">
-  <p class=\"label\">Сигнал · {html.escape(label)}</p>
+  <p class=\"label\">Сигнал != dispatch · {html.escape(label)}</p>
   {heading}
-  <p>Публичный сигнал для проверки. Это не опубликованный аналитический вывод.</p>
+  <p class=\"signal-summary\">{html.escape(row.get("summary", ""))}</p>
+  <p class=\"signal-raw-title\">{raw_label}<span>{html.escape(title)}</span></p>
+  <p class=\"signal-safety\">Источник сообщает сигнал; факты, последствия и выводы требуют проверки.</p>
 </article>"""
+
+
+def latest_draft_paths() -> list[Path]:
+    curated = sorted(path for path in CURATED_DRAFT_DIR.rglob("*.md") if path.is_file()) if CURATED_DRAFT_DIR.exists() else []
+    if curated:
+        return curated
+
+    paths: list[Path] = []
+    latest = load_json(AUTO_DISPATCH_LATEST)
+    for row in latest.get("generated", []):
+        if not isinstance(row, dict):
+            continue
+        path = ROOT / str(row.get("path", ""))
+        if path.exists() and path.is_file():
+            paths.append(path)
+    if not paths and AUTO_DISPATCH_DIR.exists():
+        paths.extend(path for path in sorted(AUTO_DISPATCH_DIR.glob("*/*-auto-radar-draft.md")) if path.is_file())
+    return list(dict.fromkeys(paths))
+
+
+def draft_card(path: Path) -> str:
+    meta, body = parse_document(path.read_text(encoding="utf-8"))
+    title = first_value(meta, "title", path.stem.replace("-", " "))
+    streams = list_value(meta, "streams") or [first_value(meta, "stream", "general")]
+    stream_titles = [str(STREAM_BY_SLUG.get(stream, {}).get("title", stream)) for stream in streams if stream]
+    date = first_value(meta, "date")
+    status = first_value(meta, "status", "draft")
+    publication_mode = first_value(meta, "publication_mode", "draft_only")
+    sources = len(list_value(meta, "sources"))
+    summary = first_value(meta, "summary") or draft_excerpt(body, "Черновик для редакционной проверки.")
+    rel = path.relative_to(ROOT).as_posix()
+    source_count = f"{sources} источн." if sources else ""
+    label = " · ".join(part for part in [date, ", ".join(stream_titles), f"status: {status}", publication_mode, source_count] if part)
+    return f"""<article class=\"card draft-review-card\">
+  <p class=\"label\">Draft != publication · {html.escape(label)}</p>
+  <h3>{html.escape(title)}</h3>
+  <p>{html.escape(summary)}</p>
+  <p class=\"draft-source-path\">{html.escape(rel)}</p>
+</article>"""
+
+
+def drafts_page() -> str:
+    drafts = latest_draft_paths()
+    cards = "\n".join(draft_card(path) for path in drafts)
+    if not cards:
+        cards = """<article class=\"card empty-state\"><p class=\"label\">Нет черновиков</p><h3>Нет draft-only материалов к проверке</h3><p>Папка validation/curated-drafts отсутствует, а в текущем auto-dispatch индексе нет доступных черновиков.</p></article>"""
+    return f"""<!doctype html>
+<html lang=\"ru\">
+{head("Дайджест — Черновики к проверке", "Draft-only материалы для редакционной проверки.", css_href="styles/main.css")}
+<body>
+  <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Дайджест</a><p class=\"eyebrow\">Review only</p><h1>Черновики к проверке</h1><p class=\"lede\">Материалы из validation/curated-drafts. Это не публикации, не dispatches и не финальные выводы.</p></header>
+  <main>
+    <section class=\"panel draft-review-notice\"><h2>Граница публикации</h2><p>Draft != publication. Черновики нужны для ручной проверки источников, дат, статусов и формулировок. Source-reported claims требуют верификации перед публикацией.</p></section>
+    <section class=\"grid draft-review-grid\">{cards}</section>
+  </main>
+</body>
+</html>
+"""
 
 
 def stream_card(stream: dict[str, Any], count: int, source_status: dict[str, Any]) -> str:
@@ -236,6 +378,7 @@ def main() -> int:
     for stream in streams:
         slug = str(stream["slug"])
         (RADAR_DIR / f"{slug}.html").write_text(stream_page(stream, items.get(slug, []), source_status.get(slug, {})), encoding="utf-8")
+    DRAFTS_PATH.write_text(drafts_page(), encoding="utf-8")
     print(f"Built radar pages for {len(streams)} stream(s).")
     return 0
 

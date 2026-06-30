@@ -90,9 +90,12 @@ class Signal:
     title: str
     date: str
     stream: str
+    status: str
     source_class: str
     source_title: str
     source_url: str
+    summary: str
+    raw_title_only: bool
 
     @property
     def radar_relative_url(self) -> str:
@@ -113,6 +116,45 @@ def first_meta(meta: dict[str, object], key: str, default: str = "") -> str:
     if values:
         return values[0]
     return coalesce(meta.get(key), default=default)
+
+
+def first_section_paragraph(body: str, heading: str) -> str:
+    lines = body.splitlines()
+    in_section = False
+    chunks: list[str] = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("## "):
+            if in_section:
+                break
+            in_section = stripped[3:].strip() == heading
+            continue
+        if not in_section:
+            continue
+        if not stripped:
+            if chunks:
+                break
+            continue
+        if stripped.startswith("#"):
+            break
+        chunks.append(stripped.removeprefix("- ").strip())
+    return " ".join(chunks).strip()
+
+
+def source_name(source_title: str) -> str:
+    if ":" in source_title:
+        return source_title.split(":", 1)[0].strip()
+    return source_title.strip()
+
+
+def signal_reader_summary(meta: dict[str, object], body: str, title: str, source_title: str) -> tuple[str, bool]:
+    summary = coalesce(meta.get("summary"))
+    if not summary:
+        summary = first_section_paragraph(body, "Что произошло")
+    if summary:
+        return summary, False
+    source = source_name(source_title) or "публичный источник"
+    return f"{source} передал в RSS/Atom заголовок: «{title}». Это сырой сигнал; контекст, последствия и интерпретации требуют проверки.", True
 
 
 def load_streams() -> list[StreamInfo]:
@@ -190,14 +232,20 @@ def load_signal(path_text: str) -> Signal | None:
         return None
     meta = doc.metadata
     stream = first_meta(meta, "streams", default=coalesce(meta.get("stream"), default="general"))
+    title = coalesce(meta.get("title"), default=path.stem.replace("-", " ").title())
+    source_title = first_meta(meta, "source_titles", default=first_meta(meta, "sources", default="Публичный источник"))
+    summary, raw_title_only = signal_reader_summary(meta, doc.body, title, source_title)
     return Signal(
         source_path=path,
-        title=coalesce(meta.get("title"), default=path.stem.replace("-", " ").title()),
+        title=title,
         date=coalesce(meta.get("date")),
         stream=stream,
+        status=coalesce(meta.get("status"), default="draft"),
         source_class=coalesce(meta.get("source_class"), default="public_source"),
-        source_title=first_meta(meta, "source_titles", default=first_meta(meta, "sources", default="Публичный источник")),
+        source_title=source_title,
         source_url=first_meta(meta, "sources"),
+        summary=summary,
+        raw_title_only=raw_title_only,
     )
 
 
@@ -243,7 +291,7 @@ def render_table(lines: list[str]) -> str:
         return ""
     header = rows[0]
     body = rows[1:]
-    out = ["<table>", "<thead><tr>"]
+    out = ['<div class="table-scroll" role="region" aria-label="Таблица" tabindex="0">', "<table>", "<thead><tr>"]
     out.extend(f"<th>{inline_markup(cell)}</th>" for cell in header)
     out.append("</tr></thead>")
     if body:
@@ -254,6 +302,7 @@ def render_table(lines: list[str]) -> str:
             out.append("</tr>")
         out.append("</tbody>")
     out.append("</table>")
+    out.append("</div>")
     return "\n".join(out)
 
 
@@ -354,8 +403,17 @@ def dispatch_meta_label(dispatch: Dispatch) -> str:
 
 
 def signal_meta_label(signal: Signal) -> str:
-    parts = [signal.date, signal.source_class, signal.source_title]
+    stream = STREAM_BY_SLUG.get(signal.stream)
+    stream_title = stream.title if stream else signal.stream
+    parts = [signal.date, stream_title, signal.source_class, source_name(signal.source_title), f"status: {signal.status}"]
     return " · ".join(part for part in parts if part)
+
+
+def signal_heading(signal: Signal) -> str:
+    source = source_name(signal.source_title)
+    if source:
+        return f"Публичный сигнал: {source}"
+    return "Публичный сигнал"
 
 
 def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
@@ -367,10 +425,18 @@ def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
 
 
 def signal_card(signal: Signal, prefix: str = "") -> str:
+    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if signal.raw_title_only else ""
+    source_url = signal.source_url
+    source_link = ""
+    if source_url:
+        source_link = f'<p class="signal-source-link"><a href="{html.escape(source_url, quote=True)}">Открыть источник</a></p>'
     return f"""<article class="card signal-card">
-  <p class="label">Live signal · {html.escape(signal_meta_label(signal))}</p>
-  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal.title)}</a></h3>
-  <p>Публичный сигнал из live-radar. Это не опубликованный выпуск и не аналитический вывод.</p>
+  <p class="label">Сигнал != dispatch · {html.escape(signal_meta_label(signal))}</p>
+  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal_heading(signal))}</a></h3>
+  <p class="signal-summary">{html.escape(signal.summary)}</p>
+  <p class="signal-raw-title">{raw_label}<span>{html.escape(signal.title)}</span></p>
+  <p class="signal-safety">Источник сообщает сигнал; факты, последствия и выводы требуют проверки.</p>
+  {source_link}
 </article>"""
 
 
@@ -446,7 +512,7 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
     <p class="eyebrow">Персональный reader/radar</p>
     <h1>News Dispatch</h1>
     <p class="lede">Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.</p>
-    <p class="hero-actions"><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив выпусков</a><a href="streams/index.html">Потоки</a><a href="rubrics/index.html">Рубрики</a><a href="rss.xml">RSS</a></p>
+    <p class="hero-actions"><a href="radar/index.html">Live Radar</a><a href="drafts.html">Черновики к проверке</a><a href="dispatches.html">Архив выпусков</a><a href="streams/index.html">Потоки</a><a href="rubrics/index.html">Рубрики</a><a href="rss.xml">RSS</a></p>
   </header>
 
   <main>

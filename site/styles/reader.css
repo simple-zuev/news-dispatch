@@ -7,9 +7,7 @@
 }
 
 body {
-  background:
-    radial-gradient(circle at top left, rgba(155, 77, 34, 0.08), transparent 34rem),
-    linear-gradient(180deg, #f7f3ec 0%, var(--bg) 46%, #f3efe7 100%);
+  background: linear-gradient(180deg, #f7f3ec 0%, var(--bg) 46%, #f3efe7 100%);
 }
 
 .article-hero,
@@ -27,9 +25,11 @@ main {
 
 .article-hero h1 {
   max-width: 880px;
-  font-size: clamp(2.25rem, 5.4vw, 4.85rem);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-size: clamp(2.1rem, 4.8vw, 4.1rem);
+  line-height: 1.06;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .article-hero .lede {
@@ -42,8 +42,8 @@ main {
 .article-body {
   max-width: var(--reader-wide);
   display: grid;
-  grid-template-columns: minmax(0, var(--reader-max)) minmax(140px, 1fr);
-  column-gap: clamp(32px, 6vw, 72px);
+  grid-template-columns: minmax(0, var(--reader-max));
+  column-gap: 0;
   padding-top: 28px;
 }
 
@@ -54,7 +54,8 @@ main {
 .article-body h2,
 .article-body h3 {
   line-height: 1.12;
-  letter-spacing: -0.032em;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .article-body h2 {
@@ -145,7 +146,7 @@ main {
 }
 
 .reader-section-block {
-  grid-column: 1 / -1;
+  grid-column: 1;
   margin: 18px 0;
   padding: clamp(20px, 3vw, 30px);
   background: rgba(255, 253, 248, 0.9);
@@ -272,13 +273,13 @@ main {
 }
 
 .reader-assets {
-  grid-column: 1 / -1;
+  grid-column: 1;
   margin-top: 24px;
 }
 
 .reader-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   gap: 14px;
 }
 
