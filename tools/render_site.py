@@ -92,10 +92,14 @@ class Signal:
     stream: str
     status: str
     source_class: str
+    source_type: str
     source_title: str
     source_url: str
     summary: str
     raw_title_only: bool
+    confirmation_level: str
+    reader_context: str
+    next_check: str
 
     @property
     def radar_relative_url(self) -> str:
@@ -147,6 +151,16 @@ def source_name(source_title: str) -> str:
     return source_title.strip()
 
 
+def stream_title(slug: str) -> str:
+    stream = STREAM_BY_SLUG.get(slug)
+    return stream.title if stream else slug
+
+
+def stream_description(slug: str) -> str:
+    stream = STREAM_BY_SLUG.get(slug)
+    return stream.description if stream else ""
+
+
 def signal_reader_summary(meta: dict[str, object], body: str, title: str, source_title: str) -> tuple[str, bool]:
     summary = coalesce(meta.get("summary"))
     if not summary:
@@ -155,6 +169,35 @@ def signal_reader_summary(meta: dict[str, object], body: str, title: str, source
         return summary, False
     source = source_name(source_title) or "публичный источник"
     return f"{source} передал в RSS/Atom заголовок: «{title}». Это сырой сигнал; контекст, последствия и интерпретации требуют проверки.", True
+
+
+def signal_confirmation_level(source_class: str, confidence: str) -> str:
+    confidence_part = f" Уверенность в metadata: {confidence}." if confidence else ""
+    if source_class in {"official_source", "official", "regulator", "company"}:
+        return "Подтверждён факт публикации первичным или официальным источником; последствия и интерпретации требуют проверки." + confidence_part
+    if source_class in {"public_media", "specialized_media", "business_media", "industry_media", "research_media"}:
+        return "Source-reported: подтверждён факт появления материала в публичной ленте источника; утверждения и последствия не подтверждены." + confidence_part
+    return "Ограниченный публичный сигнал: требуется ручная проверка источника, статуса и контекста." + confidence_part
+
+
+def signal_reader_context(body: str, stream: str) -> str:
+    why = first_section_paragraph(body, "Почему это важно")
+    if why:
+        return why
+    description = stream_description(stream)
+    if description:
+        return f"Контекст для читателя: сигнал относится к теме «{stream_title(stream)}» ({description}). Это повод для проверки, а не готовый вывод."
+    return "Контекст для читателя: сигнал показывает, что появилось в публичном источнике, но не заменяет редакционную проверку."
+
+
+def signal_next_check(body: str, source_class: str) -> str:
+    status = first_section_paragraph(body, "Статус проверки")
+    match = re.search(r"Не подтверждено:\s*(.+)$", status)
+    if match:
+        return "Проверить: " + match.group(1).strip()
+    if source_class in {"official_source", "official", "regulator", "company"}:
+        return "Проверить первичный документ: дату, статус, адресатов, вступление в силу и реальные последствия."
+    return "Найти первичный источник или независимое подтверждение; отделить факт сообщения источника от интерпретации."
 
 
 def load_streams() -> list[StreamInfo]:
@@ -234,6 +277,7 @@ def load_signal(path_text: str) -> Signal | None:
     stream = first_meta(meta, "streams", default=coalesce(meta.get("stream"), default="general"))
     title = coalesce(meta.get("title"), default=path.stem.replace("-", " ").title())
     source_title = first_meta(meta, "source_titles", default=first_meta(meta, "sources", default="Публичный источник"))
+    source_class = coalesce(meta.get("source_class"), default="public_source")
     summary, raw_title_only = signal_reader_summary(meta, doc.body, title, source_title)
     return Signal(
         source_path=path,
@@ -241,11 +285,15 @@ def load_signal(path_text: str) -> Signal | None:
         date=coalesce(meta.get("date")),
         stream=stream,
         status=coalesce(meta.get("status"), default="draft"),
-        source_class=coalesce(meta.get("source_class"), default="public_source"),
+        source_class=source_class,
+        source_type=first_meta(meta, "source_types"),
         source_title=source_title,
         source_url=first_meta(meta, "sources"),
         summary=summary,
         raw_title_only=raw_title_only,
+        confirmation_level=signal_confirmation_level(source_class, coalesce(meta.get("confidence"))),
+        reader_context=signal_reader_context(doc.body, stream),
+        next_check=signal_next_check(doc.body, source_class),
     )
 
 
@@ -403,17 +451,8 @@ def dispatch_meta_label(dispatch: Dispatch) -> str:
 
 
 def signal_meta_label(signal: Signal) -> str:
-    stream = STREAM_BY_SLUG.get(signal.stream)
-    stream_title = stream.title if stream else signal.stream
-    parts = [signal.date, stream_title, signal.source_class, source_name(signal.source_title), f"status: {signal.status}"]
+    parts = [signal.date, stream_title(signal.stream), signal.source_class, source_name(signal.source_title), f"status: {signal.status}"]
     return " · ".join(part for part in parts if part)
-
-
-def signal_heading(signal: Signal) -> str:
-    source = source_name(signal.source_title)
-    if source:
-        return f"Публичный сигнал: {source}"
-    return "Публичный сигнал"
 
 
 def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
@@ -425,17 +464,26 @@ def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
 
 
 def signal_card(signal: Signal, prefix: str = "") -> str:
-    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if signal.raw_title_only else ""
+    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if signal.raw_title_only else '<span class="signal-raw-label">source-reported</span>'
     source_url = signal.source_url
     source_link = ""
     if source_url:
         source_link = f'<p class="signal-source-link"><a href="{html.escape(source_url, quote=True)}">Открыть источник</a></p>'
+    source_parts = [source_name(signal.source_title) or signal.source_title, signal.source_class]
+    if signal.source_type:
+        source_parts.append(signal.source_type)
     return f"""<article class="card signal-card">
-  <p class="label">Сигнал != dispatch · {html.escape(signal_meta_label(signal))}</p>
-  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal_heading(signal))}</a></h3>
-  <p class="signal-summary">{html.escape(signal.summary)}</p>
-  <p class="signal-raw-title">{raw_label}<span>{html.escape(signal.title)}</span></p>
-  <p class="signal-safety">Источник сообщает сигнал; факты, последствия и выводы требуют проверки.</p>
+  <p class="label">Raw signal · not published · signal != dispatch · {html.escape(signal_meta_label(signal))}</p>
+  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal.title)}</a></h3>
+  <p class="signal-raw-title">{raw_label}<span>Что произошло: {html.escape(signal.summary)}</span></p>
+  <dl class="signal-facts">
+    <div><dt>Источник</dt><dd>{html.escape(" · ".join(part for part in source_parts if part))}</dd></div>
+    <div><dt>Поток</dt><dd>{html.escape(stream_title(signal.stream))}</dd></div>
+    <div><dt>Подтверждение</dt><dd>{html.escape(signal.confirmation_level)}</dd></div>
+    <div><dt>Почему важно</dt><dd>{html.escape(signal.reader_context)}</dd></div>
+    <div><dt>Что проверить</dt><dd>{html.escape(signal.next_check)}</dd></div>
+  </dl>
+  <p class="signal-safety">Сигнал не является опубликованным материалом: источник сообщает факт появления материала, а выводы требуют проверки.</p>
   {source_link}
 </article>"""
 

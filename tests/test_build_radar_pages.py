@@ -46,9 +46,40 @@ def test_empty_stream_page_explains_active_source_without_generated_signals() ->
     assert "Это диагностическое состояние" in html
 
 
+def test_signal_card_v2_shows_reader_context_and_boundaries() -> None:
+    html = build_radar_pages.signal_card(
+        {
+            "title": "Central bank updates digital asset rules",
+            "date": "2026-06-30",
+            "source": "Example Regulator: Central bank updates digital asset rules",
+            "source_type": "Официальный источник",
+            "source_class": "official_source",
+            "status": "draft",
+            "stream": "crypto-finance",
+            "summary": "Example Regulator опубликовал материал в публичной RSS/Atom-ленте.",
+            "raw_title_only": "yes",
+            "confirmation_level": "Подтверждён факт публикации первичным или официальным источником; последствия и интерпретации требуют проверки.",
+            "reader_context": "Контекст для читателя: сигнал относится к теме «Криптофинансы: Россия и мир».",
+            "next_check": "Проверить первичный документ.",
+            "url": "https://example.com/signal",
+        }
+    )
+
+    assert "Raw signal · not published" in html
+    assert "signal != dispatch" in html
+    assert "Central bank updates digital asset rules" in html
+    assert "Example Regulator · official_source · Официальный источник" in html
+    assert "Криптофинансы: Россия и мир" in html
+    assert "Подтверждение" in html
+    assert "Почему важно" in html
+    assert "Что проверить" in html
+    assert "Сигнал не является опубликованным материалом" in html
+
+
 def main() -> int:
     test_source_status_detects_active_moscow_source()
     test_empty_stream_page_explains_active_source_without_generated_signals()
+    test_signal_card_v2_shows_reader_context_and_boundaries()
     print("radar page tests passed")
     return 0
 

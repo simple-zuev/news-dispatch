@@ -387,6 +387,41 @@ main {
   overflow-wrap: anywhere;
 }
 
+.signal-raw-title {
+  color: var(--ink);
+}
+
+.signal-facts {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.signal-facts div {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(21, 21, 21, 0.1);
+}
+
+.signal-facts dt {
+  color: var(--accent);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.signal-facts dd {
+  margin: 0;
+  color: #262626;
+  font-size: 0.93rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
 .signal-raw-label {
   display: inline-flex;
   margin-right: 0.5em;
