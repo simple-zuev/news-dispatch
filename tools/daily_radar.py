@@ -62,17 +62,64 @@ EXPLICIT_STREAM_TERMS: dict[str, tuple[str, ...]] = {
     "crypto-finance": (
         "bitcoin",
         "blockchain",
+        "crypto fraud",
+        "crypto regulation",
         "coinbase",
         "crypto",
         "cryptocurrency",
+        "digital asset",
+        "digital assets",
         "ethereum",
+        "kalshi",
+        "market abuse rules",
         "mi ca",
         "mica",
         "onchain",
+        "prediction market",
+        "prediction markets",
         "stablecoin",
         "tokenization",
+        "travel rule",
+        "uk crypto framework",
+    ),
+    "tech-hardware-software": (
+        "apple security update",
+        "hardware images",
+        "ios",
+        "iphone",
+        "leaked hardware",
+        "macos",
+        "security update",
+        "software update",
+    ),
+    "gear-style-edc": (
+        "air max",
+        "footwear",
+        "nike",
+        "shoe",
+        "shoes",
+        "sneaker",
+        "sneakers",
+    ),
+    "science-discovery": (
+        "alzheimer",
+        "alzheimer s",
+        "homo naledi",
+        "neuroscience",
+        "peer reviewed",
+        "researchers",
+        "scientific finding",
+        "scientific findings",
     ),
 }
+
+SEMANTIC_STREAM_PRIORITY: tuple[str, ...] = (
+    "ai",
+    "crypto-finance",
+    "tech-hardware-software",
+    "science-discovery",
+    "gear-style-edc",
+)
 
 SEMANTIC_ROUTE_DENY: dict[str, set[str]] = {
     # Keep highly regulated finance/crypto sources in their configured lane unless
@@ -295,7 +342,10 @@ def semantic_candidate(feed_stream: str, haystack: str) -> str | None:
     if feed_stream == "finance" and explicit_stream_match("crypto-finance", haystack):
         return "crypto-finance"
 
-    for stream in ("ai", "crypto-finance"):
+    if explicit_stream_match(feed_stream, haystack):
+        return None
+
+    for stream in SEMANTIC_STREAM_PRIORITY:
         if stream == feed_stream:
             continue
         if feed_stream in SEMANTIC_ROUTE_DENY.get(stream, set()):
