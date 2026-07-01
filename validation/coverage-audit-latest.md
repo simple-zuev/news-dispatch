@@ -34,6 +34,24 @@ Important date note:
 - New feeds will affect recent-signal and Today coverage only after the next Daily Radar ingestion run.
 - Production Pages workflow uses live ranking, not fixture ranking.
 
+## Weak Stream Coverage Update — 2026-07-01
+
+This update focuses only on weak-stream source governance after live verification. It does not add low-quality active feeds, does not publish content and does not change the Daily Radar workflow.
+
+Observed live ranking rows after the tuning run:
+
+| Stream | Before final verification | First live run after tuning | Final live run after tuning | Active source change | Reader impact |
+|---|---:|---:|---:|---|---|
+| `moscow-city` | 0 rows | 5 rows | 11 rows | no new active source; tighter city-operation keywords on validated public feeds | Moscow can now enter Radar/Today ranking, but still lacks active official-source confirmation. |
+| `gear-style-edc` | 0 rows | 1 row | 0 rows | disabled `sneaker-news` and `hypebeast`; tightened Worn & Wound / Carryology toward design, materials and industry signals | Lower volume, less product-card noise; still weak, specialized-media-only and fetch-fragile. |
+| `dj-audio-creative` | 2 eligible rows | 6 rows | 10 rows | no new active source; tightened DJ/audio keywords toward releases, workflow, software/hardware and industry signals | Better live density, but no weak-stream item was selected into Today in the final run. |
+
+Candidate probe results added for Moscow official/public endpoints:
+
+- `stroi-mos-rss-candidate`: rejected with HTTP 404.
+- `mosmetro-rss-candidate`: held after timeout.
+- `data-mos-opendata-rss-candidate`: held with HTTP 403.
+
 ## Source Coverage
 
 | Stream | Active / total | Active source classes | Active official / high-trust | Coverage status |
@@ -42,13 +60,13 @@ Important date note:
 | `crypto-finance` | 7 / 7 | `official_source` x4, `specialized_media` x3 | 4 | strong |
 | `ai` | 6 / 7 | `official_source` x4, `public_media` x1, `research_media` x1 | 5 | strong, one noisy broad feed disabled |
 | `tech-hardware-software` | 9 / 9 | `official_source` x6, `public_media` x1, `specialized_media` x2 | 6 | strong |
-| `gear-style-edc` | 4 / 4 | `specialized_media` x4 | 0 | broader, still no active official source |
+| `gear-style-edc` | 2 / 4 | `specialized_media` x2 | 0 | narrower and safer; product/drop feeds disabled, still no active official source |
 | `moscow-city` | 2 / 4 | `public_media` x2 | 0 | improved but still weak; no active official source |
 | `dj-audio-creative` | 6 / 6 | `official_source` x2, `specialized_media` x4 | 2 | strong enough for Daily Radar ingestion |
 | `science-discovery` | 5 / 6 | `official_source` x2, `research_media` x1, `specialized_media` x2 | 3 | strong |
 | `general` | 0 / 0 | none | 0 | special-use only; intentionally not a catch-all feed |
 
-Repository total: 44 / 48 active sources.
+Repository total: 42 / 48 active sources.
 
 ## Active Sources Added in Discovery v2
 
@@ -70,14 +88,16 @@ Existing disabled live feeds:
 | Stream | Source | Class | Reason |
 |---|---|---|---|
 | `ai` | `the-verge-ai` | `public_media` | Broad feed produced cross-topic noise; disabled until per-section filtering exists. |
+| `gear-style-edc` | `sneaker-news` | `specialized_media` | Live probe returned product/drop/card headlines without broader design, materials or industry relevance. |
+| `gear-style-edc` | `hypebeast` | `specialized_media` | Live probe returned HTTP 202 with empty/unparseable XML; broad style/product feed remains held out of active ingestion. |
 | `moscow-city` | `mos-ru-news` | `official_source` | Repeated timeout / blocked access; still not re-enabled. |
 | `moscow-city` | `the-village` | `public_media` | Repeated timeout; needs stable replacement or recovery. |
 | `science-discovery` | `nature-news` | `research_media` | XML parse errors; NASA, ESA and Phys.org now provide replacement coverage. |
 
 Candidate / held sources are recorded in `sources/feed-candidates.json` and detailed in `validation/source-discovery-v2-latest.md`. Key holds:
 
-- `moscow-city`: official `mos.ru` and Moscow Transport endpoints still failed probe; this remains the largest coverage gap.
-- `gear-style-edc`: Gear Patrol and Dezeen failed XML parsing; GearJunkie was parseable but too broad.
+- `moscow-city`: official `mos.ru`, Moscow Transport, Stroi.mos, Mosmetro and data.mos endpoints still failed probe or timed out; this remains the largest coverage gap.
+- `gear-style-edc`: Gear Patrol and Dezeen failed XML parsing; GearJunkie was parseable but too broad; Hypebeast and Sneaker News are disabled rather than treated as active coverage.
 - `crypto-finance`: FATF, FinCEN and Coinbase endpoints failed; Kraken was parseable but too noisy for active ingestion.
 - `tech-hardware-software`: MSRC endpoint failed XML parsing.
 - `science-discovery`: EurekAlert was blocked; arXiv astro-ph was parseable but high volume and left as candidate.
@@ -90,9 +110,9 @@ Candidate / held sources are recorded in `sources/feed-candidates.json` and deta
 | `crypto-finance` | strong | 15 | yes, 6 signals | yes | yes | yes; fixture selected 1 reader-safe item |
 | `ai` | strong | 2 | yes, 1 signal | yes | yes | yes after ranking / reader gates |
 | `tech-hardware-software` | strong | 7 | yes, 4 signals | yes | yes | yes after ranking / reader gates |
-| `gear-style-edc` | moderate | 1 | no current retained radar item | yes | yes | source-ready, but needs next ingestion/ranking |
-| `moscow-city` | moderate/weak | 1 | yes, 1 signal | yes | yes | yes, but official confirmation is weak |
-| `dj-audio-creative` | strong | 0 | no current retained radar item | yes | yes | source-ready, but needs next ingestion/ranking |
+| `gear-style-edc` | weak/tightened | 0 final live ranking rows | no final retained row; one row appeared in the first live run after tuning | yes | yes | yes only when Worn & Wound / Carryology fetch succeeds, and only as specialized-media weak/context signal |
+| `moscow-city` | moderate/weak | 11 final live ranking rows | yes, 11 retained rows after tuning | yes | yes | yes, but official confirmation is weak |
+| `dj-audio-creative` | strong | 10 final live ranking rows | yes, 10 retained rows after tuning | yes | yes | yes after ranking / reader gates |
 | `science-discovery` | strong | 5 | yes, 3 signals | yes | yes | yes after ranking / reader gates |
 | `general` | none | 0 | no | yes | yes | no; special-use only |
 
@@ -144,7 +164,7 @@ Fully operational after discovery v2:
 
 Operational but still weak:
 
-- `gear-style-edc`: broader specialized coverage exists, but no active official source and no current retained radar item until the next ingestion proves density.
+- `gear-style-edc`: active coverage is intentionally narrower after disabling product/drop feeds; one watchmaking/design row appeared in the first live run, but the final live run had zero rows after source timeouts.
 - `moscow-city`: active city-media coverage improved, but official city/transport endpoints still failed probe.
 
 Decorative / special-use:
@@ -153,10 +173,12 @@ Decorative / special-use:
 
 ## Risks
 
-- New active sources were probe-validated, but their actual signal quality and noise profile will only be visible after the next Daily Radar run.
+- Weak-stream tuning improved `moscow-city` and `dj-audio-creative` live ranking density, but the weak streams still did not reach Today selection in the final run.
+- `gear-style-edc` remains fetch-fragile: keeping product/drop feeds disabled is safer, but leaves the stream dependent on Worn & Wound and Carryology availability.
+- New active sources were probe-validated, but their actual signal quality and noise profile will only be visible after repeated Daily Radar runs.
 - `arxiv-cs-ai` is high volume; keyword gates must be watched closely.
 - `moscow-city` remains the weakest stream because official city and transport endpoints failed probing.
-- `gear-style-edc` still lacks active official-source coverage; specialized media signals must not be treated as confirmation.
+- `gear-style-edc` still lacks active official-source coverage; specialized media signals must not be treated as confirmation, and disabled product/drop feeds should remain disabled unless stricter filters prove broader relevance.
 - Vendor, exchange and official blogs are primary sources for their own claims, not independent verification.
 - Fixture build proves rendering, not live ranking selection.
 
