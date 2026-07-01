@@ -73,6 +73,28 @@ ALLOWLIST_PATTERNS = [
 URL_PATTERN = re.compile(r"https?://\S+", re.IGNORECASE)
 PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN = re.compile(r"\bprivate[-\s]+keys\b", re.IGNORECASE)
 PRIVATE_KEY_ASSIGNMENT_PATTERN = re.compile(r"(?i)private[_-]?key\s*[:=]")
+PUBLIC_SECURITY_TERMS_PATTERN = re.compile(
+    r"\b(cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)\b",
+    re.IGNORECASE,
+)
+PUBLIC_SECURITY_CONTEXT_PATTERN = re.compile(
+    r"\b(security|chrome|android|google security|protecting|mitigating|credentialless|authentication)\b",
+    re.IGNORECASE,
+)
+PUBLIC_SECURITY_REPORT_CONTEXT_PATTERN = re.compile(
+    r"\b(google security blog|public google security|matched title|public article title|privacy false positive)\b",
+    re.IGNORECASE,
+)
+TITLE_LIKE_LINE_PATTERN = re.compile(
+    r'(?i)(["\'](?:title|first_title)["\']\s*:|<h[1-6]\b|<a\b|<title>|<meta\b)',
+)
+QUOTED_PUBLIC_SECURITY_TOPIC_PATTERN = re.compile(
+    r"`[^`]*(?:cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)[^`]*`",
+    re.IGNORECASE,
+)
+SECRET_VALUE_CONTEXT_PATTERN = re.compile(
+    r"(?i)([\"']?(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|secret[_-]?key|client[_-]?secret|password|passwd|cookie|bearer)[\"']?\s*[:=]|authorization\s*:\s*bearer|set-cookie\s*:)"
+)
 
 REPO_SIGNAL_PATH_PATTERN = re.compile(
     r"(?:^|[\"'\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'\s]+\.md(?:[\"'\s,]|$)",
@@ -109,12 +131,31 @@ def is_public_private_keys_topic(line: str) -> bool:
     return bool(PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN.search(line))
 
 
+def is_public_security_title_topic(line: str) -> bool:
+    """Allow public security article titles without allowing secret values.
+
+    Generated ranking JSON and Today pages can include titles like "Protecting
+    Cookies with Device Bound Session Credentials". Those words are security
+    terminology in a public-source headline, not a leaked credential. Real
+    assignments, headers and secret-like key/value lines remain hard blockers.
+    """
+    if SECRET_VALUE_CONTEXT_PATTERN.search(line):
+        return False
+    if TITLE_LIKE_LINE_PATTERN.search(line):
+        return bool(PUBLIC_SECURITY_TERMS_PATTERN.search(line) and PUBLIC_SECURITY_CONTEXT_PATTERN.search(line))
+    if QUOTED_PUBLIC_SECURITY_TOPIC_PATTERN.search(line):
+        return bool(PUBLIC_SECURITY_CONTEXT_PATTERN.search(line))
+    return bool(PUBLIC_SECURITY_TERMS_PATTERN.search(line) and PUBLIC_SECURITY_REPORT_CONTEXT_PATTERN.search(line))
+
+
 def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
     """Avoid known generated-report false positives while keeping hard checks strict."""
     rel = path.relative_to(ROOT).as_posix()
     if name == "phone_like" and rel.startswith("validation/") and REPO_SIGNAL_PATH_PATTERN.search(line):
         return True
     if name == "possible_secret_keyword" and is_public_private_keys_topic(line):
+        return True
+    if name == "possible_secret_keyword" and is_public_security_title_topic(line):
         return True
     return False
 

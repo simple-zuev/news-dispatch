@@ -66,6 +66,51 @@ def sample_report() -> dict:
     }
 
 
+def live_balance_report() -> dict:
+    items: list[dict[str, object]] = []
+    for index in range(8):
+        items.append(
+            {
+                "selected": False,
+                "source_rule_status": "accepted_by_source_rules",
+                "source_class": "official_source",
+                "source_type": "Официальный блог / AI lab",
+                "configured_stream": "ai",
+                "routed_stream": "ai",
+                "feed_id": "openai-news",
+                "feed_title": "OpenAI News",
+                "title": f"OpenAI model update {index}",
+                "url": f"https://openai.com/news/{index}",
+                "selection_score": 12.0 - index,
+                "final_score": 12.0 - index,
+                "relevance_score": 0.9,
+                "include_hits": ["model"],
+                "translation_required": True,
+            }
+        )
+    items.append(
+        {
+            "selected": False,
+            "source_rule_status": "accepted_by_source_rules",
+            "source_class": "official_source",
+            "source_type": "Официальный источник / регулятор",
+            "configured_stream": "crypto-finance",
+            "routed_stream": "crypto-finance",
+            "feed_id": "fca-news",
+            "feed_title": "Financial Conduct Authority",
+            "title": "FCA sets systemic stablecoin rules",
+            "url": "https://www.fca.org.uk/news/stablecoin-rules",
+            "selection_score": 8.0,
+            "final_score": 7.2,
+            "relevance_score": 0.86,
+            "include_hits": ["stablecoin", "crypto"],
+            "boost_hits": ["stablecoin"],
+            "translation_required": True,
+        }
+    )
+    return {"date": "2026-07-01", "fetch_errors": [], "items": items}
+
+
 def test_render_includes_required_links_and_boundary() -> None:
     html = build_today_page.render(sample_report())
     assert "daily-radar-ranking-latest.json" in html
@@ -161,6 +206,27 @@ def test_card_stays_non_directive() -> None:
     assert "Требуется сверка первоисточника" in html
 
 
+def test_today_selection_caps_overfed_source_and_keeps_crypto() -> None:
+    report = live_balance_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    items, diagnostics = build_today_page.select_today_items(report, policy, limit=6)
+    assert any(item["feed_id"] == "fca-news" for item in items)
+    assert sum(1 for item in items if item["feed_id"] == "openai-news") <= build_today_page.SOURCE_TODAY_CAPS["openai-news"]
+    assert diagnostics["selected_today_by_stream"]["crypto-finance"] == 1
+    assert diagnostics["capped_sources"]["openai-news"] > 0
+
+
+def test_today_diagnostics_are_rendered() -> None:
+    report = live_balance_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    html = build_today_page.render(report, policy, auto_report={"generated": []})
+    assert "Диагностика отбора" in html
+    assert "Source counts by stream" in html
+    assert "Selected Today items by stream" in html
+    assert "Криптофинансы" in html
+    assert "FCA sets systemic stablecoin rules" in html
+
+
 def main() -> int:
     test_render_includes_required_links_and_boundary()
     test_autonomous_digest_sections_and_no_human_approval()
@@ -170,6 +236,8 @@ def main() -> int:
     test_render_clusters_similar_signals()
     test_today_radar_css_has_cluster_materials_styles()
     test_card_stays_non_directive()
+    test_today_selection_caps_overfed_source_and_keeps_crypto()
+    test_today_diagnostics_are_rendered()
     print("today page tests passed")
     return 0
 

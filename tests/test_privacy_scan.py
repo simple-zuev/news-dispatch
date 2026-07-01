@@ -60,12 +60,34 @@ def test_private_key_assignment_is_still_blocked() -> None:
     assert any("possible_secret_keyword" in item for item in blockers)
 
 
+def test_public_security_title_with_cookies_and_credentials_is_allowed() -> None:
+    title = '"title": "Protecting Cookies with Device Bound Session Credentials"'
+    blockers, warnings = scan_text(title + "\n")
+    assert blockers == []
+    assert warnings == []
+
+
+def test_cookie_secret_value_is_still_blocked() -> None:
+    blockers, _warnings = scan_text('cookie: "sessionid=should-not-ship"\n')
+    assert any("possible_secret_keyword" in item for item in blockers)
+
+
+def test_public_security_report_context_is_allowed() -> None:
+    line = "The matched title was `Protecting Cookies with Device Bound Session Credentials`.\n"
+    blockers, warnings = scan_text(line)
+    assert blockers == []
+    assert warnings == []
+
+
 def main() -> int:
     test_phone_like_ignores_url_digit_fragments()
     test_phone_like_still_blocks_visible_phone()
     test_public_private_keys_security_coverage_is_allowed()
     test_public_private_keys_url_is_allowed()
     test_private_key_assignment_is_still_blocked()
+    test_public_security_title_with_cookies_and_credentials_is_allowed()
+    test_cookie_secret_value_is_still_blocked()
+    test_public_security_report_context_is_allowed()
     print("privacy scan tests passed")
     return 0
 

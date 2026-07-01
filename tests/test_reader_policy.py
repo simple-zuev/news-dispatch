@@ -66,6 +66,38 @@ def test_unknown_source_class_is_review_only() -> None:
     assert any("source class" in reason for reason in decision["reasons"])
 
 
+def test_official_source_class_is_reader_safe() -> None:
+    item = base_item("FCA sets stablecoin rules")
+    item["source_class"] = "official_source"
+    item["configured_stream"] = "crypto-finance"
+    item["routed_stream"] = "crypto-finance"
+    decision = reader_policy.decision_for_item(item)
+    assert decision["decision"] == "reader_safe"
+
+
+def test_arxiv_preprint_is_review_only_not_confirmed_analysis() -> None:
+    item = base_item("Agent benchmark for LLM systems")
+    item["source_class"] = "research_media"
+    item["source_type"] = "Препринты / исследовательская лента"
+    item["feed_id"] = "arxiv-cs-ai"
+    item["configured_stream"] = "ai"
+    item["routed_stream"] = "ai"
+    decision = reader_policy.decision_for_item(item)
+    assert decision["decision"] == "review_only"
+    assert any("preprint" in reason for reason in decision["reasons"])
+
+
+def test_product_card_edc_signal_is_review_only() -> None:
+    item = base_item('Official Images Of The Nike SB Tennis Classic "Club 58"')
+    item["source_class"] = "specialized_media"
+    item["configured_stream"] = "gear-style-edc"
+    item["routed_stream"] = "gear-style-edc"
+    item["include_hits"] = ["nike", "sneaker"]
+    decision = reader_policy.decision_for_item(item)
+    assert decision["decision"] == "review_only"
+    assert any("product-card" in reason for reason in decision["reasons"])
+
+
 def test_report_counts_and_reader_allowed_flag() -> None:
     safe = base_item("Central bank publishes liquidity update")
     blocked = base_item("Market note says sell this asset")
@@ -82,6 +114,9 @@ def main() -> int:
     test_direct_trading_language_is_blocked()
     test_unconfirmed_language_is_review_only()
     test_unknown_source_class_is_review_only()
+    test_official_source_class_is_reader_safe()
+    test_arxiv_preprint_is_review_only_not_confirmed_analysis()
+    test_product_card_edc_signal_is_review_only()
     test_report_counts_and_reader_allowed_flag()
     print("reader policy tests passed")
     return 0

@@ -64,9 +64,61 @@ def test_source_rule_evidence_explains_rejection() -> None:
     assert "sports" in evidence["exclude_hits"]
 
 
+def test_arxiv_selection_score_is_downweighted() -> None:
+    evidence = ranking_report.source_rule_evidence(
+        feed(id="arxiv-cs-ai", stream="ai", source_class="research_media"),
+        "LLM agent benchmark improves evaluation",
+        "A preprint describes agent evaluation.",
+    )
+    score, adjustments = ranking_report.selection_score(
+        feed(id="arxiv-cs-ai", stream="ai", source_class="research_media"),
+        "LLM agent benchmark improves evaluation",
+        evidence,
+        10.0,
+    )
+    assert score < 10.0
+    assert "research_preprint_downweighted" in adjustments
+
+
+def test_product_card_selection_score_is_downweighted() -> None:
+    edc_feed = feed(
+        id="sneaker-news",
+        stream="gear-style-edc",
+        source_class="specialized_media",
+        include_keywords=("nike", "sneaker"),
+        exclude_keywords=(),
+        boost_keywords=(),
+        min_relevance_score=0.3,
+    )
+    evidence = ranking_report.source_rule_evidence(
+        edc_feed,
+        'Official Images Of The Nike SB Tennis Classic "Club 58"',
+        "",
+    )
+    score, adjustments = ranking_report.selection_score(
+        edc_feed,
+        'Official Images Of The Nike SB Tennis Classic "Club 58"',
+        evidence,
+        10.0,
+    )
+    assert score < 5.0
+    assert "product_card_downweighted" in adjustments
+
+
+def test_source_caps_limit_overfed_sources() -> None:
+    rows = [{"feed_id": "openai-news", "selection_score": 1.0, "title": str(index)} for index in range(25)]
+    rows.extend({"feed_id": "fca-news", "selection_score": 1.0, "title": str(index)} for index in range(3))
+    kept, diagnostics = ranking_report.apply_source_caps(rows, max_rows=50)
+    assert sum(1 for row in kept if row["feed_id"] == "openai-news") == ranking_report.SOURCE_ROW_CAPS["openai-news"]
+    assert diagnostics["capped_rows"]["openai-news"] == 5
+
+
 def main() -> int:
     test_source_rule_evidence_explains_acceptance()
     test_source_rule_evidence_explains_rejection()
+    test_arxiv_selection_score_is_downweighted()
+    test_product_card_selection_score_is_downweighted()
+    test_source_caps_limit_overfed_sources()
     print("daily radar ranking report tests passed")
     return 0
 
