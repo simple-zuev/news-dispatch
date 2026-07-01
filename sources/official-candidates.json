@@ -45,7 +45,7 @@
       "title": "Additional official crypto-finance regulator / exchange / enforcement feed candidate",
       "candidate_url": "",
       "candidate_url_status": "missing",
-      "rationale": "Source governance reports zero enabled official-source coverage for crypto-finance. Additional stable official regulator, exchange, court, enforcement or standards feeds may be useful only after URL verification.",
+      "rationale": "Crypto-finance now has promoted SEC, EBA and ESMA official-source coverage. Additional stable official regulator, exchange, court, enforcement or standards feeds may still be useful only after URL verification.",
       "verification_requirements": [
         "confirm the URL returns stable RSS or Atom content",
         "confirm source ownership and official status",
@@ -81,7 +81,7 @@
       "title": "Stable research journal or institutional science feed candidate",
       "candidate_url": "",
       "candidate_url_status": "missing",
-      "rationale": "nature-news is disabled after XML parse errors; science-discovery keeps only one enabled high-trust research source.",
+      "rationale": "nature-news is disabled after XML parse errors; NASA now adds official science-agency coverage, but a stable research-journal replacement remains useful.",
       "verification_requirements": [
         "verify valid RSS or Atom XML",
         "confirm source is a research journal, institution or high-trust science publication",
@@ -96,10 +96,10 @@
       "stream": "dj-audio-creative",
       "source_class": "official_source",
       "status": "candidate",
-      "title": "Official audio software / hardware vendor release feed candidate",
+      "title": "Additional official audio software / hardware vendor release feed candidate",
       "candidate_url": "",
       "candidate_url_status": "missing",
-      "rationale": "dj-audio-creative has specialized media coverage but no official-source confirmation layer for product releases or platform changes.",
+      "rationale": "dj-audio-creative now has Ableton and Native Instruments official-source coverage; additional stable vendor feeds can broaden product release confirmation.",
       "verification_requirements": [
         "verify stable official vendor news or release feed",
         "confirm source is not a marketing-only landing page without dated entries",

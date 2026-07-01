@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import os
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -44,6 +45,11 @@ STREAMS = set(stream_slugs())
 KEYWORDS = stream_keywords()
 MEDIA_LIMIT = 4
 MAX_SEEN_ITEMS = 3000
+CA_FALLBACKS = (
+    "/etc/ssl/cert.pem",
+    "/opt/homebrew/etc/ca-certificates/cert.pem",
+    "/usr/local/etc/openssl@3/cert.pem",
+)
 
 EXPLICIT_STREAM_TERMS: dict[str, tuple[str, ...]] = {
     "ai": (
@@ -276,7 +282,14 @@ def load_config(path: Path) -> tuple[list[Feed], dict[str, object]]:
 def download(url: str, timeout: int) -> bytes:
     """Download a feed payload with a deterministic User-Agent."""
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
+    try:
+        import certifi  # type: ignore[import-not-found]
+    except Exception:
+        ca_file = next((path for path in CA_FALLBACKS if Path(path).exists()), "")
+        context = ssl.create_default_context(cafile=ca_file or None)
+    else:
+        context = ssl.create_default_context(cafile=certifi.where())
+    with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
         return response.read()
 
 

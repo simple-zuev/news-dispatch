@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import ssl
 import sys
 import urllib.error
 import urllib.request
@@ -17,6 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CANDIDATES = ROOT / "sources" / "feed-candidates.json"
 
 USER_AGENT = "NewsDispatchFeedProbe/1.0 (+https://simple-zuev.github.io/news-dispatch/)"
+CA_FALLBACKS = (
+    "/etc/ssl/cert.pem",
+    "/opt/homebrew/etc/ca-certificates/cert.pem",
+    "/usr/local/etc/openssl@3/cert.pem",
+)
 
 
 @dataclass
@@ -93,7 +99,14 @@ def parse_feed_xml(text: str, url: str = "") -> ProbeResult:
 def fetch_url(url: str, timeout: float) -> ProbeResult:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        import certifi  # type: ignore[import-not-found]
+    except Exception:
+        ca_file = next((path for path in CA_FALLBACKS if Path(path).exists()), "")
+        context = ssl.create_default_context(cafile=ca_file or None)
+    else:
+        context = ssl.create_default_context(cafile=certifi.where())
+    try:
+        with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
             status = getattr(response, "status", None)
             body = response.read(2_000_000)
     except urllib.error.HTTPError as exc:
