@@ -13,7 +13,7 @@
       "title": "Агентство Москва",
       "url": "https://www.mskagency.ru/rss",
       "stream": "moscow-city",
-      "status": "held-timeout",
+      "status": "rejected-404",
       "rationale": "Earlier probe returned HTTP 404 and the final discovery v2 probe timed out; keep disabled until a stable parseable endpoint is found."
     },
     {
