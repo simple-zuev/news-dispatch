@@ -38,9 +38,11 @@ KNOWN_STREAMS = {
 
 TRUSTED_SOURCE_CLASSES = {
     "official",
+    "official_source",
     "regulator",
     "company",
     "public_media",
+    "specialized_media",
     "industry_media",
     "research",
     "exchange",
@@ -48,7 +50,8 @@ TRUSTED_SOURCE_CLASSES = {
 
 BLOCK_PATTERNS = [
     r"\b(buy|sell|hold)\b",
-    r"\b(long|short)\b",
+    r"\b(go|goes|went)\s+(long|short)\b",
+    r"\b(long|short)\s+(position|trade|asset|bitcoin|btc|eth|stock|crypto|market)\b",
     r"\bprice target\b",
     r"\bwill rise\b",
     r"\bwill fall\b",
@@ -69,6 +72,32 @@ REVIEW_PATTERNS = [
     r"неподтвержден",
     r"неподтверждён",
 ]
+
+PRODUCT_CARD_PATTERNS = [
+    r"\bofficial images?\b",
+    r"\bwhere to buy\b",
+    r"\bnow available\b",
+    r"\bdrop(s|ped)?\b",
+    r"\bcolorway\b",
+    r"\bcollection\b",
+    r"\brelease date\b",
+    r"\bretail price\b",
+]
+
+EDC_RELEVANCE_PATTERNS = [
+    r"\bmaterial(s)?\b",
+    r"\bdesign\b",
+    r"\bindustry\b",
+    r"\bmarket\b",
+    r"\bsupply\b",
+    r"\brepair",
+    r"\bsustainab",
+    r"\btechnical apparel\b",
+    r"\bmanufactur",
+    r"\bcollaboration\b",
+]
+
+PREPRINT_SOURCE_CLASSES = {"research_media"}
 
 
 def load_json(path: Path, default: Any) -> Any:
@@ -103,6 +132,21 @@ def item_text(item: dict[str, Any]) -> str:
 
 def pattern_hits(patterns: list[str], text: str) -> list[str]:
     return [pattern for pattern in patterns if re.search(pattern, text, re.IGNORECASE)]
+
+
+def is_preprint_signal(item: dict[str, Any]) -> bool:
+    source_class = str(item.get("source_class") or "")
+    source_type = str(item.get("source_type") or "")
+    feed_id = str(item.get("feed_id") or "")
+    return source_class in PREPRINT_SOURCE_CLASSES or "preprint" in source_type.lower() or feed_id.startswith("arxiv")
+
+
+def is_product_card_like(item: dict[str, Any], text: str) -> bool:
+    if stream_slug(item) != "gear-style-edc":
+        return False
+    if not pattern_hits(PRODUCT_CARD_PATTERNS, text):
+        return False
+    return not pattern_hits(EDC_RELEVANCE_PATTERNS, text)
 
 
 def item_key(item: dict[str, Any]) -> str:
@@ -154,6 +198,16 @@ def decision_for_item(item: dict[str, Any]) -> dict[str, Any]:
         if decision != "blocked":
             decision = "review_only"
         reasons.append("unconfirmed-signal language present")
+
+    if is_preprint_signal(item):
+        if decision != "blocked":
+            decision = "review_only"
+        reasons.append("research/preprint signal; not confirmed analysis")
+
+    if is_product_card_like(item, text):
+        if decision != "blocked":
+            decision = "review_only"
+        reasons.append("product-card retail signal without broader relevance")
 
     if not reasons:
         reasons.append("passed reader policy gate")

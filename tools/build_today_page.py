@@ -57,6 +57,18 @@ STREAM_MONITORING = {
     "science-discovery": "Проверить публикацию, методологию, данные, независимое подтверждение и границы применимости результата.",
 }
 
+SOURCE_TODAY_CAPS = {
+    "openai-news": 2,
+    "arxiv-cs-ai": 1,
+    "google-security-blog": 2,
+    "tomshardware": 2,
+    "science-daily": 1,
+    "sneaker-news": 1,
+}
+
+STREAM_TODAY_CAP = 4
+GENERAL_SPECIAL_USE_STREAM = "general"
+
 STOPWORDS = {
     "the", "and", "for", "from", "with", "this", "that", "into", "over", "after", "before", "about", "news", "update", "updates",
     "как", "что", "это", "для", "или", "при", "над", "под", "после", "перед", "новости", "обновление", "сигнал",
@@ -131,6 +143,13 @@ def numeric(value: object) -> float:
         return 0.0
 
 
+def effective_score(item: dict[str, Any]) -> float:
+    score_value = item.get("selection_score")
+    if score_value is None:
+        score_value = item.get("final_score")
+    return numeric(score_value)
+
+
 def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
     if not path.exists():
         return {"date": "", "items": [], "fetch_errors": []}
@@ -189,13 +208,94 @@ def stream_label(slug: object) -> str:
 
 
 def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> list[dict[str, Any]]:
-    items = [item for item in report.get("items", []) if item.get("selected")]
-    if not items:
-        items = [item for item in report.get("items", []) if item.get("source_rule_status") == "accepted_by_source_rules"]
-    if policy is not None:
-        allowed = reader_safe_keys(policy)
-        items = [item for item in items if item_key(item) in allowed]
-    return sorted(items, key=lambda item: numeric(item.get("final_score")), reverse=True)[:limit]
+    items, _diagnostics = select_today_items(report, policy, limit=limit)
+    return items
+
+
+def source_cap(item: dict[str, Any]) -> int:
+    return SOURCE_TODAY_CAPS.get(str(item.get("feed_id") or ""), 3)
+
+
+def eligible_today_items(report: dict[str, Any], policy: dict[str, Any] | None) -> list[dict[str, Any]]:
+    items = [
+        item
+        for item in report.get("items", [])
+        if isinstance(item, dict)
+        and item.get("source_rule_status") == "accepted_by_source_rules"
+        and stream_slug(item) != GENERAL_SPECIAL_USE_STREAM
+    ]
+    if policy is None:
+        return items
+    allowed = reader_safe_keys(policy)
+    return [item for item in items if item_key(item) in allowed]
+
+
+def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    candidates = sorted(eligible_today_items(report, policy), key=effective_score, reverse=True)
+    selected: list[dict[str, Any]] = []
+    source_counts: Counter[str] = Counter()
+    stream_counts: Counter[str] = Counter()
+    capped: Counter[str] = Counter()
+    skipped_stream: Counter[str] = Counter()
+
+    def can_add(item: dict[str, Any]) -> bool:
+        feed_id = str(item.get("feed_id") or "unknown")
+        stream = stream_slug(item)
+        if source_counts[feed_id] >= source_cap(item):
+            capped[feed_id] += 1
+            return False
+        if stream_counts[stream] >= STREAM_TODAY_CAP:
+            skipped_stream[stream] += 1
+            return False
+        return True
+
+    def add(item: dict[str, Any]) -> None:
+        selected.append(item)
+        source_counts[str(item.get("feed_id") or "unknown")] += 1
+        stream_counts[stream_slug(item)] += 1
+
+    seen_ids: set[str] = set()
+    for stream in sorted({stream_slug(item) for item in candidates}):
+        stream_items = [item for item in candidates if stream_slug(item) == stream]
+        if stream_items and len(selected) < limit and can_add(stream_items[0]):
+            add(stream_items[0])
+            seen_ids.add(item_key(stream_items[0]))
+
+    for item in candidates:
+        if len(selected) >= limit:
+            break
+        key = item_key(item)
+        if key in seen_ids:
+            continue
+        if can_add(item):
+            add(item)
+            seen_ids.add(key)
+
+    selected = sorted(selected, key=effective_score, reverse=True)
+    diagnostics = {
+        "source_counts_by_stream": dict(Counter(stream_slug(item) for item in report.get("items", []) if isinstance(item, dict))),
+        "eligible_reader_safe_by_stream": dict(Counter(stream_slug(item) for item in candidates)),
+        "selected_today_by_stream": dict(stream_counts),
+        "selected_today_by_source": dict(source_counts),
+        "source_caps": SOURCE_TODAY_CAPS,
+        "stream_cap": STREAM_TODAY_CAP,
+        "capped_sources": dict(capped),
+        "stream_cap_skips": dict(skipped_stream),
+        "ranking_capped_rows": (report.get("ranking_diagnostics") or {}).get("capped_rows", {}),
+        "downweighted_sources": downweighted_sources(report),
+    }
+    return selected, diagnostics
+
+
+def downweighted_sources(report: dict[str, Any]) -> dict[str, int]:
+    counts: Counter[str] = Counter()
+    for item in report.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        adjustments = item.get("ranking_adjustments")
+        if isinstance(adjustments, list) and any("downweighted" in str(adjustment) for adjustment in adjustments):
+            counts[str(item.get("feed_id") or "unknown")] += 1
+    return dict(counts)
 
 
 def auto_dispatch_items(auto_report: dict[str, Any]) -> list[dict[str, Any]]:
@@ -310,10 +410,12 @@ def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
     status = str(item.get("source_rule_status") or "unknown")
-    if source_class in {"official", "regulator", "company"}:
+    if source_class in {"official", "official_source", "regulator", "company"}:
         base = "высокий для факта публикации первоисточником"
-    elif source_class in {"public_media", "industry_media"}:
+    elif source_class in {"public_media", "industry_media", "specialized_media"}:
         base = "средний для факта публикации в публичном источнике"
+    elif source_class == "research_media":
+        base = "ограниченный; research/preprint signal, не финальное подтверждение"
     else:
         base = "ограниченный; требуется ручная сверка источника"
     return f"{base}; source class: {source_class}, source type: {source_type}, rule status: {status}."
@@ -377,7 +479,7 @@ def card(cluster: list[dict[str, Any]]) -> str:
     cluster_label = f"cluster {len(cluster)} item(s) · {len(sources)} source(s)"
 
     return f"""<article class="card signal-card">
-  <p class="label">{esc(stream)} · {esc(cluster_label)} · score {score(item.get("final_score"))} · relevance {score(item.get("relevance_score"))}</p>
+  <p class="label">{esc(stream)} · {esc(cluster_label)} · score {score(effective_score(item))} · relevance {score(item.get("relevance_score"))}</p>
   <h3>{title_html}</h3>
   <p><strong>Тезис:</strong> {esc(thesis(item, cluster))}</p>
   <p><strong>Аргумент:</strong> {esc(argument(item, cluster))}</p>
@@ -471,6 +573,31 @@ def source_counts(items: list[dict[str, Any]]) -> str:
     return ", ".join(f"{key}: {value}" for key, value in sorted(counts.items()))
 
 
+def stream_count_lines(counts: dict[str, int]) -> list[str]:
+    if not counts:
+        return ["Нет данных."]
+    return [f"{stream_label(slug)}: {count}" for slug, count in sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))]
+
+
+def source_count_lines(counts: dict[str, int]) -> list[str]:
+    if not counts:
+        return ["Нет сработавших caps/downweights."]
+    return [f"{source}: {count}" for source, count in sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))]
+
+
+def diagnostics_section(diagnostics: dict[str, Any], gate: DigestGate) -> str:
+    lines = [
+        "Source counts by stream: " + "; ".join(stream_count_lines(diagnostics.get("source_counts_by_stream", {}))),
+        "Reader-safe eligible by stream: " + "; ".join(stream_count_lines(diagnostics.get("eligible_reader_safe_by_stream", {}))),
+        "Selected Today items by stream: " + "; ".join(stream_count_lines(diagnostics.get("selected_today_by_stream", {}))),
+        "Capped sources in Today selection: " + "; ".join(source_count_lines(diagnostics.get("capped_sources", {}))),
+        "Rows capped in ranking report: " + "; ".join(source_count_lines(diagnostics.get("ranking_capped_rows", {}))),
+        "Downweighted sources: " + "; ".join(source_count_lines(diagnostics.get("downweighted_sources", {}))),
+        "Withheld/privacy-gated reasons: " + "; ".join(gate.reasons),
+    ]
+    return digest_section("Диагностика отбора", list_html(lines))
+
+
 def regulatory_items(items: list[dict[str, Any]], limit: int = 5) -> list[str]:
     result: list[str] = []
     keywords = ("regulat", "law", "legal", "cbr", "central bank", "банк", "цб", "регул", "прав")
@@ -536,7 +663,7 @@ def digest_section(title: str, body: str) -> str:
     return f'<section class="panel digest-section"><h2>{esc(title)}</h2>{body}</section>'
 
 
-def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate) -> str:
+def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     clusters = cluster_items(items)
     top_titles = [f"{cluster[0].get('title') or 'Без заголовка'} — {stream_label(stream_slug(cluster[0]))}; {uncertainty(cluster[0], cluster)}" for cluster in clusters[:5]]
     sections = [
@@ -551,6 +678,7 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
         digest_section("Радар слабых сигналов", list_html(weak_signal_lines(policy))),
         digest_section("Что проверять дальше", list_html(next_checks(clusters))),
         digest_section("Источники и уровень надёжности", list_html(reliability_lines(items, auto_report))),
+        diagnostics_section(diagnostics, gate),
         digest_section("Automated Gate", list_html([f"PASS: {reason}" for reason in gate.reasons])),
     ]
     cards = f'<section class="grid latest-grid" aria-label="Reader-safe signal cards">{cards_block(items)}</section>'
@@ -580,14 +708,14 @@ def policy_summary(policy: dict[str, Any]) -> str:
 def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_report: dict[str, Any] | None = None) -> str:
     policy = policy or load_policy(report)
     auto_report = auto_report or load_auto_dispatch_report()
-    items = selected_items(report, policy=policy)
+    items, diagnostics = select_today_items(report, policy=policy)
     clusters = cluster_items(items)
     total = len(report.get("items", []))
     selected = len([item for item in report.get("items", []) if item.get("selected")])
     filtered = len([item for item in report.get("items", []) if item.get("source_rule_status") != "accepted_by_source_rules"])
     errors = len(report.get("fetch_errors", []))
     gate = digest_gate(report, policy, items, auto_report)
-    digest_body = autonomous_digest(report, policy, items, auto_report, gate) if gate.passed else fallback_digest(report, policy, items, gate)
+    digest_body = autonomous_digest(report, policy, items, auto_report, gate, diagnostics) if gate.passed else fallback_digest(report, policy, items, gate)
     page_title = "News Dispatch — автономный дневной дайджест"
     h1 = "Автономный дневной дайджест"
     mode_label = "AUTONOMOUS DIGEST" if gate.passed else "AUTOMATED GATE FALLBACK"
