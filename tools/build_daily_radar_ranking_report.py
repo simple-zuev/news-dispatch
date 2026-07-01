@@ -26,6 +26,24 @@ SOURCE_ROW_CAPS = {
     "google-security-blog": 16,
 }
 
+RANKING_SELECTION_LIMIT = 18
+RANKING_SELECTION_MIN_SCORE = 10.0
+RANKING_SELECTION_STREAM_CAP = 4
+RANKING_SELECTION_DEFAULT_SOURCE_CAP = 3
+RANKING_SELECTION_SOURCE_CAPS = {
+    "openai-news": 2,
+    "arxiv-cs-ai": 1,
+    "google-security-blog": 2,
+    "tomshardware": 2,
+    "science-daily": 1,
+}
+WEAK_STREAM_MIN_RELEVANCE = {
+    "gear-style-edc": 0.5,
+    "moscow-city": 0.5,
+    "dj-audio-creative": 0.5,
+}
+GENERAL_SPECIAL_USE_STREAM = "general"
+
 PRODUCT_CARD_PATTERNS = (
     "official image",
     "official images",
@@ -105,6 +123,26 @@ MARKET_IMPACT_TERMS = (
     "clearing",
     "bank",
     "central bank",
+)
+
+CRYPTO_SELECTION_PRIORITY_TERMS = MARKET_IMPACT_TERMS + (
+    "bank of england",
+    "joint regulation",
+    "systemic stablecoin",
+    "market statistics",
+    "legislature",
+    "regulations",
+    "passes crypto",
+    "euro stablecoin",
+    "credit agricole",
+    "crédit agricole",
+)
+
+GENERIC_ROUNDUP_TERMS = (
+    "here's what happened",
+    "what happened in crypto today",
+    "daily roundup",
+    "market recap",
 )
 
 
@@ -208,6 +246,150 @@ def selected_keys_from_latest_report() -> set[str]:
     return keys
 
 
+def row_stream(row: dict[str, object]) -> str:
+    return str(row.get("routed_stream") or row.get("configured_stream") or "")
+
+
+def row_score(row: dict[str, object]) -> float:
+    try:
+        return float(row.get("selection_score", row.get("final_score", 0.0)) or 0.0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def row_relevance(row: dict[str, object]) -> float:
+    try:
+        return float(row.get("relevance_score", 0.0) or 0.0)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def current_selection_priority(row: dict[str, object]) -> float:
+    priority = row_score(row)
+    text_parts = [
+        str(row.get("title") or ""),
+        str(row.get("feed_title") or ""),
+        str(row.get("feed_id") or ""),
+    ]
+    for key in ("include_hits", "boost_hits", "stream_keyword_hits"):
+        value = row.get(key)
+        if isinstance(value, list):
+            text_parts.extend(str(part) for part in value)
+    haystack = daily_radar.normalized_haystack(" ".join(text_parts), "")
+    stream = row_stream(row)
+
+    if str(row.get("market_signal_type") or "") == "third_party_forecast":
+        priority -= 1.25
+    if contains_any(haystack, GENERIC_ROUNDUP_TERMS):
+        priority -= 1.0
+    if stream == "crypto-finance" and contains_any(haystack, CRYPTO_SELECTION_PRIORITY_TERMS):
+        priority += 0.65
+    if stream in {"finance", "crypto-finance"} and str(row.get("source_class") or "") == "official_source":
+        priority += 0.45
+
+    return round(priority, 3)
+
+
+def selection_source_cap(row: dict[str, object]) -> int:
+    return RANKING_SELECTION_SOURCE_CAPS.get(
+        str(row.get("feed_id") or ""),
+        RANKING_SELECTION_DEFAULT_SOURCE_CAP,
+    )
+
+
+def eligible_for_current_selection(row: dict[str, object]) -> bool:
+    if row.get("source_rule_status") != "accepted_by_source_rules":
+        return False
+    stream = row_stream(row)
+    if not stream or stream == GENERAL_SPECIAL_USE_STREAM:
+        return False
+    if row_score(row) < RANKING_SELECTION_MIN_SCORE:
+        return False
+    min_relevance = WEAK_STREAM_MIN_RELEVANCE.get(stream)
+    if min_relevance is not None and row_relevance(row) < min_relevance:
+        return False
+    return True
+
+
+def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_SELECTION_LIMIT) -> dict[str, object]:
+    """Mark a balanced current-run reader selection.
+
+    The diagnostic report used to mark selected rows only when they happened to
+    match keys from the latest generated Daily Radar artifact. That is useful
+    provenance, but it can collapse the current live report to a handful of
+    stale matches. Current selection is therefore computed from accepted,
+    machine-gated rows after caps and scoring have already been applied.
+    """
+
+    for row in rows:
+        if row.get("source_rule_status") == "accepted_by_source_rules":
+            row["selected"] = False
+            row["selection_reason"] = "not_selected_after_current_ranking"
+
+    candidates = sorted(
+        [row for row in rows if eligible_for_current_selection(row)],
+        key=current_selection_priority,
+        reverse=True,
+    )
+    selected: list[dict[str, object]] = []
+    source_counts: dict[str, int] = {}
+    stream_counts: dict[str, int] = {}
+    capped_sources: dict[str, int] = {}
+    capped_streams: dict[str, int] = {}
+
+    def can_add(row: dict[str, object]) -> bool:
+        feed_id = str(row.get("feed_id") or "unknown")
+        stream = row_stream(row)
+        if source_counts.get(feed_id, 0) >= selection_source_cap(row):
+            capped_sources[feed_id] = capped_sources.get(feed_id, 0) + 1
+            return False
+        if stream_counts.get(stream, 0) >= RANKING_SELECTION_STREAM_CAP:
+            capped_streams[stream] = capped_streams.get(stream, 0) + 1
+            return False
+        return True
+
+    def add(row: dict[str, object]) -> None:
+        selected.append(row)
+        feed_id = str(row.get("feed_id") or "unknown")
+        stream = row_stream(row)
+        source_counts[feed_id] = source_counts.get(feed_id, 0) + 1
+        stream_counts[stream] = stream_counts.get(stream, 0) + 1
+        row["selected"] = True
+        row["selection_reason"] = "selected_current_balanced_ranking"
+
+    seen: set[str] = set()
+    for stream in sorted({row_stream(row) for row in candidates}):
+        stream_rows = [row for row in candidates if row_stream(row) == stream]
+        if stream_rows and len(selected) < limit and can_add(stream_rows[0]):
+            add(stream_rows[0])
+            seen.add(str(stream_rows[0].get("item_key") or ""))
+
+    for row in candidates:
+        if len(selected) >= limit:
+            break
+        key = str(row.get("item_key") or "")
+        if key and key in seen:
+            continue
+        if can_add(row):
+            add(row)
+            seen.add(key)
+
+    return {
+        "selection_limit": limit,
+        "selection_min_score": RANKING_SELECTION_MIN_SCORE,
+        "selection_stream_cap": RANKING_SELECTION_STREAM_CAP,
+        "selection_source_caps": RANKING_SELECTION_SOURCE_CAPS,
+        "selection_default_source_cap": RANKING_SELECTION_DEFAULT_SOURCE_CAP,
+        "weak_stream_min_relevance": WEAK_STREAM_MIN_RELEVANCE,
+        "eligible_current_selection_rows": len(candidates),
+        "selected_count": len(selected),
+        "selected_by_stream": stream_counts,
+        "selected_by_source": source_counts,
+        "selection_capped_sources": capped_sources,
+        "selection_capped_streams": capped_streams,
+    }
+
+
 def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_keys: set[str]) -> dict[str, object] | None:
     title = clean_text(daily_radar.text_of(node, ("title",)))
     url = clean_text(daily_radar.link_of(node), 500)
@@ -222,7 +404,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
 
     routed_stream = ""
     final_score = 0.0
-    selected = item_key in selected_keys
+    reviewed_signal_match = item_key in selected_keys
 
     if evidence["source_rule_status"] == "accepted_by_source_rules":
         routed_stream = daily_radar.classify(feed, title, summary)
@@ -230,12 +412,10 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
     adjusted_score, adjustments = selection_score(feed, title, evidence, final_score)
     market_signal_type = "third_party_forecast" if is_market_forecast(feed, title) else "source_reported"
 
-    if selected:
-        reason = "selected_top_ranked"
-    elif evidence["source_rule_status"] != "accepted_by_source_rules":
+    if evidence["source_rule_status"] != "accepted_by_source_rules":
         reason = "filtered_by_source_rules"
     else:
-        reason = "not_selected_after_ranking"
+        reason = "not_selected_after_current_ranking"
 
     return {
         "item_key": item_key,
@@ -254,8 +434,9 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
         "selection_score": adjusted_score,
         "ranking_adjustments": adjustments,
         "market_signal_type": market_signal_type,
-        "selected": selected,
+        "selected": False,
         "selection_reason": reason,
+        "reviewed_signal_match": reviewed_signal_match,
         **evidence,
     }
 
@@ -315,12 +496,15 @@ def build(timeout: int, max_rows: int, dry_run: bool) -> int:
         reverse=True,
     )
     rows, ranking_diagnostics = apply_source_caps(rows, max_rows)
+    selection_diagnostics = apply_current_selection(rows)
+    ranking_diagnostics["current_selection"] = selection_diagnostics
 
     report = {
         "date": date.today().isoformat(),
         "report_type": "daily_radar_ranking",
         "source": repo_path(daily_radar.CONFIG_PATH),
         "selected_keys_count": len(selected_keys),
+        "selected_count": selection_diagnostics["selected_count"],
         "items": rows,
         "fetch_errors": errors,
         "ranking_diagnostics": ranking_diagnostics,

@@ -110,6 +110,18 @@ def test_crypto_forecast_headline_is_labeled_not_blocked() -> None:
     assert decision["market_signal_type"] == "third_party_forecast"
 
 
+def test_market_statistics_are_not_labeled_as_forecast_only_because_proceeds_rose() -> None:
+    item = base_item("SEC Publishes Updated Market Statistics, Highlighting Increase in IPOs and Proceeds Raised")
+    item["source_class"] = "official_source"
+    item["configured_stream"] = "crypto-finance"
+    item["routed_stream"] = "crypto-finance"
+    item["feed_id"] = "crypto-finance-sec-press-releases"
+    decision = reader_policy.decision_for_item(item)
+    assert decision["decision"] == "reader_safe"
+    assert "third_party_market_forecast" not in decision["safety_labels"]
+    assert decision["market_signal_type"] == "source_reported"
+
+
 def test_report_counts_and_reader_allowed_flag() -> None:
     safe = base_item("Central bank publishes liquidity update")
     blocked = base_item("Market note says sell this asset")
@@ -130,6 +142,7 @@ def main() -> int:
     test_arxiv_preprint_is_review_only_not_confirmed_analysis()
     test_product_card_edc_signal_is_review_only()
     test_crypto_forecast_headline_is_labeled_not_blocked()
+    test_market_statistics_are_not_labeled_as_forecast_only_because_proceeds_rose()
     test_report_counts_and_reader_allowed_flag()
     print("reader policy tests passed")
     return 0
