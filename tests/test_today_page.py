@@ -111,6 +111,34 @@ def live_balance_report() -> dict:
     return {"date": "2026-07-01", "fetch_errors": [], "items": items}
 
 
+def forecast_report() -> dict:
+    return {
+        "date": "2026-07-01",
+        "fetch_errors": [],
+        "items": [
+            {
+                "selected": False,
+                "source_rule_status": "accepted_by_source_rules",
+                "source_class": "specialized_media",
+                "source_type": "Криптофинансовое медиа",
+                "configured_stream": "crypto-finance",
+                "routed_stream": "crypto-finance",
+                "feed_id": "coindesk",
+                "feed_title": "CoinDesk",
+                "title": "Citi slashes 12-month bitcoin, ether targets",
+                "url": "https://example.com/citi-crypto-targets",
+                "market_signal_type": "third_party_forecast",
+                "ranking_adjustments": ["third_party_market_forecast_labeled", "market_forecast_downweighted"],
+                "selection_score": 7.0,
+                "final_score": 12.0,
+                "relevance_score": 0.86,
+                "include_hits": ["bitcoin", "ether"],
+                "translation_required": True,
+            }
+        ],
+    }
+
+
 def test_render_includes_required_links_and_boundary() -> None:
     html = build_today_page.render(sample_report())
     assert "daily-radar-ranking-latest.json" in html
@@ -227,6 +255,17 @@ def test_today_diagnostics_are_rendered() -> None:
     assert "FCA sets systemic stablecoin rules" in html
 
 
+def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None:
+    report = forecast_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    html = build_today_page.render(report, policy, auto_report={"generated": []})
+    assert "Citi slashes 12-month bitcoin, ether targets" in html
+    assert "Источник сообщает об оценке/прогнозе участника рынка" in html
+    assert "Это не факт будущей цены и не рекомендация" in html
+    assert "third-party assessment / analyst forecast" in html
+    assert "не являются инвестиционной рекомендацией" in html
+
+
 def main() -> int:
     test_render_includes_required_links_and_boundary()
     test_autonomous_digest_sections_and_no_human_approval()
@@ -238,6 +277,7 @@ def main() -> int:
     test_card_stays_non_directive()
     test_today_selection_caps_overfed_source_and_keeps_crypto()
     test_today_diagnostics_are_rendered()
+    test_forecast_flavored_crypto_card_is_not_presented_as_future_fact()
     print("today page tests passed")
     return 0
 

@@ -77,7 +77,6 @@ STOPWORDS = {
 FORBIDDEN_READER_PATTERNS = [
     r"\b(buy|sell|hold)\b",
     r"\b(long|short)\b",
-    r"\bprice target\b",
     r"\bwill rise\b",
     r"\bwill fall\b",
     r"покупать",
@@ -86,6 +85,20 @@ FORBIDDEN_READER_PATTERNS = [
     r"целевая цена",
     r"точный прогноз",
     r"гарантированно",
+]
+
+MARKET_FORECAST_PATTERNS = [
+    r"\bprice targets?\b",
+    r"\b\d{1,2}[-\s]?month\b",
+    r"\byear[-\s]?end\b",
+    r"\bforecast(s|ed|ing)?\b",
+    r"\bpredict(s|ed|ion|ions)?\b",
+    r"\bestimat(e|es|ed|ing)\b",
+    r"\boutlook\b",
+    r"\bslash(es|ed|ing)?\b",
+    r"\brais(es|ed|ing)?\b",
+    r"\banalyst(s)?\b",
+    r"\bstrategist(s)?\b",
 ]
 
 PRIVATE_CONTEXT_PATTERNS = [
@@ -148,6 +161,27 @@ def effective_score(item: dict[str, Any]) -> float:
     if score_value is None:
         score_value = item.get("final_score")
     return numeric(score_value)
+
+
+def item_text(item: dict[str, Any]) -> str:
+    parts = [str(item.get("title") or ""), str(item.get("feed_title") or ""), str(item.get("feed_id") or "")]
+    for key in ("include_hits", "boost_hits", "stream_keyword_hits"):
+        value = item.get(key)
+        if isinstance(value, list):
+            parts.extend(str(part) for part in value)
+    return " ".join(parts).lower()
+
+
+def is_market_forecast_item(item: dict[str, Any]) -> bool:
+    if stream_slug(item) not in {"finance", "crypto-finance"}:
+        return False
+    if str(item.get("market_signal_type") or "") == "third_party_forecast":
+        return True
+    return pattern_present(MARKET_FORECAST_PATTERNS, item_text(item))
+
+
+def market_forecast_notice() -> str:
+    return "Источник сообщает об оценке/прогнозе участника рынка. Это не факт будущей цены и не рекомендация."
 
 
 def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
@@ -410,6 +444,8 @@ def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
     status = str(item.get("source_rule_status") or "unknown")
+    if is_market_forecast_item(item):
+        return f"ограниченный; third-party assessment / analyst forecast, не факт будущей цены; source class: {source_class}, source type: {source_type}, rule status: {status}."
     if source_class in {"official", "official_source", "regulator", "company"}:
         base = "высокий для факта публикации первоисточником"
     elif source_class in {"public_media", "industry_media", "specialized_media"}:
@@ -424,6 +460,8 @@ def confirmation_level(item: dict[str, Any]) -> str:
 def thesis(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
     title = str(item.get("title") or "Без заголовка")
     stream = stream_label(stream_slug(item))
+    if is_market_forecast_item(item):
+        return f"Источник сообщает об оценке/прогнозе участника рынка в потоке «{stream}»: {title}"
     if len(cluster) > 1:
         return f"В потоке «{stream}» зафиксирован кластер публичных сигналов по теме: {title}"
     return f"В потоке «{stream}» зафиксирован публичный сигнал: {title}"
@@ -447,6 +485,8 @@ def argument(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
 def implication(item: dict[str, Any]) -> str:
     slug = stream_slug(item)
     effect = STREAM_EFFECTS.get(slug, "Потенциальная зона внимания: уточнить рыночный, продуктовый, регуляторный или инфраструктурный эффект.")
+    if is_market_forecast_item(item):
+        return market_forecast_notice() + " " + effect + " Формулировка является зоной мониторинга, а не прогнозом и не инструкцией к действию."
     return effect + " Формулировка является зоной мониторинга, а не прогнозом и не инструкцией к действию."
 
 
@@ -457,7 +497,10 @@ def uncertainty(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
         rank_note = "Сигнал выбран ранжированием Daily Radar."
     else:
         rank_note = "Сигнал прошёл source-rule отбор, но не был выбран как top-ranked item."
-    return rank_note + " Требуется сверка первоисточника, даты, контекста и независимых подтверждений перед включением в аналитический выпуск."
+    suffix = " Требуется сверка первоисточника, даты, контекста и независимых подтверждений перед включением в аналитический выпуск."
+    if is_market_forecast_item(item):
+        suffix += " Оценки/targets участника рынка не являются фактом будущей цены и не являются инвестиционной рекомендацией."
+    return rank_note + suffix
 
 
 def monitoring(item: dict[str, Any]) -> str:
@@ -649,10 +692,12 @@ def next_checks(clusters: list[list[dict[str, Any]]], limit: int = 7) -> list[st
 
 
 def reliability_lines(items: list[dict[str, Any]], auto_report: dict[str, Any]) -> list[str]:
+    forecast_count = sum(1 for item in items if is_market_forecast_item(item))
     lines = [
         f"Source classes in reader-safe digest: {source_counts(items)}.",
         "Confirmed fact означает только факт появления материала в первичном/официальном источнике; impact и causality остаются отдельной проверкой.",
         "Source-reported claim означает сообщение публичного источника; оно не подтверждает последствия, полноту контекста или интерпретацию.",
+        f"Third-party market forecasts in digest: {forecast_count}; они читаются как оценки участников рынка, не как факт будущей цены и не как рекомендация.",
         auto_dispatch_note(auto_report),
         reviewed_radar_note(),
     ]

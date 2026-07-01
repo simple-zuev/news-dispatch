@@ -113,12 +113,51 @@ def test_source_caps_limit_overfed_sources() -> None:
     assert diagnostics["capped_rows"]["openai-news"] == 5
 
 
+def test_pure_crypto_price_target_is_labeled_and_downweighted() -> None:
+    crypto_feed = feed(
+        id="coindesk",
+        stream="crypto-finance",
+        source_class="specialized_media",
+        include_keywords=("bitcoin", "ether"),
+        exclude_keywords=(),
+        boost_keywords=(),
+        min_relevance_score=0.35,
+    )
+    title = "Citi slashes 12-month bitcoin, ether targets"
+    evidence = ranking_report.source_rule_evidence(crypto_feed, title, "")
+    score, adjustments = ranking_report.selection_score(crypto_feed, title, evidence, 10.0)
+    assert score < 10.0
+    assert "third_party_market_forecast_labeled" in adjustments
+    assert "market_forecast_downweighted" in adjustments
+
+
+def test_crypto_regulatory_forecast_context_stays_high_priority() -> None:
+    crypto_feed = feed(
+        id="fca-news",
+        stream="crypto-finance",
+        source_class="official_source",
+        include_keywords=("stablecoin", "rules"),
+        exclude_keywords=(),
+        boost_keywords=("stablecoin",),
+        min_relevance_score=0.35,
+    )
+    title = "FCA raises stablecoin market outlook as systemic rules take effect"
+    evidence = ranking_report.source_rule_evidence(crypto_feed, title, "")
+    score, adjustments = ranking_report.selection_score(crypto_feed, title, evidence, 10.0)
+    assert score > 10.0
+    assert "third_party_market_forecast_labeled" in adjustments
+    assert "market_forecast_downweighted" not in adjustments
+    assert "crypto_regulatory_signal_boost" in adjustments
+
+
 def main() -> int:
     test_source_rule_evidence_explains_acceptance()
     test_source_rule_evidence_explains_rejection()
     test_arxiv_selection_score_is_downweighted()
     test_product_card_selection_score_is_downweighted()
     test_source_caps_limit_overfed_sources()
+    test_pure_crypto_price_target_is_labeled_and_downweighted()
+    test_crypto_regulatory_forecast_context_stays_high_priority()
     print("daily radar ranking report tests passed")
     return 0
 
