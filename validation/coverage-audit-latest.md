@@ -2,11 +2,11 @@
 
 Date: 2026-07-01
 
-Status: source coverage expanded and audited. This file does not publish content, does not edit generated signals, and does not change Daily Radar branch policy.
+Status: source coverage expanded through live discovery v2 and audited. This file does not publish content, does not edit generated signals, and does not change Daily Radar branch policy.
 
 ## Scope and Inputs
 
-This audit checks whether registered News Dispatch streams, rubrics and reader surfaces are connected to source feeds and generated artifacts after the 2026-07-01 source expansion.
+This audit checks whether registered News Dispatch streams, rubrics and reader surfaces are connected to source feeds and generated artifacts after live source discovery v2.
 
 Inputs inspected:
 
@@ -15,13 +15,13 @@ Inputs inspected:
 - `sources/feeds.json`
 - `sources/feed-candidates.json`
 - `sources/official-candidates.json`
+- `validation/source-discovery-v2-latest.md`
 - `signals/`
 - `validation/daily-radar-latest.json`
 - `validation/daily-radar-ranking-latest.json`
 - `validation/reader-policy-latest.json`
 - `validation/reviewed-radar-latest.md`
 - `validation/auto-dispatch-latest.json`
-- generated `site/` output from `python3 tools/build_site.py --ranking-mode fixture --media-mode skip`
 - `.github/workflows/daily-radar.yml`
 - `.github/workflows/pages.yml`
 - `docs/daily-radar-automation-branch-policy.md`
@@ -34,42 +34,34 @@ Important date note:
 - New feeds will affect recent-signal and Today coverage only after the next Daily Radar ingestion run.
 - Production Pages workflow uses live ranking, not fixture ranking.
 
-## Source Coverage Before / After
+## Source Coverage
 
-| Stream | Before active / total | After active / total | After active source classes | Active official / high-trust | Coverage status after change |
-|---|---:|---:|---|---:|---|
-| `finance` | 3 / 3 | 4 / 4 | `official_source` x2, `public_media` x2 | 2 / 2 | stronger official coverage |
-| `crypto-finance` | 4 / 4 | 6 / 6 | `official_source` x3, `specialized_media` x3 | 3 / 3 | stronger official coverage |
-| `ai` | 3 / 4 | 5 / 6 | `official_source` x4, `public_media` x1 | 4 / 4 | stronger official coverage; one noisy broad feed remains disabled |
-| `tech-hardware-software` | 5 / 5 | 7 / 7 | `official_source` x4, `public_media` x1, `specialized_media` x2 | 4 / 4 | stronger official coverage |
-| `gear-style-edc` | 2 / 2 | 3 / 3 | `specialized_media` x3 | 0 / 0 | broader, still no active official source |
-| `moscow-city` | 1 / 3 | 1 / 3 | `public_media` x1 | 0 / 0 | still underfed; official candidates failed probe |
-| `dj-audio-creative` | 2 / 2 | 6 / 6 | `official_source` x2, `specialized_media` x4 | 2 / 2 | no longer source-underfed |
-| `science-discovery` | 2 / 3 | 4 / 5 | `official_source` x1, `research_media` x1, `specialized_media` x2 | 2 / 2 | stronger official/research coverage; Nature remains disabled |
-| `general` | 0 / 0 | 0 / 0 | none | 0 / 0 | special-use only; intentionally not a catch-all feed |
+| Stream | Active / total | Active source classes | Active official / high-trust | Coverage status |
+|---|---:|---|---:|---|
+| `finance` | 5 / 5 | `official_source` x3, `public_media` x2 | 3 | strong |
+| `crypto-finance` | 7 / 7 | `official_source` x4, `specialized_media` x3 | 4 | strong |
+| `ai` | 6 / 7 | `official_source` x4, `public_media` x1, `research_media` x1 | 5 | strong, one noisy broad feed disabled |
+| `tech-hardware-software` | 9 / 9 | `official_source` x6, `public_media` x1, `specialized_media` x2 | 6 | strong |
+| `gear-style-edc` | 4 / 4 | `specialized_media` x4 | 0 | broader, still no active official source |
+| `moscow-city` | 2 / 4 | `public_media` x2 | 0 | improved but still weak; no active official source |
+| `dj-audio-creative` | 6 / 6 | `official_source` x2, `specialized_media` x4 | 2 | strong enough for Daily Radar ingestion |
+| `science-discovery` | 5 / 6 | `official_source` x2, `research_media` x1, `specialized_media` x2 | 3 | strong |
+| `general` | 0 / 0 | none | 0 | special-use only; intentionally not a catch-all feed |
 
-Repository total: 22 / 26 active sources before; 36 / 40 active sources after.
+Repository total: 44 / 48 active sources.
 
-## New Active Sources
+## Active Sources Added in Discovery v2
 
-| Stream | Source | Class | Reliability tier | Expected signal type | Status |
-|---|---|---|---|---|---|
-| `finance` | `federal-reserve-press` | `official_source` | A | official policy or supervisory release | active |
-| `crypto-finance` | `eba-news` | `official_source` | A | official regulatory release | active |
-| `crypto-finance` | `esma-news` | `official_source` | A | official market regulatory release | active |
-| `ai` | `openai-news` | `official_source` | A | official product, research or policy release | active |
-| `ai` | `google-ai-blog` | `official_source` | A | official product, research or policy release | active |
-| `tech-hardware-software` | `cloudflare-blog` | `official_source` | A | official platform, security or infrastructure release | active |
-| `tech-hardware-software` | `google-security-blog` | `official_source` | A | official security research or platform release | active |
-| `gear-style-edc` | `worn-and-wound` | `specialized_media` | C | industry product or design signal | active |
-| `dj-audio-creative` | `musictech` | `specialized_media` | C | industry product or workflow signal | active |
-| `dj-audio-creative` | `attack-magazine` | `specialized_media` | C | electronic music industry or workflow signal | active |
-| `dj-audio-creative` | `native-instruments-blog` | `official_source` | A | official product or workflow release | active |
-| `dj-audio-creative` | `ableton-blog` | `official_source` | A | official product or workflow release | active |
-| `science-discovery` | `nasa-news-releases` | `official_source` | A | official science or space release | active |
-| `science-discovery` | `phys-org` | `specialized_media` | C | research media signal | active |
-
-All new active rows include `stream`, `source_class`, `reliability_tier`, `language`, `expected_signal_type`, `source_marker` and `lifecycle_state`.
+| Stream | Source | Class | Reliability tier | Why it matters |
+|---|---|---|---|---|
+| `finance` | `ecb-press` | `official_source` | A | Official euro-area monetary policy, digital euro, payment and collateral signals. |
+| `crypto-finance` | `fca-news` | `official_source` | A | Official UK crypto, stablecoin and financial-crime regulatory signals. |
+| `ai` | `arxiv-cs-ai` | `research_media` | C | Early AI research/preprint signals with strict preprint labeling. |
+| `tech-hardware-software` | `github-security-blog` | `official_source` | A | Official GitHub security, advisory and supply-chain signals. |
+| `tech-hardware-software` | `kernel-releases` | `official_source` | A | Primary Linux kernel release cadence signals. |
+| `moscow-city` | `moskvichmag` | `public_media` | B | Adds a second active Moscow city/culture/business source while official feeds remain blocked. |
+| `gear-style-edc` | `carryology` | `specialized_media` | C | Adds focused carry, bag, materials and EDC design coverage. |
+| `science-discovery` | `esa-space-science` | `official_source` | A | Adds official European space-science mission coverage. |
 
 ## Disabled / Candidate Sources
 
@@ -78,23 +70,19 @@ Existing disabled live feeds:
 | Stream | Source | Class | Reason |
 |---|---|---|---|
 | `ai` | `the-verge-ai` | `public_media` | Broad feed produced cross-topic noise; disabled until per-section filtering exists. |
-| `moscow-city` | `mos-ru-news` | `official_source` | Repeated timeout; still not re-enabled. Corrected probe returned HTTP 403 for the alternate `mos.ru` URL. |
+| `moscow-city` | `mos-ru-news` | `official_source` | Repeated timeout / blocked access; still not re-enabled. |
 | `moscow-city` | `the-village` | `public_media` | Repeated timeout; needs stable replacement or recovery. |
-| `science-discovery` | `nature-news` | `research_media` | XML parse errors; NASA and Phys.org were added instead of re-enabling it. |
+| `science-discovery` | `nature-news` | `research_media` | XML parse errors; NASA, ESA and Phys.org now provide replacement coverage. |
 
-Candidate / held feeds recorded in `sources/feed-candidates.json`:
+Candidate / held sources are recorded in `sources/feed-candidates.json` and detailed in `validation/source-discovery-v2-latest.md`. Key holds:
 
-| Stream | Candidate | Status | Reason |
-|---|---|---|---|
-| `moscow-city` | `mos-ru-news-reprobe` | held-probe-403 | Official Moscow feed returned HTTP 403 in corrected probe. |
-| `moscow-city` | `transport-mos-news-candidate` | held-probe-477 | Official transport feed returned HTTP 477. |
-| `gear-style-edc` | `gearpatrol-candidate` | held-xml-parse-error | Relevant candidate reached HTTP 200, but corrected probe failed XML parsing. |
-| `science-discovery` | `eurekalert-candidate` | held-probe-403 | High-volume science candidate returned HTTP 403. |
-| `finance` | `moex-news-candidate` | held-probe-403 | Useful exchange candidate returned HTTP 403. |
-| `moscow-city` | `mskagency-candidate` | rejected-404 | Configured RSS URL returned 404 in earlier probe. |
-| `moscow-city` | `interfax-moscow-candidate` | held-too-broad | Valid broad feed, but too broad for Moscow without section filtering. |
+- `moscow-city`: official `mos.ru` and Moscow Transport endpoints still failed probe; this remains the largest coverage gap.
+- `gear-style-edc`: Gear Patrol and Dezeen failed XML parsing; GearJunkie was parseable but too broad.
+- `crypto-finance`: FATF, FinCEN and Coinbase endpoints failed; Kraken was parseable but too noisy for active ingestion.
+- `tech-hardware-software`: MSRC endpoint failed XML parsing.
+- `science-discovery`: EurekAlert was blocked; arXiv astro-ph was parseable but high volume and left as candidate.
 
-## Registered Streams and Reader Connectivity
+## Reader Connectivity
 
 | Stream | Source coverage | Recent local signals on latest day | In Daily Radar output | In `site/radar/` | In `site/streams/` | Today can use it |
 |---|---|---:|---|---|---|---|
@@ -103,9 +91,9 @@ Candidate / held feeds recorded in `sources/feed-candidates.json`:
 | `ai` | strong | 2 | yes, 1 signal | yes | yes | yes after ranking / reader gates |
 | `tech-hardware-software` | strong | 7 | yes, 4 signals | yes | yes | yes after ranking / reader gates |
 | `gear-style-edc` | moderate | 1 | no current retained radar item | yes | yes | source-ready, but needs next ingestion/ranking |
-| `moscow-city` | weak | 1 | yes, 1 signal | yes | yes | yes, but source depth remains weak |
-| `dj-audio-creative` | stronger | 0 | no current retained radar item | yes | yes | source-ready, but needs next ingestion/ranking |
-| `science-discovery` | stronger | 5 | yes, 3 signals | yes | yes | yes after ranking / reader gates |
+| `moscow-city` | moderate/weak | 1 | yes, 1 signal | yes | yes | yes, but official confirmation is weak |
+| `dj-audio-creative` | strong | 0 | no current retained radar item | yes | yes | source-ready, but needs next ingestion/ranking |
+| `science-discovery` | strong | 5 | yes, 3 signals | yes | yes | yes after ranking / reader gates |
 | `general` | none | 0 | no | yes | yes | no; special-use only |
 
 ## Registered Rubrics and Reader Taxonomy
@@ -117,12 +105,12 @@ Registered rubrics:
 | `reg-watch` | Регуляторный контур | rendered in `site/rubrics/`; used by published dispatches |
 | `market-structure` | Структура рынка | rendered in `site/rubrics/`; used by published dispatches |
 | `infrastructure` | Инфраструктура | rendered in `site/rubrics/`; used by published dispatches |
-| `product-platform` | Продукт и платформа | rendered in `site/rubrics/`; no current published dispatch in this rubric |
-| `security-abuse` | Безопасность и злоупотребления | rendered in `site/rubrics/`; no current published dispatch in this rubric |
-| `research-evidence` | Исследования и доказательная база | rendered in `site/rubrics/`; no current published dispatch in this rubric |
-| `consumer-use` | Пользовательская практика | rendered in `site/rubrics/`; no current published dispatch in this rubric |
-| `city-culture` | Город и культура | rendered in `site/rubrics/`; no current published dispatch in this rubric |
-| `weak-signals` | Слабые сигналы | rendered in `site/rubrics/`; no current published dispatch in this rubric |
+| `product-platform` | Продукт и платформа | rendered in `site/rubrics/`; sparse published archive |
+| `security-abuse` | Безопасность и злоупотребления | rendered in `site/rubrics/`; sparse published archive |
+| `research-evidence` | Исследования и доказательная база | rendered in `site/rubrics/`; sparse published archive |
+| `consumer-use` | Пользовательская практика | rendered in `site/rubrics/`; sparse published archive |
+| `city-culture` | Город и культура | rendered in `site/rubrics/`; sparse published archive |
+| `weak-signals` | Слабые сигналы | rendered in `site/rubrics/`; sparse published archive |
 
 Registered issue types: `daily-radar-review`, `weekly-digest`, `reg-brief`, `claim-check`, `market-structure-note`, `infrastructure-radar`, `source-dossier`, `special-issue`.
 
@@ -139,17 +127,13 @@ Daily Radar / Today / Radar / Streams path:
 5. It opens or updates a PR titled `dispatch: update daily radar content`.
 6. The policy document and validator preserve `automation/daily-radar` and prohibit deleting it after Daily Radar PR merges.
 7. After generated artifacts reach `main`, `.github/workflows/pages.yml` builds Pages using `python tools/build_site.py --ranking-mode live --media-mode live`.
-8. `tools/build_site.py` renders:
-   - `site/today.html` from ranking, reader policy, reviewed radar and auto-dispatch artifacts;
-   - `site/radar/*.html` from `validation/daily-radar-latest.json`;
-   - `site/streams/*.html` from published dispatches plus signal/radar context;
-   - `site/rubrics/*.html` from published dispatch metadata.
+8. `tools/build_site.py` renders Today, Radar, Streams and Rubrics from current source/radar/dispatch artifacts.
 
 Conclusion: generated artifacts feed Today, Radar and Streams. Rubric pages are reader-visible but update primarily when published dispatch metadata changes, not directly from raw Daily Radar signals.
 
 ## Operational Classification
 
-Fully operational after source expansion:
+Fully operational after discovery v2:
 
 - `finance`
 - `crypto-finance`
@@ -160,8 +144,8 @@ Fully operational after source expansion:
 
 Operational but still weak:
 
-- `gear-style-edc`: broader specialized coverage now exists, but no active official source and no current retained radar item until the next ingestion proves density.
-- `moscow-city`: active public-media source remains, but official city/transport candidates failed probe and the stream still lacks active official confirmation.
+- `gear-style-edc`: broader specialized coverage exists, but no active official source and no current retained radar item until the next ingestion proves density.
+- `moscow-city`: active city-media coverage improved, but official city/transport endpoints still failed probe.
 
 Decorative / special-use:
 
@@ -169,27 +153,25 @@ Decorative / special-use:
 
 ## Risks
 
-- New active sources were probed successfully, but their actual signal quality and noise profile will only be visible after the next Daily Radar run.
+- New active sources were probe-validated, but their actual signal quality and noise profile will only be visible after the next Daily Radar run.
+- `arxiv-cs-ai` is high volume; keyword gates must be watched closely.
 - `moscow-city` remains the weakest stream because official city and transport endpoints failed probing.
 - `gear-style-edc` still lacks active official-source coverage; specialized media signals must not be treated as confirmation.
-- EU/US regulator feeds for `crypto-finance` are broad; strict keyword gates are present, but live noise should be reviewed after first ingestion.
-- Vendor official blogs in AI/audio/tech are primary sources for their own claims, not independent verification.
+- Vendor, exchange and official blogs are primary sources for their own claims, not independent verification.
 - Fixture build proves rendering, not live ranking selection.
 
 ## Recommended Next Fixes
 
 1. Find a stable official Moscow city / transport / culture RSS or API endpoint that returns parseable public data without 403/477.
-2. Add one active official or retailer/brand source for `gear-style-edc` only after probe success and strict keyword gates.
-3. Review the first Daily Radar run after this change for noise from OpenAI, Google AI, Cloudflare, Google Security, EBA and ESMA.
-4. Consider source health thresholds that auto-degrade newly added feeds if fetch errors or low-density runs repeat.
-5. Add a generated source freshness panel to stream pages so readers can see when a stream is underfed.
+2. Review first Daily Radar output after adding `arxiv-cs-ai`, `ecb-press`, `fca-news`, `github-security-blog`, `kernel-releases`, `moskvichmag`, `carryology` and `esa-space-science`.
+3. Add source-health auto-degrade behavior for newly added feeds if fetch errors or low-density runs repeat.
+4. Add a generated source freshness panel to stream pages so readers can see when a stream is underfed.
 
 ## Validation Summary
 
-Run after the source expansion:
+Source-specific validation already run after discovery v2:
 
 - `python3 tools/validate_feeds.py`
 - `python3 tools/validate_official_candidates.py`
-- `python3 tools/validate_source_lifecycle.py`
 
 Final required validation must be run after the full site build.

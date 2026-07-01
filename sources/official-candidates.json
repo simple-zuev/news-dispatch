@@ -38,6 +38,132 @@
       "notes": "Promoted into sources/feeds.json with strict crypto/regulatory keyword gates."
     },
     {
+      "id": "ecb-press",
+      "stream": "finance",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "European Central Bank RSS Feed",
+      "candidate_url": "https://www.ecb.europa.eu/rss/press.html",
+      "candidate_url_status": "verified",
+      "rationale": "ECB press RSS provides official euro-area monetary policy, payment infrastructure and central-bank-money signals. Discovery v2 local probe confirmed parseable RSS with 15 items.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm source ownership and official central bank status from ecb.europa.eu",
+        "define keyword gates for monetary policy, inflation, digital euro, payments and collateral",
+        "exclude interviews and low-action speeches unless they contain policy-relevant terms"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 15 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json with finance keyword gates."
+    },
+    {
+      "id": "fca-news",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "Financial Conduct Authority RSS Feed",
+      "candidate_url": "https://www.fca.org.uk/news/rss.xml",
+      "candidate_url_status": "verified",
+      "rationale": "FCA news RSS provides official UK financial regulation, crypto rules, systemic stablecoin and financial-crime signals. Discovery v2 local probe confirmed parseable RSS with 20 items.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm source ownership and official regulator status from fca.org.uk",
+        "define keyword gates for crypto, stablecoin, digital assets, custody, AML and market abuse",
+        "exclude unrelated consumer-credit or retirement material unless crypto or financial-crime terms are present"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 20 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json with crypto-finance regulatory gates."
+    },
+    {
+      "id": "arxiv-cs-ai",
+      "stream": "ai",
+      "source_class": "research_media",
+      "status": "promoted",
+      "title": "arXiv cs.AI RSS Feed",
+      "candidate_url": "https://rss.arxiv.org/rss/cs.AI",
+      "candidate_url_status": "verified",
+      "rationale": "arXiv cs.AI is a high-volume research-preprint feed useful for early AI research signals when clearly labeled as preprints. Discovery v2 local probe confirmed parseable RSS with 356 items, so strict keyword gates are required.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "treat every item as a preprint signal rather than confirmed research result",
+        "define strict keyword gates for LLMs, agents, benchmarks, safety, alignment and evaluation",
+        "exclude unrelated medical, portfolio, UAV and domain-specific noise unless relevant to AI system behavior"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 356 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json with high min_relevance_score and preprint framing."
+    },
+    {
+      "id": "github-security-blog",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "GitHub Security Blog RSS Feed",
+      "candidate_url": "https://github.blog/security/feed/",
+      "candidate_url_status": "verified",
+      "rationale": "GitHub Security Blog provides official application-security, vulnerability, advisory and open-source supply-chain signals. Discovery v2 local probe confirmed parseable RSS with 10 items.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm source ownership from github.blog",
+        "define keyword gates for advisories, CVEs, vulnerability response, secret scanning and supply chain",
+        "keep product announcements framed as source-reported platform claims"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 10 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json with security and supply-chain gates."
+    },
+    {
+      "id": "kernel-releases",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "kernel.org release RSS Feed",
+      "candidate_url": "https://www.kernel.org/feeds/kdist.xml",
+      "candidate_url_status": "verified",
+      "rationale": "kernel.org release RSS provides official Linux kernel release cadence signals. Discovery v2 local probe confirmed parseable RSS with 10 items.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm source ownership from kernel.org",
+        "define keyword gates for mainline, stable, longterm and linux-next",
+        "avoid turning release availability into security or adoption conclusions without additional sources"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 10 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json as an official release signal."
+    },
+    {
+      "id": "esa-space-science",
+      "stream": "science-discovery",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "ESA Space Science RSS Feed",
+      "candidate_url": "https://www.esa.int/rssfeed/Our_Activities/Space_Science",
+      "candidate_url_status": "verified",
+      "rationale": "ESA Space Science RSS provides official European space-science mission and discovery signals. Discovery v2 local probe confirmed parseable RSS with 15 items.",
+      "verification_requirements": [
+        "confirm the URL returns stable RSS or Atom content in the production fetch environment",
+        "confirm source ownership and official space-agency status from esa.int",
+        "define keyword gates for missions, telescopes, planets, galaxies and named ESA science missions",
+        "avoid treating agency releases as independent peer-reviewed confirmation without additional source checks"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Discovery v2 probe returned HTTP 200, rss feed_type and 15 items on 2026-07-01."
+      ],
+      "notes": "Promoted into sources/feeds.json with official science-agency framing."
+    },
+    {
       "id": "crypto-finance-official-source-gap",
       "stream": "crypto-finance",
       "source_class": "official_source",

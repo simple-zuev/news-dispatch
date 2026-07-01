@@ -13,8 +13,8 @@
       "title": "Агентство Москва",
       "url": "https://www.mskagency.ru/rss",
       "stream": "moscow-city",
-      "status": "rejected-404",
-      "rationale": "curl probe returned HTTP 404 for the configured RSS URL; keep disabled until a valid endpoint is found."
+      "status": "held-timeout",
+      "rationale": "Earlier probe returned HTTP 404 and the final discovery v2 probe timed out; keep disabled until a stable parseable endpoint is found."
     },
     {
       "id": "interfax-moscow-candidate",
@@ -53,8 +53,8 @@
       "title": "EurekAlert!",
       "url": "https://www.eurekalert.org/rss.xml",
       "stream": "science-discovery",
-      "status": "held-probe-403",
-      "rationale": "High-volume science press-release candidate, but probe returned HTTP 403 on 2026-07-01; keep outside active ingestion to avoid daily fetch errors."
+      "status": "rejected-404",
+      "rationale": "High-volume science press-release candidate, but the final discovery v2 probe returned HTTP 404; keep outside active ingestion until a valid endpoint is found."
     },
     {
       "id": "moex-news-candidate",
@@ -63,6 +63,142 @@
       "stream": "finance",
       "status": "held-probe-403",
       "rationale": "Useful official exchange candidate for finance, but probe returned HTTP 403 on 2026-07-01; keep as candidate until a stable public feed endpoint is verified."
+    },
+    {
+      "id": "bis-press-candidate",
+      "title": "Bank for International Settlements",
+      "url": "https://www.bis.org/rss/bispress.xml",
+      "stream": "finance",
+      "status": "rejected-404",
+      "rationale": "High-trust central-bank source target, but discovery v2 probe returned HTTP 404 for the tested press feed URL."
+    },
+    {
+      "id": "imf-news-candidate",
+      "title": "International Monetary Fund",
+      "url": "https://www.imf.org/en/News/RSS",
+      "stream": "finance",
+      "status": "held-html-not-feed",
+      "rationale": "High-trust macro-finance source target, but discovery v2 probe returned HTML rather than RSS/Atom."
+    },
+    {
+      "id": "worldbank-news-candidate",
+      "title": "World Bank News",
+      "url": "https://www.worldbank.org/en/news/all?format=rss",
+      "stream": "finance",
+      "status": "held-xml-parse-error",
+      "rationale": "Useful development-finance candidate, but discovery v2 probe reached HTTP 200 and failed XML parsing; do not enable until a parseable endpoint is verified."
+    },
+    {
+      "id": "fatf-publications-candidate",
+      "title": "FATF Publications",
+      "url": "https://www.fatf-gafi.org/en/publications/_jcr_content/root/responsivegrid/mainpar/rss.feed",
+      "stream": "crypto-finance",
+      "status": "held-probe-403",
+      "rationale": "High-trust AML/sanctions candidate, but discovery v2 probe returned HTTP 403."
+    },
+    {
+      "id": "fincen-news-candidate",
+      "title": "FinCEN Newsroom",
+      "url": "https://www.fincen.gov/news-room/rss.xml",
+      "stream": "crypto-finance",
+      "status": "held-timeout",
+      "rationale": "High-trust AML candidate, but final discovery v2 probe timed out after an earlier invalid-endpoint result; keep outside active ingestion until a stable endpoint is verified."
+    },
+    {
+      "id": "coinbase-blog-candidate",
+      "title": "Coinbase Blog",
+      "url": "https://blog.coinbase.com/feed",
+      "stream": "crypto-finance",
+      "status": "held-probe-403",
+      "rationale": "Major exchange official blog candidate, but discovery v2 probe returned HTTP 403; do not enable without stable feed access."
+    },
+    {
+      "id": "kraken-blog-candidate",
+      "title": "Kraken Blog",
+      "url": "https://blog.kraken.com/feed",
+      "stream": "crypto-finance",
+      "status": "candidate-probe-ok-noisy",
+      "rationale": "Major exchange official blog probe returned valid RSS, but sample included macro calendar, token listing and trading-promotion noise; keep candidate until stricter exchange/legal/status rules are defined."
+    },
+    {
+      "id": "deepmind-blog-candidate",
+      "title": "Google DeepMind Blog",
+      "url": "https://deepmind.google/discover/blog/rss.xml",
+      "stream": "ai",
+      "status": "rejected-404",
+      "rationale": "High-trust AI lab candidate, but discovery v2 probe returned HTTP 404 for the tested RSS URL."
+    },
+    {
+      "id": "meta-ai-blog-candidate",
+      "title": "Meta AI Blog",
+      "url": "https://ai.meta.com/blog/rss/",
+      "stream": "ai",
+      "status": "rejected-404",
+      "rationale": "High-trust AI lab candidate, but discovery v2 probe returned HTTP 404 for the tested RSS URL."
+    },
+    {
+      "id": "msrc-blog-candidate",
+      "title": "Microsoft Security Response Center Blog",
+      "url": "https://msrc.microsoft.com/blog/feed",
+      "stream": "tech-hardware-software",
+      "status": "held-timeout",
+      "rationale": "High-trust security candidate, but final discovery v2 probe timed out after an earlier XML parse failure; keep outside active ingestion until the feed is stable and parseable."
+    },
+    {
+      "id": "moslenta-candidate",
+      "title": "Мослента",
+      "url": "https://moslenta.ru/rss/news",
+      "stream": "moscow-city",
+      "status": "held-xml-parse-error",
+      "rationale": "Moscow city-media candidate, but discovery v2 probe reached HTTP 200 and failed XML parsing."
+    },
+    {
+      "id": "gearjunkie-candidate",
+      "title": "GearJunkie",
+      "url": "https://gearjunkie.com/feed",
+      "stream": "gear-style-edc",
+      "status": "candidate-probe-ok-too-broad",
+      "rationale": "Probe returned valid RSS, but sample leaned broad outdoor/adventure rather than EDC/design; keep candidate until stream-specific filtering is proven."
+    },
+    {
+      "id": "dezeen-candidate",
+      "title": "Dezeen",
+      "url": "https://www.dezeen.com/feed/",
+      "stream": "gear-style-edc",
+      "status": "held-xml-parse-error",
+      "rationale": "Design/source candidate, but discovery v2 probe reached HTTP 200 and failed XML parsing."
+    },
+    {
+      "id": "resident-advisor-candidate",
+      "title": "Resident Advisor",
+      "url": "https://ra.co/xml/rss.xml",
+      "stream": "dj-audio-creative",
+      "status": "rejected-404",
+      "rationale": "Club-culture candidate, but discovery v2 probe returned HTTP 404 for the tested RSS URL."
+    },
+    {
+      "id": "soundonsound-candidate",
+      "title": "Sound On Sound",
+      "url": "https://www.soundonsound.com/rss",
+      "stream": "dj-audio-creative",
+      "status": "rejected-410",
+      "rationale": "Audio-production candidate, but discovery v2 probe returned HTTP 410 for the tested RSS URL."
+    },
+    {
+      "id": "kvr-audio-candidate",
+      "title": "KVR Audio",
+      "url": "https://www.kvraudio.com/rss/news.xml",
+      "stream": "dj-audio-creative",
+      "status": "held-timeout",
+      "rationale": "Plugin-news candidate, but final discovery v2 probe timed out after an earlier invalid-endpoint result; keep outside active ingestion until a stable endpoint is verified."
+    },
+    {
+      "id": "arxiv-astro-ph-candidate",
+      "title": "arXiv astro-ph",
+      "url": "https://rss.arxiv.org/rss/astro-ph",
+      "stream": "science-discovery",
+      "status": "candidate-probe-ok-high-volume",
+      "rationale": "Probe returned valid RSS with high-volume astronomy preprints; keep candidate until topic gates and preprint labeling are reviewed."
     }
   ]
 }
