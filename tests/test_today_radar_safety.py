@@ -70,10 +70,11 @@ def test_today_radar_avoids_direct_trading_language() -> None:
 
 def test_today_radar_keeps_source_signal_boundary() -> None:
     html = rendered()
-    assert "рабочий аналитический радар" in html
-    assert "не финальный выпуск" in html
+    assert "автономный дневной дайджест" in html
+    assert "routine human approval is not required" in html
     assert "не инвестиционная" in html
     assert "требуется сверка первоисточника" in html
+    assert "raw source-reported claims не представлены как confirmed facts" in html
 
 
 def test_today_radar_uses_monitoring_not_commands() -> None:

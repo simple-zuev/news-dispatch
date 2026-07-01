@@ -105,10 +105,15 @@ A daily issue should be compact. A weekly or special report may be deeper, but m
 
 Automatic publication rule:
 
-- 4+ qualified items: may publish daily topic digest;
-- 2–3 qualified items: draft topic digest;
-- 1 item: create signal only;
-- 0 items: skip stream.
+- 4+ qualified items: may publish daily topic digest after machine gates;
+- 2–3 qualified items: may publish a compact autonomous digest only with explicit verification gaps, otherwise downgrade to weak-signal radar;
+- 1 item: show as source-reported signal, not finished analysis;
+- 0 items: show safe empty/fallback state.
+
+Human approval is not required for routine autonomous daily publication when
+machine safety/source/quality gates pass. If gates fail, the system must render
+a safe Today fallback with reasons and must not ask the user for a daily publish
+decision.
 
 ## Stream-specific guidance
 
@@ -280,6 +285,8 @@ The AI and scheduled jobs should:
 - maintain dedupe state;
 - update source weights when feeds are noisy;
 - never force a daily issue just to have one.
+- make `site/today.html` the zero-touch daily reading surface when gates pass;
+- label or downgrade weak/unverified items instead of requesting human approval.
 
 ## Commit behavior
 
