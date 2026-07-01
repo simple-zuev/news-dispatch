@@ -111,6 +111,42 @@ def live_balance_report() -> dict:
     return {"date": "2026-07-01", "fetch_errors": [], "items": items}
 
 
+def mixed_accepted_report(count: int = 200) -> dict:
+    streams = [
+        ("crypto-finance", ["fca-news", "coindesk", "the-block"]),
+        ("tech-hardware-software", ["google-security-blog", "github-security-blog", "apple-newsroom-tech"]),
+        ("finance", ["sec-market-statistics", "cbr-news", "kommersant-finance"]),
+        ("ai", ["openai-news", "google-ai-blog", "anthropic-news"]),
+        ("science-discovery", ["nasa-science", "phys-org", "science-daily"]),
+        ("dj-audio-creative", ["dj-techtools", "ableton-blog", "create-digital-music"]),
+        ("moscow-city", ["m24-moscow-news", "moskvichmag"]),
+    ]
+    items: list[dict[str, object]] = []
+    for index in range(count):
+        stream, sources = streams[index % len(streams)]
+        feed_id = sources[index % len(sources)]
+        items.append(
+            {
+                "selected": index < 2,
+                "source_rule_status": "accepted_by_source_rules",
+                "source_class": "official_source" if feed_id.endswith("news") or feed_id in {"fca-news", "google-security-blog"} else "public_media",
+                "source_type": "public source",
+                "configured_stream": stream,
+                "routed_stream": stream,
+                "feed_id": feed_id,
+                "feed_title": feed_id,
+                "title": f"{stream} accepted signal {index}",
+                "url": f"https://example.com/{stream}/{index}",
+                "selection_score": 16.0 - index * 0.01,
+                "final_score": 16.0 - index * 0.01,
+                "relevance_score": 0.82,
+                "include_hits": [stream],
+                "translation_required": True,
+            }
+        )
+    return {"date": "2026-07-01", "fetch_errors": [], "items": items}
+
+
 def forecast_report() -> dict:
     return {
         "date": "2026-07-01",
@@ -244,6 +280,67 @@ def test_today_selection_caps_overfed_source_and_keeps_crypto() -> None:
     assert diagnostics["capped_sources"]["openai-news"] > 0
 
 
+def test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags() -> None:
+    report = mixed_accepted_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    items, diagnostics = build_today_page.select_today_items(report, policy, limit=18)
+
+    assert len(items) >= 10
+    assert len(items) == 18
+    assert len(diagnostics["selected_today_by_stream"]) >= 4
+    assert diagnostics["selected_today_by_stream"]["crypto-finance"] >= 1
+    assert diagnostics["selected_today_by_stream"]["tech-hardware-software"] >= 1
+    assert sum(1 for item in items if item.get("feed_id") == "google-security-blog") <= build_today_page.SOURCE_TODAY_CAPS["google-security-blog"]
+
+
+def test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_roundup() -> None:
+    report = {
+        "date": "2026-07-01",
+        "fetch_errors": [],
+        "items": [
+            {
+                "selected": False,
+                "source_rule_status": "accepted_by_source_rules",
+                "source_class": source_class,
+                "source_type": "public source",
+                "configured_stream": "crypto-finance",
+                "routed_stream": "crypto-finance",
+                "feed_id": feed_id,
+                "feed_title": feed_id,
+                "title": title,
+                "url": f"https://example.com/crypto/{index}",
+                "selection_score": score,
+                "final_score": score,
+                "relevance_score": 0.86,
+                "include_hits": ["crypto"],
+                "translation_required": True,
+                **extra,
+            }
+            for index, (feed_id, title, score, source_class, extra) in enumerate(
+                [
+                    ("coindesk", "Europe is rewriting its landmark crypto rulebook MiCA as hard deadline passes", 16.2, "specialized_media", {}),
+                    ("coindesk", "Citi slashes 12-month bitcoin, ether targets as ETF flows dry up", 15.96, "specialized_media", {"market_signal_type": "third_party_forecast"}),
+                    ("cointelegraph", "Here’s what happened in crypto today", 15.8, "specialized_media", {}),
+                    ("esma-news", "ESAs publish first report on DORA major ICT-related incidents", 15.59, "official_source", {}),
+                    ("fca-news", "FCA and the Bank of England set out approach to joint regulation of systemic stablecoin issuers", 15.49, "official_source", {}),
+                    ("crypto-finance-sec-press-releases", "SEC Publishes Updated Market Statistics, Highlighting Increase in IPOs and Proceeds Raised", 15.4, "official_source", {}),
+                    ("cointelegraph", "French banking giant Crédit Agricole launches EURXT euro stablecoin", 15.26, "specialized_media", {}),
+                    ("cointelegraph", "Taiwan’s legislature passes crypto, stablecoin regulations", 15.17, "specialized_media", {}),
+                ]
+            )
+        ],
+    }
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    items, _diagnostics = build_today_page.select_today_items(report, policy, limit=4)
+    titles = [str(item["title"]) for item in items]
+
+    assert any("MiCA" in title for title in titles)
+    assert any("FCA and the Bank of England" in title for title in titles)
+    assert any("SEC Publishes Updated Market Statistics" in title for title in titles)
+    assert not any("Citi slashes" in title for title in titles)
+    assert not any("Here’s what happened" in title for title in titles)
+
+
 def test_today_diagnostics_are_rendered() -> None:
     report = live_balance_report()
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
@@ -276,6 +373,8 @@ def main() -> int:
     test_today_radar_css_has_cluster_materials_styles()
     test_card_stays_non_directive()
     test_today_selection_caps_overfed_source_and_keeps_crypto()
+    test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags()
+    test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_roundup()
     test_today_diagnostics_are_rendered()
     test_forecast_flavored_crypto_card_is_not_presented_as_future_fact()
     print("today page tests passed")

@@ -95,10 +95,37 @@ MARKET_FORECAST_PATTERNS = [
     r"\bpredict(s|ed|ion|ions)?\b",
     r"\bestimat(e|es|ed|ing)\b",
     r"\boutlook\b",
-    r"\bslash(es|ed|ing)?\b",
-    r"\brais(es|ed|ing)?\b",
     r"\banalyst(s)?\b",
     r"\bstrategist(s)?\b",
+]
+
+CRYPTO_PRIORITY_PATTERNS = [
+    r"\bmica\b",
+    r"\bstablecoin(s)?\b",
+    r"\bsec\b",
+    r"\bfca\b",
+    r"\besma\b",
+    r"\bcftc\b",
+    r"\benforcement\b",
+    r"\bmarket structure\b",
+    r"\bcustody\b",
+    r"\baml\b",
+    r"\bdigital asset(s)?\b",
+    r"\bbank of england\b",
+    r"\bjoint regulation\b",
+    r"\bsystemic stablecoin\b",
+    r"\bmarket statistics\b",
+    r"\blegislature\b",
+    r"\bregulations\b",
+    r"\beuro stablecoin\b",
+    r"\bcr[eé]dit agricole\b",
+]
+
+GENERIC_ROUNDUP_PATTERNS = [
+    r"here.?s what happened",
+    r"what happened in crypto today",
+    r"daily roundup",
+    r"market recap",
 ]
 
 PRIVATE_CONTEXT_PATTERNS = [
@@ -184,6 +211,23 @@ def market_forecast_notice() -> str:
     return "Источник сообщает об оценке/прогнозе участника рынка. Это не факт будущей цены и не рекомендация."
 
 
+def today_selection_priority(item: dict[str, Any]) -> float:
+    priority = effective_score(item)
+    text = item_text(item)
+    stream = stream_slug(item)
+
+    if is_market_forecast_item(item):
+        priority -= 1.25
+    if pattern_present(GENERIC_ROUNDUP_PATTERNS, text):
+        priority -= 1.0
+    if stream == "crypto-finance" and pattern_present(CRYPTO_PRIORITY_PATTERNS, text):
+        priority += 0.65
+    if stream in {"finance", "crypto-finance"} and str(item.get("source_class") or "") == "official_source":
+        priority += 0.45
+
+    return round(priority, 3)
+
+
 def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
     if not path.exists():
         return {"date": "", "items": [], "fetch_errors": []}
@@ -265,7 +309,7 @@ def eligible_today_items(report: dict[str, Any], policy: dict[str, Any] | None) 
 
 
 def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    candidates = sorted(eligible_today_items(report, policy), key=effective_score, reverse=True)
+    candidates = sorted(eligible_today_items(report, policy), key=today_selection_priority, reverse=True)
     selected: list[dict[str, Any]] = []
     source_counts: Counter[str] = Counter()
     stream_counts: Counter[str] = Counter()
@@ -305,7 +349,7 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
             add(item)
             seen_ids.add(key)
 
-    selected = sorted(selected, key=effective_score, reverse=True)
+    selected = sorted(selected, key=today_selection_priority, reverse=True)
     diagnostics = {
         "source_counts_by_stream": dict(Counter(stream_slug(item) for item in report.get("items", []) if isinstance(item, dict))),
         "eligible_reader_safe_by_stream": dict(Counter(stream_slug(item) for item in candidates)),

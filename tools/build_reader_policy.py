@@ -106,8 +106,6 @@ MARKET_FORECAST_PATTERNS = [
     r"\bpredict(s|ed|ion|ions)?\b",
     r"\bestimat(e|es|ed|ing)\b",
     r"\boutlook\b",
-    r"\bslash(es|ed|ing)?\b",
-    r"\brais(es|ed|ing)?\b",
     r"\banalyst(s)?\b",
     r"\bstrategist(s)?\b",
 ]
