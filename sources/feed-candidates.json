@@ -41,6 +41,30 @@
       "rationale": "Official transport source candidate, but probe returned HTTP 477 on 2026-07-01; do not enable until the endpoint returns parseable RSS/Atom."
     },
     {
+      "id": "stroi-mos-rss-candidate",
+      "title": "Стройкомплекс Москвы",
+      "url": "https://stroi.mos.ru/rss",
+      "stream": "moscow-city",
+      "status": "rejected-404",
+      "rationale": "Official construction and urban-development candidate, but live probe returned HTTP 404 on 2026-07-01; do not enable without a valid feed endpoint."
+    },
+    {
+      "id": "mosmetro-rss-candidate",
+      "title": "Московский метрополитен",
+      "url": "https://www.mosmetro.ru/rss/",
+      "stream": "moscow-city",
+      "status": "held-timeout",
+      "rationale": "Official metro candidate for transport and infrastructure coverage, but live probe timed out on 2026-07-01; keep held until stable RSS/Atom access is verified."
+    },
+    {
+      "id": "data-mos-opendata-rss-candidate",
+      "title": "Портал открытых данных Москвы",
+      "url": "https://data.mos.ru/opendata/rss",
+      "stream": "moscow-city",
+      "status": "held-probe-403",
+      "rationale": "Official city data candidate, but live probe returned HTTP 403 on 2026-07-01; do not enable until production-like public access is stable."
+    },
+    {
       "id": "gearpatrol-candidate",
       "title": "Gear Patrol",
       "url": "https://www.gearpatrol.com/feed/",
