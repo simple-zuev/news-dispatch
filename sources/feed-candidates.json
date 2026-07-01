@@ -23,6 +23,46 @@
       "stream": "moscow-city",
       "status": "held-too-broad",
       "rationale": "curl probe returned valid RSS, but the feed is too broad for moscow-city without additional section-level filtering."
+    },
+    {
+      "id": "mos-ru-news-reprobe",
+      "title": "mos.ru",
+      "url": "https://www.mos.ru/rss/news/",
+      "stream": "moscow-city",
+      "status": "held-probe-403",
+      "rationale": "Official city source remains the preferred Moscow feed, but the corrected probe returned HTTP 403 on 2026-07-01; keep disabled until production-like access is stable."
+    },
+    {
+      "id": "transport-mos-news-candidate",
+      "title": "Московский транспорт",
+      "url": "https://transport.mos.ru/rss/news",
+      "stream": "moscow-city",
+      "status": "held-probe-477",
+      "rationale": "Official transport source candidate, but probe returned HTTP 477 on 2026-07-01; do not enable until the endpoint returns parseable RSS/Atom."
+    },
+    {
+      "id": "gearpatrol-candidate",
+      "title": "Gear Patrol",
+      "url": "https://www.gearpatrol.com/feed/",
+      "stream": "gear-style-edc",
+      "status": "held-xml-parse-error",
+      "rationale": "Relevant gear/lifestyle candidate, but corrected probe reached HTTP 200 and failed XML parsing on 2026-07-01; keep as candidate instead of active."
+    },
+    {
+      "id": "eurekalert-candidate",
+      "title": "EurekAlert!",
+      "url": "https://www.eurekalert.org/rss.xml",
+      "stream": "science-discovery",
+      "status": "held-probe-403",
+      "rationale": "High-volume science press-release candidate, but probe returned HTTP 403 on 2026-07-01; keep outside active ingestion to avoid daily fetch errors."
+    },
+    {
+      "id": "moex-news-candidate",
+      "title": "MOEX News",
+      "url": "https://www.moex.com/export/news.aspx?cat=100",
+      "stream": "finance",
+      "status": "held-probe-403",
+      "rationale": "Useful official exchange candidate for finance, but probe returned HTTP 403 on 2026-07-01; keep as candidate until a stable public feed endpoint is verified."
     }
   ]
 }
