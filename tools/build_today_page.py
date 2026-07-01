@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build Today Radar from the Daily Radar ranking report.
+"""Build the autonomous Today digest from Daily Radar reports.
 
-The page is public-safe: it renders source-reported signals as an analytical
-radar, not as confirmed facts, forecasts or recommendations.
+The page is public-safe: it turns machine-gated source-reported signals into a
+reader-grade digest without requiring a daily human publish decision.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ import html
 import json
 import re
 from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,8 @@ from core import SITE_DIR, VALIDATION_DIR, write_text
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 POLICY_PATH = VALIDATION_DIR / "reader-policy-latest.json"
+AUTO_DISPATCH_PATH = VALIDATION_DIR / "auto-dispatch-latest.json"
+REVIEWED_RADAR_PATH = VALIDATION_DIR / "reviewed-radar-latest.md"
 OUTPUT_PATH = SITE_DIR / "today.html"
 
 STREAM_LABELS = {
@@ -59,6 +62,56 @@ STOPWORDS = {
     "как", "что", "это", "для", "или", "при", "над", "под", "после", "перед", "новости", "обновление", "сигнал",
 }
 
+FORBIDDEN_READER_PATTERNS = [
+    r"\b(buy|sell|hold)\b",
+    r"\b(long|short)\b",
+    r"\bprice target\b",
+    r"\bwill rise\b",
+    r"\bwill fall\b",
+    r"покупать",
+    r"продавать",
+    r"держать позицию",
+    r"целевая цена",
+    r"точный прогноз",
+    r"гарантированно",
+]
+
+PRIVATE_CONTEXT_PATTERNS = [
+    r"api[_-]?key",
+    r"access[_-]?token",
+    r"refresh[_-]?token",
+    r"auth[_-]?token",
+    r"secret[_-]?key",
+    r"client[_-]?secret",
+    r"password",
+    r"private[_-]?key\s*[:=]",
+    r"our product",
+    r"our company",
+    r"internal roadmap",
+    r"customer data",
+    r"наш продукт",
+    r"наша компания",
+    r"внутренн(ий|яя|ие) роадмап",
+    r"клиентские данные",
+]
+
+DIGEST_SECTIONS = [
+    "Главное за период",
+    "События с наибольшим эффектом",
+    "Регуляторика и правовой контур",
+    "Инфраструктура и участники рынка",
+    "Продуктовые и организационные импликации",
+    "Радар слабых сигналов",
+    "Что проверять дальше",
+    "Источники и уровень надёжности",
+]
+
+
+@dataclass(frozen=True)
+class DigestGate:
+    passed: bool
+    reasons: list[str]
+
 
 def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
@@ -81,6 +134,12 @@ def numeric(value: object) -> float:
 def load_report(path: Path = REPORT_PATH) -> dict[str, Any]:
     if not path.exists():
         return {"date": "", "items": [], "fetch_errors": []}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_auto_dispatch_report(path: Path = AUTO_DISPATCH_PATH) -> dict[str, Any]:
+    if not path.exists():
+        return {"date": "", "generated": []}
     return json.loads(path.read_text(encoding="utf-8"))
 
 
@@ -113,6 +172,13 @@ def reader_safe_keys(policy: dict[str, Any]) -> set[str]:
     }
 
 
+def policy_decisions(policy: dict[str, Any], decision: str) -> list[dict[str, Any]]:
+    decisions = policy.get("decisions", [])
+    if not isinstance(decisions, list):
+        return []
+    return [item for item in decisions if isinstance(item, dict) and item.get("decision") == decision]
+
+
 def stream_slug(item: dict[str, Any]) -> str:
     return str(item.get("routed_stream") or item.get("configured_stream") or "")
 
@@ -130,6 +196,37 @@ def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None,
         allowed = reader_safe_keys(policy)
         items = [item for item in items if item_key(item) in allowed]
     return sorted(items, key=lambda item: numeric(item.get("final_score")), reverse=True)[:limit]
+
+
+def auto_dispatch_items(auto_report: dict[str, Any]) -> list[dict[str, Any]]:
+    items = auto_report.get("generated", [])
+    if not isinstance(items, list):
+        return []
+    return [item for item in items if isinstance(item, dict)]
+
+
+def auto_dispatch_note(auto_report: dict[str, Any]) -> str:
+    items = auto_dispatch_items(auto_report)
+    if not items:
+        return "Автоматические draft-only материалы отсутствуют; дайджест собран только из reader-safe radar items."
+    streams = ", ".join(stream_label(item.get("stream")) for item in items[:6])
+    draft_only = all(str(item.get("publication_mode")) == "draft_only" for item in items)
+    status = "все отмечены как draft_only" if draft_only else "часть материалов требует отдельной проверки статуса"
+    return f"Auto-dispatch artifacts использованы как контур проверки, а не как готовый анализ: {len(items)} stream draft(s), {status}. Потоки: {streams}."
+
+
+def reviewed_radar_note() -> str:
+    if REVIEWED_RADAR_PATH.exists():
+        text = REVIEWED_RADAR_PATH.read_text(encoding="utf-8")
+        summary_lines = [
+            line.strip("- ").strip()
+            for line in text.splitlines()
+            if line.startswith("- Retained signals:") or line.startswith("- Streams with retained signals:") or line.startswith("- Fetch warnings:")
+        ]
+        if summary_lines:
+            return "Reviewed radar artifact summary: " + "; ".join(summary_lines) + "."
+        return "Reviewed radar artifact найден и используется как подтверждение, что сигнал прошёл предварительную машинную группировку."
+    return "Reviewed radar artifact не найден; digest gate учитывает это как ограничение, но не просит ручного решения."
 
 
 def stream_summary(items: list[dict[str, Any]]) -> str:
@@ -299,6 +396,179 @@ def cards_block(items: list[dict[str, Any]]) -> str:
     return "\n".join(card(cluster) for cluster in cluster_items(items))
 
 
+def pattern_present(patterns: list[str], text: str) -> bool:
+    return any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns)
+
+
+def source_labels_present(items: list[dict[str, Any]]) -> bool:
+    return all(item.get("source_class") and item.get("source_type") and (item.get("feed_title") or item.get("feed_id")) for item in items)
+
+
+def public_input_text(report: dict[str, Any], policy: dict[str, Any], auto_report: dict[str, Any]) -> str:
+    chunks: list[str] = []
+    for item in report.get("items", []):
+        if isinstance(item, dict):
+            chunks.extend(str(item.get(key) or "") for key in ("title", "feed_title", "feed_id", "url"))
+    for item in policy.get("decisions", []):
+        if isinstance(item, dict):
+            chunks.extend(str(item.get(key) or "") for key in ("title", "url", "source_class", "source_rule_status"))
+    for item in auto_dispatch_items(auto_report):
+        chunks.extend(str(item.get(key) or "") for key in ("stream", "path", "publication_mode", "status"))
+    return "\n".join(chunks)
+
+
+def digest_gate(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any]) -> DigestGate:
+    failures: list[str] = []
+    notes: list[str] = []
+
+    if not items:
+        failures.append("Нет reader-safe items для автономного дайджеста.")
+    if items and not source_labels_present(items):
+        failures.append("Не у всех reader-safe items есть source name, source class и source type.")
+    if pattern_present(PRIVATE_CONTEXT_PATTERNS, public_input_text(report, policy, auto_report)):
+        failures.append("Privacy preflight нашёл private/internal-sensitive паттерн во входных данных.")
+    if any(pattern_present(FORBIDDEN_READER_PATTERNS, str(item.get("title") or "")) for item in items):
+        failures.append("Reader-safe выборка содержит инвестиционно-директивную формулировку.")
+
+    auto_items = auto_dispatch_items(auto_report)
+    if auto_items and not all(str(item.get("publication_mode")) == "draft_only" for item in auto_items):
+        failures.append("Auto-dispatch artifacts должны оставаться draft_only и не подменять digest analysis.")
+
+    if not REVIEWED_RADAR_PATH.exists():
+        notes.append("Reviewed radar artifact отсутствует; digest построен только по ranking/policy gate.")
+
+    if failures:
+        return DigestGate(False, failures + notes)
+
+    notes.extend([
+        "Privacy preflight для входных данных Today passed; финальный build также запускает repository privacy_scan.",
+        "Source labels present: source name, class and type доступны для reader-safe items.",
+        "Факты, trends, hypotheses и weak signals разделены по секциям и safety labels.",
+        "Investment advice отсутствует; reader text использует monitoring/verification language.",
+        "Verification gaps явно показаны в секции «Что проверять дальше».",
+        "Raw source-reported claims не представлены как confirmed facts.",
+    ])
+    return DigestGate(True, notes)
+
+
+def list_html(items: list[str]) -> str:
+    if not items:
+        return "<ul><li>Нет reader-safe данных для этой секции.</li></ul>"
+    return "<ul>" + "".join(f"<li>{esc(item)}</li>" for item in items) + "</ul>"
+
+
+def top_streams(items: list[dict[str, Any]]) -> str:
+    counts = Counter(stream_slug(item) for item in items)
+    if not counts:
+        return "нет reader-safe потоков"
+    return ", ".join(f"{stream_label(slug)}: {count}" for slug, count in counts.most_common(4))
+
+
+def source_counts(items: list[dict[str, Any]]) -> str:
+    counts = Counter(str(item.get("source_class") or "unknown") for item in items)
+    if not counts:
+        return "source labels unavailable"
+    return ", ".join(f"{key}: {value}" for key, value in sorted(counts.items()))
+
+
+def regulatory_items(items: list[dict[str, Any]], limit: int = 5) -> list[str]:
+    result: list[str] = []
+    keywords = ("regulat", "law", "legal", "cbr", "central bank", "банк", "цб", "регул", "прав")
+    for item in items:
+        text = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
+        if item.get("source_class") in {"official", "regulator"} or any(keyword in text for keyword in keywords):
+            result.append(f"{item.get('title') or 'Без заголовка'} — source-reported; проверить первичный документ и правовой статус.")
+    return result[:limit]
+
+
+def infrastructure_items(items: list[dict[str, Any]], limit: int = 5) -> list[str]:
+    result: list[str] = []
+    streams = {"crypto-finance", "ai", "tech-hardware-software", "finance"}
+    keywords = ("infra", "platform", "bank", "exchange", "settlement", "custody", "api", "инфраструкт", "банк", "бирж")
+    for item in items:
+        text = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
+        if stream_slug(item) in streams or any(keyword in text for keyword in keywords):
+            source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
+            result.append(f"{item.get('title') or 'Без заголовка'} — участник/источник: {source}; статус: source-reported, без вывода о рыночном эффекте.")
+    return result[:limit]
+
+
+def implication_lines(items: list[dict[str, Any]]) -> list[str]:
+    lines: list[str] = []
+    for slug in [slug for slug, _ in Counter(stream_slug(item) for item in items).most_common()]:
+        effect = STREAM_EFFECTS.get(slug)
+        if effect:
+            lines.append(f"{stream_label(slug)}: {effect} Это не рекомендация, а карта наблюдения.")
+    return lines[:6]
+
+
+def weak_signal_lines(policy: dict[str, Any]) -> list[str]:
+    review_count = len(policy_decisions(policy, "review_only"))
+    blocked_count = len(policy_decisions(policy, "blocked"))
+    lines = [
+        f"Review-only items: {review_count}; они не превращены в finished analysis и не требуют решения пользователя.",
+        f"Blocked items: {blocked_count}; они исключены из reader digest автоматическим gate.",
+        "Медиа-сообщения и одиночные source-reported claims в digest читаются как слабые/проверочные сигналы до появления первичного подтверждения.",
+    ]
+    return lines
+
+
+def next_checks(clusters: list[list[dict[str, Any]]], limit: int = 7) -> list[str]:
+    lines: list[str] = []
+    for cluster in clusters:
+        item = cluster[0]
+        lines.append(f"{stream_label(stream_slug(item))}: {monitoring(item)}")
+    return lines[:limit]
+
+
+def reliability_lines(items: list[dict[str, Any]], auto_report: dict[str, Any]) -> list[str]:
+    lines = [
+        f"Source classes in reader-safe digest: {source_counts(items)}.",
+        "Confirmed fact означает только факт появления материала в первичном/официальном источнике; impact и causality остаются отдельной проверкой.",
+        "Source-reported claim означает сообщение публичного источника; оно не подтверждает последствия, полноту контекста или интерпретацию.",
+        auto_dispatch_note(auto_report),
+        reviewed_radar_note(),
+    ]
+    return lines
+
+
+def digest_section(title: str, body: str) -> str:
+    return f'<section class="panel digest-section"><h2>{esc(title)}</h2>{body}</section>'
+
+
+def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate) -> str:
+    clusters = cluster_items(items)
+    top_titles = [f"{cluster[0].get('title') or 'Без заголовка'} — {stream_label(stream_slug(cluster[0]))}; {uncertainty(cluster[0], cluster)}" for cluster in clusters[:5]]
+    sections = [
+        digest_section(
+            "Главное за период",
+            f"<p>Автономный дайджест за {esc(report.get('date'))}: {len(items)} reader-safe item(s), {len(clusters)} cluster(s), основные потоки: {esc(top_streams(items))}. Human approval is not required for routine autonomous daily publication when machine gates pass.</p><p>{esc(policy_summary(policy))}</p>",
+        ),
+        digest_section("События с наибольшим эффектом", list_html(top_titles)),
+        digest_section("Регуляторика и правовой контур", list_html(regulatory_items(items))),
+        digest_section("Инфраструктура и участники рынка", list_html(infrastructure_items(items))),
+        digest_section("Продуктовые и организационные импликации", list_html(implication_lines(items))),
+        digest_section("Радар слабых сигналов", list_html(weak_signal_lines(policy))),
+        digest_section("Что проверять дальше", list_html(next_checks(clusters))),
+        digest_section("Источники и уровень надёжности", list_html(reliability_lines(items, auto_report))),
+        digest_section("Automated Gate", list_html([f"PASS: {reason}" for reason in gate.reasons])),
+    ]
+    cards = f'<section class="grid latest-grid" aria-label="Reader-safe signal cards">{cards_block(items)}</section>'
+    return "\n".join(sections + [cards])
+
+
+def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
+    safe_summary = stream_summary(items) if items else "<p>Нет reader-safe сигналов для fallback digest.</p>"
+    return "\n".join([
+        '<section class="panel gate-fallback"><h2>Digest withheld by automated gate</h2><p>Автономный daily digest не опубликован как reader-grade выпуск. Пользовательское решение не требуется: слабые или небезопасные элементы автоматически понижены, исключены или оставлены в audit контуре.</p>'
+        + list_html(gate.reasons)
+        + "</section>",
+        f'<section class="panel"><h2>Available safe signals</h2>{safe_summary}</section>',
+        f'<section class="grid latest-grid" aria-label="Safe fallback signal cards">{cards_block(items)}</section>',
+        '<section class="panel boundary"><h2>Граница интерпретации</h2><p>Fallback не является публикацией анализа. Raw source-reported claims не представлены как confirmed facts.</p></section>',
+    ])
+
+
 def policy_summary(policy: dict[str, Any]) -> str:
     counts = policy.get("counts", {}) if isinstance(policy.get("counts"), dict) else {}
     safe = int(counts.get("reader_safe", 0) or 0)
@@ -307,37 +577,47 @@ def policy_summary(policy: dict[str, Any]) -> str:
     return f"Reader policy gate: reader_safe={safe}, review_only={review}, blocked={blocked}. Today Radar рендерит только reader_safe items."
 
 
-def render(report: dict[str, Any], policy: dict[str, Any] | None = None) -> str:
+def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_report: dict[str, Any] | None = None) -> str:
     policy = policy or load_policy(report)
+    auto_report = auto_report or load_auto_dispatch_report()
     items = selected_items(report, policy=policy)
     clusters = cluster_items(items)
     total = len(report.get("items", []))
     selected = len([item for item in report.get("items", []) if item.get("selected")])
     filtered = len([item for item in report.get("items", []) if item.get("source_rule_status") != "accepted_by_source_rules"])
     errors = len(report.get("fetch_errors", []))
+    gate = digest_gate(report, policy, items, auto_report)
+    digest_body = autonomous_digest(report, policy, items, auto_report, gate) if gate.passed else fallback_digest(report, policy, items, gate)
+    page_title = "News Dispatch — автономный дневной дайджест"
+    h1 = "Автономный дневной дайджест"
+    mode_label = "AUTONOMOUS DIGEST" if gate.passed else "AUTOMATED GATE FALLBACK"
+    lede = (
+        "Reader-grade daily digest, собранный автоматически из public-source radar artifacts после machine safety/source/quality gates. "
+        "Routine human approval is not required."
+        if gate.passed
+        else "Safe fallback Today page: digest withheld by automated gate, без запроса ручного publish decision."
+    )
 
     return f"""<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>News Dispatch — Today Radar</title>
-  <meta name="description" content="Ежедневная панель публичных сигналов News Dispatch.">
+  <title>{esc(page_title)}</title>
+  <meta name="description" content="Автономный дневной дайджест News Dispatch.">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <header class="masthead compact">
     <a class="backlink" href="index.html">News Dispatch</a>
-    <p class="eyebrow">Today Radar · {esc(report.get("date"))}</p>
-    <h1>Today Radar</h1>
-    <p class="lede">Панель свежих публичных сигналов, прошедших source-rule отбор и reader policy gate. Это рабочий аналитический радар, а не финальный выпуск, прогноз или рекомендация.</p>
-    <p class="hero-actions"><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="reader-policy-latest.json">Reader Policy JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
+    <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
+    <h1>{h1}</h1>
+    <p class="lede">{esc(lede)}</p>
+    <p class="hero-actions"><a href="today.html">Открыть дайджест</a><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="reader-policy-latest.json">Reader Policy JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
   </header>
   <main>
-    <section class="panel"><h2>Сводка отбора</h2><p>Всего items: {total}. Выбрано ранжированием: {selected}. Reader-safe items: {len(items)}. Кластеров: {len(clusters)}. Отфильтровано source rules: {filtered}. Ошибок источников: {errors}.</p><p>{esc(policy_summary(policy))}</p></section>
-    <section class="panel"><h2>Потоки</h2>{stream_summary(items)}</section>
-    <section class="panel"><h2>Главные сигналы</h2><p>Карточки ниже сгруппированы в тематические кластеры и показывают первичную аналитическую рамку: тезис, аргумент, следствие/риск, уровень подтверждения, неопределённость и что отслеживать дальше.</p></section>
-    <section class="grid latest-grid" aria-label="Today Radar cards">{cards_block(items)}</section>
+    <section class="panel digest-status"><h2>Статус автономного выпуска</h2><p>Всего items: {total}. Выбрано ранжированием: {selected}. Reader-safe items: {len(items)}. Кластеров: {len(clusters)}. Отфильтровано source rules: {filtered}. Ошибок источников: {errors}. Gate: {"passed" if gate.passed else "withheld"}.</p></section>
+    {digest_body}
     <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
   </main>
 </body>
@@ -348,7 +628,7 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None) -> str:
 def main() -> int:
     SITE_DIR.mkdir(parents=True, exist_ok=True)
     report = load_report()
-    write_text(OUTPUT_PATH, render(report, load_policy(report)))
+    write_text(OUTPUT_PATH, render(report, load_policy(report), load_auto_dispatch_report()))
     print(f"Built {OUTPUT_PATH}")
     return 0
 

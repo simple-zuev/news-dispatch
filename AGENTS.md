@@ -11,6 +11,10 @@ These rules apply to Codex and other agents working in this repository.
 - Do not change generated signals unless the task explicitly asks for signal
   generation or maintenance.
 - Do not publish anything unless the task explicitly asks for publication.
+- Routine autonomous daily digests may be reader-visible through `site/today.html`
+  when machine safety/source/quality gates pass. Human approval is not required
+  for that daily reader surface. Writing new Markdown into `dispatches/` still
+  requires a task that explicitly allows publication.
 
 ## Daily Radar Boundary
 

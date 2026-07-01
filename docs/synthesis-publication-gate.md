@@ -8,9 +8,11 @@ A signal is not a dispatch.
 
 A signal confirms that a public source item appeared in a configured feed. It does not confirm context, impact, causality, completeness, market effect, regulatory consequence or editorial interpretation.
 
-`validation/candidate-dispatch-latest.md` and `validation/auto-dispatches/` are pre-publication workspaces. They must not be copied, moved or automatically promoted into `dispatches/` without manual editorial promotion.
+`validation/candidate-dispatch-latest.md` and `validation/auto-dispatches/` are source workspaces. They must not be copied, moved or automatically promoted into `dispatches/` as-is.
 
-Daily Radar generation, review artifacts and auto drafts are not publication approval.
+Daily Radar generation, review artifacts and draft-only auto-dispatch files are not publication approval by themselves.
+
+Autonomous digests may be reader-visible through `site/today.html`, or stored in `dispatches/` only when they pass machine safety/source/quality gates. Human approval is not required for routine autonomous daily publication.
 
 ## Required synthesis frame
 
@@ -49,6 +51,17 @@ Before promotion to `dispatches/`, check:
 - front matter follows the dispatch contract;
 - publication validation passes.
 
+## Autonomous daily rule
+
+The desired operating model is zero-touch daily reading:
+
+- no daily human approval gate;
+- no manual publish decision for routine autonomous daily digest;
+- weak or unverified items are labelled, downgraded, withheld or kept operational-only;
+- failed gates produce a safe Today fallback that says `digest withheld by automated gate` and lists reasons.
+
+An autonomous digest must show verification gaps and keep source-reported claims separate from confirmed facts.
+
 ## Promotion rule
 
-Promotion from `validation/auto-dispatches/` or `validation/candidate-dispatch-latest.md` into `dispatches/` is a separate editorial action.
+Manual promotion from `validation/auto-dispatches/` or `validation/candidate-dispatch-latest.md` into `dispatches/` remains a separate editorial action. Autonomous publication is allowed only for a newly generated digest that carries machine-gate metadata and passes validation; it is not a raw copy of a draft workspace file.

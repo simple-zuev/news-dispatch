@@ -71,8 +71,49 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "daily-radar-ranking-latest.json" in html
     assert "radar/index.html" in html
     assert "dispatches.html" in html
+    assert "Автономный дневной дайджест" in html
     assert "Граница интерпретации" in html
     assert "не инвестиционная" in html
+
+
+def test_autonomous_digest_sections_and_no_human_approval() -> None:
+    html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
+    for heading in build_today_page.DIGEST_SECTIONS:
+        assert heading in html
+    assert "Human approval is not required" in html
+    assert "Gate: passed" in html
+    assert "Automated Gate" in html
+    assert "PASS:" in html
+
+
+def test_auto_dispatch_artifacts_are_not_finished_analysis() -> None:
+    html = build_today_page.render(
+        sample_report(),
+        auto_report={
+            "date": "2026-06-28",
+            "generated": [
+                {
+                    "stream": "crypto-finance",
+                    "path": "validation/auto-dispatches/crypto-finance/2026-06-28-auto-radar-draft.md",
+                    "publication_mode": "draft_only",
+                    "status": "draft",
+                }
+            ],
+        },
+    )
+    assert "Auto-dispatch artifacts использованы как контур проверки, а не как готовый анализ" in html
+    assert "draft_only" in html
+
+
+def test_gate_failure_renders_safe_fallback_without_human_decision() -> None:
+    report = sample_report()
+    report["items"][0]["source_type"] = ""
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    html = build_today_page.render(report, policy, auto_report={"generated": []})
+    assert "Digest withheld by automated gate" in html
+    assert "Пользовательское решение не требуется" in html
+    assert "Available safe signals" in html
+    assert "Gate: withheld" in html
 
 
 def test_render_includes_analytical_card_structure() -> None:
@@ -122,6 +163,9 @@ def test_card_stays_non_directive() -> None:
 
 def main() -> int:
     test_render_includes_required_links_and_boundary()
+    test_autonomous_digest_sections_and_no_human_approval()
+    test_auto_dispatch_artifacts_are_not_finished_analysis()
+    test_gate_failure_renders_safe_fallback_without_human_decision()
     test_render_includes_analytical_card_structure()
     test_render_clusters_similar_signals()
     test_today_radar_css_has_cluster_materials_styles()

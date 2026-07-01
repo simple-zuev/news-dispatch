@@ -13,7 +13,7 @@ REQUIRED_DOC_PHRASES = [
     "validation/candidate-dispatch-latest.md",
     "validation/auto-dispatches/",
     "dispatches/",
-    "manual editorial promotion",
+    "Human approval is not required for routine autonomous daily publication.",
     "fact",
     "source",
     "why it matters",
@@ -26,6 +26,7 @@ REQUIRED_DOC_PHRASES = [
     "source governance",
     "no investment advice",
     "Publication checklist",
+    "digest withheld by automated gate",
 ]
 
 def main() -> int:
@@ -39,9 +40,9 @@ def main() -> int:
             if phrase not in text:
                 errors.append(f"gate document missing required phrase: {phrase}")
 
-        required_block = "must not be copied, moved or automatically promoted into `dispatches/`"
+        required_block = "must not be copied, moved or automatically promoted into `dispatches/` as-is"
         if required_block not in text:
-            errors.append("gate document must block automatic promotion into dispatches/")
+            errors.append("gate document must block raw automatic promotion into dispatches/")
 
     if not WORKFLOW.exists():
         errors.append("missing .github/workflows/validate.yml")
