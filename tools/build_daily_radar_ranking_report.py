@@ -64,6 +64,49 @@ HIGH_SIGNAL_CRYPTO_TERMS = (
     "crypto-assets",
 )
 
+MARKET_FORECAST_TERMS = (
+    "price target",
+    "price targets",
+    "targets",
+    "forecast",
+    "forecasts",
+    "prediction",
+    "predictions",
+    "estimate",
+    "estimates",
+    "outlook",
+    "12-month",
+    "year-end",
+    "slashes",
+    "raises",
+    "analyst",
+    "strategist",
+)
+
+MARKET_IMPACT_TERMS = (
+    "regulation",
+    "regulatory",
+    "rules",
+    "enforcement",
+    "lawsuit",
+    "filing",
+    "sec",
+    "fca",
+    "esma",
+    "cftc",
+    "mica",
+    "stablecoin",
+    "custody",
+    "exchange",
+    "liquidity",
+    "etf",
+    "infrastructure",
+    "settlement",
+    "clearing",
+    "bank",
+    "central bank",
+)
+
 
 def phrase_hits(haystack: str, phrases: tuple[str, ...]) -> list[str]:
     return [phrase for phrase in phrases if phrase and daily_radar.contains_phrase(haystack, phrase)]
@@ -71,6 +114,18 @@ def phrase_hits(haystack: str, phrases: tuple[str, ...]) -> list[str]:
 
 def contains_any(haystack: str, phrases: tuple[str, ...]) -> bool:
     return any(phrase in haystack for phrase in phrases)
+
+
+def is_market_forecast(feed: daily_radar.Feed, title: str) -> bool:
+    if feed.stream not in {"finance", "crypto-finance"}:
+        return False
+    haystack = daily_radar.normalized_haystack(title, "")
+    return contains_any(haystack, MARKET_FORECAST_TERMS)
+
+
+def has_market_impact_context(feed: daily_radar.Feed, title: str) -> bool:
+    haystack = daily_radar.normalized_haystack(title, "")
+    return feed.source_class == "official_source" or contains_any(haystack, MARKET_IMPACT_TERMS)
 
 
 def selection_score(feed: daily_radar.Feed, title: str, evidence: dict[str, object], final_score: float) -> tuple[float, list[str]]:
@@ -91,6 +146,12 @@ def selection_score(feed: daily_radar.Feed, title: str, evidence: dict[str, obje
     ):
         score += 0.8
         adjustments.append("crypto_regulatory_signal_boost")
+
+    if is_market_forecast(feed, title):
+        adjustments.append("third_party_market_forecast_labeled")
+        if not has_market_impact_context(feed, title):
+            score *= 0.55
+            adjustments.append("market_forecast_downweighted")
 
     if feed.source_class == "official_source":
         score += 0.25
@@ -167,6 +228,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
         routed_stream = daily_radar.classify(feed, title, summary)
         final_score = daily_radar.item_score(feed, title, summary, published, now)
     adjusted_score, adjustments = selection_score(feed, title, evidence, final_score)
+    market_signal_type = "third_party_forecast" if is_market_forecast(feed, title) else "source_reported"
 
     if selected:
         reason = "selected_top_ranked"
@@ -191,6 +253,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
         "final_score": final_score,
         "selection_score": adjusted_score,
         "ranking_adjustments": adjustments,
+        "market_signal_type": market_signal_type,
         "selected": selected,
         "selection_reason": reason,
         **evidence,

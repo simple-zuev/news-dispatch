@@ -52,7 +52,6 @@ BLOCK_PATTERNS = [
     r"\b(buy|sell|hold)\b",
     r"\b(go|goes|went)\s+(long|short)\b",
     r"\b(long|short)\s+(position|trade|asset|bitcoin|btc|eth|stock|crypto|market)\b",
-    r"\bprice target\b",
     r"\bwill rise\b",
     r"\bwill fall\b",
     r"покупать",
@@ -98,6 +97,20 @@ EDC_RELEVANCE_PATTERNS = [
 ]
 
 PREPRINT_SOURCE_CLASSES = {"research_media"}
+
+MARKET_FORECAST_PATTERNS = [
+    r"\bprice targets?\b",
+    r"\b\d{1,2}[-\s]?month\b",
+    r"\byear[-\s]?end\b",
+    r"\bforecast(s|ed|ing)?\b",
+    r"\bpredict(s|ed|ion|ions)?\b",
+    r"\bestimat(e|es|ed|ing)\b",
+    r"\boutlook\b",
+    r"\bslash(es|ed|ing)?\b",
+    r"\brais(es|ed|ing)?\b",
+    r"\banalyst(s)?\b",
+    r"\bstrategist(s)?\b",
+]
 
 
 def load_json(path: Path, default: Any) -> Any:
@@ -149,6 +162,12 @@ def is_product_card_like(item: dict[str, Any], text: str) -> bool:
     return not pattern_hits(EDC_RELEVANCE_PATTERNS, text)
 
 
+def is_market_forecast_item(item: dict[str, Any], text: str) -> bool:
+    if stream_slug(item) not in {"finance", "crypto-finance"}:
+        return False
+    return bool(pattern_hits(MARKET_FORECAST_PATTERNS, text)) or str(item.get("market_signal_type") or "") == "third_party_forecast"
+
+
 def item_key(item: dict[str, Any]) -> str:
     stable = "|".join([
         str(item.get("feed_id") or ""),
@@ -167,6 +186,7 @@ def decision_for_item(item: dict[str, Any]) -> dict[str, Any]:
     final_score = numeric(item.get("final_score"), 0.0)
     block_hits = pattern_hits(BLOCK_PATTERNS, text)
     review_hits = pattern_hits(REVIEW_PATTERNS, text)
+    safety_labels: list[str] = []
     reasons: list[str] = []
     decision = "reader_safe"
 
@@ -209,6 +229,9 @@ def decision_for_item(item: dict[str, Any]) -> dict[str, Any]:
             decision = "review_only"
         reasons.append("product-card retail signal without broader relevance")
 
+    if is_market_forecast_item(item, text):
+        safety_labels.append("third_party_market_forecast")
+
     if not reasons:
         reasons.append("passed reader policy gate")
 
@@ -223,6 +246,8 @@ def decision_for_item(item: dict[str, Any]) -> dict[str, Any]:
         "relevance_score": relevance,
         "title": str(item.get("title") or ""),
         "url": str(item.get("url") or ""),
+        "market_signal_type": "third_party_forecast" if safety_labels else str(item.get("market_signal_type") or "source_reported"),
+        "safety_labels": safety_labels,
         "block_hits": block_hits,
         "review_hits": review_hits,
     }

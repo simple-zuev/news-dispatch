@@ -98,6 +98,18 @@ def test_product_card_edc_signal_is_review_only() -> None:
     assert any("product-card" in reason for reason in decision["reasons"])
 
 
+def test_crypto_forecast_headline_is_labeled_not_blocked() -> None:
+    item = base_item("Citi slashes 12-month bitcoin, ether targets")
+    item["configured_stream"] = "crypto-finance"
+    item["routed_stream"] = "crypto-finance"
+    item["feed_id"] = "coindesk"
+    item["market_signal_type"] = "third_party_forecast"
+    decision = reader_policy.decision_for_item(item)
+    assert decision["decision"] == "reader_safe"
+    assert "third_party_market_forecast" in decision["safety_labels"]
+    assert decision["market_signal_type"] == "third_party_forecast"
+
+
 def test_report_counts_and_reader_allowed_flag() -> None:
     safe = base_item("Central bank publishes liquidity update")
     blocked = base_item("Market note says sell this asset")
@@ -117,6 +129,7 @@ def main() -> int:
     test_official_source_class_is_reader_safe()
     test_arxiv_preprint_is_review_only_not_confirmed_analysis()
     test_product_card_edc_signal_is_review_only()
+    test_crypto_forecast_headline_is_labeled_not_blocked()
     test_report_counts_and_reader_allowed_flag()
     print("reader policy tests passed")
     return 0
