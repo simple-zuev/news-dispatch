@@ -274,6 +274,10 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "Источник сообщает о движении крупных криптоактивов"
     if "workspace" in text and "indirect" in text:
         return "Google описывает защиту Workspace от непрямых атак на инструкции"
+    if "chrome" in text and ("security" in text or "vulnerability" in text or "exploit" in text):
+        return "Google сообщает об обновлении безопасности Chrome"
+    if "android" in text and ("security" in text or "patch" in text or "update" in text):
+        return "Google сообщает об обновлении безопасности Android"
     if "apple intelligence" in text:
         return "Apple расширяет функции ИИ в пользовательских сценариях"
     if "nvidia" in text and "inference" in text:
@@ -282,8 +286,18 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "ESA сообщает о наблюдениях Webb"
     if "moon" in text and "nasa" in text:
         return "NASA расширяет научную программу для лунной базы"
+    if "webb" in text and ("nasa" in text or "esa" in text):
+        return "Космические агентства сообщают о новых наблюдениях Webb"
+    if "dvs" in text or "devious pocket" in text:
+        return "Devious Pocket показывает компактный open-source DVS"
+    if "dj controller" in text or ("controller" in text and "dj" in text):
+        return "Источник сообщает о новом DJ-контроллере"
+    if "plugin" in text and ("audio" in text or "music" in text or "producer" in text):
+        return "Источник сообщает о новом аудиоплагине для продакшена"
     if "ableton" in text or "cubase" in text:
         return "Аудиоинструменты переходят к новым рабочим наборам"
+    if "worn & wound" in text or ("watch" in text and "collection" in text):
+        return "Worn & Wound публикует подборку часов"
     if is_market_forecast_item(item):
         return f"Источник сообщает об оценке участника рынка: {russian_topic(item)}"
     return f"{public_text(source)}: {russian_topic(item)}"

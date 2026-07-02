@@ -225,8 +225,8 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "digests/index.html" in html
     assert "radar/index.html" in html
     assert "Главное за сегодня" in html
-    assert "today-feature" in html
-    assert "stream-visual" in html
+    assert "today-feature--compact" in html
+    assert "stream-visual" not in html
     assert "source-note" in html
     assert "Сводка выпуска" not in html
     assert "не инвестиционная" in html
@@ -234,11 +234,12 @@ def test_render_includes_required_links_and_boundary() -> None:
 
 def test_today_is_news_first_without_service_block() -> None:
     html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
-    assert "today-feature" in html
+    assert "today-feature--compact" in html
     assert "today-highlights" in html
     assert "today-grouped-cards" in html
     assert "reader-card-list" in html
-    assert html.index("today-feature") < html.index("today-highlights") < html.index("today-grouped-cards") < html.index("source-note")
+    assert html.index("today-highlights") < html.index("today-feature") < html.index("today-grouped-cards") < html.index("source-note")
+    assert visible_text(html).count("Главное за сегодня") == 1
     assert "Сводка выпуска" not in html
     assert "Публично показаны" not in html
     assert "Источники публичные" not in html

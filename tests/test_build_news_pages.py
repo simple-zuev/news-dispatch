@@ -219,7 +219,8 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert (build_news_pages.DIGESTS_DIR / "index.html").exists()
             index_html = (build_news_pages.NEWS_DIR / "index.html").read_text(encoding="utf-8")
             assert "Ленты новостей" in index_html
-            assert "stream-visual" in index_html
+            assert "feed-overview-grid" in index_html
+            assert "stream-visual" not in index_html
             assert "Последние материалы" in index_html
             assert_public_clean(index_html)
         finally:

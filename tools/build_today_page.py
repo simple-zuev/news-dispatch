@@ -17,7 +17,6 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
-from newsroom_visuals import stream_visual
 from reader_text import (
     compact_time_ru,
     reader_excerpt_ru as shared_reader_excerpt_ru,
@@ -727,8 +726,7 @@ def today_feature(items: list[dict[str, Any]]) -> str:
     title = public_text(reader_title(item))
     excerpt = public_text(shared_reader_excerpt_ru(item, max_len=220))
     source_line = public_text(shared_reader_source_line_ru(item))
-    return f"""<section class="today-feature" aria-label="Главное событие">
-  {stream_visual(stream_slug(item), variant="feature")}
+    return f"""<section class="today-feature today-feature--compact" aria-label="Главное событие">
   <div>
     <p class="label">{esc(source_line)}</p>
     <h2>{esc(title)}</h2>
@@ -909,7 +907,7 @@ def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 5) -> st
     for cluster in clusters[:limit]:
         item = cluster[0]
         lines.append(f"{reader_title(item)} — {stream_label(stream_slug(item))}.")
-    return '<section class="panel today-highlights"><h2>Главное за сегодня</h2>' + list_html(lines) + "</section>"
+    return '<section class="panel today-highlights"><h2>Коротко</h2>' + list_html(lines) + "</section>"
 
 
 def grouped_today_cards(items: list[dict[str, Any]]) -> str:
@@ -944,8 +942,8 @@ def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> 
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     clusters = cluster_items(items)
     return "\n".join([
-        today_feature(items),
         today_highlights(clusters),
+        today_feature(items),
         grouped_today_cards(items),
         compact_source_note(items, policy),
     ])

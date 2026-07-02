@@ -33,7 +33,6 @@ TEXT_REPLACEMENTS = {
     "live-radar": "радар",
     "Потоки": "Темы",
     "Dispatch streams": "Темы",
-    "Рубрики": "Рубрики анализа",
     "Dispatch rubrics": "Рубрики анализа",
     "Последние выпуски": "Новые материалы",
     "Latest dispatches": "Новые материалы",

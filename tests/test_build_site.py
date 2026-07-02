@@ -71,6 +71,7 @@ def test_homepage_template_matches_simple_newsroom_blocks() -> None:
         assert block in html
     assert "quick-signals" in html
     assert "stream-visual" in html
+    assert "stream-visual--mini" not in html
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
@@ -83,6 +84,7 @@ def test_homepage_template_matches_simple_newsroom_blocks() -> None:
     assert "featured-card" not in html
     assert "homepage-hero" not in html
     assert "техническая пустота покрытия" not in lower
+    assert html.index("latest-news") < html.index("rubric-tiles")
     for term in ["selected", "reader_safe", "source_rule_status", "validation", "draft-only", "review-only", "generated", "prompt", "json", "score=", "final_score", "selection_score", "fetch warnings", "gate"]:
         assert term not in lower
 
@@ -103,12 +105,33 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
 
 
 def test_stream_fallback_visuals_exist_for_all_public_streams() -> None:
-    html = render_site.homepage_template([], {})
     for slug in newsroom_visuals.visual_streams():
-        assert f"stream-visual--{slug}" in html or slug == "general"
         visual = newsroom_visuals.stream_visual(slug)
         assert "Иллюстрация темы" in visual
         assert f"stream-visual--{slug}" in visual
+
+
+def test_tracked_static_homepage_no_longer_exposes_legacy_service_copy() -> None:
+    html = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
+    lower = html.lower()
+    assert "Ленты" in html
+    assert "Дайджесты" in html
+    assert "Сегодня" in html
+    for term in [
+        "public-safe editorial briefing system",
+        "editorial model",
+        "publication boundary",
+        "strict review",
+        "work dispatch",
+        "open dispatch archive",
+        "как читать",
+        "validation",
+        "selected",
+        "reader_safe",
+        "source_rule_status",
+        "score=",
+    ]:
+        assert term not in lower
 
 
 def test_old_home_hero_css_is_removed() -> None:
@@ -125,6 +148,7 @@ def main() -> int:
     test_homepage_template_matches_simple_newsroom_blocks()
     test_public_stream_labels_are_exact_on_homepage_cards()
     test_stream_fallback_visuals_exist_for_all_public_streams()
+    test_tracked_static_homepage_no_longer_exposes_legacy_service_copy()
     test_old_home_hero_css_is_removed()
     print("build_site regression tests passed")
     return 0
