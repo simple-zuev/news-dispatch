@@ -151,7 +151,43 @@ def source_name(source_title: str) -> str:
     return source_title.strip()
 
 
+SOURCE_CLASS_LABELS = {
+    "official_source": "официальный источник",
+    "official": "официальный источник",
+    "regulator": "регулятор",
+    "company": "компания",
+    "public_media": "публичное медиа",
+    "specialized_media": "профильное медиа",
+    "business_media": "деловое медиа",
+    "industry_media": "отраслевое медиа",
+    "research_media": "исследовательский источник",
+}
+
+PUBLIC_STREAM_LABELS = {
+    "finance": "Финансы",
+    "crypto-finance": "Криптофинансы",
+    "ai": "ИИ",
+    "tech-hardware-software": "Железо и софт",
+    "gear-style-edc": "EDC / стиль / вещи",
+    "moscow-city": "Москва",
+    "dj-audio-creative": "DJ / аудио / креатив",
+    "science-discovery": "Наука",
+    "general": "Спецвыпуски",
+}
+
+
+def has_cyrillic(value: str) -> bool:
+    return bool(re.search(r"[А-Яа-яЁё]", value or ""))
+
+
+def source_class_label(value: str) -> str:
+    cleaned = str(value or "").strip()
+    return SOURCE_CLASS_LABELS.get(cleaned, cleaned.replace("_", " ") or "публичный источник")
+
+
 def stream_title(slug: str) -> str:
+    if slug in PUBLIC_STREAM_LABELS:
+        return PUBLIC_STREAM_LABELS[slug]
     stream = STREAM_BY_SLUG.get(slug)
     return stream.title if stream else slug
 
@@ -168,15 +204,17 @@ def signal_reader_summary(meta: dict[str, object], body: str, title: str, source
     if summary:
         return summary, False
     source = source_name(source_title) or "публичный источник"
-    return f"{source} передал в RSS/Atom заголовок: «{title}». Это сырой сигнал; контекст, последствия и интерпретации требуют проверки.", True
+    return f"{source} передал заголовок: «{title}». Это входной сигнал; контекст, последствия и интерпретации требуют проверки.", True
 
 
 def signal_confirmation_level(source_class: str, confidence: str) -> str:
-    confidence_part = f" Уверенность в metadata: {confidence}." if confidence else ""
+    confidence_part = f" Уровень уверенности: {confidence}." if confidence else ""
     if source_class in {"official_source", "official", "regulator", "company"}:
         return "Подтверждён факт публикации первичным или официальным источником; последствия и интерпретации требуют проверки." + confidence_part
+    if source_class == "research_media":
+        return "Предварительное исследование: подтверждён факт появления материала, но выводы не являются финальным подтверждением." + confidence_part
     if source_class in {"public_media", "specialized_media", "business_media", "industry_media", "research_media"}:
-        return "Source-reported: подтверждён факт появления материала в публичной ленте источника; утверждения и последствия не подтверждены." + confidence_part
+        return "Подтверждён факт появления материала в публичной ленте источника; утверждения и последствия не подтверждены." + confidence_part
     return "Ограниченный публичный сигнал: требуется ручная проверка источника, статуса и контекста." + confidence_part
 
 
@@ -451,7 +489,7 @@ def dispatch_meta_label(dispatch: Dispatch) -> str:
 
 
 def signal_meta_label(signal: Signal) -> str:
-    parts = [signal.date, stream_title(signal.stream), signal.source_class, source_name(signal.source_title), f"status: {signal.status}"]
+    parts = [signal.date, stream_title(signal.stream), source_class_label(signal.source_class), source_name(signal.source_title), "не опубликовано"]
     return " · ".join(part for part in parts if part)
 
 
@@ -464,17 +502,22 @@ def dispatch_card(dispatch: Dispatch, prefix: str = "") -> str:
 
 
 def signal_card(signal: Signal, prefix: str = "") -> str:
-    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if signal.raw_title_only else '<span class="signal-raw-label">source-reported</span>'
+    title = signal.title
+    if signal.raw_title_only or not has_cyrillic(title):
+        title = f"Источник сообщает: {stream_title(signal.stream)}"
+    raw_label = '<span class="signal-raw-label">входной заголовок источника</span>' if signal.raw_title_only else '<span class="signal-raw-label">сообщение источника</span>'
     source_url = signal.source_url
     source_link = ""
     if source_url:
         source_link = f'<p class="signal-source-link"><a href="{html.escape(source_url, quote=True)}">Открыть источник</a></p>'
-    source_parts = [source_name(signal.source_title) or signal.source_title, signal.source_class]
+    source_parts = [source_name(signal.source_title) or signal.source_title, source_class_label(signal.source_class)]
     if signal.source_type:
         source_parts.append(signal.source_type)
+    original_line = f'<p class="signal-original-title"><strong>Оригинал:</strong> {html.escape(signal.title)}</p>' if signal.title != title else ""
     return f"""<article class="card signal-card">
-  <p class="label">Raw signal · not published · signal != dispatch · {html.escape(signal_meta_label(signal))}</p>
-  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(signal.title)}</a></h3>
+  <p class="label">Сигнал · не опубликовано · не материал · {html.escape(signal_meta_label(signal))}</p>
+  <h3><a href="{prefix}{html.escape(signal.radar_relative_url)}">{html.escape(title)}</a></h3>
+  {original_line}
   <p class="signal-raw-title">{raw_label}<span>Что произошло: {html.escape(signal.summary)}</span></p>
   <dl class="signal-facts">
     <div><dt>Источник</dt><dd>{html.escape(" · ".join(part for part in source_parts if part))}</dd></div>
@@ -498,7 +541,7 @@ def stream_card(stream: StreamInfo, prefix: str = "", count: int | None = None, 
     strict_class = " strict" if stream.strict else ""
     return f"""<article class="card{strict_class}">
   <p class="label">{html.escape(stream.review_label)}{html.escape(count_label)}</p>
-  <h3><a href="{prefix}{html.escape(stream.relative_url)}">{html.escape(stream.title)}</a></h3>
+  <h3><a href="{prefix}{html.escape(stream.relative_url)}">{html.escape(stream_title(stream.slug))}</a></h3>
   <p>{html.escape(stream.description)}</p>
 </article>"""
 
@@ -554,22 +597,22 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
     rubric_cards = "\n".join(rubric_card(rubric, count=rubric_counts.get(rubric.slug, 0)) for rubric in RUBRICS[:6])
     return f"""<!doctype html>
 <html lang="ru">
-{head("News Dispatch", "Личный reader/radar по технологиям, рынкам, AI, финансам, Москве, вещам, аудио и науке.")}
+{head("Главное за сегодня — News Dispatch", "Публичный русскоязычный обзор по технологиям, рынкам, ИИ, финансам, Москве, вещам, аудио и науке.")}
 <body>
   <header class="masthead">
-    <p class="eyebrow">Персональный reader/radar</p>
-    <h1>News Dispatch</h1>
-    <p class="lede">Личный статический радар по зонам интереса: live-сигналы в течение дня, тематические полки и аналитические выпуски, когда есть что синтезировать.</p>
-    <p class="hero-actions"><a href="radar/index.html">Live Radar</a><a href="drafts.html">Черновики к проверке</a><a href="dispatches.html">Архив выпусков</a><a href="streams/index.html">Потоки</a><a href="rubrics/index.html">Рубрики</a><a href="rss.xml">RSS</a></p>
+    <p class="eyebrow">Публичный обзор</p>
+    <h1>Главное за сегодня</h1>
+    <p class="lede">Короткий русскоязычный обзор по публичным источникам: главное за сегодня, темы, источники и ограничения интерпретации.</p>
+    <p class="hero-actions"><a href="today.html">Главное за сегодня</a><a href="streams/index.html">Темы</a><a href="dispatches.html">Архив материалов</a><a href="radar/index.html">Лента источников</a></p>
   </header>
 
   <main>
-    <section class="panel"><h2>Последние выпуски</h2><p>Итоговые материалы и тематические synthesis-выпуски.</p></section>
-    <section class="grid latest-grid" aria-label="Latest dispatches">{latest_cards}</section>
-    <section class="panel"><h2>Рубрики</h2><p>Аналитические линзы поверх потоков: регулирование, инфраструктура, market structure, research evidence и weak signals.</p></section>
-    <section class="grid" aria-label="Dispatch rubrics">{rubric_cards}</section>
-    <section class="panel"><h2>Потоки</h2><p>Потоки показывают опубликованные выпуски и последние публичные live-сигналы.</p></section>
-    <section class="grid" aria-label="Dispatch streams">{stream_cards}</section>
+    <section class="panel"><h2>Новые материалы</h2><p>Опубликованные материалы с источниками, контекстом и обозначенными ограничениями.</p></section>
+    <section class="grid latest-grid" aria-label="Новые материалы">{latest_cards}</section>
+    <section class="panel"><h2>Рубрики анализа</h2><p>Аналитические линзы поверх тем: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования и пользовательская практика.</p></section>
+    <section class="grid" aria-label="Рубрики анализа">{rubric_cards}</section>
+    <section class="panel"><h2>Темы</h2><p>Темы показывают опубликованные материалы и последние публичные сигналы источников.</p></section>
+    <section class="grid" aria-label="Темы">{stream_cards}</section>
   </main>
 </body>
 </html>
@@ -598,9 +641,9 @@ def stream_index_template(dispatches: list[Dispatch], signals: dict[str, list[Si
     )
     return f"""<!doctype html>
 <html lang="ru">
-{head("News Dispatch — Потоки", "Тематические потоки.", css_href="../styles/main.css")}
+{head("News Dispatch — Темы", "Тематические разделы.", css_href="../styles/main.css")}
 <body>
-  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Потоки</p><h1>Потоки</h1><p class="lede">Потоки объединяют опубликованные выпуски и последние публичные сигналы.</p></header>
+  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Темы</p><h1>Темы</h1><p class="lede">Тематические разделы объединяют опубликованные материалы и последние публичные сигналы.</p></header>
   <main><section class="grid">{cards}</section></main>
 </body>
 </html>
@@ -612,24 +655,24 @@ def stream_page_template(stream: StreamInfo, dispatches: list[Dispatch], signals
     stream_signals = ordered_signals(signals.get(stream.slug, []))[:8]
     cards = "\n".join(dispatch_card(dispatch, prefix="../") for dispatch in stream_dispatches)
     signal_cards = "\n".join(signal_card(signal, prefix="../") for signal in stream_signals)
-    published_empty = "" if cards else "<p>В этом потоке пока нет опубликованных выпусков.</p>"
-    signals_empty = "" if signal_cards else "<p>В этом потоке сейчас нет live-сигналов.</p>"
+    published_empty = "" if cards else "<p>В этой теме пока нет опубликованных материалов.</p>"
+    signals_empty = "" if signal_cards else "<p>В этой теме сейчас нет свежих сигналов.</p>"
     return f"""<!doctype html>
 <html lang="ru">
-{head(f"News Dispatch — {stream.title}", stream.description, css_href="../styles/main.css")}
+{head(f"News Dispatch — {stream_title(stream.slug)}", stream.description, css_href="../styles/main.css")}
 <body>
   <header class="masthead compact">
     <a class="backlink" href="../index.html">News Dispatch</a>
     <p class="eyebrow">{html.escape(stream.review_label)}</p>
-    <h1>{html.escape(stream.title)}</h1>
+    <h1>{html.escape(stream_title(stream.slug))}</h1>
     <p class="lede">{html.escape(stream.description)}</p>
-    <p class="hero-actions"><a href="../radar/{html.escape(stream.slug)}.html">Открыть Live Radar</a></p>
+    <p class="hero-actions"><a href="../radar/{html.escape(stream.slug)}.html">Открыть ленту источников</a></p>
   </header>
   <main>
-    <section class="panel"><h2>Опубликованные выпуски</h2><p>Reader-facing материалы, прошедшие публикационный контур.</p></section>
+    <section class="panel"><h2>Опубликованные материалы</h2><p>Материалы, прошедшие редакционную проверку.</p></section>
     <section class="grid">{cards}</section>
     {published_empty}
-    <section class="panel"><h2>Live signals</h2><p>Последние публичные сигналы потока. Это сырьё для анализа, а не опубликованные выводы.</p></section>
+    <section class="panel"><h2>Свежие сигналы</h2><p>Последние публичные сигналы темы. Это повод для проверки, а не опубликованные выводы.</p></section>
     <section class="grid">{signal_cards}</section>
     {signals_empty}
   </main>
@@ -653,7 +696,7 @@ def rubric_index_template(dispatches: list[Dispatch]) -> str:
 <html lang="ru">
 {head("News Dispatch — Рубрики", "Аналитические рубрики.", css_href="../styles/main.css")}
 <body>
-  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Рубрики</p><h1>Рубрики</h1><p class="lede">Повторяющиеся аналитические линзы: regulation, market structure, infrastructure, product/platform, security, research, consumer use и weak signals.</p></header>
+  <header class="masthead compact"><a class="backlink" href="../index.html">News Dispatch</a><p class="eyebrow">Рубрики анализа</p><h1>Рубрики анализа</h1><p class="lede">Повторяющиеся аналитические линзы: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования, пользовательская практика и слабые сигналы.</p></header>
   <main><section class="grid">{cards}</section></main>
 </body>
 </html>

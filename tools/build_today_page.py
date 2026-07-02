@@ -27,12 +27,13 @@ OUTPUT_PATH = SITE_DIR / "today.html"
 STREAM_LABELS = {
     "finance": "Финансы",
     "crypto-finance": "Криптофинансы",
-    "ai": "AI",
+    "ai": "ИИ",
     "tech-hardware-software": "Железо и софт",
-    "gear-style-edc": "EDC / style",
+    "gear-style-edc": "EDC / стиль / вещи",
     "moscow-city": "Москва",
-    "dj-audio-creative": "DJ / audio",
+    "dj-audio-creative": "DJ / аудио / креатив",
     "science-discovery": "Наука",
+    "general": "Спецвыпуски",
 }
 
 STREAM_EFFECTS = {
@@ -49,8 +50,8 @@ STREAM_EFFECTS = {
 STREAM_MONITORING = {
     "finance": "Проверить первоисточник, реакцию регуляторов, динамику ставок, ликвидности, валютного рынка и комментарии крупных участников.",
     "crypto-finance": "Проверить первичные документы, правоприменение, позиции регуляторов, бирж, банков, кастодианов и провайдеров AML/KYT.",
-    "ai": "Проверить релизные notes, paper/model card, лицензии, доступность API, benchmark-контекст и ограничения внедрения.",
-    "tech-hardware-software": "Проверить vendor notes, security advisories, зависимые платформы, сроки поставок, совместимость и поддержку.",
+    "ai": "Проверить заметки к релизу, описание модели или исследования, лицензии, доступность программного интерфейса, контекст бенчмарков и ограничения внедрения.",
+    "tech-hardware-software": "Проверить заметки поставщика, бюллетени безопасности, зависимые платформы, сроки поставок, совместимость и поддержку.",
     "gear-style-edc": "Проверить независимые обзоры, сертификацию, гарантию, реальные сценарии использования и устойчивость качества.",
     "moscow-city": "Проверить официальные документы, сроки запуска, фактическую доступность сервиса и влияние на жителей/бизнес.",
     "dj-audio-creative": "Проверить спецификации, совместимость, лицензионные условия, доступность и отзывы профессионального сообщества.",
@@ -157,6 +158,31 @@ DIGEST_SECTIONS = [
     "Что проверять дальше",
     "Источники и уровень надёжности",
 ]
+
+SOURCE_CLASS_LABELS = {
+    "official": "официальный источник",
+    "official_source": "официальный источник",
+    "regulator": "регулятор",
+    "company": "компания",
+    "public_media": "публичное медиа",
+    "business_media": "деловое медиа",
+    "industry_media": "отраслевой источник",
+    "specialized_media": "отраслевой источник",
+    "research_media": "исследовательский источник",
+}
+
+SOURCE_TYPE_REPLACEMENTS = {
+    "official": "официальный источник",
+    "official source": "официальный источник",
+    "official_source": "официальный источник",
+    "public source": "публичный источник",
+    "public_source": "публичный источник",
+    "media": "медиа",
+    "security": "безопасность",
+    "research": "исследования",
+    "preprint": "предварительное исследование",
+    "ai lab": "лаборатория ИИ",
+}
 
 
 @dataclass(frozen=True)
@@ -285,6 +311,121 @@ def stream_label(slug: object) -> str:
     return STREAM_LABELS.get(text, text or "Без потока")
 
 
+def has_cyrillic(text: object) -> bool:
+    return bool(re.search(r"[А-Яа-яЁё]", str(text or "")))
+
+
+def source_class_label(value: object) -> str:
+    text = str(value or "").strip()
+    return SOURCE_CLASS_LABELS.get(text, text.replace("_", " ") if text else "публичный источник")
+
+
+def source_type_label(value: object) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return "публичный источник"
+    lowered = text.lower().replace("/", " / ")
+    for source, target in SOURCE_TYPE_REPLACEMENTS.items():
+        lowered = lowered.replace(source, target)
+    return " ".join(lowered.split())
+
+
+def source_name(item: dict[str, Any]) -> str:
+    return str(item.get("feed_title") or item.get("feed_id") or "Публичный источник")
+
+
+def published_label(item: dict[str, Any]) -> str:
+    raw = str(item.get("published") or "").strip()
+    if not raw:
+        return "время не указано"
+    cleaned = raw.replace("T", " ")
+    if cleaned.endswith("+00:00"):
+        return cleaned[:-6].split(".", 1)[0] + " UTC"
+    return cleaned.split(".", 1)[0][:19]
+
+
+def russian_topic(item: dict[str, Any]) -> str:
+    text = item_text(item)
+    stream = stream_slug(item)
+    if "mica" in text:
+        return "регулирование крипторынка в Европе"
+    if "stablecoin" in text or "стейбл" in text:
+        return "стейблкоины и платёжная инфраструктура"
+    if "sec" in text or "fca" in text or "esma" in text or "cftc" in text:
+        return "регуляторика и надзор"
+    if "security" in text or "cryptography" in text or "android" in text or "supply chain" in text:
+        return "безопасность и технологическая инфраструктура"
+    if "ai" in text or "model" in text or "prompt" in text or "agent" in text:
+        return "инструменты и инфраструктура ИИ"
+    if "bank" in text or "central bank" in text or "ставк" in text or "цб" in text:
+        return "банки, ставки и ликвидность"
+    if "moon" in text or "planet" in text or "quantum" in text or "webb" in text:
+        return "научные результаты и проверка применимости"
+    if "ableton" in text or "cubase" in text or "plugin" in text or "controller" in text:
+        return "аудиоинструменты и рабочие процессы"
+    if "watch" in text or "carry" in text or "material" in text or "design" in text:
+        return "дизайн, материалы и практическое использование"
+    if stream == "moscow-city":
+        return "городская инфраструктура и сервисы"
+    return stream_label(stream).lower()
+
+
+def reader_title(item: dict[str, Any]) -> str:
+    title = str(item.get("title") or "").strip()
+    if has_cyrillic(title):
+        return title
+    text = item_text(item)
+    source = source_name(item)
+    topic = russian_topic(item)
+    if "mica" in text:
+        return "Европейские правила MiCA снова в фокусе"
+    if "bank of england" in text and "stablecoin" in text:
+        return "Британские регуляторы уточняют контур системных стейблкоинов"
+    if "market statistics" in text and "sec" in text:
+        return "SEC обновила статистику рынка"
+    if "security" in text and "quantum" in text:
+        return "Google описывает защиту Android для постквантовой эпохи"
+    if "workspace" in text and "prompt" in text:
+        return "Google описывает защиту Workspace от непрямых атак на инструкции"
+    if "apple intelligence" in text:
+        return "Apple расширяет функции ИИ в пользовательских сценариях"
+    if "nvidia" in text and "inference" in text:
+        return "NVIDIA объясняет снижение стоимости инференса"
+    if "moon" in text and "nasa" in text:
+        return "NASA расширяет научную программу для лунной базы"
+    if "ableton" in text or "cubase" in text:
+        return "Аудиоинструменты переходят к подписочным рабочим наборам"
+    if is_market_forecast_item(item):
+        return f"Оценка участника рынка: {topic}"
+    return f"Источник сообщает: {stream_label(stream_slug(item))} — {topic}"
+
+
+def original_title(item: dict[str, Any]) -> str:
+    return str(item.get("title") or "").strip()
+
+
+def public_text(value: object) -> str:
+    text = str(value or "")
+    replacements = [
+        (r"AI-generated", "созданный ИИ"),
+        (r"generated by AI", "созданный ИИ"),
+        (r"\bgenerated\b", "созданный"),
+        (r"\bprompt\b", "инструкция"),
+        (r"\bmodel\b", "модель"),
+        (r"\bJSON\b", "данные"),
+        (r"\bselected\b", "отобранный"),
+        (r"\breader_safe\b", "публичный"),
+        (r"\bsource_rule_status\b", "статус источника"),
+        (r"\bvalidation\b", "проверка"),
+        (r"\bdraft-only\b", "подготовительный"),
+        (r"\breview-only\b", "требующий проверки"),
+        (r"\bscore\b", "оценка"),
+    ]
+    for pattern, replacement in replacements:
+        text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+    return text
+
+
 def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> list[dict[str, Any]]:
     items, _diagnostics = select_today_items(report, policy, limit=limit)
     return items
@@ -386,11 +527,9 @@ def auto_dispatch_items(auto_report: dict[str, Any]) -> list[dict[str, Any]]:
 def auto_dispatch_note(auto_report: dict[str, Any]) -> str:
     items = auto_dispatch_items(auto_report)
     if not items:
-        return "Автоматические draft-only материалы отсутствуют; дайджест собран только из reader-safe radar items."
+        return "Дополнительные подготовительные материалы не используются как публикации; читатель видит только отобранные публичные сигналы."
     streams = ", ".join(stream_label(item.get("stream")) for item in items[:6])
-    draft_only = all(str(item.get("publication_mode")) == "draft_only" for item in items)
-    status = "все отмечены как draft_only" if draft_only else "часть материалов требует отдельной проверки статуса"
-    return f"Auto-dispatch artifacts использованы как контур проверки, а не как готовый анализ: {len(items)} stream draft(s), {status}. Потоки: {streams}."
+    return f"Подготовительные материалы использованы только как внутренний контур сверки. В публичный выпуск вынесены проверочные сигналы по темам: {streams}."
 
 
 def reviewed_radar_note() -> str:
@@ -402,15 +541,15 @@ def reviewed_radar_note() -> str:
             if line.startswith("- Retained signals:") or line.startswith("- Streams with retained signals:") or line.startswith("- Fetch warnings:")
         ]
         if summary_lines:
-            return "Reviewed radar artifact summary: " + "; ".join(summary_lines) + "."
-        return "Reviewed radar artifact найден и используется как подтверждение, что сигнал прошёл предварительную машинную группировку."
-    return "Reviewed radar artifact не найден; digest gate учитывает это как ограничение, но не просит ручного решения."
+            return "Предварительная группировка источников выполнена; детали остаются во внутренних отчётах."
+        return "Предварительная группировка источников выполнена."
+    return "Предварительная группировка источников недоступна; публичный выпуск ограничен текущей отобранной лентой."
 
 
 def stream_summary(items: list[dict[str, Any]]) -> str:
     counts = Counter(stream_slug(item) for item in items)
     if not counts:
-        return "<p>Нет reader-safe данных для сводки по потокам.</p>"
+        return "<p>Нет публичных сигналов для сводки по темам.</p>"
     rows = "".join(f"<li>{esc(stream_label(slug))}: {count}</li>" for slug, count in counts.most_common())
     return f"<ul>{rows}</ul>"
 
@@ -474,41 +613,40 @@ def cluster_sources(cluster: list[dict[str, Any]]) -> list[str]:
 def cluster_materials(cluster: list[dict[str, Any]]) -> str:
     rows: list[str] = []
     for index, item in enumerate(cluster, start=1):
-        source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
-        title = item.get("title") or "Без заголовка"
+        source = public_text(source_name(item))
+        title = original_title(item) or "Без заголовка"
         url = item.get("url") or ""
-        title_html = esc(title)
+        title_html = esc(public_text(title))
         if url:
             title_html = f'<a href="{esc(url)}">{title_html}</a>'
-        rows.append(f"<li><strong>{index}. {esc(source)}:</strong> {title_html}</li>")
+        rows.append(f"<li><strong>{index}. {esc(source)}:</strong> оригинал: {title_html}</li>")
     return '<ul class="cluster-materials">' + "".join(rows) + "</ul>"
 
 
 def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
-    status = str(item.get("source_rule_status") or "unknown")
     if is_market_forecast_item(item):
-        return f"ограниченный; third-party assessment / analyst forecast, не факт будущей цены; source class: {source_class}, source type: {source_type}, rule status: {status}."
+        return f"ограниченный: это оценка участника рынка, не факт будущей цены и не рекомендация. Тип источника: {source_type_label(source_type)}."
     if source_class in {"official", "official_source", "regulator", "company"}:
         base = "высокий для факта публикации первоисточником"
     elif source_class in {"public_media", "industry_media", "specialized_media"}:
         base = "средний для факта публикации в публичном источнике"
     elif source_class == "research_media":
-        base = "ограниченный; research/preprint signal, не финальное подтверждение"
+        base = "ограниченный: предварительное исследование, не финальное подтверждение"
     else:
         base = "ограниченный; требуется ручная сверка источника"
-    return f"{base}; source class: {source_class}, source type: {source_type}, rule status: {status}."
+    return f"{base}. Тип источника: {source_type_label(source_type)}."
 
 
 def thesis(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
-    title = str(item.get("title") or "Без заголовка")
+    title = reader_title(item)
     stream = stream_label(stream_slug(item))
     if is_market_forecast_item(item):
-        return f"Источник сообщает об оценке/прогнозе участника рынка в потоке «{stream}»: {title}"
+        return f"Источник сообщает об оценке участника рынка по теме «{stream}»: {title}"
     if len(cluster) > 1:
-        return f"В потоке «{stream}» зафиксирован кластер публичных сигналов по теме: {title}"
-    return f"В потоке «{stream}» зафиксирован публичный сигнал: {title}"
+        return f"В теме «{stream}» зафиксировано несколько близких публичных сообщений: {title}"
+    return f"В теме «{stream}» появился публичный сигнал: {title}"
 
 
 def argument(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
@@ -516,13 +654,11 @@ def argument(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
     hits = evidence_hits(item)
     parts = [
         f"Источники в кластере: {len(sources)} ({', '.join(sources[:4])}).",
-        f"Итоговый score: {score(item.get('final_score'))}.",
-        f"Relevance: {score(item.get('relevance_score'))}.",
     ]
     if hits:
-        parts.append("Ключевые совпадения: " + ", ".join(hits) + ".")
+        parts.append("Тематические признаки: " + ", ".join(hits) + ".")
     if item.get("translation_required"):
-        parts.append("Для русскоязычного выпуска требуется смысловая нормализация, а не буквальный перевод.")
+        parts.append("Оригинальный заголовок сохранён ниже как ссылка на источник; основной заголовок дан в русской редакционной формулировке.")
     return " ".join(parts)
 
 
@@ -536,14 +672,12 @@ def implication(item: dict[str, Any]) -> str:
 
 def uncertainty(item: dict[str, Any], cluster: list[dict[str, Any]]) -> str:
     if len(cluster) > 1:
-        rank_note = f"Кластер объединяет {len(cluster)} похожих items; это повышает видимость сигнала, но не подтверждает факт само по себе."
-    elif item.get("selected"):
-        rank_note = "Сигнал выбран ранжированием Daily Radar."
+        rank_note = f"Кластер объединяет {len(cluster)} похожих сообщений; это повышает видимость темы, но не подтверждает последствия само по себе."
     else:
-        rank_note = "Сигнал прошёл source-rule отбор, но не был выбран как top-ranked item."
+        rank_note = "Это одиночное сообщение публичного источника."
     suffix = " Требуется сверка первоисточника, даты, контекста и независимых подтверждений перед включением в аналитический выпуск."
     if is_market_forecast_item(item):
-        suffix += " Оценки/targets участника рынка не являются фактом будущей цены и не являются инвестиционной рекомендацией."
+        suffix += " Оценки участника рынка не являются фактом будущей цены и не являются инвестиционной рекомендацией."
     return rank_note + suffix
 
 
@@ -558,30 +692,37 @@ def card(cluster: list[dict[str, Any]]) -> str:
     item = cluster[0]
     stream = stream_label(stream_slug(item))
     sources = cluster_sources(cluster)
-    title = item.get("title") or "Без заголовка"
+    title = reader_title(item)
+    source = public_text(source_name(item))
+    source_meta = (
+        f"Источник: {source} / "
+        f"время: {published_label(item)} / "
+        f"тема: {stream} / "
+        f"уровень подтверждения: {confirmation_level(item)}"
+    )
     url = item.get("url") or ""
-    title_html = esc(title)
+    title_html = esc(public_text(title))
     if url:
         title_html = f'<a href="{esc(url)}">{title_html}</a>'
-    cluster_label = f"cluster {len(cluster)} item(s) · {len(sources)} source(s)"
+    cluster_label = f"{len(sources)} источник(ов)"
 
     return f"""<article class="card signal-card">
-  <p class="label">{esc(stream)} · {esc(cluster_label)} · score {score(effective_score(item))} · relevance {score(item.get("relevance_score"))}</p>
+  <p class="label">{esc(source_meta)} · {esc(cluster_label)}</p>
   <h3>{title_html}</h3>
   <p><strong>Тезис:</strong> {esc(thesis(item, cluster))}</p>
-  <p><strong>Аргумент:</strong> {esc(argument(item, cluster))}</p>
-  <p><strong>Следствие/риск:</strong> {esc(implication(item))}</p>
+  <p><strong>Почему важно:</strong> {esc(implication(item))}</p>
   <p><strong>Уровень подтверждения:</strong> {esc(confirmation_level(item))}</p>
   <p><strong>Что отслеживать дальше:</strong> {esc(monitoring(item))}</p>
-  <p><strong>Материалы кластера:</strong></p>
+  <p><strong>Ссылка на источник:</strong> {title_html}</p>
+  <p><strong>Оригинал:</strong></p>
   {cluster_materials(cluster)}
-  <p><strong>Неопределённость:</strong> {esc(uncertainty(item, cluster))}</p>
+  <p><strong>Ограничение:</strong> {esc(uncertainty(item, cluster))}</p>
 </article>"""
 
 
 def cards_block(items: list[dict[str, Any]]) -> str:
     if not items:
-        return '<article class="card empty-state"><p class="label">Нет reader-safe данных</p><h3>Нет сигналов для публичного отображения</h3><p>Свежие items не прошли reader policy gate или были оставлены только в audit/review контуре.</p></article>'
+        return '<article class="card empty-state"><p class="label">Нет публичных сигналов</p><h3>Сегодня нет материалов для отображения</h3><p>Свежие сообщения не прошли публичную проверку или требуют дополнительного подтверждения.</p></article>'
     return "\n".join(card(cluster) for cluster in cluster_items(items))
 
 
@@ -611,52 +752,52 @@ def digest_gate(report: dict[str, Any], policy: dict[str, Any], items: list[dict
     notes: list[str] = []
 
     if not items:
-        failures.append("Нет reader-safe items для автономного дайджеста.")
+        failures.append("Нет публичных сигналов для сегодняшней сводки.")
     if items and not source_labels_present(items):
-        failures.append("Не у всех reader-safe items есть source name, source class и source type.")
+        failures.append("Не у всех публичных сигналов указаны источник и тип источника.")
     if pattern_present(PRIVATE_CONTEXT_PATTERNS, public_input_text(report, policy, auto_report)):
-        failures.append("Privacy preflight нашёл private/internal-sensitive паттерн во входных данных.")
+        failures.append("Во входных данных найден возможный приватный или внутренний фрагмент.")
     if any(pattern_present(FORBIDDEN_READER_PATTERNS, str(item.get("title") or "")) for item in items):
-        failures.append("Reader-safe выборка содержит инвестиционно-директивную формулировку.")
+        failures.append("В подборке обнаружена директивная инвестиционная формулировка.")
 
     auto_items = auto_dispatch_items(auto_report)
     if auto_items and not all(str(item.get("publication_mode")) == "draft_only" for item in auto_items):
-        failures.append("Auto-dispatch artifacts должны оставаться draft_only и не подменять digest analysis.")
+        failures.append("Подготовительные материалы не должны подменять публичный аналитический выпуск.")
 
     if not REVIEWED_RADAR_PATH.exists():
-        notes.append("Reviewed radar artifact отсутствует; digest построен только по ranking/policy gate.")
+        notes.append("Предварительная группировка источников недоступна; выпуск ограничен текущей отобранной лентой.")
 
     if failures:
         return DigestGate(False, failures + notes)
 
     notes.extend([
-        "Privacy preflight для входных данных Today passed; финальный build также запускает repository privacy_scan.",
-        "Source labels present: source name, class and type доступны для reader-safe items.",
-        "Факты, trends, hypotheses и weak signals разделены по секциям и safety labels.",
-        "Investment advice отсутствует; reader text использует monitoring/verification language.",
-        "Verification gaps явно показаны в секции «Что проверять дальше».",
-        "Raw source-reported claims не представлены как confirmed facts.",
+        "Проверка на приватные и внутренние фрагменты пройдена.",
+        "У каждого публичного сигнала есть источник и тип источника.",
+        "Факты, тенденции, гипотезы и слабые сигналы разведены по смысловым секциям.",
+        "Инвестиционные рекомендации отсутствуют; текст использует язык наблюдения и проверки.",
+        "Пробелы проверки показаны в секции «Что проверять дальше».",
+        "Сообщения источников не представлены как подтверждённые факты последствий.",
     ])
     return DigestGate(True, notes)
 
 
 def list_html(items: list[str]) -> str:
     if not items:
-        return "<ul><li>Нет reader-safe данных для этой секции.</li></ul>"
+        return "<ul><li>Нет публичных данных для этой секции.</li></ul>"
     return "<ul>" + "".join(f"<li>{esc(item)}</li>" for item in items) + "</ul>"
 
 
 def top_streams(items: list[dict[str, Any]]) -> str:
     counts = Counter(stream_slug(item) for item in items)
     if not counts:
-        return "нет reader-safe потоков"
+        return "нет публичных тем"
     return ", ".join(f"{stream_label(slug)}: {count}" for slug, count in counts.most_common(4))
 
 
 def source_counts(items: list[dict[str, Any]]) -> str:
-    counts = Counter(str(item.get("source_class") or "unknown") for item in items)
+    counts = Counter(source_class_label(item.get("source_class")) for item in items)
     if not counts:
-        return "source labels unavailable"
+        return "источники не указаны"
     return ", ".join(f"{key}: {value}" for key, value in sorted(counts.items()))
 
 
@@ -691,7 +832,7 @@ def regulatory_items(items: list[dict[str, Any]], limit: int = 5) -> list[str]:
     for item in items:
         text = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
         if item.get("source_class") in {"official", "regulator"} or any(keyword in text for keyword in keywords):
-            result.append(f"{item.get('title') or 'Без заголовка'} — source-reported; проверить первичный документ и правовой статус.")
+            result.append(f"{reader_title(item)} — проверить первичный документ, дату публикации и правовой статус.")
     return result[:limit]
 
 
@@ -702,8 +843,8 @@ def infrastructure_items(items: list[dict[str, Any]], limit: int = 5) -> list[st
     for item in items:
         text = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
         if stream_slug(item) in streams or any(keyword in text for keyword in keywords):
-            source = item.get("feed_title") or item.get("feed_id") or "Публичный источник"
-            result.append(f"{item.get('title') or 'Без заголовка'} — участник/источник: {source}; статус: source-reported, без вывода о рыночном эффекте.")
+            source = public_text(source_name(item))
+            result.append(f"{reader_title(item)} — источник: {source}; это сообщение источника, без вывода о рыночном эффекте.")
     return result[:limit]
 
 
@@ -720,9 +861,9 @@ def weak_signal_lines(policy: dict[str, Any]) -> list[str]:
     review_count = len(policy_decisions(policy, "review_only"))
     blocked_count = len(policy_decisions(policy, "blocked"))
     lines = [
-        f"Review-only items: {review_count}; они не превращены в finished analysis и не требуют решения пользователя.",
-        f"Blocked items: {blocked_count}; они исключены из reader digest автоматическим gate.",
-        "Медиа-сообщения и одиночные source-reported claims в digest читаются как слабые/проверочные сигналы до появления первичного подтверждения.",
+        f"Сигналы с недостаточным подтверждением: {review_count}; они не превращены в итоговый анализ и не требуют решения читателя.",
+        f"Исключённые сигналы: {blocked_count}; они не попадают в публичный выпуск.",
+        "Медиа-сообщения и одиночные утверждения источников читаются как проверочные сигналы до появления первичного подтверждения.",
     ]
     return lines
 
@@ -738,10 +879,10 @@ def next_checks(clusters: list[list[dict[str, Any]]], limit: int = 7) -> list[st
 def reliability_lines(items: list[dict[str, Any]], auto_report: dict[str, Any]) -> list[str]:
     forecast_count = sum(1 for item in items if is_market_forecast_item(item))
     lines = [
-        f"Source classes in reader-safe digest: {source_counts(items)}.",
-        "Confirmed fact означает только факт появления материала в первичном/официальном источнике; impact и causality остаются отдельной проверкой.",
-        "Source-reported claim означает сообщение публичного источника; оно не подтверждает последствия, полноту контекста или интерпретацию.",
-        f"Third-party market forecasts in digest: {forecast_count}; они читаются как оценки участников рынка, не как факт будущей цены и не как рекомендация.",
+        f"Типы источников в выпуске: {source_counts(items)}.",
+        "Подтверждённым считается только факт публикации материала в указанном источнике; последствия и причинно-следственные связи требуют отдельной проверки.",
+        "Сообщение публичного источника не подтверждает полноту контекста или интерпретацию.",
+        f"Оценки участников рынка в выпуске: {forecast_count}; они читаются как оценки, не как факт будущей цены и не как рекомендация.",
         auto_dispatch_note(auto_report),
         reviewed_radar_note(),
     ]
@@ -754,11 +895,11 @@ def digest_section(title: str, body: str) -> str:
 
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     clusters = cluster_items(items)
-    top_titles = [f"{cluster[0].get('title') or 'Без заголовка'} — {stream_label(stream_slug(cluster[0]))}; {uncertainty(cluster[0], cluster)}" for cluster in clusters[:5]]
+    top_titles = [f"{reader_title(cluster[0])} — {stream_label(stream_slug(cluster[0]))}; {uncertainty(cluster[0], cluster)}" for cluster in clusters[:5]]
     sections = [
         digest_section(
             "Главное за период",
-            f"<p>Автономный дайджест за {esc(report.get('date'))}: {len(items)} reader-safe item(s), {len(clusters)} cluster(s), основные потоки: {esc(top_streams(items))}. Human approval is not required for routine autonomous daily publication when machine gates pass.</p><p>{esc(policy_summary(policy))}</p>",
+            f"<p>Выпуск за {esc(report.get('date'))}: {len(items)} публичных сигналов, {len(clusters)} тематических групп. Главные темы: {esc(top_streams(items))}. Ежедневное ручное решение не требуется: слабые и неподтверждённые элементы понижены или исключены.</p><p>{esc(policy_summary(policy))}</p>",
         ),
         digest_section("События с наибольшим эффектом", list_html(top_titles)),
         digest_section("Регуляторика и правовой контур", list_html(regulatory_items(items))),
@@ -767,22 +908,20 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
         digest_section("Радар слабых сигналов", list_html(weak_signal_lines(policy))),
         digest_section("Что проверять дальше", list_html(next_checks(clusters))),
         digest_section("Источники и уровень надёжности", list_html(reliability_lines(items, auto_report))),
-        diagnostics_section(diagnostics, gate),
-        digest_section("Automated Gate", list_html([f"PASS: {reason}" for reason in gate.reasons])),
     ]
-    cards = f'<section class="grid latest-grid" aria-label="Reader-safe signal cards">{cards_block(items)}</section>'
+    cards = f'<section class="grid latest-grid" aria-label="Публичные карточки сигналов">{cards_block(items)}</section>'
     return "\n".join(sections + [cards])
 
 
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
-    safe_summary = stream_summary(items) if items else "<p>Нет reader-safe сигналов для fallback digest.</p>"
+    safe_summary = stream_summary(items) if items else "<p>Нет публичных сигналов для сегодняшней сводки.</p>"
     return "\n".join([
-        '<section class="panel gate-fallback"><h2>Digest withheld by automated gate</h2><p>Автономный daily digest не опубликован как reader-grade выпуск. Пользовательское решение не требуется: слабые или небезопасные элементы автоматически понижены, исключены или оставлены в audit контуре.</p>'
+        '<section class="panel safe-fallback"><h2>Сегодняшний дайджест не показан полностью</h2><p>Часть входных сообщений не прошла публичную проверку. Пользовательское решение не требуется: слабые или небезопасные элементы понижены или исключены.</p>'
         + list_html(gate.reasons)
         + "</section>",
-        f'<section class="panel"><h2>Available safe signals</h2>{safe_summary}</section>',
-        f'<section class="grid latest-grid" aria-label="Safe fallback signal cards">{cards_block(items)}</section>',
-        '<section class="panel boundary"><h2>Граница интерпретации</h2><p>Fallback не является публикацией анализа. Raw source-reported claims не представлены как confirmed facts.</p></section>',
+        f'<section class="panel"><h2>Доступные публичные сигналы</h2>{safe_summary}</section>',
+        f'<section class="grid latest-grid" aria-label="Публичные карточки сигналов">{cards_block(items)}</section>',
+        '<section class="panel boundary"><h2>Граница интерпретации</h2><p>Это не итоговая аналитическая публикация. Сообщения источников не представлены как подтверждённые факты последствий.</p></section>',
     ])
 
 
@@ -791,7 +930,7 @@ def policy_summary(policy: dict[str, Any]) -> str:
     safe = int(counts.get("reader_safe", 0) or 0)
     review = int(counts.get("review_only", 0) or 0)
     blocked = int(counts.get("blocked", 0) or 0)
-    return f"Reader policy gate: reader_safe={safe}, review_only={review}, blocked={blocked}. Today Radar рендерит только reader_safe items."
+    return f"Публично показаны {safe} проверочных сигналов; {review} требуют дополнительного подтверждения; {blocked} исключены."
 
 
 def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_report: dict[str, Any] | None = None) -> str:
@@ -799,20 +938,19 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
     auto_report = auto_report or load_auto_dispatch_report()
     items, diagnostics = select_today_items(report, policy=policy)
     clusters = cluster_items(items)
-    total = len(report.get("items", []))
-    selected = len([item for item in report.get("items", []) if item.get("selected")])
-    filtered = len([item for item in report.get("items", []) if item.get("source_rule_status") != "accepted_by_source_rules"])
-    errors = len(report.get("fetch_errors", []))
     gate = digest_gate(report, policy, items, auto_report)
     digest_body = autonomous_digest(report, policy, items, auto_report, gate, diagnostics) if gate.passed else fallback_digest(report, policy, items, gate)
-    page_title = "News Dispatch — автономный дневной дайджест"
-    h1 = "Автономный дневной дайджест"
-    mode_label = "AUTONOMOUS DIGEST" if gate.passed else "AUTOMATED GATE FALLBACK"
+    page_title = "News Dispatch — главное за сегодня"
+    h1 = "Главное за сегодня"
+    mode_label = "Ежедневный обзор" if gate.passed else "Ограниченная сводка"
     lede = (
-        "Reader-grade daily digest, собранный автоматически из public-source radar artifacts после machine safety/source/quality gates. "
-        "Routine human approval is not required."
+        "Короткий русскоязычный обзор по публичным источникам: что произошло, почему это важно и что проверить дальше."
         if gate.passed
-        else "Safe fallback Today page: digest withheld by automated gate, без запроса ручного publish decision."
+        else "Часть входных сообщений не показана публично; доступна только осторожная сводка без ручного решения."
+    )
+    status_text = (
+        f"В сегодняшнем выпуске: {len(items)} сигналов, {len(clusters)} тематических групп. "
+        "Проверка: публичные источники, отсутствие приватных данных и отсутствие инвестиционных рекомендаций."
     )
 
     return f"""<!doctype html>
@@ -821,7 +959,7 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{esc(page_title)}</title>
-  <meta name="description" content="Автономный дневной дайджест News Dispatch.">
+  <meta name="description" content="Главное за сегодня — News Dispatch.">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -830,10 +968,10 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
     <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
     <h1>{h1}</h1>
     <p class="lede">{esc(lede)}</p>
-    <p class="hero-actions"><a href="today.html">Открыть дайджест</a><a href="daily-radar-ranking-latest.json">Ranking JSON</a><a href="reader-policy-latest.json">Reader Policy JSON</a><a href="radar/index.html">Live Radar</a><a href="dispatches.html">Архив</a></p>
+    <p class="hero-actions"><a href="today.html">Сегодня</a><a href="streams/index.html">Темы</a><a href="dispatches.html">Архив материалов</a></p>
   </header>
   <main>
-    <section class="panel digest-status"><h2>Статус автономного выпуска</h2><p>Всего items: {total}. Выбрано ранжированием: {selected}. Reader-safe items: {len(items)}. Кластеров: {len(clusters)}. Отфильтровано source rules: {filtered}. Ошибок источников: {errors}. Gate: {"passed" if gate.passed else "withheld"}.</p></section>
+    <section class="panel digest-status"><h2>Сводка выпуска</h2><p>{esc(status_text)}</p></section>
     {digest_body}
     <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
   </main>

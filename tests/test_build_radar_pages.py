@@ -42,8 +42,8 @@ def test_empty_stream_page_explains_active_source_without_generated_signals() ->
     assert "Почему рубрика пустая" in html
     assert "Активные источники:" in html
     assert "Отключённые источники:" in html
-    assert "Активные источники есть, но в последнем Daily Radar run" in html
-    assert "Это диагностическое состояние" in html
+    assert "Активные источники есть, но свежие сообщения не прошли публичный порог релевантности" in html
+    assert "Это техническая пустота покрытия" in html
 
 
 def test_signal_card_v2_shows_reader_context_and_boundaries() -> None:
@@ -59,27 +59,45 @@ def test_signal_card_v2_shows_reader_context_and_boundaries() -> None:
             "summary": "Example Regulator опубликовал материал в публичной RSS/Atom-ленте.",
             "raw_title_only": "yes",
             "confirmation_level": "Подтверждён факт публикации первичным или официальным источником; последствия и интерпретации требуют проверки.",
-            "reader_context": "Контекст для читателя: сигнал относится к теме «Криптофинансы: Россия и мир».",
+            "reader_context": "Контекст для читателя: сигнал относится к теме «Криптофинансы».",
             "next_check": "Проверить первичный документ.",
             "url": "https://example.com/signal",
         }
     )
 
-    assert "Raw signal · not published" in html
-    assert "signal != dispatch" in html
+    assert "Сигнал · не опубликовано · не материал" in html
+    assert "<h3><a href=\"https://example.com/signal\">Источник сообщает: Криптофинансы</a></h3>" in html
+    assert "Оригинал:" in html
     assert "Central bank updates digital asset rules" in html
-    assert "Example Regulator · official_source · Официальный источник" in html
-    assert "Криптофинансы: Россия и мир" in html
+    assert "Example Regulator · официальный источник · Официальный источник" in html
+    assert "Криптофинансы" in html
     assert "Подтверждение" in html
     assert "Почему важно" in html
     assert "Что проверить" in html
     assert "Сигнал не является опубликованным материалом" in html
 
 
+def test_public_stream_labels_are_exact() -> None:
+    expected = {
+        "finance": "Финансы",
+        "crypto-finance": "Криптофинансы",
+        "ai": "ИИ",
+        "tech-hardware-software": "Железо и софт",
+        "gear-style-edc": "EDC / стиль / вещи",
+        "moscow-city": "Москва",
+        "dj-audio-creative": "DJ / аудио / креатив",
+        "science-discovery": "Наука",
+        "general": "Спецвыпуски",
+    }
+    for slug, title in expected.items():
+        assert build_radar_pages.stream_title(slug) == title
+
+
 def main() -> int:
     test_source_status_detects_active_moscow_source()
     test_empty_stream_page_explains_active_source_without_generated_signals()
     test_signal_card_v2_shows_reader_context_and_boundaries()
+    test_public_stream_labels_are_exact()
     print("radar page tests passed")
     return 0
 

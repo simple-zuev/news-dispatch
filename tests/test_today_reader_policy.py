@@ -63,8 +63,9 @@ def test_today_radar_renders_only_reader_safe_items() -> None:
     assert "Safe central bank liquidity signal" in html
     assert "Analyst says buy this asset" not in html
     assert "Rumor about infrastructure change" not in html
-    assert "Reader policy gate" in html
-    assert "Today Radar рендерит только reader_safe items" in html
+    assert "Публично показаны" in html
+    assert "Reader policy gate" not in html
+    assert "reader_safe" not in html
 
 
 def test_today_radar_empty_state_when_no_reader_safe_items() -> None:
@@ -75,7 +76,7 @@ def test_today_radar_empty_state_when_no_reader_safe_items() -> None:
     }
     policy = reader_policy.build_policy_report(report)
     html = build_today_page.render(report, policy)
-    assert "Нет сигналов для публичного отображения" in html
+    assert "Нет публичных сигналов" in html
     assert "Analyst says sell this asset" not in html
 
 

@@ -219,39 +219,39 @@ def build_hero(feature: dict[str, str]) -> str:
     return f"""
 <section class="editorial-home-hero" aria-label="Главное на главной странице">
   <article class="editorial-hero-main">
-    <p class="eyebrow">Главное сейчас · {kind}{date_part}</p>
-    <h2>{title}</h2>
-    <p>{summary}</p>
-    <p class="hero-meta">Тема: {stream}. Публикационный статус: публичный reader/radar без внутренних данных.</p>
-    <p class="hero-actions"><a href="{url}">{cta}</a><a href="radar/index.html">Весь радар</a></p>
+    <p class="eyebrow">Главное за сегодня · {date_part}</p>
+    <h2><a href="today.html">Открыть сегодняшний обзор</a></h2>
+    <p>Короткая русскоязычная сводка по публичным источникам: что произошло, почему это важно и что проверять дальше.</p>
+    <p class="hero-meta">Главный вход: ежедневный обзор. Дополнительно: темы и архив материалов.</p>
+    <p class="hero-actions"><a href="today.html">Главное за сегодня</a><a href="streams/index.html">Темы</a><a href="dispatches.html">Архив материалов</a></p>
   </article>
   <aside class="editorial-hero-side" aria-label="Логика чтения">
     <h3>Как читать</h3>
     <p><strong>Сигнал</strong> — входная точка из публичного источника.</p>
     <p><strong>Материал</strong> — проверенный слой с контекстом, ограничениями и источниками.</p>
-    <p><strong>Радар</strong> показывает, что требует дальнейшей редакционной проверки.</p>
+    <p><strong>Тема</strong> помогает быстро перейти к интересующему направлению.</p>
   </aside>
 </section>
 <section class="editorial-home-lanes" aria-label="Основные входы">
   <article>
-    <p class="label">Радар</p>
-    <h3><a href="radar/index.html">Свежие сигналы</a></h3>
-    <p>Новые публичные сообщения по темам. Не равны аналитическому выводу.</p>
+    <p class="label">Сегодня</p>
+    <h3><a href="today.html">Главное за сегодня</a></h3>
+    <p>Отобранные публичные сигналы с тезисом, контекстом, источником и следующими проверками.</p>
   </article>
   <article>
     <p class="label">Публикации</p>
     <h3><a href="dispatches.html">Новые материалы</a></h3>
-    <p>Только материалы, прошедшие редакционную проверку и public-safety контур.</p>
-  </article>
-  <article>
-    <p class="label">Review only</p>
-    <h3><a href="drafts.html">Черновики к проверке</a></h3>
-    <p>Draft-only материалы из validation. Это не публикации и не финальные выводы.</p>
+    <p>Материалы с источниками, контекстом и обозначенными ограничениями.</p>
   </article>
   <article>
     <p class="label">Навигация</p>
     <h3><a href="streams/index.html">Темы</a></h3>
     <p>Финансы, криптофинансы, ИИ, железо и софт, Москва, EDC, аудио и наука.</p>
+  </article>
+  <article>
+    <p class="label">Сигналы</p>
+    <h3><a href="radar/index.html">Лента источников</a></h3>
+    <p>Публичные сообщения по темам. Это повод для проверки, а не итоговый вывод.</p>
   </article>
 </section>
 """.strip()
@@ -263,6 +263,13 @@ def status_block(text: str) -> str:
     if start == -1 or end == -1 or end < start:
         return ""
     return text[start : end + len(STATUS_END)]
+
+
+def remove_status_block(text: str) -> str:
+    block = status_block(text)
+    if not block:
+        return text
+    return text.replace(block, "", 1)
 
 
 def ensure_css(text: str) -> str:
@@ -281,14 +288,15 @@ def apply_homepage() -> bool:
     text = ensure_css(text)
     if HERO_MARKER not in text and TOPLINE_MARKER not in text:
         hero = build_hero(choose_feature())
-        status = status_block(text)
-        if status:
-            wrapped = f'<section class="editorial-home-topline">\n{hero}\n{status}\n</section>'
-            text = text.replace(status, wrapped, 1)
+        if status_block(text):
+            text = remove_status_block(text)
+            text = text.replace("<main>", f'<main>\n<section class="editorial-home-topline">\n{hero}\n</section>', 1)
         elif "<main>" in text:
             text = text.replace("<main>", f"<main>\n{hero}", 1)
         else:
             text = text.replace("</header>", f"</header>\n{hero}", 1)
+    else:
+        text = remove_status_block(text)
 
     if text == original:
         return False
