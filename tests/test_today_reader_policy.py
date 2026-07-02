@@ -63,7 +63,8 @@ def test_today_radar_renders_only_reader_safe_items() -> None:
     assert "Safe central bank liquidity signal" in html
     assert "Analyst says buy this asset" not in html
     assert "Rumor about infrastructure change" not in html
-    assert "Публично показаны" in html
+    assert "Главное за сегодня" in html
+    assert "Источники и проверка" in html
     assert "Reader policy gate" not in html
     assert "reader_safe" not in html
 

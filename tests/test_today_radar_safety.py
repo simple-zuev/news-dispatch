@@ -73,16 +73,15 @@ def test_today_radar_keeps_source_signal_boundary() -> None:
     assert "главное за сегодня" in html
     assert "ежедневное ручное решение не требуется" not in html
     assert "не инвестиционная" in html
-    assert "требуется сверка первоисточника" in html
-    assert "медиа-сообщения и одиночные утверждения источников читаются как проверочные сигналы" in html
+    assert "сообщения источников не являются готовым выводом" in html
+    assert "прогнозы и оценки участников рынка подписаны как оценки" in html
 
 
 def test_today_radar_uses_monitoring_not_commands() -> None:
     html = rendered()
-    assert "что отслеживать дальше" in html
-    assert "зона внимания" in html
-    assert "формулировка является зоной мониторинга" in html
-    assert "не инструкцией к действию" in html
+    assert "открыть первичный материал" in html
+    assert "проверить контекст" in html
+    assert "открыть источник" in html
 
 
 def main() -> int:

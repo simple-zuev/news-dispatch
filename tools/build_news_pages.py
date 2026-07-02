@@ -17,17 +17,18 @@ from typing import Any
 
 from build_today_page import (
     GENERAL_SPECIAL_USE_STREAM,
-    has_cyrillic,
-    original_title,
     public_href,
     public_text,
-    reader_title,
-    source_class_label,
-    source_name,
-    source_type_label,
     stream_label,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from reader_text import (
+    reader_excerpt_ru,
+    reader_source_line_ru,
+    reader_title_ru,
+    source_name,
+    source_original_title,
+)
 from newsroom_visuals import stream_visual
 from render_site import output_slug
 
@@ -159,13 +160,7 @@ def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list
 
 
 def public_title(item: dict[str, Any]) -> str:
-    source = source_name(item)
-    title = reader_title(item)
-    if title.startswith("Источник сообщает:"):
-        return title
-    if has_cyrillic(title):
-        return title
-    return f"Источник сообщает: {source}"
+    return public_text(reader_title_ru(item))
 
 
 def source_link(item: dict[str, Any], text: str) -> str:
@@ -176,22 +171,20 @@ def source_link(item: dict[str, Any], text: str) -> str:
 
 
 def feed_item_card(item: dict[str, Any]) -> str:
-    stream = stream_label(item_stream(item))
     title = public_title(item)
-    original = public_text(original_title(item))
-    source = public_text(source_name(item))
-    source_type = source_type_label(item.get("source_type"))
-    reliability = source_class_label(item.get("source_class"))
+    original = public_text(source_original_title(item))
+    excerpt = public_text(reader_excerpt_ru(item))
+    source_line = public_text(reader_source_line_ru(item))
     original_line = ""
     if original and original != title:
-        original_line = f'<p class="news-original"><strong>Оригинал:</strong> {esc(original)}</p>'
+        original_line = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
     slug = item_stream(item)
-    return f"""<article class="news-item news-item--with-visual">
-  {stream_visual(slug, variant="thumb")}
+    return f"""<article class="news-item news-item--text">
+  <span class="news-stream-marker stream-dot--{esc(slug)}" aria-hidden="true"></span>
   <div class="news-item-body">
-    <p class="label">{esc(item_time(item))} · {esc(source)} · {esc(stream)} · {esc(source_type)} · {esc(reliability)}</p>
     <h3>{source_link(item, title)}</h3>
-    {original_line}
+    <p class="news-excerpt">{esc(excerpt)}</p>
+    <p class="news-meta">{esc(source_line)}</p>{original_line}
     <p class="news-source-link">{source_link(item, "Открыть источник")}</p>
   </div>
 </article>"""

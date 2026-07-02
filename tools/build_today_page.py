@@ -18,6 +18,13 @@ from typing import Any
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
 from newsroom_visuals import stream_visual
+from reader_text import (
+    compact_time_ru,
+    reader_excerpt_ru as shared_reader_excerpt_ru,
+    reader_source_line_ru as shared_reader_source_line_ru,
+    reader_title_ru as shared_reader_title_ru,
+    source_original_title as shared_source_original_title,
+)
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 POLICY_PATH = VALIDATION_DIR / "reader-policy-latest.json"
@@ -336,13 +343,7 @@ def source_name(item: dict[str, Any]) -> str:
 
 
 def published_label(item: dict[str, Any]) -> str:
-    raw = str(item.get("published") or "").strip()
-    if not raw:
-        return "время не указано"
-    cleaned = raw.replace("T", " ")
-    if cleaned.endswith("+00:00"):
-        return cleaned[:-6].split(".", 1)[0] + " UTC"
-    return cleaned.split(".", 1)[0][:19]
+    return compact_time_ru(item.get("published") or item.get("date"))
 
 
 def russian_topic(item: dict[str, Any]) -> str:
@@ -372,37 +373,11 @@ def russian_topic(item: dict[str, Any]) -> str:
 
 
 def reader_title(item: dict[str, Any]) -> str:
-    title = str(item.get("title") or "").strip()
-    if has_cyrillic(title):
-        return title
-    text = item_text(item)
-    source = source_name(item)
-    topic = russian_topic(item)
-    if "mica" in text:
-        return "Европейские правила MiCA снова в фокусе"
-    if "bank of england" in text and "stablecoin" in text:
-        return "Британские регуляторы уточняют контур системных стейблкоинов"
-    if "market statistics" in text and "sec" in text:
-        return "SEC обновила статистику рынка"
-    if "security" in text and "quantum" in text:
-        return "Google описывает защиту Android для постквантовой эпохи"
-    if "workspace" in text and "prompt" in text:
-        return "Google описывает защиту Workspace от непрямых атак на инструкции"
-    if "apple intelligence" in text:
-        return "Apple расширяет функции ИИ в пользовательских сценариях"
-    if "nvidia" in text and "inference" in text:
-        return "NVIDIA объясняет снижение стоимости инференса"
-    if "moon" in text and "nasa" in text:
-        return "NASA расширяет научную программу для лунной базы"
-    if "ableton" in text or "cubase" in text:
-        return "Аудиоинструменты переходят к подписочным рабочим наборам"
-    if is_market_forecast_item(item):
-        return f"Оценка участника рынка: {topic}"
-    return f"Источник сообщает: {stream_label(stream_slug(item))} — {topic}"
+    return shared_reader_title_ru(item)
 
 
 def original_title(item: dict[str, Any]) -> str:
-    return str(item.get("title") or "").strip()
+    return shared_source_original_title(item)
 
 
 def public_text(value: object) -> str:
@@ -648,6 +623,13 @@ def cluster_materials(cluster: list[dict[str, Any]]) -> str:
     return '<ul class="cluster-materials">' + "".join(rows) + "</ul>"
 
 
+def item_source_action(item: dict[str, Any], text: str = "Открыть источник") -> str:
+    url = item.get("url") or ""
+    if not url:
+        return esc(text)
+    return f'<a href="{esc(public_href(url))}">{esc(text)}</a>'
+
+
 def confirmation_level(item: dict[str, Any]) -> str:
     source_class = str(item.get("source_class") or "public_source")
     source_type = str(item.get("source_type") or "public source")
@@ -713,43 +695,29 @@ def monitoring(item: dict[str, Any]) -> str:
     )
 
 
-def card(cluster: list[dict[str, Any]]) -> str:
-    item = cluster[0]
-    stream = stream_label(stream_slug(item))
-    sources = cluster_sources(cluster)
-    title = reader_title(item)
-    source = public_text(source_name(item))
-    source_meta = (
-        f"Источник: {source} / "
-        f"время: {published_label(item)} / "
-        f"тема: {stream} / "
-        f"уровень подтверждения: {confirmation_level(item)}"
-    )
-    url = item.get("url") or ""
-    title_html = esc(public_text(title))
-    if url:
-        title_html = f'<a href="{esc(public_href(url))}">{title_html}</a>'
-    cluster_label = f"{len(sources)} источник(ов)"
-
-    return f"""<article class="card signal-card">
-  {stream_visual(stream_slug(item), variant="thumb")}
-  <p class="label">{esc(source_meta)} · {esc(cluster_label)}</p>
-  <h3>{title_html}</h3>
-  <p><strong>Тезис:</strong> {esc(thesis(item, cluster))}</p>
-  <p><strong>Почему важно:</strong> {esc(implication(item))}</p>
-  <p><strong>Уровень подтверждения:</strong> {esc(confirmation_level(item))}</p>
-  <p><strong>Что отслеживать дальше:</strong> {esc(monitoring(item))}</p>
-  <p><strong>Ссылка на источник:</strong> {title_html}</p>
-  <p><strong>Оригинал:</strong></p>
-  {cluster_materials(cluster)}
-  <p><strong>Ограничение:</strong> {esc(uncertainty(item, cluster))}</p>
+def card_for_item(item: dict[str, Any]) -> str:
+    title = public_text(reader_title(item))
+    excerpt = public_text(shared_reader_excerpt_ru(item))
+    source_line = public_text(shared_reader_source_line_ru(item))
+    original = public_text(original_title(item))
+    original_block = ""
+    if original and original != title:
+        original_block = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
+    return f"""<article class="card signal-card signal-card--reader">
+  <span class="news-stream-marker stream-dot--{esc(stream_slug(item))}" aria-hidden="true"></span>
+  <div class="signal-card-body">
+    <h3>{item_source_action(item, title)}</h3>
+    <p class="news-excerpt">{esc(excerpt)}</p>
+    <p class="news-meta">{esc(source_line)}</p>{original_block}
+    <p class="news-source-link">{item_source_action(item)}</p>
+  </div>
 </article>"""
 
 
 def cards_block(items: list[dict[str, Any]]) -> str:
     if not items:
         return '<article class="card empty-state"><p class="label">Нет публичных сигналов</p><h3>Сегодня нет материалов для отображения</h3><p>Свежие сообщения не прошли публичную проверку или требуют дополнительного подтверждения.</p></article>'
-    return "\n".join(card(cluster) for cluster in cluster_items(items))
+    return "\n".join(card_for_item(cluster[0]) for cluster in cluster_items(items))
 
 
 def today_feature(items: list[dict[str, Any]]) -> str:
@@ -757,14 +725,14 @@ def today_feature(items: list[dict[str, Any]]) -> str:
         return ""
     item = items[0]
     title = public_text(reader_title(item))
-    source = public_text(source_name(item))
-    stream = stream_label(stream_slug(item))
+    excerpt = public_text(shared_reader_excerpt_ru(item, max_len=220))
+    source_line = public_text(shared_reader_source_line_ru(item))
     return f"""<section class="today-feature" aria-label="Главное событие">
   {stream_visual(stream_slug(item), variant="feature")}
   <div>
-    <p class="label">{esc(published_label(item))} · {esc(source)} · {esc(stream)}</p>
+    <p class="label">{esc(source_line)}</p>
     <h2>{esc(title)}</h2>
-    <p>{esc(implication(item))}</p>
+    <p>{esc(excerpt)}</p>
   </div>
 </section>"""
 
@@ -936,24 +904,51 @@ def digest_section(title: str, body: str) -> str:
     return f'<section class="panel digest-section"><h2>{esc(title)}</h2>{body}</section>'
 
 
+def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 5) -> str:
+    lines: list[str] = []
+    for cluster in clusters[:limit]:
+        item = cluster[0]
+        lines.append(f"{reader_title(item)} — {stream_label(stream_slug(item))}.")
+    return '<section class="panel today-highlights"><h2>Главное за сегодня</h2>' + list_html(lines) + "</section>"
+
+
+def grouped_today_cards(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return '<section class="today-stream-group"><h2>Материалы</h2>' + cards_block(items) + "</section>"
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for item in items:
+        groups.setdefault(stream_slug(item), []).append(item)
+    sections: list[str] = []
+    for slug, rows in sorted(groups.items(), key=lambda pair: stream_label(pair[0])):
+        cards = "\n".join(card_for_item(item) for item in rows)
+        sections.append(f"""<section class="today-stream-group">
+  <h2>{esc(stream_label(slug))}</h2>
+  <div class="reader-card-list">{cards}</div>
+</section>""")
+    return '<section class="today-grouped-cards" aria-label="Отобранные материалы">' + "\n".join(sections) + "</section>"
+
+
+def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> str:
+    counts = source_counts(items)
+    review_count = len(policy_decisions(policy, "review_only"))
+    blocked_count = len(policy_decisions(policy, "blocked"))
+    text = (
+        f"Типы источников: {counts}. "
+        "Сообщения источников не являются готовым выводом; прогнозы и оценки участников рынка подписаны как оценки. "
+        "Это не инвестиционная, юридическая или операционная рекомендация. "
+        f"Не вошли в выпуск: требуют проверки — {review_count}, исключены — {blocked_count}."
+    )
+    return f'<section class="panel source-note"><h2>Источники и проверка</h2><p>{esc(text)}</p></section>'
+
+
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     clusters = cluster_items(items)
-    top_titles = [f"{reader_title(cluster[0])} — {stream_label(stream_slug(cluster[0]))}; {uncertainty(cluster[0], cluster)}" for cluster in clusters[:5]]
-    sections = [
-        digest_section(
-            "Главное за период",
-            f"<p>Выпуск за {esc(report.get('date'))}: {len(items)} публичных сообщений, {len(clusters)} тематических групп. Главные темы: {esc(top_streams(items))}.</p><p>{esc(policy_summary(policy))}</p>",
-        ),
-        digest_section("События с наибольшим эффектом", list_html(top_titles)),
-        digest_section("Регуляторика и правовой контур", list_html(regulatory_items(items))),
-        digest_section("Инфраструктура и участники рынка", list_html(infrastructure_items(items))),
-        digest_section("Продуктовые и организационные импликации", list_html(implication_lines(items))),
-        digest_section("Радар слабых сигналов", list_html(weak_signal_lines(policy))),
-        digest_section("Что проверять дальше", list_html(next_checks(clusters))),
-        digest_section("Источники и уровень надёжности", list_html(reliability_lines(items, auto_report))),
-    ]
-    cards = f'<section class="grid latest-grid" aria-label="Публичные карточки сигналов">{cards_block(items)}</section>'
-    return "\n".join([today_feature(items)] + sections + [cards])
+    return "\n".join([
+        today_feature(items),
+        today_highlights(clusters),
+        grouped_today_cards(items),
+        compact_source_note(items, policy),
+    ])
 
 
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
@@ -986,12 +981,6 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
     page_title = "News Dispatch — главное за сегодня"
     h1 = "Главное за сегодня"
     mode_label = "Ежедневный обзор" if gate.passed else "Ограниченная сводка"
-    lede = (
-        "Короткий русскоязычный обзор по публичным источникам: что произошло, почему это важно и что проверить дальше."
-        if gate.passed
-        else "Часть входных сообщений не показана публично; доступна только осторожная сводка без ручного решения."
-    )
-    status_text = f"В сегодняшнем выпуске: {len(items)} материалов, {len(clusters)} тематических групп. Источники публичные; прогнозы и неподтверждённые сообщения помечаются осторожно."
 
     return f"""<!doctype html>
 <html lang="ru">
@@ -1008,12 +997,9 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
     <nav class="top-nav" aria-label="Навигация"><a href="news/index.html">Ленты</a><a href="digests/index.html">Дайджесты</a><a href="today.html">Сегодня</a><a href="radar/index.html">Источники</a></nav>
     <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
     <h1>{h1}</h1>
-    <p class="lede">{esc(lede)}</p>
   </header>
   <main>
-    <section class="panel digest-status"><h2>Сводка выпуска</h2><p>{esc(status_text)}</p></section>
     {digest_body}
-    <section class="panel boundary"><h2>Граница интерпретации</h2><p>Факт появления материала в источнике не равен подтверждённому изменению рынка, регулирования или инфраструктуры. Это не инвестиционная, юридическая или операционная рекомендация.</p></section>
   </main>
 </body>
 </html>

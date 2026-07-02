@@ -86,7 +86,7 @@ PUBLIC_SECURITY_REPORT_CONTEXT_PATTERN = re.compile(
     re.IGNORECASE,
 )
 TITLE_LIKE_LINE_PATTERN = re.compile(
-    r'(?i)(["\'](?:title|first_title)["\']\s*:|class=["\'](?:news-original|signal-original-title)["\']|<h[1-6]\b|<a\b|<title>|<meta\b)',
+    r'(?i)(["\'](?:title|first_title|source_original_title)["\']\s*:|class=["\'](?:news-original|signal-original-title)["\']|<h[1-6]\b|<a\b|<title>|<meta\b)',
 )
 QUOTED_PUBLIC_SECURITY_TOPIC_PATTERN = re.compile(
     r"`[^`]*(?:cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)[^`]*`",
