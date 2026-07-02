@@ -222,6 +222,8 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "digests/index.html" in html
     assert "radar/index.html" in html
     assert "Главное за сегодня" in html
+    assert "today-feature" in html
+    assert "stream-visual" in html
     assert "Граница интерпретации" in html
     assert "не инвестиционная" in html
 

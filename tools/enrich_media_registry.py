@@ -277,7 +277,7 @@ def fetch_metadata(url: str) -> dict[str, str]:
     return result
 
 
-def enrich_item(row: dict[str, str], manual: dict[str, dict[str, str]]) -> dict[str, str]:
+def enrich_item(row: dict[str, str], manual: dict[str, dict[str, str]], skipped: list[str]) -> dict[str, str]:
     url = row["url"]
     item = dict(manual.get(url, {}))
     item.setdefault("id", re.sub(r"[^a-z0-9]+", "-", urlparse(url).netloc.lower() + "-" + urlparse(url).path.strip("/").lower()).strip("-")[:80])
@@ -299,7 +299,7 @@ def enrich_item(row: dict[str, str], manual: dict[str, dict[str, str]]) -> dict[
         print(f"enriched: {url}")
     except (HTTPError, URLError, TimeoutError, OSError) as exc:
         item["metadata_error"] = exc.__class__.__name__
-        print(f"metadata skipped: {url}: {exc.__class__.__name__}")
+        skipped.append(exc.__class__.__name__)
     return item
 
 
@@ -307,7 +307,11 @@ def main() -> int:
     MEDIA_DIR.mkdir(parents=True, exist_ok=True)
     manual = load_manual_registry()
     rows = all_urls()
-    generated = [enrich_item(row, manual) for row in rows]
+    skipped: list[str] = []
+    generated = [enrich_item(row, manual, skipped) for row in rows]
+    if skipped:
+        counts = ", ".join(f"{name}: {skipped.count(name)}" for name in sorted(set(skipped)))
+        print(f"metadata skipped: {len(skipped)} item(s) ({counts})")
     payload = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "source": "tools/enrich_media_registry.py",
