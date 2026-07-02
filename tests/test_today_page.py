@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 import sys
 from pathlib import Path
 
@@ -175,12 +176,51 @@ def forecast_report() -> dict:
     }
 
 
+PUBLIC_FORBIDDEN_TERMS = [
+    "selected",
+    "reader_safe",
+    "source_rule_status",
+    "validation",
+    "draft-only",
+    "review-only",
+    "generated",
+    "ai-generated",
+    "prompt",
+    "json",
+    "score=",
+    "ranking score",
+    "final_score",
+    "selection_score",
+    "fetch warnings",
+    "internal diagnostics",
+    "machine policy",
+    "gate",
+    "gates",
+    "source ok",
+    "ai-generated",
+    "ии сгенерировал",
+    "модель считает",
+    "автоматический анализ",
+    "машинная проверка",
+]
+
+
+def card_headings(html: str) -> list[str]:
+    return re.findall(r"<article class=\"card signal-card\">.*?<h3>(.*?)</h3>", html, flags=re.S)
+
+
+def visible_text(html: str) -> str:
+    without_scripts = re.sub(r"<(script|style).*?</\1>", " ", html, flags=re.I | re.S)
+    return re.sub(r"<[^>]+>", " ", without_scripts)
+
+
 def test_render_includes_required_links_and_boundary() -> None:
     html = build_today_page.render(sample_report())
-    assert "daily-radar-ranking-latest.json" in html
-    assert "radar/index.html" in html
+    assert "daily-radar-ranking-latest.json" not in html
+    assert "reader-policy-latest.json" not in html
+    assert "streams/index.html" in html
     assert "dispatches.html" in html
-    assert "Автономный дневной дайджест" in html
+    assert "Главное за сегодня" in html
     assert "Граница интерпретации" in html
     assert "не инвестиционная" in html
 
@@ -189,10 +229,11 @@ def test_autonomous_digest_sections_and_no_human_approval() -> None:
     html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
     for heading in build_today_page.DIGEST_SECTIONS:
         assert heading in html
-    assert "Human approval is not required" in html
-    assert "Gate: passed" in html
-    assert "Automated Gate" in html
-    assert "PASS:" in html
+    assert "Ежедневное ручное решение не требуется" in html
+    assert "Gate:" not in html
+    assert "PASS:" not in html
+    assert "автоматически" not in html.lower()
+    assert "машинная" not in html.lower()
 
 
 def test_auto_dispatch_artifacts_are_not_finished_analysis() -> None:
@@ -210,8 +251,8 @@ def test_auto_dispatch_artifacts_are_not_finished_analysis() -> None:
             ],
         },
     )
-    assert "Auto-dispatch artifacts использованы как контур проверки, а не как готовый анализ" in html
-    assert "draft_only" in html
+    assert "Подготовительные материалы использованы только как внутренний контур сверки" in html
+    assert "draft_only" not in html
 
 
 def test_gate_failure_renders_safe_fallback_without_human_decision() -> None:
@@ -219,23 +260,28 @@ def test_gate_failure_renders_safe_fallback_without_human_decision() -> None:
     report["items"][0]["source_type"] = ""
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
     html = build_today_page.render(report, policy, auto_report={"generated": []})
-    assert "Digest withheld by automated gate" in html
+    assert "Сегодняшний дайджест не показан полностью" in html
     assert "Пользовательское решение не требуется" in html
-    assert "Available safe signals" in html
-    assert "Gate: withheld" in html
+    assert "Доступные публичные сигналы" in html
+    assert "Gate:" not in html
+    assert "gate-fallback" not in html
 
 
 def test_render_includes_analytical_card_structure() -> None:
     html = build_today_page.render(sample_report())
-    assert "Central bank updates digital asset rules" in html
-    assert "score 1.25" in html
-    assert "relevance 0.82" in html
+    headings = card_headings(html)
+    assert headings
+    assert not any("Central bank updates digital asset rules" in heading for heading in headings)
+    assert any("Источник сообщает:" in heading for heading in headings)
+    assert "оригинал: <a href=\"https://example.com/item\">Central bank updates digital asset rules</a>" in html
+    assert "score 1.25" not in html
+    assert "relevance 0.82" not in html
     assert "Тезис:" in html
-    assert "Аргумент:" in html
-    assert "Следствие/риск:" in html
+    assert "Почему важно:" in html
     assert "Уровень подтверждения:" in html
     assert "Что отслеживать дальше:" in html
-    assert "Неопределённость:" in html
+    assert "Ссылка на источник:" in html
+    assert "Ограничение:" in html
 
 
 def test_render_clusters_similar_signals() -> None:
@@ -244,10 +290,9 @@ def test_render_clusters_similar_signals() -> None:
     assert len(clusters) == 1
     assert len(clusters[0]) == 2
     html = build_today_page.render(sample_report())
-    assert "Кластеров: 1" in html
-    assert "cluster 2 item(s)" in html
-    assert "Источники в кластере: 2" in html
-    assert "Материалы кластера:" in html
+    assert "1 тематических групп" in html
+    assert "2 источник(ов)" in html
+    assert "Оригинал:" in html
     assert "cluster-materials" in html
     assert "Example Regulator" in html
     assert "Example Media" in html
@@ -266,7 +311,7 @@ def test_today_radar_css_has_cluster_materials_styles() -> None:
 def test_card_stays_non_directive() -> None:
     html = build_today_page.render(sample_report())
     assert "не прогнозом и не инструкцией к действию" in html
-    assert "операционная рекомендация" in html
+    assert "инвестиционная, юридическая или операционная рекомендация" in html
     assert "Требуется сверка первоисточника" in html
 
 
@@ -341,15 +386,20 @@ def test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_round
     assert not any("Here’s what happened" in title for title in titles)
 
 
-def test_today_diagnostics_are_rendered() -> None:
+def test_today_diagnostics_remain_internal_not_public() -> None:
     report = live_balance_report()
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    _items, diagnostics = build_today_page.select_today_items(report, policy, limit=6)
+    assert diagnostics["source_counts_by_stream"]
+    assert diagnostics["selected_today_by_stream"]
     html = build_today_page.render(report, policy, auto_report={"generated": []})
-    assert "Диагностика отбора" in html
-    assert "Source counts by stream" in html
-    assert "Selected Today items by stream" in html
+    assert "Диагностика отбора" not in html
+    assert "Source counts by stream" not in html
+    assert "Selected Today items by stream" not in html
     assert "Криптофинансы" in html
-    assert "FCA sets systemic stablecoin rules" in html
+    headings = card_headings(html)
+    assert headings
+    assert not any("FCA sets systemic stablecoin rules" in heading for heading in headings)
 
 
 def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None:
@@ -357,10 +407,38 @@ def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
     html = build_today_page.render(report, policy, auto_report={"generated": []})
     assert "Citi slashes 12-month bitcoin, ether targets" in html
-    assert "Источник сообщает об оценке/прогнозе участника рынка" in html
+    assert "Источник сообщает об оценке участника рынка" in html
     assert "Это не факт будущей цены и не рекомендация" in html
-    assert "third-party assessment / analyst forecast" in html
     assert "не являются инвестиционной рекомендацией" in html
+
+
+def test_public_today_html_contains_no_debug_terms() -> None:
+    html = build_today_page.render(sample_report(), auto_report={"generated": []})
+    text = visible_text(html).lower()
+    for term in PUBLIC_FORBIDDEN_TERMS:
+        assert term not in text
+
+
+def test_public_today_uses_required_stream_labels() -> None:
+    expected = {
+        "finance": "Финансы",
+        "crypto-finance": "Криптофинансы",
+        "ai": "ИИ",
+        "tech-hardware-software": "Железо и софт",
+        "gear-style-edc": "EDC / стиль / вещи",
+        "moscow-city": "Москва",
+        "dj-audio-creative": "DJ / аудио / креатив",
+        "science-discovery": "Наука",
+        "general": "Спецвыпуски",
+    }
+    for slug, title in expected.items():
+        assert build_today_page.stream_label(slug) == title
+
+
+def test_public_today_has_russian_reader_labels() -> None:
+    html = build_today_page.render(sample_report(), auto_report={"generated": []})
+    for text in ["Главное за сегодня", "Источник", "Тезис", "Почему важно", "Что отслеживать дальше", "Ссылка на источник"]:
+        assert text in html
 
 
 def main() -> int:
@@ -375,8 +453,11 @@ def main() -> int:
     test_today_selection_caps_overfed_source_and_keeps_crypto()
     test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags()
     test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_roundup()
-    test_today_diagnostics_are_rendered()
+    test_today_diagnostics_remain_internal_not_public()
     test_forecast_flavored_crypto_card_is_not_presented_as_future_fact()
+    test_public_today_html_contains_no_debug_terms()
+    test_public_today_uses_required_stream_labels()
+    test_public_today_has_russian_reader_labels()
     print("today page tests passed")
     return 0
 

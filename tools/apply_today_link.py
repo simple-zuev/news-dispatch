@@ -15,7 +15,7 @@ def main() -> int:
     text = HOME.read_text(encoding="utf-8")
     if 'href="today.html"' in text:
         return 0
-    text = text.replace('<p class="hero-actions">', '<p class="hero-actions"><a href="today.html">Today Radar</a>', 1)
+    text = text.replace('<p class="hero-actions">', '<p class="hero-actions"><a href="today.html">Главное за сегодня</a>', 1)
     HOME.write_text(text, encoding="utf-8")
     print("Applied Today Radar link.")
     return 0

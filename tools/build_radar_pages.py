@@ -94,6 +94,8 @@ def source_name(source_title: str) -> str:
 
 
 def stream_title(slug: str) -> str:
+    if slug in PUBLIC_STREAM_LABELS:
+        return PUBLIC_STREAM_LABELS[slug]
     return str(STREAM_BY_SLUG.get(slug, {}).get("title", slug))
 
 
@@ -140,15 +142,17 @@ def signal_reader_summary(meta: dict[str, Any], body: str, title: str, source_ti
     if summary:
         return summary, False
     source = source_name(source_title) or "публичный источник"
-    return f"{source} передал в RSS/Atom заголовок: «{title}». Это сырой сигнал; контекст, последствия и интерпретации требуют проверки.", True
+    return f"{source} передал заголовок: «{title}». Это входной сигнал; контекст, последствия и интерпретации требуют проверки.", True
 
 
 def signal_confirmation_level(source_class: str, confidence: str) -> str:
-    confidence_part = f" Уверенность в metadata: {confidence}." if confidence else ""
+    confidence_part = f" Уровень уверенности: {confidence}." if confidence else ""
     if source_class in {"official_source", "official", "regulator", "company"}:
         return "Подтверждён факт публикации первичным или официальным источником; последствия и интерпретации требуют проверки." + confidence_part
+    if source_class == "research_media":
+        return "Предварительное исследование: подтверждён факт появления материала, но выводы не являются финальным подтверждением." + confidence_part
     if source_class in {"public_media", "specialized_media", "business_media", "industry_media", "research_media"}:
-        return "Source-reported: подтверждён факт появления материала в публичной ленте источника; утверждения и последствия не подтверждены." + confidence_part
+        return "Подтверждён факт появления материала в публичной ленте источника; утверждения и последствия не подтверждены." + confidence_part
     return "Ограниченный публичный сигнал: требуется ручная проверка источника, статуса и контекста." + confidence_part
 
 
@@ -185,6 +189,39 @@ def stream_data() -> list[dict[str, Any]]:
 
 
 STREAM_BY_SLUG = {item["slug"]: item for item in stream_data()}
+
+PUBLIC_STREAM_LABELS = {
+    "finance": "Финансы",
+    "crypto-finance": "Криптофинансы",
+    "ai": "ИИ",
+    "tech-hardware-software": "Железо и софт",
+    "gear-style-edc": "EDC / стиль / вещи",
+    "moscow-city": "Москва",
+    "dj-audio-creative": "DJ / аудио / креатив",
+    "science-discovery": "Наука",
+    "general": "Спецвыпуски",
+}
+
+SOURCE_CLASS_LABELS = {
+    "official_source": "официальный источник",
+    "official": "официальный источник",
+    "regulator": "регулятор",
+    "company": "компания",
+    "public_media": "публичное медиа",
+    "specialized_media": "профильное медиа",
+    "business_media": "деловое медиа",
+    "industry_media": "отраслевое медиа",
+    "research_media": "исследовательский источник",
+}
+
+
+def has_cyrillic(value: str) -> bool:
+    return bool(re.search(r"[А-Яа-яЁё]", value or ""))
+
+
+def source_class_label(value: str) -> str:
+    cleaned = str(value or "").strip()
+    return SOURCE_CLASS_LABELS.get(cleaned, cleaned.replace("_", " ") or "публичный источник")
 
 
 def source_status_by_stream() -> dict[str, dict[str, Any]]:
@@ -261,20 +298,33 @@ def head(title: str, description: str, css_href: str = "../styles/main.css") -> 
 def signal_card(row: dict[str, str]) -> str:
     source = row.get("source") or "Публичный источник"
     stream = row.get("stream", "")
-    label = " · ".join(part for part in [row.get("date", ""), stream_title(stream), row.get("source_class", ""), source_name(source), f"status: {row.get('status', 'draft')}"] if part)
+    label = " · ".join(
+        part
+        for part in [
+            row.get("date", ""),
+            stream_title(stream),
+            source_class_label(row.get("source_class", "")),
+            source_name(source),
+            "не опубликовано",
+        ]
+        if part
+    )
     link = row.get("url", "")
-    title = row.get("title", "Сигнал")
-    source_parts = [source_name(source) or source, row.get("source_class", "")]
+    original_title = row.get("title", "Сигнал")
+    title = original_title if has_cyrillic(original_title) and not row.get("raw_title_only") else f"Источник сообщает: {stream_title(stream)}"
+    source_parts = [source_name(source) or source, source_class_label(row.get("source_class", ""))]
     if row.get("source_type"):
         source_parts.append(row["source_type"])
     if link:
         heading = f'<h3><a href="{html.escape(link, quote=True)}">{html.escape(title)}</a></h3>'
     else:
         heading = f"<h3>{html.escape(title)}</h3>"
-    raw_label = '<span class="signal-raw-label">raw RSS title</span>' if row.get("raw_title_only") else '<span class="signal-raw-label">source-reported</span>'
+    raw_label = '<span class="signal-raw-label">входной заголовок источника</span>' if row.get("raw_title_only") else '<span class="signal-raw-label">сообщение источника</span>'
+    original_line = f'<p class="signal-original-title"><strong>Оригинал:</strong> {html.escape(original_title)}</p>' if original_title != title else ""
     return f"""<article class=\"card signal-card\">
-  <p class=\"label\">Raw signal · not published · signal != dispatch · {html.escape(label)}</p>
+  <p class=\"label\">Сигнал · не опубликовано · не материал · {html.escape(label)}</p>
   {heading}
+  {original_line}
   <p class=\"signal-raw-title\">{raw_label}<span>Что произошло: {html.escape(row.get("summary", ""))}</span></p>
   <dl class=\"signal-facts\">
     <div><dt>Источник</dt><dd>{html.escape(" · ".join(part for part in source_parts if part))}</dd></div>
@@ -309,20 +359,21 @@ def draft_card(path: Path) -> str:
     meta, body = parse_document(path.read_text(encoding="utf-8"))
     title = first_value(meta, "title", path.stem.replace("-", " "))
     streams = list_value(meta, "streams") or [first_value(meta, "stream", "general")]
-    stream_titles = [str(STREAM_BY_SLUG.get(stream, {}).get("title", stream)) for stream in streams if stream]
+    stream_titles = [stream_title(stream) for stream in streams if stream]
     date = first_value(meta, "date")
     status = first_value(meta, "status", "draft")
     publication_mode = first_value(meta, "publication_mode", "draft_only")
     sources = len(list_value(meta, "sources"))
     summary = first_value(meta, "summary") or draft_excerpt(body, "Черновик для редакционной проверки.")
-    rel = path.relative_to(ROOT).as_posix()
     source_count = f"{sources} источн." if sources else ""
-    label = " · ".join(part for part in [date, ", ".join(stream_titles), f"status: {status}", publication_mode, source_count] if part)
+    status_label = "подготовительный материал" if status else ""
+    mode_label = "не опубликовано" if publication_mode else ""
+    label = " · ".join(part for part in [date, ", ".join(stream_titles), status_label, mode_label, source_count] if part)
     return f"""<article class=\"card draft-review-card\">
-  <p class=\"label\">Draft != publication · {html.escape(label)}</p>
+  <p class=\"label\">Черновик ≠ публикация · {html.escape(label)}</p>
   <h3>{html.escape(title)}</h3>
   <p>{html.escape(summary)}</p>
-  <p class=\"draft-source-path\">{html.escape(rel)}</p>
+  <p class=\"draft-source-path\">Материал не является публичной публикацией и требует сверки источников.</p>
 </article>"""
 
 
@@ -330,14 +381,14 @@ def drafts_page() -> str:
     drafts = latest_draft_paths()
     cards = "\n".join(draft_card(path) for path in drafts)
     if not cards:
-        cards = """<article class=\"card empty-state\"><p class=\"label\">Нет черновиков</p><h3>Нет draft-only материалов к проверке</h3><p>Папка validation/curated-drafts отсутствует, а в текущем auto-dispatch индексе нет доступных черновиков.</p></article>"""
+        cards = """<article class=\"card empty-state\"><p class=\"label\">Нет черновиков</p><h3>Нет подготовительных материалов</h3><p>Сейчас нет доступных материалов для внутренней сверки.</p></article>"""
     return f"""<!doctype html>
 <html lang=\"ru\">
-{head("Дайджест — Черновики к проверке", "Draft-only материалы для редакционной проверки.", css_href="styles/main.css")}
+{head("Дайджест — Черновики к проверке", "Подготовительные материалы для сверки источников.", css_href="styles/main.css")}
 <body>
-  <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Дайджест</a><p class=\"eyebrow\">Review only</p><h1>Черновики к проверке</h1><p class=\"lede\">Материалы из validation/curated-drafts. Это не публикации, не dispatches и не финальные выводы.</p></header>
+  <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Дайджест</a><p class=\"eyebrow\">Внутренняя сверка</p><h1>Черновики к проверке</h1><p class=\"lede\">Это не публикации и не финальные выводы. Материалы нужны только для сверки источников, дат и формулировок.</p></header>
   <main>
-    <section class=\"panel draft-review-notice\"><h2>Граница публикации</h2><p>Draft != publication. Черновики нужны для ручной проверки источников, дат, статусов и формулировок. Source-reported claims требуют верификации перед публикацией.</p></section>
+    <section class=\"panel draft-review-notice\"><h2>Граница публикации</h2><p>Черновик не является публикацией. Сообщения источников требуют верификации перед включением в итоговый материал.</p></section>
     <section class=\"grid draft-review-grid\">{cards}</section>
   </main>
 </body>
@@ -347,11 +398,11 @@ def drafts_page() -> str:
 
 def stream_card(stream: dict[str, Any], count: int, source_status: dict[str, Any]) -> str:
     slug = str(stream["slug"])
-    title = str(stream["title"])
+    title = stream_title(slug)
     description = str(stream.get("description", ""))
     active = len(source_status.get("active", []))
     disabled = len(source_status.get("disabled", []))
-    source_note = f"{active} active / {disabled} paused sources"
+    source_note = f"{active} активных источников · {disabled} на паузе"
     return f"""<article class=\"card\">
   <p class=\"label\">{count} сигналов · {html.escape(source_note)}</p>
   <h3><a href=\"{html.escape(slug)}.html\">{html.escape(title)}</a></h3>
@@ -373,18 +424,18 @@ def empty_state(stream: dict[str, Any], source_status: dict[str, Any]) -> str:
     active = source_status.get("active", [])
     disabled = source_status.get("disabled", [])
     if active:
-        reason = "Активные источники есть, но в последнем Daily Radar run свежие материалы не прошли фильтры, source rules или порог релевантности."
+        reason = "Активные источники есть, но свежие сообщения не прошли публичный порог релевантности."
     elif disabled:
-        reason = "Все известные источники рубрики сейчас отключены или нестабильны; для восстановления нужны рабочие feed endpoints или fallback-источники."
+        reason = "Все известные источники темы сейчас отключены или нестабильны; нужны устойчивые публичные ленты."
     else:
-        reason = "Для этой рубрики пока не задано активных источников в sources/feeds.json."
+        reason = "Для этой темы пока нет активных публичных источников."
     return f"""<article class=\"card empty-state\">
   <p class=\"label\">Нет свежих сигналов</p>
   <h3>Почему рубрика пустая</h3>
   <p>{html.escape(reason)}</p>
   <p>Активные источники: {len(active)}. Отключённые источники: {len(disabled)}.</p>
   {disabled_sources_list(disabled)}
-  <p>Это диагностическое состояние, а не редакционный вывод.</p>
+  <p>Это техническая пустота покрытия, а не редакционный вывод.</p>
 </article>"""
 
 
@@ -404,7 +455,7 @@ def index_page(streams: list[dict[str, Any]], items: dict[str, list[dict[str, st
 def stream_page(stream: dict[str, Any], rows: list[dict[str, str]], source_status: dict[str, Any]) -> str:
     cards = "\n".join(signal_card(row) for row in rows)
     content = f"<section class=\"grid\">{cards}</section>" if cards else empty_state(stream, source_status)
-    title = str(stream["title"])
+    title = stream_title(str(stream["slug"]))
     description = str(stream.get("description", ""))
     return f"""<!doctype html>
 <html lang=\"ru\">

@@ -79,6 +79,12 @@ def test_public_security_report_context_is_allowed() -> None:
     assert warnings == []
 
 
+def test_generated_item_key_hash_is_not_phone_like() -> None:
+    blockers, warnings = scan_text('"item_key": "dc83334887059a31",\n')
+    assert blockers == []
+    assert warnings == []
+
+
 def main() -> int:
     test_phone_like_ignores_url_digit_fragments()
     test_phone_like_still_blocks_visible_phone()
@@ -88,6 +94,7 @@ def main() -> int:
     test_public_security_title_with_cookies_and_credentials_is_allowed()
     test_cookie_secret_value_is_still_blocked()
     test_public_security_report_context_is_allowed()
+    test_generated_item_key_hash_is_not_phone_like()
     print("privacy scan tests passed")
     return 0
 
