@@ -263,7 +263,8 @@ def add_reader_css(text: str, path: Path) -> str:
 
 
 def enhance_html(path: Path) -> None:
-    text = clean_copy(path.read_text(encoding="utf-8"))
+    raw_text = path.read_text(encoding="utf-8")
+    text = raw_text if path.relative_to(SITE_DIR).as_posix() == "index.html" else clean_copy(raw_text)
     if 'property="og:title"' not in text:
         title_match = re.search(r"<title>(.*?)</title>", text, re.S)
         title = html.unescape(title_match.group(1)) if title_match else "Дайджест"

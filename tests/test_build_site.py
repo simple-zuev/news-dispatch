@@ -56,21 +56,30 @@ def test_offline_ranking_fixture_contract() -> None:
     }
 
 
-def test_homepage_template_is_product_index_and_public_clean() -> None:
+def test_homepage_template_matches_simple_newsroom_blocks() -> None:
     html = render_site.homepage_template([], {})
     lower = html.lower()
-    assert "<h1>Новости и дайджесты</h1>" in html
-    assert "Ленты новостей" in html
-    assert "Большие дайджесты" in html
-    assert "newsroom-feature-card" in html
+    for block in [
+        "newsroom-top",
+        "feature-card",
+        "quick-signals",
+        "rubric-tiles",
+        "latest-news",
+        "digest-preview",
+        "source-strip",
+    ]:
+        assert block in html
     assert "quick-signals" in html
     assert "stream-visual" in html
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
+    assert "radar/index.html" in html
     assert "drafts.html" not in html
     assert "Статус обновления" not in html
     assert "Как читать" not in html
+    assert "Рубрики анализа" not in html
+    assert "порог релевантности" not in lower
     assert "featured-card" not in html
     assert "homepage-hero" not in html
     assert "техническая пустота покрытия" not in lower
@@ -85,9 +94,9 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         "Криптофинансы",
         "ИИ",
         "Железо и софт",
-        "EDC / стиль / вещи",
+        "EDC / стиль",
         "Москва",
-        "DJ / аудио / креатив",
+        "DJ / аудио",
         "Наука",
     ]:
         assert title in html
@@ -113,7 +122,7 @@ def main() -> int:
     test_default_modes_are_deterministic()
     test_pages_modes_are_explicit()
     test_offline_ranking_fixture_contract()
-    test_homepage_template_is_product_index_and_public_clean()
+    test_homepage_template_matches_simple_newsroom_blocks()
     test_public_stream_labels_are_exact_on_homepage_cards()
     test_stream_fallback_visuals_exist_for_all_public_streams()
     test_old_home_hero_css_is_removed()
