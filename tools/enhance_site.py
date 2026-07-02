@@ -283,8 +283,21 @@ def write_rss(items: list[dict[str, object]]) -> None:
 
 
 def write_sitemap(items: list[dict[str, object]]) -> None:
-    urls = [f"{BASE_URL}/", f"{BASE_URL}/dispatches.html", f"{BASE_URL}/rss.xml", f"{BASE_URL}/sitemap.xml", f"{BASE_URL}/streams/index.html", f"{BASE_URL}/rubrics/index.html", f"{BASE_URL}/radar/index.html", f"{BASE_URL}/status.json"]
+    urls = [
+        f"{BASE_URL}/",
+        f"{BASE_URL}/news/index.html",
+        f"{BASE_URL}/digests/index.html",
+        f"{BASE_URL}/today.html",
+        f"{BASE_URL}/dispatches.html",
+        f"{BASE_URL}/rss.xml",
+        f"{BASE_URL}/sitemap.xml",
+        f"{BASE_URL}/streams/index.html",
+        f"{BASE_URL}/rubrics/index.html",
+        f"{BASE_URL}/radar/index.html",
+        f"{BASE_URL}/status.json",
+    ]
     urls.extend(f"{BASE_URL}/streams/{stream['slug']}.html" for stream in STREAMS)
+    urls.extend(f"{BASE_URL}/news/{stream['slug']}.html" for stream in STREAMS)
     urls.extend(f"{BASE_URL}/radar/{stream['slug']}.html" for stream in STREAMS)
     urls.extend(f"{BASE_URL}/rubrics/{rubric['slug']}.html" for rubric in RUBRICS)
     urls.extend(str(item["url"]) for item in items)

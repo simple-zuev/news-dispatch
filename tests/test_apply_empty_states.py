@@ -25,6 +25,9 @@ def test_grid_placeholder_is_inserted() -> None:
     rendered = apply_empty_states.fill_empty_grids(path, source)
     assert "empty-state" in rendered
     assert "Нет данных" in rendered
+    assert "promotion review" not in rendered
+    assert "reader-facing" not in rendered
+    assert "live-сигнал" not in rendered
 
 
 def test_grid_with_content_is_preserved() -> None:
@@ -33,9 +36,17 @@ def test_grid_with_content_is_preserved() -> None:
     assert apply_empty_states.fill_empty_grids(path, source) == source
 
 
+def test_loose_live_empty_copy_is_reader_friendly() -> None:
+    rendered = apply_empty_states.replace_loose_empty_paragraphs("<p>В этом потоке сейчас нет live-сигналов.</p>")
+    assert "Сегодня новых материалов по теме нет." in rendered
+    assert "Daily Radar" not in rendered
+    assert "live-сигнал" not in rendered
+
+
 def main() -> int:
     test_grid_placeholder_is_inserted()
     test_grid_with_content_is_preserved()
+    test_loose_live_empty_copy_is_reader_friendly()
     print("empty-state tests passed")
     return 0
 

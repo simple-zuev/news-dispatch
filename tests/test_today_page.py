@@ -218,8 +218,9 @@ def test_render_includes_required_links_and_boundary() -> None:
     html = build_today_page.render(sample_report())
     assert "daily-radar-ranking-latest.json" not in html
     assert "reader-policy-latest.json" not in html
-    assert "streams/index.html" in html
-    assert "dispatches.html" in html
+    assert "news/index.html" in html
+    assert "digests/index.html" in html
+    assert "radar/index.html" in html
     assert "Главное за сегодня" in html
     assert "Граница интерпретации" in html
     assert "не инвестиционная" in html
@@ -229,7 +230,7 @@ def test_autonomous_digest_sections_and_no_human_approval() -> None:
     html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
     for heading in build_today_page.DIGEST_SECTIONS:
         assert heading in html
-    assert "Ежедневное ручное решение не требуется" in html
+    assert "Ежедневное ручное решение не требуется" not in html
     assert "Gate:" not in html
     assert "PASS:" not in html
     assert "автоматически" not in html.lower()
@@ -261,7 +262,7 @@ def test_gate_failure_renders_safe_fallback_without_human_decision() -> None:
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
     html = build_today_page.render(report, policy, auto_report={"generated": []})
     assert "Сегодняшний дайджест не показан полностью" in html
-    assert "Пользовательское решение не требуется" in html
+    assert "Ниже оставлены только осторожные публичные материалы" in html
     assert "Доступные публичные сигналы" in html
     assert "Gate:" not in html
     assert "gate-fallback" not in html

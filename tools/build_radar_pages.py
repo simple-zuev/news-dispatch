@@ -400,42 +400,19 @@ def stream_card(stream: dict[str, Any], count: int, source_status: dict[str, Any
     slug = str(stream["slug"])
     title = stream_title(slug)
     description = str(stream.get("description", ""))
-    active = len(source_status.get("active", []))
-    disabled = len(source_status.get("disabled", []))
-    source_note = f"{active} активных источников · {disabled} на паузе"
+    source_note = f"{count} материалов" if count else "Сегодня новых материалов нет"
     return f"""<article class=\"card\">
-  <p class=\"label\">{count} сигналов · {html.escape(source_note)}</p>
+  <p class=\"label\">{html.escape(source_note)}</p>
   <h3><a href=\"{html.escape(slug)}.html\">{html.escape(title)}</a></h3>
   <p>{html.escape(description)}</p>
 </article>"""
 
 
-def disabled_sources_list(disabled: list[dict[str, str]]) -> str:
-    if not disabled:
-        return ""
-    rows = "".join(
-        f"<li><strong>{html.escape(source.get('title', 'Источник'))}:</strong> {html.escape(source.get('reason', 'Отключён.'))}</li>"
-        for source in disabled[:6]
-    )
-    return f"<ul class=\"cluster-materials\">{rows}</ul>"
-
-
 def empty_state(stream: dict[str, Any], source_status: dict[str, Any]) -> str:
-    active = source_status.get("active", [])
-    disabled = source_status.get("disabled", [])
-    if active:
-        reason = "Активные источники есть, но свежие сообщения не прошли публичный порог релевантности."
-    elif disabled:
-        reason = "Все известные источники темы сейчас отключены или нестабильны; нужны устойчивые публичные ленты."
-    else:
-        reason = "Для этой темы пока нет активных публичных источников."
     return f"""<article class=\"card empty-state\">
-  <p class=\"label\">Нет свежих сигналов</p>
-  <h3>Почему рубрика пустая</h3>
-  <p>{html.escape(reason)}</p>
-  <p>Активные источники: {len(active)}. Отключённые источники: {len(disabled)}.</p>
-  {disabled_sources_list(disabled)}
-  <p>Это техническая пустота покрытия, а не редакционный вывод.</p>
+  <p class=\"label\">Нет новых материалов</p>
+  <h3>Сегодня новых материалов по теме нет.</h3>
+  <p>Загляните позже: рубрика обновится, когда появятся подходящие публичные сообщения.</p>
 </article>"""
 
 
@@ -443,9 +420,9 @@ def index_page(streams: list[dict[str, Any]], items: dict[str, list[dict[str, st
     cards = "\n".join(stream_card(stream, len(items.get(str(stream["slug"]), [])), source_status.get(str(stream["slug"]), {})) for stream in streams)
     return f"""<!doctype html>
 <html lang=\"ru\">
-{head("Дайджест — Свежие сигналы", "Публичный радар сигналов по темам.")}
+{head("Источники — News Dispatch", "Публичные сообщения по темам.")}
 <body>
-  <header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">Дайджест</a><p class=\"eyebrow\">Радар</p><h1>Свежие сигналы</h1><p class=\"lede\">Публичные сигналы по темам. Это сырьё для анализа, а не опубликованные выводы.</p></header>
+  <header class=\"masthead compact\"><a class=\"backlink\" href=\"../index.html\">News Dispatch</a><p class=\"eyebrow\">Источники</p><h1>Источники по темам</h1><p class=\"lede\">Публичные сообщения по рубрикам. Для чтения широкой ленты откройте раздел «Ленты новостей».</p></header>
   <main><section class=\"grid\">{cards}</section></main>
 </body>
 </html>
@@ -459,9 +436,9 @@ def stream_page(stream: dict[str, Any], rows: list[dict[str, str]], source_statu
     description = str(stream.get("description", ""))
     return f"""<!doctype html>
 <html lang=\"ru\">
-{head(f"Дайджест — Свежие сигналы — {title}", description)}
+{head(f"Источники — {title}", description)}
 <body>
-  <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Свежие сигналы</a><p class=\"eyebrow\">Радар темы</p><h1>{html.escape(title)}</h1><p class=\"lede\">{html.escape(description)}</p></header>
+  <header class=\"masthead compact\"><a class=\"backlink\" href=\"index.html\">Источники</a><p class=\"eyebrow\">Тема</p><h1>{html.escape(title)}</h1><p class=\"lede\">{html.escape(description)}</p></header>
   <main>{content}</main>
 </body>
 </html>

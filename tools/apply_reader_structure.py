@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Add lightweight reader structure to generated index and stream pages."""
+"""Keep generated reader pages free of legacy helper blocks."""
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,24 +12,7 @@ SITE_DIR = ROOT / "site"
 HOME_MARKER = "reader-home-intro"
 TOPIC_MARKER = "reader-topic-context"
 
-HOME_BLOCK = """
-<section class="panel reader-home-intro">
-  <h2>Как читать этот радар</h2>
-  <p>Сигналы показывают, что появилось в публичных источниках. Материалы — это уже отобранные публикации с источниками, контекстом и ограничениями.</p>
-</section>
-<section class="panel reader-home-intro">
-  <h2>Свежие сигналы</h2>
-  <p>Для первичного просмотра новых публичных сообщений используйте радар. Сигнал не является готовым аналитическим выводом.</p>
-  <p class="hero-actions"><a href="radar/index.html">Открыть свежие сигналы</a></p>
-</section>
-""".strip()
-
-TOPIC_BLOCK = """
-<section class="panel reader-topic-context">
-  <h2>Контекст темы</h2>
-  <p>Сначала смотрите свежие сигналы как входной радар. Опубликованные материалы ниже — только те сюжеты, которые прошли редакционную проверку.</p>
-</section>
-""".strip()
+LEGACY_BLOCK_RE = r'\s*<section class="panel (?:reader-home-intro|reader-topic-context)">.*?</section>'
 
 
 def insert_after_main(text: str, block: str) -> str:
@@ -49,9 +33,7 @@ def process_homepage() -> bool:
     if not path.exists():
         return False
     text = path.read_text(encoding="utf-8")
-    if HOME_MARKER in text:
-        return False
-    new_text = insert_after_status(text, HOME_BLOCK)
+    new_text = re.sub(LEGACY_BLOCK_RE, "", text, flags=re.S)
     if new_text == text:
         return False
     path.write_text(new_text, encoding="utf-8")
@@ -64,9 +46,7 @@ def process_stream_pages() -> int:
         if path.name == "index.html":
             continue
         text = path.read_text(encoding="utf-8")
-        if TOPIC_MARKER in text:
-            continue
-        new_text = insert_after_main(text, TOPIC_BLOCK)
+        new_text = re.sub(LEGACY_BLOCK_RE, "", text, flags=re.S)
         if new_text != text:
             path.write_text(new_text, encoding="utf-8")
             changed += 1

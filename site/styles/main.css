@@ -26,12 +26,12 @@ body {
 .masthead,
 .article-hero,
 main {
-  width: min(1120px, calc(100vw - 40px));
+  width: min(1040px, calc(100vw - 40px));
   margin: 0 auto;
 }
 
 .masthead {
-  padding: clamp(54px, 7vw, 86px) 0 44px;
+  padding: 36px 0 28px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -40,7 +40,7 @@ main {
 }
 
 .masthead.compact {
-  padding-bottom: 30px;
+  padding-bottom: 26px;
 }
 
 .eyebrow,
@@ -60,6 +60,26 @@ main {
   display: inline-block;
   text-decoration: none;
   border-bottom: 1px solid currentColor;
+}
+
+.top-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 16px 0 26px;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+.top-nav a {
+  color: var(--ink);
+  text-decoration-color: rgba(21, 21, 21, 0.32);
+  text-underline-offset: 0.18em;
+}
+
+.top-nav a:hover {
+  color: var(--accent);
 }
 
 .hero-actions {
@@ -114,8 +134,8 @@ main {
 h1 {
   margin: 0;
   max-width: 980px;
-  font-size: clamp(2.6rem, 7.5vw, 6.2rem);
-  line-height: 1;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
+  line-height: 1.08;
   letter-spacing: 0;
   overflow-wrap: anywhere;
   text-wrap: balance;
@@ -123,30 +143,30 @@ h1 {
 
 .masthead.compact h1 {
   max-width: 920px;
-  font-size: clamp(2.25rem, 5.4vw, 4.55rem);
-  line-height: 1.06;
+  font-size: clamp(1.9rem, 3.4vw, 2.65rem);
+  line-height: 1.1;
 }
 
 .lede {
   max-width: 820px;
-  margin: 30px 0 0;
+  margin: 18px 0 0;
   color: var(--muted);
-  font-size: clamp(1.16rem, 2vw, 1.55rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
 }
 
 main {
-  padding: 40px 0 72px;
+  padding: 30px 0 64px;
 }
 
 .panel {
-  padding: 30px 0;
+  padding: 24px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .panel h2 {
   margin: 0 0 10px;
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
-  letter-spacing: -0.03em;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  letter-spacing: 0;
 }
 
 .panel p {
@@ -280,27 +300,27 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 16px;
-  padding: 28px 0;
+  padding: 24px 0;
 }
 
 .card,
 .stream-card {
   display: flex;
   flex-direction: column;
-  min-height: 260px;
-  padding: 22px;
+  min-height: 0;
+  padding: 18px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
+  border-radius: 10px;
+  box-shadow: none;
   transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
 .card:hover,
 .stream-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   border-color: rgba(155, 77, 34, 0.28);
-  box-shadow: 0 24px 70px rgba(21, 21, 21, 0.07);
+  box-shadow: 0 12px 30px rgba(21, 21, 21, 0.045);
 }
 
 .card.is-sample {
@@ -344,8 +364,8 @@ main {
 .card h3,
 .stream-card h3 {
   margin: 0 0 14px;
-  font-size: 1.45rem;
-  line-height: 1.16;
+  font-size: 1.25rem;
+  line-height: 1.22;
   letter-spacing: 0;
   overflow-wrap: anywhere;
 }
@@ -368,6 +388,78 @@ main {
   margin: auto 0 0;
   color: var(--muted);
   font-size: 0.98rem;
+}
+
+.product-section {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.product-section h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  line-height: 1.16;
+}
+
+.product-section > p {
+  max-width: 760px;
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 1.04rem;
+}
+
+.compact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.news-list {
+  display: grid;
+  gap: 12px;
+  padding: 10px 0 36px;
+}
+
+.news-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.news-item h3 {
+  margin: 0 0 8px;
+  font-size: clamp(1.12rem, 2vw, 1.42rem);
+  line-height: 1.22;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.news-item h3 a {
+  color: inherit;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.14em;
+}
+
+.news-original,
+.news-source-link {
+  max-width: 820px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.news-source-link a {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.news-item.empty-state {
+  padding: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
 }
 
 .signal-summary {
@@ -530,8 +622,8 @@ main {
 
 .article-hero h1 {
   max-width: 980px;
-  font-size: clamp(2.2rem, 5.8vw, 4.8rem);
-  line-height: 1.04;
+  font-size: clamp(1.9rem, 4vw, 2.75rem);
+  line-height: 1.1;
   overflow-wrap: anywhere;
   text-wrap: balance;
 }
@@ -557,14 +649,14 @@ main {
 
 .article-body h1 {
   margin: 0 0 28px;
-  font-size: clamp(2rem, 5vw, 4rem);
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
 }
 
 .article-body h2 {
   margin: 52px 0 16px;
   padding-top: 20px;
   border-top: 1px solid var(--line);
-  font-size: clamp(1.7rem, 3.2vw, 2.7rem);
+  font-size: clamp(1.45rem, 3vw, 2rem);
 }
 
 .article-body h3 {
@@ -657,16 +749,16 @@ main {
   .masthead,
   .article-hero,
   main {
-    width: min(100vw - 28px, 1120px);
+    width: min(100vw - 28px, 1040px);
   }
 
   .masthead {
-    padding-top: 44px;
+    padding-top: 28px;
   }
 
   h1 {
-    font-size: clamp(3rem, 18vw, 5rem);
-    line-height: 0.92;
+    font-size: clamp(1.9rem, 9vw, 2.125rem);
+    line-height: 1.12;
   }
 
   .lede {
@@ -676,6 +768,10 @@ main {
   .hero-actions {
     align-items: stretch;
     gap: 8px;
+  }
+
+  .top-nav {
+    margin: 14px 0 22px;
   }
 
   .hero-actions a {

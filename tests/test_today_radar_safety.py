@@ -71,7 +71,7 @@ def test_today_radar_avoids_direct_trading_language() -> None:
 def test_today_radar_keeps_source_signal_boundary() -> None:
     html = rendered()
     assert "главное за сегодня" in html
-    assert "ежедневное ручное решение не требуется" in html
+    assert "ежедневное ручное решение не требуется" not in html
     assert "не инвестиционная" in html
     assert "требуется сверка первоисточника" in html
     assert "медиа-сообщения и одиночные утверждения источников читаются как проверочные сигналы" in html

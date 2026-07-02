@@ -586,33 +586,39 @@ def signal_counts(signals: dict[str, list[Signal]]) -> dict[str, int]:
 
 
 def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal]]) -> str:
-    latest_cards = "\n".join(dispatch_card(dispatch) for dispatch in ordered_dispatches(dispatches)[:6])
     dispatch_counts = stream_counts(dispatches)
     live_counts = signal_counts(signals)
-    stream_cards = "\n".join(
-        stream_card(stream, count=dispatch_counts.get(stream.slug, 0), signal_count=live_counts.get(stream.slug, 0))
-        for stream in STREAMS[:8]
+    feed_cards = "\n".join(
+        f"""<article class="card product-card">
+  <p class="label">{live_counts.get(stream.slug, 0)} материалов</p>
+  <h3><a href="news/{html.escape(stream.slug)}.html">{html.escape(stream_title(stream.slug))}</a></h3>
+  <p>{html.escape(stream.description)}</p>
+</article>"""
+        for stream in STREAMS
     )
-    rubric_counts = rubric_counts_for(dispatches)
-    rubric_cards = "\n".join(rubric_card(rubric, count=rubric_counts.get(rubric.slug, 0)) for rubric in RUBRICS[:6])
+    digest_cards = "\n".join(dispatch_card(dispatch) for dispatch in ordered_dispatches(dispatches)[:4])
+    if not digest_cards:
+        digest_cards = """<article class="card empty-state">
+  <p class="label">Нет дайджестов</p>
+  <h3>Большие дайджесты пока не опубликованы.</h3>
+</article>"""
     return f"""<!doctype html>
 <html lang="ru">
-{head("Главное за сегодня — News Dispatch", "Публичный русскоязычный обзор по технологиям, рынкам, ИИ, финансам, Москве, вещам, аудио и науке.")}
+{head("News Dispatch — ленты и дайджесты", "Ленты новостей и аналитические дайджесты по рубрикам.")}
 <body>
-  <header class="masthead">
-    <p class="eyebrow">Публичный обзор</p>
-    <h1>Главное за сегодня</h1>
-    <p class="lede">Короткий русскоязычный обзор по публичным источникам: главное за сегодня, темы, источники и ограничения интерпретации.</p>
-    <p class="hero-actions"><a href="today.html">Главное за сегодня</a><a href="streams/index.html">Темы</a><a href="dispatches.html">Архив материалов</a><a href="radar/index.html">Лента источников</a></p>
+  <header class="masthead compact">
+    <p class="eyebrow">News Dispatch</p>
+    <h1>Ленты и дайджесты</h1>
+    <p class="lede">Читайте новости по рубрикам или открывайте отдельные аналитические выпуски.</p>
+    <nav class="top-nav" aria-label="Навигация"><a href="news/index.html">Ленты</a><a href="digests/index.html">Дайджесты</a><a href="today.html">Сегодня</a><a href="radar/index.html">Источники</a></nav>
   </header>
 
   <main>
-    <section class="panel"><h2>Новые материалы</h2><p>Опубликованные материалы с источниками, контекстом и обозначенными ограничениями.</p></section>
-    <section class="grid latest-grid" aria-label="Новые материалы">{latest_cards}</section>
-    <section class="panel"><h2>Рубрики анализа</h2><p>Аналитические линзы поверх тем: регулирование, структура рынка, инфраструктура, продукт, безопасность, исследования и пользовательская практика.</p></section>
-    <section class="grid" aria-label="Рубрики анализа">{rubric_cards}</section>
-    <section class="panel"><h2>Темы</h2><p>Темы показывают опубликованные материалы и последние публичные сигналы источников.</p></section>
-    <section class="grid" aria-label="Темы">{stream_cards}</section>
+    <section class="panel product-section"><h2>Короткий обзор за сегодня</h2><p>Сжатая подборка выбранных событий дня.</p><p class="inline-link"><a href="today.html">Открыть сегодняшний обзор</a></p></section>
+    <section class="panel product-section"><h2>Ленты новостей</h2><p>Хронологические списки принятых публичных сообщений по рубрикам.</p></section>
+    <section class="grid compact-grid" aria-label="Ленты новостей">{feed_cards}</section>
+    <section class="panel product-section"><h2>Большие дайджесты</h2><p>Отдельные аналитические выпуски с синтезом, интерпретацией и источниками.</p><p class="inline-link"><a href="digests/index.html">Все дайджесты</a></p></section>
+    <section class="grid compact-grid" aria-label="Большие дайджесты">{digest_cards}</section>
   </main>
 </body>
 </html>
