@@ -24,9 +24,7 @@ from build_today_page import (
     public_href as safe_href,
     public_text as reader_public_text,
     reader_title as ranking_reader_title,
-    source_class_label as ranking_source_class_label,
     source_name as ranking_source_name,
-    source_type_label as ranking_source_type_label,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
 from newsroom_visuals import stream_visual
@@ -646,7 +644,7 @@ def ranking_published(item: dict[str, object]) -> str:
     return cleaned.split(".", 1)[0][:19]
 
 
-def load_ranking_items(limit: int = 32) -> list[dict[str, object]]:
+def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
     report = load_json(RANKING_PATH)
     safe_keys = reader_safe_keys()
     rows: list[dict[str, object]] = []
@@ -666,8 +664,15 @@ def load_ranking_items(limit: int = 32) -> list[dict[str, object]]:
             continue
         seen.add(key)
         rows.append(item)
-    rows.sort(key=lambda item: str(item.get("published") or item.get("date") or ""), reverse=True)
-    return rows[:limit]
+    rows.sort(
+        key=lambda item: (
+            bool(item.get("selected")),
+            float(item.get("selection_score") or item.get("final_score") or 0.0),
+            str(item.get("published") or item.get("date") or ""),
+        ),
+        reverse=True,
+    )
+    return rows[:limit] if limit is not None else rows
 
 
 def home_item_link(item: dict[str, object], text: str) -> str:
@@ -681,27 +686,34 @@ def home_ranking_title(item: dict[str, object]) -> str:
     return reader_public_text(ranking_reader_title(item))
 
 
+def home_rubric_title(slug: str) -> str:
+    short = {
+        "gear-style-edc": "EDC / стиль",
+        "dj-audio-creative": "DJ / аудио",
+    }
+    return short.get(slug, stream_title(slug))
+
+
 def home_feature_card(item: dict[str, object] | None) -> str:
     if not item:
-        return f"""<article class="newsroom-feature-card">
+        return f"""<article class="feature-card">
   {stream_visual("general", variant="feature")}
-  <div class="newsroom-feature-body">
+  <div class="feature-card-body">
     <p class="label">Сегодня</p>
     <h2><a href="today.html">Открыть короткий обзор за сегодня</a></h2>
-    <p>Главные публичные сообщения дня собраны в коротком обзоре.</p>
   </div>
 </article>"""
     stream = ranking_stream(item)
     source = reader_public_text(ranking_source_name(item))
-    source_type = ranking_source_type_label(item.get("source_type"))
-    reliability = ranking_source_class_label(item.get("source_class"))
     title = home_ranking_title(item)
-    return f"""<article class="newsroom-feature-card">
+    original = reader_public_text(str(item.get("title") or ""))
+    original_line = f'<p class="feature-original">Оригинал: {html.escape(original)}</p>' if original and original != title else ""
+    return f"""<article class="feature-card">
   {stream_visual(stream, variant="feature")}
-  <div class="newsroom-feature-body">
+  <div class="feature-card-body">
     <p class="label">{html.escape(ranking_published(item))} · {html.escape(source)} · {html.escape(stream_title(stream))}</p>
     <h2>{home_item_link(item, title)}</h2>
-    <p>{html.escape(source_type)} · {html.escape(reliability)}. Оригинал открыт по ссылке источника.</p>
+    {original_line}
   </div>
 </article>"""
 
@@ -710,9 +722,10 @@ def quick_signal_row(item: dict[str, object]) -> str:
     stream = ranking_stream(item)
     title = home_ranking_title(item)
     source = reader_public_text(ranking_source_name(item))
+    time = ranking_published(item)
     return f"""<article class="quick-signal-row">
   {stream_visual(stream, variant="mini")}
-  <div><p class="label">{html.escape(stream_title(stream))} · {html.escape(source)}</p><h3>{home_item_link(item, title)}</h3></div>
+  <div><h3>{home_item_link(item, title)}</h3><p>{html.escape(source)} · {html.escape(time)}</p></div>
 </article>"""
 
 
@@ -721,21 +734,34 @@ def feed_preview_card(item: dict[str, object]) -> str:
     title = home_ranking_title(item)
     source = reader_public_text(ranking_source_name(item))
     return f"""<article class="news-preview-card">
-  {stream_visual(stream, variant="thumb")}
-  <div>
-    <p class="label">{html.escape(ranking_published(item))} · {html.escape(source)}</p>
-    <h3>{home_item_link(item, title)}</h3>
-  </div>
+  <p class="news-time">{html.escape(ranking_published(item))}</p>
+  <span class="stream-dot stream-dot--{html.escape(stream)}"></span>
+  <h3>{home_item_link(item, title)}</h3>
+  <p>{html.escape(source)}</p>
 </article>"""
+
+
+def source_strip_items(items: list[dict[str, object]], limit: int = 7) -> str:
+    seen: list[str] = []
+    for item in items:
+        source = reader_public_text(ranking_source_name(item))
+        if source and source not in seen:
+            seen.append(source)
+        if len(seen) >= limit:
+            break
+    if not seen:
+        seen = ["Публичные источники"]
+    return "\n".join(f'<span class="source-pill">{html.escape(source)}</span>' for source in seen)
 
 
 def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal]]) -> str:
     dispatch_counts = stream_counts(dispatches)
-    ranking_items = load_ranking_items()
+    all_ranking_items = load_ranking_items(limit=None)
+    ranking_items = all_ranking_items[:32]
     live_counts = dict(signal_counts(signals))
-    if ranking_items:
+    if all_ranking_items:
         live_counts = {stream.slug: 0 for stream in STREAMS}
-        for item in ranking_items:
+        for item in all_ranking_items:
             stream = ranking_stream(item)
             live_counts[stream] = live_counts.get(stream, 0) + 1
     latest_time = ranking_published(ranking_items[0]) if ranking_items else "сегодня"
@@ -743,22 +769,25 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
     quick_rows = "\n".join(quick_signal_row(item) for item in ranking_items[1:7])
     if not quick_rows:
         quick_rows = """<article class="quick-signal-row"><div><p class="label">Сегодня</p><h3><a href="today.html">Открыть короткий обзор за сегодня</a></h3></div></article>"""
+    stream_order = ["crypto-finance", "finance", "ai", "tech-hardware-software", "moscow-city", "dj-audio-creative", "gear-style-edc", "science-discovery"]
+    stream_lookup = {stream.slug: stream for stream in STREAMS}
     feed_cards = "\n".join(
         f"""<article class="rubric-tile">
   {stream_visual(stream.slug, variant="mini")}
   <p class="label">{live_counts.get(stream.slug, 0)} материалов</p>
-  <h3><a href="news/{html.escape(stream.slug)}.html">{html.escape(stream_title(stream.slug))}</a></h3>
+  <h3><a href="news/{html.escape(stream.slug)}.html">{html.escape(home_rubric_title(stream.slug))}</a></h3>
 </article>"""
-        for stream in STREAMS
+        for stream in (stream_lookup[slug] for slug in stream_order if slug in stream_lookup)
     )
-    latest_cards = "\n".join(feed_preview_card(item) for item in ranking_items[7:15])
+    latest_cards = "\n".join(feed_preview_card(item) for item in ranking_items[7:19])
     if not latest_cards:
         latest_cards = """<article class="news-preview-card"><div><p class="label">Ленты</p><h3><a href="news/index.html">Открыть все ленты новостей</a></h3></div></article>"""
     digest_cards = "\n".join(
         f"""<article class="digest-preview-card">
-  {stream_visual(dispatch.stream, variant="tile")}
+  {stream_visual(dispatch.stream, variant="mini")}
   <p class="label">{html.escape(dispatch.date)} · {html.escape(stream_title(dispatch.stream))}</p>
   <h3><a href="{html.escape(dispatch.relative_url)}">{html.escape(dispatch.title)}</a></h3>
+  <p>{html.escape(dispatch.summary)}</p>
 </article>"""
         for dispatch in ordered_dispatches(dispatches)[:3]
     )
@@ -772,37 +801,44 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
 {head("News Dispatch — ленты и дайджесты", "Ленты новостей и аналитические дайджесты по рубрикам.")}
 <body>
   <header class="newsroom-header">
-    <div>
+    <div class="newsroom-brand">
+      <a class="brand-mark" href="index.html" aria-label="News Dispatch">ND</a>
       <a class="brand-link" href="index.html">News Dispatch</a>
-      <h1>Новости и дайджесты</h1>
-      <p class="newsroom-updated">Обновлено: {html.escape(latest_time)}</p>
     </div>
     <nav class="top-nav" aria-label="Навигация"><a href="news/index.html">Ленты</a><a href="digests/index.html">Дайджесты</a><a href="today.html">Сегодня</a><a href="radar/index.html">Источники</a></nav>
+    <p class="newsroom-updated">Обновлено: {html.escape(latest_time)}</p>
   </header>
 
   <main class="newsroom-main">
-    <section class="newsroom-lead-grid" aria-label="Главные материалы">
+    <section class="newsroom-top" aria-label="Главные материалы">
       {home_feature_card(feature)}
       <aside class="quick-signals" aria-label="Короткие сигналы">
-        <div class="section-heading"><h2>Коротко</h2><a href="today.html">Сегодня</a></div>
+        <div class="section-heading"><h2>Быстрые сигналы</h2><a href="today.html">Все сигналы</a></div>
         {quick_rows}
       </aside>
     </section>
 
-    <section class="newsroom-section" aria-label="Ленты новостей">
-      <div class="section-heading"><h2>Ленты новостей</h2><a href="news/index.html">Все ленты</a></div>
+    <section class="rubric-tiles" aria-label="Рубрики">
+      <div class="section-heading"><h2>Рубрики</h2><a href="news/index.html">Все рубрики</a></div>
       <div class="rubric-tile-grid">{feed_cards}</div>
     </section>
 
-    <section class="newsroom-section" aria-label="Последние новости">
-      <div class="section-heading"><h2>Последние новости</h2><a href="news/index.html">Открыть ленты</a></div>
-      <div class="news-preview-list">{latest_cards}</div>
+    <section class="newsroom-bottom">
+      <section class="latest-news" aria-label="Последние новости">
+        <div class="section-heading"><h2>Последние новости</h2><a href="news/index.html">Все новости</a></div>
+        <div class="news-preview-list">{latest_cards}</div>
+      </section>
+
+      <section class="digest-preview" aria-label="Дайджесты">
+        <div class="section-heading"><h2>Дайджесты</h2><a href="digests/index.html">Все дайджесты</a></div>
+        <div class="digest-preview-list">{digest_cards}</div>
+      </section>
     </section>
 
-    <section class="newsroom-section" aria-label="Большие дайджесты">
-      <div class="section-heading"><h2>Большие дайджесты</h2><a href="digests/index.html">Все дайджесты</a></div>
-      <div class="digest-preview-grid">{digest_cards}</div>
-    </section>
+    <footer class="source-strip" aria-label="Источники">
+      <div class="section-heading"><h2>Источники</h2><a href="radar/index.html">Все источники</a></div>
+      <div>{source_strip_items(ranking_items)}</div>
+    </footer>
   </main>
 </body>
 </html>
