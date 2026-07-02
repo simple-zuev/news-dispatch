@@ -28,6 +28,7 @@ from build_today_page import (
     stream_label,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from newsroom_visuals import stream_visual
 from render_site import output_slug
 
 RANKING_PATH = ROOT / "validation" / "daily-radar-ranking-latest.json"
@@ -184,11 +185,15 @@ def feed_item_card(item: dict[str, Any]) -> str:
     original_line = ""
     if original and original != title:
         original_line = f'<p class="news-original"><strong>Оригинал:</strong> {esc(original)}</p>'
-    return f"""<article class="news-item">
-  <p class="label">{esc(item_time(item))} · {esc(source)} · {esc(stream)} · {esc(source_type)} · {esc(reliability)}</p>
-  <h3>{source_link(item, title)}</h3>
-  {original_line}
-  <p class="news-source-link">{source_link(item, "Открыть источник")}</p>
+    slug = item_stream(item)
+    return f"""<article class="news-item news-item--with-visual">
+  {stream_visual(slug, variant="thumb")}
+  <div class="news-item-body">
+    <p class="label">{esc(item_time(item))} · {esc(source)} · {esc(stream)} · {esc(source_type)} · {esc(reliability)}</p>
+    <h3>{source_link(item, title)}</h3>
+    {original_line}
+    <p class="news-source-link">{source_link(item, "Открыть источник")}</p>
+  </div>
 </article>"""
 
 
@@ -225,6 +230,7 @@ def stream_overview_card(stream: str, rows: list[dict[str, Any]]) -> str:
     latest = item_time(rows[0]) if rows else "нет новых материалов"
     label = f"{count} материалов · последнее: {latest}" if rows else "Сегодня новых материалов нет"
     return f"""<article class="card feed-overview-card">
+  {stream_visual(stream, variant="tile")}
   <p class="label">{esc(label)}</p>
   <h3><a href="{esc(stream)}.html">{esc(stream_label(stream))}</a></h3>
 </article>"""
@@ -233,6 +239,8 @@ def stream_overview_card(stream: str, rows: list[dict[str, Any]]) -> str:
 def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
     cards = "\n".join(stream_overview_card(stream, grouped.get(stream, [])) for stream in STREAM_ORDER)
     total = sum(len(rows) for rows in grouped.values())
+    latest_rows = dedupe_items([row for rows in grouped.values() for row in rows])[:10]
+    latest_cards = "\n".join(feed_item_card(item) for item in latest_rows)
     return f"""<!doctype html>
 <html lang="ru">
 {head("Ленты новостей — News Dispatch", "Хронологические ленты публичных источников.", css_href="../styles/main.css")}
@@ -247,6 +255,8 @@ def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
   <main>
     <section class="panel"><h2>Все рубрики</h2><p>Всего в лентах: {total} материалов.</p></section>
     <section class="grid">{cards}</section>
+    <section class="panel"><h2>Последние материалы</h2></section>
+    <section class="news-list news-list--preview">{latest_cards or empty_feed_card()}</section>
   </main>
 </body>
 </html>"""
@@ -292,7 +302,8 @@ def collect_digests() -> list[dict[str, str]]:
             {
                 "title": coalesce(doc.metadata.get("title"), default=path.stem.replace("-", " ")),
                 "date": coalesce(doc.metadata.get("date")),
-                "stream": stream_label(stream),
+                "stream": stream,
+                "stream_title": stream_label(stream),
                 "summary": dispatch_summary(path, doc.body),
                 "url": f"../dispatches/{output_slug(path)}.html",
             }
@@ -302,7 +313,8 @@ def collect_digests() -> list[dict[str, str]]:
 
 def digest_card(item: dict[str, str]) -> str:
     return f"""<article class="card digest-card">
-  <p class="label">{esc(item["date"])} · {esc(item["stream"])}</p>
+  {stream_visual(item["stream"], variant="tile")}
+  <p class="label">{esc(item["date"])} · {esc(item["stream_title"])}</p>
   <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>
   <p>{esc(item["summary"])}</p>
 </article>"""

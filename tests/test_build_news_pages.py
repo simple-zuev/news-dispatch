@@ -136,6 +136,8 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     assert "Источник сообщает:" in html
     assert "Оригинал:" in html
     assert "Открыть источник" in html
+    assert "stream-visual--crypto-finance" in html
+    assert "news-item--with-visual" in html
     assert "Тезис" not in html
     assert "Почему важно" not in html
     assert_public_clean(html)
@@ -190,6 +192,8 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert (build_news_pages.DIGESTS_DIR / "index.html").exists()
             index_html = (build_news_pages.NEWS_DIR / "index.html").read_text(encoding="utf-8")
             assert "Ленты новостей" in index_html
+            assert "stream-visual" in index_html
+            assert "Последние материалы" in index_html
             assert_public_clean(index_html)
         finally:
             build_news_pages.NEWS_DIR = old_news_dir

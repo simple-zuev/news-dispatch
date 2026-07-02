@@ -17,6 +17,7 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
+from newsroom_visuals import stream_visual
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 POLICY_PATH = VALIDATION_DIR / "reader-policy-latest.json"
@@ -731,6 +732,7 @@ def card(cluster: list[dict[str, Any]]) -> str:
     cluster_label = f"{len(sources)} источник(ов)"
 
     return f"""<article class="card signal-card">
+  {stream_visual(stream_slug(item), variant="thumb")}
   <p class="label">{esc(source_meta)} · {esc(cluster_label)}</p>
   <h3>{title_html}</h3>
   <p><strong>Тезис:</strong> {esc(thesis(item, cluster))}</p>
@@ -748,6 +750,23 @@ def cards_block(items: list[dict[str, Any]]) -> str:
     if not items:
         return '<article class="card empty-state"><p class="label">Нет публичных сигналов</p><h3>Сегодня нет материалов для отображения</h3><p>Свежие сообщения не прошли публичную проверку или требуют дополнительного подтверждения.</p></article>'
     return "\n".join(card(cluster) for cluster in cluster_items(items))
+
+
+def today_feature(items: list[dict[str, Any]]) -> str:
+    if not items:
+        return ""
+    item = items[0]
+    title = public_text(reader_title(item))
+    source = public_text(source_name(item))
+    stream = stream_label(stream_slug(item))
+    return f"""<section class="today-feature" aria-label="Главное событие">
+  {stream_visual(stream_slug(item), variant="feature")}
+  <div>
+    <p class="label">{esc(published_label(item))} · {esc(source)} · {esc(stream)}</p>
+    <h2>{esc(title)}</h2>
+    <p>{esc(implication(item))}</p>
+  </div>
+</section>"""
 
 
 def pattern_present(patterns: list[str], text: str) -> bool:
@@ -934,7 +953,7 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
         digest_section("Источники и уровень надёжности", list_html(reliability_lines(items, auto_report))),
     ]
     cards = f'<section class="grid latest-grid" aria-label="Публичные карточки сигналов">{cards_block(items)}</section>'
-    return "\n".join(sections + [cards])
+    return "\n".join([today_feature(items)] + sections + [cards])
 
 
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
