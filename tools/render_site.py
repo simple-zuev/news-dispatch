@@ -23,10 +23,10 @@ from pathlib import Path
 from build_today_page import (
     public_href as safe_href,
     public_text as reader_public_text,
-    reader_title as ranking_reader_title,
     source_name as ranking_source_name,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from reader_text import reader_excerpt_ru, reader_source_line_ru, reader_title_ru
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -683,7 +683,11 @@ def home_item_link(item: dict[str, object], text: str) -> str:
 
 
 def home_ranking_title(item: dict[str, object]) -> str:
-    return reader_public_text(ranking_reader_title(item))
+    return reader_public_text(reader_title_ru(item))
+
+
+def home_ranking_excerpt(item: dict[str, object], max_len: int = 180) -> str:
+    return reader_public_text(reader_excerpt_ru(item, max_len=max_len))
 
 
 def home_rubric_title(slug: str) -> str:
@@ -704,16 +708,17 @@ def home_feature_card(item: dict[str, object] | None) -> str:
   </div>
 </article>"""
     stream = ranking_stream(item)
-    source = reader_public_text(ranking_source_name(item))
     title = home_ranking_title(item)
     original = reader_public_text(str(item.get("title") or ""))
-    original_line = f'<p class="feature-original">Оригинал: {html.escape(original)}</p>' if original and original != title else ""
+    original_line = f'\n    <p class="feature-original">Оригинал: {html.escape(original)}</p>' if original and original != title else ""
+    excerpt = home_ranking_excerpt(item, max_len=220)
+    source_line = reader_public_text(reader_source_line_ru(item))
     return f"""<article class="feature-card">
   {stream_visual(stream, variant="feature")}
   <div class="feature-card-body">
-    <p class="label">{html.escape(ranking_published(item))} · {html.escape(source)} · {html.escape(stream_title(stream))}</p>
+    <p class="label">{html.escape(source_line)}</p>
     <h2>{home_item_link(item, title)}</h2>
-    {original_line}
+    <p class="feature-summary">{html.escape(excerpt)}</p>{original_line}
   </div>
 </article>"""
 
@@ -721,23 +726,24 @@ def home_feature_card(item: dict[str, object] | None) -> str:
 def quick_signal_row(item: dict[str, object]) -> str:
     stream = ranking_stream(item)
     title = home_ranking_title(item)
-    source = reader_public_text(ranking_source_name(item))
-    time = ranking_published(item)
+    excerpt = home_ranking_excerpt(item, max_len=130)
+    source_line = reader_public_text(reader_source_line_ru(item))
     return f"""<article class="quick-signal-row">
   {stream_visual(stream, variant="mini")}
-  <div><h3>{home_item_link(item, title)}</h3><p>{html.escape(source)} · {html.escape(time)}</p></div>
+  <div><h3>{home_item_link(item, title)}</h3><p class="quick-excerpt">{html.escape(excerpt)}</p><p>{html.escape(source_line)}</p></div>
 </article>"""
 
 
 def feed_preview_card(item: dict[str, object]) -> str:
     stream = ranking_stream(item)
     title = home_ranking_title(item)
-    source = reader_public_text(ranking_source_name(item))
+    excerpt = home_ranking_excerpt(item, max_len=150)
+    source_line = reader_public_text(reader_source_line_ru(item))
     return f"""<article class="news-preview-card">
   <p class="news-time">{html.escape(ranking_published(item))}</p>
   <span class="stream-dot stream-dot--{html.escape(stream)}"></span>
-  <h3>{home_item_link(item, title)}</h3>
-  <p>{html.escape(source)}</p>
+  <div><h3>{home_item_link(item, title)}</h3><p class="news-preview-excerpt">{html.escape(excerpt)}</p></div>
+  <p>{html.escape(source_line)}</p>
 </article>"""
 
 

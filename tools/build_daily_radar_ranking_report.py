@@ -17,6 +17,7 @@ from xml.etree import ElementTree as ET
 
 import daily_radar
 from core import ROOT, VALIDATION_DIR, clean_text, read_json, repo_path, write_json
+from reader_text import build_reader_fields, clean_source_excerpt
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 
@@ -396,7 +397,9 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
     if not title or not url:
         return None
 
-    summary = clean_text(daily_radar.text_of(node, ("description", "summary", "content")))
+    raw_summary = daily_radar.text_of(node, ("description", "summary", "content"))
+    summary = clean_text(raw_summary)
+    source_excerpt = clean_source_excerpt(raw_summary, max_len=360)
     guid = clean_text(daily_radar.text_of(node, ("guid", "id")), 500) or url
     item_key = hashlib.sha256((url or guid or title).encode("utf-8")).hexdigest()[:16]
     published = daily_radar.parse_date(daily_radar.text_of(node, ("pubDate", "published", "updated", "date")), now)
@@ -417,7 +420,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
     else:
         reason = "not_selected_after_current_ranking"
 
-    return {
+    row: dict[str, object] = {
         "item_key": item_key,
         "feed_id": feed.id,
         "feed_title": feed.title,
@@ -429,6 +432,10 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
         "translation_required": feed.translation_required,
         "title": title,
         "url": url,
+        "source_excerpt": source_excerpt,
+        "source_excerpt_language": feed.language,
+        "source_original_title": title,
+        "source_original_url": url,
         "published": published.isoformat(),
         "final_score": final_score,
         "selection_score": adjusted_score,
@@ -439,6 +446,8 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
         "reviewed_signal_match": reviewed_signal_match,
         **evidence,
     }
+    row.update(build_reader_fields(row))
+    return row
 
 
 def apply_source_caps(rows: list[dict[str, object]], max_rows: int) -> tuple[list[dict[str, object]], dict[str, object]]:

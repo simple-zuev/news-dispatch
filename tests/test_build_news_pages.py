@@ -35,6 +35,11 @@ FORBIDDEN_PUBLIC_TERMS = [
     "final_score",
     "selection_score",
     "fetch warnings",
+    "gate",
+    "gates",
+    "lifecycle",
+    "threshold",
+    "coverage",
     "техническая пустота покрытия",
 ]
 
@@ -61,6 +66,12 @@ def ranking_item(
         "language": "en",
         "title": title,
         "url": f"https://example.com/{key}",
+        "source_excerpt": "The regulator published a public update describing supervision, custody and stablecoin requirements for market participants.",
+        "source_excerpt_language": "en",
+        "source_original_title": title,
+        "source_original_url": f"https://example.com/{key}",
+        "reader_excerpt_ru": "Регулятор сообщил о публичном обновлении правил: в фокусе надзор, хранение активов и требования к стейблкоинам.",
+        "reader_source_line_ru": f"{source} · Криптофинансы · 12:00 · регулятор",
         "published": "2026-07-02T09:00:00+00:00",
         "relevance_score": relevance,
         "min_relevance_score": minimum,
@@ -133,14 +144,30 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     grouped = build_news_pages.feed_items(sample_report(), sample_policy())
     html = build_news_pages.news_stream_page("crypto-finance", grouped["crypto-finance"])
     assert "Лента новостей" in html
-    assert "Источник сообщает:" in html
-    assert "Оригинал:" in html
+    assert "reader_excerpt_ru" not in html
+    assert "Регулятор сообщил о публичном обновлении правил" in html
+    assert "Оригинал" in html
     assert "Открыть источник" in html
-    assert "stream-visual--crypto-finance" in html
-    assert "news-item--with-visual" in html
+    assert "news-stream-marker" in html
+    assert "news-item--text" in html
+    assert "stream-visual--thumb" not in html
+    assert "2026-07-02 09:00:00 UTC" not in html
+    assert "FCA · Криптофинансы · 12:00 · регулятор" in html
     assert "Тезис" not in html
     assert "Почему важно" not in html
     assert_public_clean(html)
+
+
+def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
+    rows = [
+        ranking_item("one", title="FCA and the Bank of England set out approach to joint regulation of systemic stablecoin issuers"),
+        ranking_item("two", title="ESMA publishes MiCA supervisory briefing", source="ESMA"),
+        ranking_item("three", title="Taiwan legislature passes crypto and stablecoin regulations", source="Taiwan News"),
+    ]
+    html = build_news_pages.news_stream_page("crypto-finance", rows)
+    assert html.count("Источник сообщает: Криптофинансы — регуляторика и надзор") <= 1
+    assert "FCA и Банк Англии описали подход к системным стейблкоинам" in html
+    assert "Европейские правила MiCA" in html
 
 
 def test_public_original_title_sanitizes_security_terms() -> None:
@@ -206,6 +233,7 @@ def main() -> int:
     test_feed_items_include_non_selected_safe_items()
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
+    test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
     test_news_empty_state_is_simple_russian_copy()
     test_news_and_digest_pages_are_written_to_configured_output()

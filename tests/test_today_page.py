@@ -196,6 +196,9 @@ PUBLIC_FORBIDDEN_TERMS = [
     "machine policy",
     "gate",
     "gates",
+    "lifecycle",
+    "threshold",
+    "coverage",
     "source ok",
     "ai-generated",
     "ии сгенерировал",
@@ -206,7 +209,7 @@ PUBLIC_FORBIDDEN_TERMS = [
 
 
 def card_headings(html: str) -> list[str]:
-    return re.findall(r"<article class=\"card signal-card\">.*?<h3>(.*?)</h3>", html, flags=re.S)
+    return re.findall(r"<article class=\"card signal-card[^\"]*\">.*?<h3>(.*?)</h3>", html, flags=re.S)
 
 
 def visible_text(html: str) -> str:
@@ -224,14 +227,21 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "Главное за сегодня" in html
     assert "today-feature" in html
     assert "stream-visual" in html
-    assert "Граница интерпретации" in html
+    assert "source-note" in html
+    assert "Сводка выпуска" not in html
     assert "не инвестиционная" in html
 
 
-def test_autonomous_digest_sections_and_no_human_approval() -> None:
+def test_today_is_news_first_without_service_block() -> None:
     html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
-    for heading in build_today_page.DIGEST_SECTIONS:
-        assert heading in html
+    assert "today-feature" in html
+    assert "today-highlights" in html
+    assert "today-grouped-cards" in html
+    assert "reader-card-list" in html
+    assert html.index("today-feature") < html.index("today-highlights") < html.index("today-grouped-cards") < html.index("source-note")
+    assert "Сводка выпуска" not in html
+    assert "Публично показаны" not in html
+    assert "Источники публичные" not in html
     assert "Ежедневное ручное решение не требуется" not in html
     assert "Gate:" not in html
     assert "PASS:" not in html
@@ -254,7 +264,7 @@ def test_auto_dispatch_artifacts_are_not_finished_analysis() -> None:
             ],
         },
     )
-    assert "Подготовительные материалы использованы только как внутренний контур сверки" in html
+    assert "Подготовительные материалы использованы только как внутренний контур сверки" not in html
     assert "draft_only" not in html
 
 
@@ -275,16 +285,16 @@ def test_render_includes_analytical_card_structure() -> None:
     headings = card_headings(html)
     assert headings
     assert not any("Central bank updates digital asset rules" in heading for heading in headings)
-    assert any("Источник сообщает:" in heading for heading in headings)
-    assert "оригинал: <a href=\"https://example.com/item\">Central bank updates digital asset rules</a>" in html
+    assert any("Центральный банк обновил правила для цифровых активов" in heading for heading in headings)
+    assert "news-excerpt" in html
+    assert "news-meta" in html
+    assert "Оригинал" in html
+    assert "Central bank updates digital asset rules" in html
     assert "score 1.25" not in html
     assert "relevance 0.82" not in html
-    assert "Тезис:" in html
-    assert "Почему важно:" in html
-    assert "Уровень подтверждения:" in html
-    assert "Что отслеживать дальше:" in html
-    assert "Ссылка на источник:" in html
-    assert "Ограничение:" in html
+    assert "Тезис:" not in html
+    assert "Почему важно:" not in html
+    assert "Открыть источник" in html
 
 
 def test_render_clusters_similar_signals() -> None:
@@ -293,10 +303,8 @@ def test_render_clusters_similar_signals() -> None:
     assert len(clusters) == 1
     assert len(clusters[0]) == 2
     html = build_today_page.render(sample_report())
-    assert "1 тематических групп" in html
-    assert "2 источник(ов)" in html
-    assert "Оригинал:" in html
-    assert "cluster-materials" in html
+    assert "Оригинал" in html
+    assert "cluster-materials" not in html
     assert "Example Regulator" in html
     assert "Example Media" in html
     assert "https://example.com/item" in html
@@ -307,15 +315,13 @@ def test_render_clusters_similar_signals() -> None:
 def test_today_radar_css_has_cluster_materials_styles() -> None:
     css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
     assert "/* Today Radar analytical cards */" in css
-    assert ".cluster-materials" in css
-    assert ".latest-grid:has(.signal-card)" in css
+    assert ".today-grouped-cards" in css
+    assert ".signal-card--reader" in css
 
 
 def test_card_stays_non_directive() -> None:
     html = build_today_page.render(sample_report())
-    assert "не прогнозом и не инструкцией к действию" in html
     assert "инвестиционная, юридическая или операционная рекомендация" in html
-    assert "Требуется сверка первоисточника" in html
 
 
 def test_today_selection_caps_overfed_source_and_keeps_crypto() -> None:
@@ -412,7 +418,7 @@ def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None
     assert "Citi slashes 12-month bitcoin, ether targets" in html
     assert "Источник сообщает об оценке участника рынка" in html
     assert "Это не факт будущей цены и не рекомендация" in html
-    assert "не являются инвестиционной рекомендацией" in html
+    assert "не инвестиционная, юридическая или операционная рекомендация" in html
 
 
 def test_public_today_html_contains_no_debug_terms() -> None:
@@ -440,13 +446,13 @@ def test_public_today_uses_required_stream_labels() -> None:
 
 def test_public_today_has_russian_reader_labels() -> None:
     html = build_today_page.render(sample_report(), auto_report={"generated": []})
-    for text in ["Главное за сегодня", "Источник", "Тезис", "Почему важно", "Что отслеживать дальше", "Ссылка на источник"]:
+    for text in ["Главное за сегодня", "Открыть источник", "Оригинал", "Источники и проверка"]:
         assert text in html
 
 
 def main() -> int:
     test_render_includes_required_links_and_boundary()
-    test_autonomous_digest_sections_and_no_human_approval()
+    test_today_is_news_first_without_service_block()
     test_auto_dispatch_artifacts_are_not_finished_analysis()
     test_gate_failure_renders_safe_fallback_without_human_decision()
     test_render_includes_analytical_card_structure()

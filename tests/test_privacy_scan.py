@@ -67,6 +67,13 @@ def test_public_security_title_with_cookies_and_credentials_is_allowed() -> None
     assert warnings == []
 
 
+def test_public_security_source_original_title_is_allowed() -> None:
+    title = '"source_original_title": "Protecting Cookies with Device Bound Session Credentials"'
+    blockers, warnings = scan_text(title + "\n")
+    assert blockers == []
+    assert warnings == []
+
+
 def test_public_security_news_original_metadata_is_allowed() -> None:
     line = '<p class="news-original"><strong>Оригинал:</strong> Protecting Cookies with Device Bound Session Credentials</p>'
     blockers, warnings = scan_text(line + "\n")
@@ -99,6 +106,7 @@ def main() -> int:
     test_public_private_keys_url_is_allowed()
     test_private_key_assignment_is_still_blocked()
     test_public_security_title_with_cookies_and_credentials_is_allowed()
+    test_public_security_source_original_title_is_allowed()
     test_public_security_news_original_metadata_is_allowed()
     test_cookie_secret_value_is_still_blocked()
     test_public_security_report_context_is_allowed()

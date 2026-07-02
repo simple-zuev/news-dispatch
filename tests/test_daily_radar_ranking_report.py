@@ -226,6 +226,32 @@ def test_pure_crypto_price_target_is_labeled_and_downweighted() -> None:
     assert "market_forecast_downweighted" in adjustments
 
 
+def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
+    node = ranking_report.ET.fromstring(
+        """<item>
+  <title>FCA and the Bank of England set out approach to joint regulation of systemic stablecoin issuers</title>
+  <link>https://example.com/stablecoin</link>
+  <description><![CDATA[<p>The regulators published a public update describing their approach to systemic stablecoin issuers.</p>]]></description>
+  <guid>stablecoin-guid</guid>
+</item>"""
+    )
+    row = ranking_report.row_for(
+        feed(stream="crypto-finance", source_class="official_source", source_type="official source", include_keywords=("stablecoin",), exclude_keywords=()),
+        node,
+        ranking_report.datetime(2026, 7, 2, tzinfo=ranking_report.timezone.utc),
+        set(),
+    )
+
+    assert row is not None
+    assert row["source_excerpt"] == "The regulators published a public update describing their approach to systemic stablecoin issuers."
+    assert row["source_excerpt_language"] == "en"
+    assert row["source_original_title"].startswith("FCA and the Bank of England")
+    assert row["source_original_url"] == "https://example.com/stablecoin"
+    assert row["reader_title_ru"] == "FCA и Банк Англии описали подход к системным стейблкоинам"
+    assert "Источник описывает тему" in str(row["reader_excerpt_ru"])
+    assert "Криптофинансы" in str(row["reader_source_line_ru"])
+
+
 def test_crypto_regulatory_forecast_context_stays_high_priority() -> None:
     crypto_feed = feed(
         id="fca-news",
@@ -255,6 +281,7 @@ def main() -> int:
     test_weak_stream_selection_requires_relevance_threshold()
     test_crypto_regulatory_items_beat_forecasts_and_roundups_when_stream_is_capped()
     test_pure_crypto_price_target_is_labeled_and_downweighted()
+    test_ranking_row_preserves_source_excerpt_and_reader_fields()
     test_crypto_regulatory_forecast_context_stays_high_priority()
     print("daily radar ranking report tests passed")
     return 0
