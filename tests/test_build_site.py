@@ -49,13 +49,19 @@ def test_offline_ranking_fixture_contract() -> None:
     }
 
 
-def test_homepage_template_is_today_first_and_public_clean() -> None:
+def test_homepage_template_is_product_index_and_public_clean() -> None:
     html = render_site.homepage_template([], {})
     lower = html.lower()
-    assert "<h1>Главное за сегодня</h1>" in html
+    assert "<h1>Ленты и дайджесты</h1>" in html
+    assert "Ленты новостей" in html
+    assert "Большие дайджесты" in html
     assert "today.html" in html
+    assert "news/index.html" in html
+    assert "digests/index.html" in html
     assert "drafts.html" not in html
     assert "Статус обновления" not in html
+    assert "Как читать" not in html
+    assert "техническая пустота покрытия" not in lower
     for term in ["selected", "reader_safe", "source_rule_status", "validation", "draft-only", "review-only", "generated", "prompt", "json", "score=", "final_score", "selection_score", "fetch warnings", "gate"]:
         assert term not in lower
 
@@ -79,7 +85,7 @@ def main() -> int:
     test_default_modes_are_deterministic()
     test_pages_modes_are_explicit()
     test_offline_ranking_fixture_contract()
-    test_homepage_template_is_today_first_and_public_clean()
+    test_homepage_template_is_product_index_and_public_clean()
     test_public_stream_labels_are_exact_on_homepage_cards()
     print("build_site regression tests passed")
     return 0

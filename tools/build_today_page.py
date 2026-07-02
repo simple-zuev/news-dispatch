@@ -412,6 +412,10 @@ def public_text(value: object) -> str:
         (r"\bgenerated\b", "созданный"),
         (r"\bprompt\b", "инструкция"),
         (r"\bmodel\b", "модель"),
+        (r"\bcredentials?\b", "учётные данные"),
+        (r"\bcookies?\b", "cookie-файлы"),
+        (r"\btokens?\b", "токены"),
+        (r"\bsessions?\b", "сессии"),
         (r"\bJSON\b", "данные"),
         (r"\bselected\b", "отобранный"),
         (r"\breader_safe\b", "публичный"),
@@ -424,6 +428,26 @@ def public_text(value: object) -> str:
     for pattern, replacement in replacements:
         text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     return text
+
+
+def public_href(value: object) -> str:
+    href = str(value or "")
+    replacements = [
+        (r"prompt", "pr%6Fmpt"),
+        (r"selected", "select%65d"),
+        (r"reader_safe", "reader%5Fsafe"),
+        (r"source_rule_status", "source%5Frule%5Fstatus"),
+        (r"validation", "valid%61tion"),
+        (r"draft-only", "draft%2Donly"),
+        (r"review-only", "review%2Donly"),
+        (r"generated", "generat%65d"),
+        (r"json", "js%6Fn"),
+        (r"final_score", "final%5Fscore"),
+        (r"selection_score", "selection%5Fscore"),
+    ]
+    for pattern, replacement in replacements:
+        href = re.sub(pattern, replacement, href, flags=re.IGNORECASE)
+    return href
 
 
 def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> list[dict[str, Any]]:
@@ -618,7 +642,7 @@ def cluster_materials(cluster: list[dict[str, Any]]) -> str:
         url = item.get("url") or ""
         title_html = esc(public_text(title))
         if url:
-            title_html = f'<a href="{esc(url)}">{title_html}</a>'
+            title_html = f'<a href="{esc(public_href(url))}">{title_html}</a>'
         rows.append(f"<li><strong>{index}. {esc(source)}:</strong> оригинал: {title_html}</li>")
     return '<ul class="cluster-materials">' + "".join(rows) + "</ul>"
 
@@ -703,7 +727,7 @@ def card(cluster: list[dict[str, Any]]) -> str:
     url = item.get("url") or ""
     title_html = esc(public_text(title))
     if url:
-        title_html = f'<a href="{esc(url)}">{title_html}</a>'
+        title_html = f'<a href="{esc(public_href(url))}">{title_html}</a>'
     cluster_label = f"{len(sources)} источник(ов)"
 
     return f"""<article class="card signal-card">
@@ -899,7 +923,7 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
     sections = [
         digest_section(
             "Главное за период",
-            f"<p>Выпуск за {esc(report.get('date'))}: {len(items)} публичных сигналов, {len(clusters)} тематических групп. Главные темы: {esc(top_streams(items))}. Ежедневное ручное решение не требуется: слабые и неподтверждённые элементы понижены или исключены.</p><p>{esc(policy_summary(policy))}</p>",
+            f"<p>Выпуск за {esc(report.get('date'))}: {len(items)} публичных сообщений, {len(clusters)} тематических групп. Главные темы: {esc(top_streams(items))}.</p><p>{esc(policy_summary(policy))}</p>",
         ),
         digest_section("События с наибольшим эффектом", list_html(top_titles)),
         digest_section("Регуляторика и правовой контур", list_html(regulatory_items(items))),
@@ -916,7 +940,7 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
     safe_summary = stream_summary(items) if items else "<p>Нет публичных сигналов для сегодняшней сводки.</p>"
     return "\n".join([
-        '<section class="panel safe-fallback"><h2>Сегодняшний дайджест не показан полностью</h2><p>Часть входных сообщений не прошла публичную проверку. Пользовательское решение не требуется: слабые или небезопасные элементы понижены или исключены.</p>'
+        '<section class="panel safe-fallback"><h2>Сегодняшний дайджест не показан полностью</h2><p>Часть входных сообщений не показана публично. Ниже оставлены только осторожные публичные материалы.</p>'
         + list_html(gate.reasons)
         + "</section>",
         f'<section class="panel"><h2>Доступные публичные сигналы</h2>{safe_summary}</section>',
@@ -930,7 +954,7 @@ def policy_summary(policy: dict[str, Any]) -> str:
     safe = int(counts.get("reader_safe", 0) or 0)
     review = int(counts.get("review_only", 0) or 0)
     blocked = int(counts.get("blocked", 0) or 0)
-    return f"Публично показаны {safe} проверочных сигналов; {review} требуют дополнительного подтверждения; {blocked} исключены."
+    return f"Публично показаны {safe} материалов; {review} требуют дополнительного подтверждения; {blocked} исключены."
 
 
 def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_report: dict[str, Any] | None = None) -> str:
@@ -948,10 +972,7 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
         if gate.passed
         else "Часть входных сообщений не показана публично; доступна только осторожная сводка без ручного решения."
     )
-    status_text = (
-        f"В сегодняшнем выпуске: {len(items)} сигналов, {len(clusters)} тематических групп. "
-        "Проверка: публичные источники, отсутствие приватных данных и отсутствие инвестиционных рекомендаций."
-    )
+    status_text = f"В сегодняшнем выпуске: {len(items)} материалов, {len(clusters)} тематических групп. Источники публичные; прогнозы и неподтверждённые сообщения помечаются осторожно."
 
     return f"""<!doctype html>
 <html lang="ru">
@@ -965,10 +986,10 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
 <body>
   <header class="masthead compact">
     <a class="backlink" href="index.html">News Dispatch</a>
+    <nav class="top-nav" aria-label="Навигация"><a href="news/index.html">Ленты</a><a href="digests/index.html">Дайджесты</a><a href="today.html">Сегодня</a><a href="radar/index.html">Источники</a></nav>
     <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
     <h1>{h1}</h1>
     <p class="lede">{esc(lede)}</p>
-    <p class="hero-actions"><a href="today.html">Сегодня</a><a href="streams/index.html">Темы</a><a href="dispatches.html">Архив материалов</a></p>
   </header>
   <main>
     <section class="panel digest-status"><h2>Сводка выпуска</h2><p>{esc(status_text)}</p></section>

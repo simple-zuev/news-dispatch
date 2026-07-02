@@ -162,6 +162,7 @@ def build(args: argparse.Namespace) -> int:
     run_tool("build_radar_pages.py")
     build_ranking(args)
     build_reader_policy()
+    run_tool("build_news_pages.py")
     run_tool("build_today_page.py")
     run_tool("enhance_site.py")
 

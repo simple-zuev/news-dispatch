@@ -67,6 +67,13 @@ def test_public_security_title_with_cookies_and_credentials_is_allowed() -> None
     assert warnings == []
 
 
+def test_public_security_news_original_metadata_is_allowed() -> None:
+    line = '<p class="news-original"><strong>Оригинал:</strong> Protecting Cookies with Device Bound Session Credentials</p>'
+    blockers, warnings = scan_text(line + "\n")
+    assert blockers == []
+    assert warnings == []
+
+
 def test_cookie_secret_value_is_still_blocked() -> None:
     blockers, _warnings = scan_text('cookie: "sessionid=should-not-ship"\n')
     assert any("possible_secret_keyword" in item for item in blockers)
@@ -92,6 +99,7 @@ def main() -> int:
     test_public_private_keys_url_is_allowed()
     test_private_key_assignment_is_still_blocked()
     test_public_security_title_with_cookies_and_credentials_is_allowed()
+    test_public_security_news_original_metadata_is_allowed()
     test_cookie_secret_value_is_still_blocked()
     test_public_security_report_context_is_allowed()
     test_generated_item_key_hash_is_not_phone_like()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a compact editorial hero on the generated homepage."""
+"""Remove legacy dashboard blocks from the generated homepage."""
 
 from __future__ import annotations
 
@@ -285,18 +285,11 @@ def apply_homepage() -> bool:
         return False
     text = path.read_text(encoding="utf-8")
     original = text
-    text = ensure_css(text)
-    if HERO_MARKER not in text and TOPLINE_MARKER not in text:
-        hero = build_hero(choose_feature())
-        if status_block(text):
-            text = remove_status_block(text)
-            text = text.replace("<main>", f'<main>\n<section class="editorial-home-topline">\n{hero}\n</section>', 1)
-        elif "<main>" in text:
-            text = text.replace("<main>", f"<main>\n{hero}", 1)
-        else:
-            text = text.replace("</header>", f"</header>\n{hero}", 1)
-    else:
-        text = remove_status_block(text)
+    text = remove_status_block(text)
+    text = re.sub(r'\s*<section class="editorial-home-topline">.*?</section>\s*</section>', "", text, flags=re.S)
+    text = re.sub(r'\s*<section class="editorial-home-hero".*?</section>', "", text, flags=re.S)
+    text = re.sub(r'\s*<section class="editorial-home-lanes".*?</section>', "", text, flags=re.S)
+    text = re.sub(r'\s*<section class="panel reader-home-intro">.*?</section>', "", text, flags=re.S)
 
     if text == original:
         return False

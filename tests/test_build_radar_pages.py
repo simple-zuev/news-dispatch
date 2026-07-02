@@ -30,7 +30,7 @@ def test_source_status_detects_active_moscow_source() -> None:
     assert len(disabled) >= 2
 
 
-def test_empty_stream_page_explains_active_source_without_generated_signals() -> None:
+def test_empty_stream_page_uses_simple_reader_copy() -> None:
     stream = {
         "slug": "moscow-city",
         "title": "Москва",
@@ -39,11 +39,11 @@ def test_empty_stream_page_explains_active_source_without_generated_signals() ->
     status = build_radar_pages.source_status_by_stream().get("moscow-city", {})
     html = build_radar_pages.stream_page(stream, [], status)
 
-    assert "Почему рубрика пустая" in html
-    assert "Активные источники:" in html
-    assert "Отключённые источники:" in html
-    assert "Активные источники есть, но свежие сообщения не прошли публичный порог релевантности" in html
-    assert "Это техническая пустота покрытия" in html
+    assert "Сегодня новых материалов по теме нет." in html
+    assert "Активные источники:" not in html
+    assert "Отключённые источники:" not in html
+    assert "техническая пустота покрытия" not in html
+    assert "порог релевантности" not in html
 
 
 def test_signal_card_v2_shows_reader_context_and_boundaries() -> None:
@@ -95,7 +95,7 @@ def test_public_stream_labels_are_exact() -> None:
 
 def main() -> int:
     test_source_status_detects_active_moscow_source()
-    test_empty_stream_page_explains_active_source_without_generated_signals()
+    test_empty_stream_page_uses_simple_reader_copy()
     test_signal_card_v2_shows_reader_context_and_boundaries()
     test_public_stream_labels_are_exact()
     print("radar page tests passed")
