@@ -10,7 +10,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "tools" / "build_site.py"
 RENDER_PATH = ROOT / "tools" / "render_site.py"
-VISUALS_PATH = ROOT / "tools" / "newsroom_visuals.py"
 
 sys.path.insert(0, str(ROOT / "tools"))
 
@@ -24,12 +23,6 @@ assert render_spec is not None and render_spec.loader is not None
 render_site = importlib.util.module_from_spec(render_spec)
 sys.modules["render_site"] = render_site
 render_spec.loader.exec_module(render_site)
-
-visuals_spec = importlib.util.spec_from_file_location("newsroom_visuals", VISUALS_PATH)
-assert visuals_spec is not None and visuals_spec.loader is not None
-newsroom_visuals = importlib.util.module_from_spec(visuals_spec)
-sys.modules["newsroom_visuals"] = newsroom_visuals
-visuals_spec.loader.exec_module(newsroom_visuals)
 
 
 def test_default_modes_are_deterministic() -> None:
@@ -61,16 +54,15 @@ def test_homepage_template_matches_simple_newsroom_blocks() -> None:
     lower = html.lower()
     for block in [
         "newsroom-top",
-        "feature-card",
-        "quick-signals",
+        "main-signal-list",
         "rubric-tiles",
         "latest-news",
         "digest-preview",
-        "source-strip",
     ]:
         assert block in html
-    assert "quick-signals" in html
-    assert "stream-visual" in html
+    assert "stream-visual" not in html
+    assert "feature-card" not in html
+    assert "source-strip" not in html
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
@@ -83,6 +75,9 @@ def test_homepage_template_matches_simple_newsroom_blocks() -> None:
     assert "featured-card" not in html
     assert "homepage-hero" not in html
     assert "техническая пустота покрытия" not in lower
+    assert html.index("latest-news") < html.index("rubric-tiles")
+    for filler in ["Источник описывает тему", "Подробности и формулировки сохранены"]:
+        assert filler not in html
     for term in ["selected", "reader_safe", "source_rule_status", "validation", "draft-only", "review-only", "generated", "prompt", "json", "score=", "final_score", "selection_score", "fetch warnings", "gate"]:
         assert term not in lower
 
@@ -102,13 +97,37 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         assert title in html
 
 
-def test_stream_fallback_visuals_exist_for_all_public_streams() -> None:
-    html = render_site.homepage_template([], {})
-    for slug in newsroom_visuals.visual_streams():
-        assert f"stream-visual--{slug}" in html or slug == "general"
-        visual = newsroom_visuals.stream_visual(slug)
-        assert "Иллюстрация темы" in visual
-        assert f"stream-visual--{slug}" in visual
+def test_placeholder_visual_css_is_removed() -> None:
+    css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
+    reader_css = (ROOT / "site" / "styles" / "reader.css").read_text(encoding="utf-8")
+    assert "stream-visual" not in css
+    assert "radial-gradient" not in css
+    assert "linear-gradient" not in css
+    assert "linear-gradient" not in reader_css
+
+
+def test_tracked_static_homepage_is_plain_russian_reader() -> None:
+    html = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
+    lower = html.lower()
+    assert "Ленты" in html
+    assert "Дайджесты" in html
+    assert "Сегодня" in html
+    assert "feature-card" not in html
+    assert "stream-visual" not in html
+    for term in [
+        "public-safe editorial briefing system",
+        "editorial model",
+        "publication boundary",
+        "strict review",
+        "work dispatch",
+        "open dispatch archive",
+        "validation",
+        "selected",
+        "reader_safe",
+        "source_rule_status",
+        "score=",
+    ]:
+        assert term not in lower
 
 
 def test_old_home_hero_css_is_removed() -> None:
@@ -124,7 +143,8 @@ def main() -> int:
     test_offline_ranking_fixture_contract()
     test_homepage_template_matches_simple_newsroom_blocks()
     test_public_stream_labels_are_exact_on_homepage_cards()
-    test_stream_fallback_visuals_exist_for_all_public_streams()
+    test_placeholder_visual_css_is_removed()
+    test_tracked_static_homepage_is_plain_russian_reader()
     test_old_home_hero_css_is_removed()
     print("build_site regression tests passed")
     return 0

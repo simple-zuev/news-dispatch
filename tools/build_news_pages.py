@@ -23,13 +23,13 @@ from build_today_page import (
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
 from reader_text import (
+    compact_time_ru,
     reader_excerpt_ru,
     reader_source_line_ru,
     reader_title_ru,
     source_name,
     source_original_title,
 )
-from newsroom_visuals import stream_visual
 from render_site import output_slug
 
 RANKING_PATH = ROOT / "validation" / "daily-radar-ranking-latest.json"
@@ -75,13 +75,7 @@ def item_stream(item: dict[str, Any]) -> str:
 
 
 def item_time(item: dict[str, Any]) -> str:
-    raw = str(item.get("published") or item.get("date") or "").strip()
-    if not raw:
-        return "дата не указана"
-    cleaned = raw.replace("T", " ")
-    if cleaned.endswith("+00:00"):
-        return cleaned[:-6].split(".", 1)[0] + " UTC"
-    return cleaned.split(".", 1)[0][:19]
+    return compact_time_ru(item.get("published") or item.get("date"))
 
 
 def item_sort_key(item: dict[str, Any]) -> str:
@@ -175,6 +169,7 @@ def feed_item_card(item: dict[str, Any]) -> str:
     original = public_text(source_original_title(item))
     excerpt = public_text(reader_excerpt_ru(item))
     source_line = public_text(reader_source_line_ru(item))
+    excerpt_line = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
     original_line = ""
     if original and original != title:
         original_line = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
@@ -182,9 +177,8 @@ def feed_item_card(item: dict[str, Any]) -> str:
     return f"""<article class="news-item news-item--text">
   <span class="news-stream-marker stream-dot--{esc(slug)}" aria-hidden="true"></span>
   <div class="news-item-body">
-    <h3>{source_link(item, title)}</h3>
-    <p class="news-excerpt">{esc(excerpt)}</p>
-    <p class="news-meta">{esc(source_line)}</p>{original_line}
+    <p class="news-meta">{esc(source_line)}</p>
+    <h3>{source_link(item, title)}</h3>{excerpt_line}{original_line}
     <p class="news-source-link">{source_link(item, "Открыть источник")}</p>
   </div>
 </article>"""
@@ -222,10 +216,10 @@ def stream_overview_card(stream: str, rows: list[dict[str, Any]]) -> str:
     count = len(rows)
     latest = item_time(rows[0]) if rows else "нет новых материалов"
     label = f"{count} материалов · последнее: {latest}" if rows else "Сегодня новых материалов нет"
-    return f"""<article class="card feed-overview-card">
-  {stream_visual(stream, variant="tile")}
-  <p class="label">{esc(label)}</p>
+    return f"""<article class="feed-overview-card">
+  <span class="stream-dot stream-dot--{esc(stream)}" aria-hidden="true"></span>
   <h3><a href="{esc(stream)}.html">{esc(stream_label(stream))}</a></h3>
+  <p>{esc(label)}</p>
 </article>"""
 
 
@@ -243,12 +237,10 @@ def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
     {top_nav("../")}
     <p class="eyebrow">Ленты новостей</p>
     <h1>Ленты новостей</h1>
-    <p class="lede">Хронологические ленты по рубрикам. В них попадают принятые публичные сообщения, даже если они не выбраны в короткий обзор дня.</p>
   </header>
   <main>
-    <section class="panel"><h2>Все рубрики</h2><p>Всего в лентах: {total} материалов.</p></section>
-    <section class="grid">{cards}</section>
-    <section class="panel"><h2>Последние материалы</h2></section>
+    <section class="feed-overview"><div class="section-heading"><h2>Рубрики</h2><p>{total} материалов</p></div><div class="feed-overview-grid">{cards}</div></section>
+    <section class="panel compact-panel"><h2>Последние материалы</h2></section>
     <section class="news-list news-list--preview">{latest_cards or empty_feed_card()}</section>
   </main>
 </body>
@@ -266,7 +258,6 @@ def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
     {top_nav("../")}
     <p class="eyebrow">Лента новостей</p>
     <h1>{esc(stream_label(stream))}</h1>
-    <p class="lede">Принятые публичные сообщения по теме в обратной хронологии.</p>
   </header>
   <main>
     <section class="news-list">{cards}</section>
@@ -306,7 +297,6 @@ def collect_digests() -> list[dict[str, str]]:
 
 def digest_card(item: dict[str, str]) -> str:
     return f"""<article class="card digest-card">
-  {stream_visual(item["stream"], variant="tile")}
   <p class="label">{esc(item["date"])} · {esc(item["stream_title"])}</p>
   <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>
   <p>{esc(item["summary"])}</p>

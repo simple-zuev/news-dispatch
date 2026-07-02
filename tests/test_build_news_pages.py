@@ -71,7 +71,7 @@ def ranking_item(
         "source_original_title": title,
         "source_original_url": f"https://example.com/{key}",
         "reader_excerpt_ru": "Регулятор сообщил о публичном обновлении правил: в фокусе надзор, хранение активов и требования к стейблкоинам.",
-        "reader_source_line_ru": f"{source} · Криптофинансы · 12:00 · регулятор",
+        "reader_source_line_ru": f"12:00 · {source} · Криптофинансы · регулятор",
         "published": "2026-07-02T09:00:00+00:00",
         "relevance_score": relevance,
         "min_relevance_score": minimum,
@@ -151,8 +151,9 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     assert "news-stream-marker" in html
     assert "news-item--text" in html
     assert "stream-visual--thumb" not in html
+    assert "stream-visual" not in html
     assert "2026-07-02 09:00:00 UTC" not in html
-    assert "FCA · Криптофинансы · 12:00 · регулятор" in html
+    assert "12:00 · FCA · Криптофинансы · регулятор" in html
     assert "Тезис" not in html
     assert "Почему важно" not in html
     assert_public_clean(html)
@@ -165,9 +166,24 @@ def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
         ranking_item("three", title="Taiwan legislature passes crypto and stablecoin regulations", source="Taiwan News"),
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
-    assert html.count("Источник сообщает: Криптофинансы — регуляторика и надзор") <= 1
+    assert "Источник сообщает: Криптофинансы — регуляторика и надзор" not in html
+    assert "Источник описывает тему" not in html
+    assert "Подробности и формулировки сохранены" not in html
     assert "FCA и Банк Англии описали подход к системным стейблкоинам" in html
     assert "Европейские правила MiCA" in html
+
+
+def test_feed_item_without_useful_excerpt_omits_body_filler() -> None:
+    item = ranking_item(
+        "no-excerpt",
+        title="Unmapped public source update",
+        source="Public Source",
+    )
+    item["reader_excerpt_ru"] = "Источник описывает тему «Public Source: криптофинансы». Подробности и формулировки сохранены в оригинале источника."
+    html = build_news_pages.feed_item_card(item)
+    assert "news-excerpt" not in html
+    assert "Открыть источник" in html
+    assert "Оригинал" in html
 
 
 def test_public_original_title_sanitizes_security_terms() -> None:
@@ -219,7 +235,8 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert (build_news_pages.DIGESTS_DIR / "index.html").exists()
             index_html = (build_news_pages.NEWS_DIR / "index.html").read_text(encoding="utf-8")
             assert "Ленты новостей" in index_html
-            assert "stream-visual" in index_html
+            assert "feed-overview-grid" in index_html
+            assert "stream-visual" not in index_html
             assert "Последние материалы" in index_html
             assert_public_clean(index_html)
         finally:
@@ -234,6 +251,7 @@ def main() -> int:
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
+    test_feed_item_without_useful_excerpt_omits_body_filler()
     test_public_original_title_sanitizes_security_terms()
     test_news_empty_state_is_simple_russian_copy()
     test_news_and_digest_pages_are_written_to_configured_output()

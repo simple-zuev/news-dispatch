@@ -17,7 +17,6 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
-from newsroom_visuals import stream_visual
 from reader_text import (
     compact_time_ru,
     reader_excerpt_ru as shared_reader_excerpt_ru,
@@ -700,15 +699,15 @@ def card_for_item(item: dict[str, Any]) -> str:
     excerpt = public_text(shared_reader_excerpt_ru(item))
     source_line = public_text(shared_reader_source_line_ru(item))
     original = public_text(original_title(item))
+    excerpt_line = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
     original_block = ""
     if original and original != title:
         original_block = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
     return f"""<article class="card signal-card signal-card--reader">
   <span class="news-stream-marker stream-dot--{esc(stream_slug(item))}" aria-hidden="true"></span>
   <div class="signal-card-body">
-    <h3>{item_source_action(item, title)}</h3>
-    <p class="news-excerpt">{esc(excerpt)}</p>
-    <p class="news-meta">{esc(source_line)}</p>{original_block}
+    <p class="news-meta">{esc(source_line)}</p>
+    <h3>{item_source_action(item, title)}</h3>{excerpt_line}{original_block}
     <p class="news-source-link">{item_source_action(item)}</p>
   </div>
 </article>"""
@@ -721,20 +720,8 @@ def cards_block(items: list[dict[str, Any]]) -> str:
 
 
 def today_feature(items: list[dict[str, Any]]) -> str:
-    if not items:
-        return ""
-    item = items[0]
-    title = public_text(reader_title(item))
-    excerpt = public_text(shared_reader_excerpt_ru(item, max_len=220))
-    source_line = public_text(shared_reader_source_line_ru(item))
-    return f"""<section class="today-feature" aria-label="Главное событие">
-  {stream_visual(stream_slug(item), variant="feature")}
-  <div>
-    <p class="label">{esc(source_line)}</p>
-    <h2>{esc(title)}</h2>
-    <p>{esc(excerpt)}</p>
-  </div>
-</section>"""
+    """Today is intentionally text-first; no placeholder hero is rendered."""
+    return ""
 
 
 def pattern_present(patterns: list[str], text: str) -> bool:
@@ -909,7 +896,7 @@ def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 5) -> st
     for cluster in clusters[:limit]:
         item = cluster[0]
         lines.append(f"{reader_title(item)} — {stream_label(stream_slug(item))}.")
-    return '<section class="panel today-highlights"><h2>Главное за сегодня</h2>' + list_html(lines) + "</section>"
+    return '<section class="panel today-highlights"><h2>5 сигналов</h2>' + list_html(lines) + "</section>"
 
 
 def grouped_today_cards(items: list[dict[str, Any]]) -> str:
@@ -935,6 +922,7 @@ def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> 
     text = (
         f"Типы источников: {counts}. "
         "Сообщения источников не являются готовым выводом; прогнозы и оценки участников рынка подписаны как оценки. "
+        "Для выводов нужно открыть первичный материал и проверить контекст. "
         "Это не инвестиционная, юридическая или операционная рекомендация. "
         f"Не вошли в выпуск: требуют проверки — {review_count}, исключены — {blocked_count}."
     )
@@ -944,7 +932,6 @@ def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> 
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     clusters = cluster_items(items)
     return "\n".join([
-        today_feature(items),
         today_highlights(clusters),
         grouped_today_cards(items),
         compact_source_note(items, policy),

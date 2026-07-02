@@ -248,7 +248,8 @@ def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
     assert row["source_original_title"].startswith("FCA and the Bank of England")
     assert row["source_original_url"] == "https://example.com/stablecoin"
     assert row["reader_title_ru"] == "FCA и Банк Англии описали подход к системным стейблкоинам"
-    assert "Источник описывает тему" in str(row["reader_excerpt_ru"])
+    assert "Британские регуляторы описали совместный контур" in str(row["reader_excerpt_ru"])
+    assert "Источник описывает тему" not in str(row["reader_excerpt_ru"])
     assert "Криптофинансы" in str(row["reader_source_line_ru"])
 
 

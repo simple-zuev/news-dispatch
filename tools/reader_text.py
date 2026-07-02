@@ -76,6 +76,12 @@ BOILERPLATE_PATTERNS = [
     r"читать далее\s*",
 ]
 
+USELESS_EXCERPT_PATTERNS = [
+    r"Источник описывает тему",
+    r"Подробности и формулировки сохранены",
+    r"Короткое сообщение источника",
+]
+
 
 def has_cyrillic(text: object) -> bool:
     return bool(re.search(r"[А-Яа-яЁё]", str(text or "")))
@@ -134,6 +140,13 @@ def clean_source_excerpt(value: object, max_len: int = 360) -> str:
     for pattern in BOILERPLATE_PATTERNS:
         text = re.sub(pattern, " ", text, flags=re.IGNORECASE)
     return clean_text(text, max_len=max_len)
+
+
+def useful_reader_excerpt(value: object, max_len: int = 360) -> str:
+    text = clean_source_excerpt(value, max_len=max_len)
+    if any(re.search(pattern, text, re.IGNORECASE) for pattern in USELESS_EXCERPT_PATTERNS):
+        return ""
+    return text
 
 
 def item_text(item: dict[str, Any]) -> str:
@@ -223,13 +236,14 @@ def russian_topic(item: dict[str, Any]) -> str:
 
 def reader_title_ru(item: dict[str, Any]) -> str:
     existing = str(item.get("reader_title_ru") or "").strip()
-    if existing:
-        return public_text(existing)
     title = str(item.get("source_original_title") or item.get("title") or "").strip()
-    if has_cyrillic(title):
-        return public_text(title)
     text = item_text(item)
     source = source_name(item)
+    generic_existing = f"{public_text(source)}: {russian_topic(item)}"
+    if existing and public_text(existing) != generic_existing:
+        return public_text(existing)
+    if has_cyrillic(title):
+        return public_text(title)
     if "bank of england" in text and "stablecoin" in text:
         return "FCA и Банк Англии описали подход к системным стейблкоинам"
     if "mica" in text:
@@ -268,12 +282,20 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "Источник сообщает об увеличении корпоративного биткоин-резерва"
     if "ofac" in text or "sanctions" in text:
         return "Источник сообщает о санкциях и криптокошельках"
+    if "warsh" in text and ("jobs data" in text or "bitcoin" in text):
+        return "CoinDesk связывает комментарии Уорша с реакцией биткоина и золота"
+    if "smaller tokens" in text or "first real bounce" in text:
+        return "CoinDesk сообщает о восстановлении альткоинов после распродажи"
     if "bitcoin" in text and ("above" in text or "tops" in text or "holds" in text or "breaks" in text):
         return "Источник сообщает о движении биткоина выше ключевого уровня"
     if "ether" in text or "solana" in text or "dogecoin" in text:
         return "Источник сообщает о движении крупных криптоактивов"
     if "workspace" in text and "indirect" in text:
         return "Google описывает защиту Workspace от непрямых атак на инструкции"
+    if "chrome" in text and ("security" in text or "vulnerability" in text or "exploit" in text):
+        return "Google сообщает об обновлении безопасности Chrome"
+    if "android" in text and ("security" in text or "patch" in text or "update" in text):
+        return "Google сообщает об обновлении безопасности Android"
     if "apple intelligence" in text:
         return "Apple расширяет функции ИИ в пользовательских сценариях"
     if "nvidia" in text and "inference" in text:
@@ -282,8 +304,18 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "ESA сообщает о наблюдениях Webb"
     if "moon" in text and "nasa" in text:
         return "NASA расширяет научную программу для лунной базы"
+    if "webb" in text and ("nasa" in text or "esa" in text):
+        return "Космические агентства сообщают о новых наблюдениях Webb"
+    if "dvs" in text or "devious pocket" in text:
+        return "Devious Pocket показывает компактный open-source DVS"
+    if "dj controller" in text or ("controller" in text and "dj" in text):
+        return "Источник сообщает о новом DJ-контроллере"
+    if "plugin" in text and ("audio" in text or "music" in text or "producer" in text):
+        return "Источник сообщает о новом аудиоплагине для продакшена"
     if "ableton" in text or "cubase" in text:
         return "Аудиоинструменты переходят к новым рабочим наборам"
+    if "worn & wound" in text or ("watch" in text and "collection" in text):
+        return "Worn & Wound публикует подборку часов"
     if is_market_forecast_item(item):
         return f"Источник сообщает об оценке участника рынка: {russian_topic(item)}"
     return f"{public_text(source)}: {russian_topic(item)}"
@@ -292,17 +324,33 @@ def reader_title_ru(item: dict[str, Any]) -> str:
 def reader_excerpt_ru(item: dict[str, Any], max_len: int = 360) -> str:
     existing = str(item.get("reader_excerpt_ru") or "").strip()
     if existing:
-        return clean_source_excerpt(public_text(existing), max_len=max_len)
+        return useful_reader_excerpt(public_text(existing), max_len=max_len)
     excerpt = clean_source_excerpt(item.get("source_excerpt") or item.get("summary") or "", max_len=max_len)
     if excerpt and has_cyrillic(excerpt):
         return public_text(excerpt)
     title = reader_title_ru(item)
+    text = item_text(item)
     if is_market_forecast_item(item):
         text = f"Источник сообщает об оценке участника рынка по теме «{russian_topic(item)}». Это не факт будущей цены и не рекомендация."
-    elif excerpt:
-        text = f"Источник описывает тему «{title}». Подробности и формулировки сохранены в оригинале источника."
+        return clean_source_excerpt(text, max_len=max_len)
+    if "bank of england" in text and "stablecoin" in text:
+        text = "Британские регуляторы описали совместный контур надзора за системными эмитентами стейблкоинов."
+    elif "fca" in text and "crypto rules" in text:
+        text = "Британский регулятор описал публичный контур правил для криптоактивов и участников рынка."
+    elif "financial crime" in text:
+        text = "Материал описывает надзорные меры против финансовых преступлений и практику контроля рисков."
+    elif "post-quantum" in text or ("quantum" in text and "android" in text):
+        text = "Google описывает внедрение постквантовой криптографии в Android и связанные требования к безопасности."
+    elif "webb" in text and ("nasa" in text or "esa" in text):
+        text = "Космическое агентство сообщает о наблюдениях телескопа Webb и научном контексте находки."
+    elif "dvs" in text or "devious pocket" in text:
+        text = "DJ TechTools пишет о компактном open-source DVS-устройстве без ноутбука в рабочей связке."
+    elif "watch" in text and "collection" in text:
+        text = "Worn & Wound публикует редакционную подборку часов с ограничением по бюджету."
+    elif excerpt and has_cyrillic(excerpt):
+        text = excerpt
     else:
-        text = f"Короткое сообщение источника по теме «{title}». Для выводов нужно открыть первичный материал и проверить контекст."
+        return ""
     return clean_source_excerpt(text, max_len=max_len)
 
 
@@ -314,7 +362,7 @@ def reader_source_line_ru(item: dict[str, Any]) -> str:
     stream = stream_label(stream_slug(item))
     reliability = source_class_label(item.get("source_class"))
     time = compact_time_ru(item.get("published") or item.get("date"))
-    return f"{source} · {stream} · {time} · {reliability}"
+    return f"{time} · {source} · {stream} · {reliability}"
 
 
 def source_original_title(item: dict[str, Any]) -> str:

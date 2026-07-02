@@ -7,7 +7,7 @@
 }
 
 body {
-  background: linear-gradient(180deg, #f7f3ec 0%, var(--bg) 46%, #f3efe7 100%);
+  background: var(--bg);
 }
 
 .article-hero,
@@ -186,11 +186,11 @@ main {
 }
 
 .reader-section-lede {
-  background: linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(155, 77, 34, 0.075));
+  background: var(--card);
 }
 
 .reader-section-main {
-  background: #fff8eb;
+  background: var(--card);
 }
 
 .reader-section-main ol {
