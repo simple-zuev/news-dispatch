@@ -12,8 +12,10 @@ import hashlib
 import json
 import re
 from collections import Counter
+from datetime import datetime, time
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from build_today_page import (
     GENERAL_SPECIAL_USE_STREAM,
@@ -24,7 +26,6 @@ from build_today_page import (
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
 from reader_text import (
     reader_excerpt_ru,
-    reader_source_line_ru,
     reader_title_ru,
     source_name,
     source_original_title,
@@ -47,6 +48,22 @@ STREAM_ORDER = [
     "science-discovery",
     "general",
 ]
+
+PUBLIC_TZ = ZoneInfo("Europe/Moscow")
+MONTHS_RU = {
+    1: "января",
+    2: "февраля",
+    3: "марта",
+    4: "апреля",
+    5: "мая",
+    6: "июня",
+    7: "июля",
+    8: "августа",
+    9: "сентября",
+    10: "октября",
+    11: "ноября",
+    12: "декабря",
+}
 
 
 def esc(value: object) -> str:
@@ -75,13 +92,40 @@ def item_stream(item: dict[str, Any]) -> str:
 
 
 def item_time(item: dict[str, Any]) -> str:
-    raw = str(item.get("published") or item.get("date") or "").strip()
+    return format_public_time_ru(item.get("published") or item.get("date"))
+
+
+def parse_public_datetime(value: object) -> tuple[datetime | None, bool]:
+    raw = str(value or "").strip()
     if not raw:
+        return None, False
+    has_time = bool(re.search(r"[T ]\d{1,2}:\d{2}", raw))
+    cleaned = raw.replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(cleaned)
+    except ValueError:
+        date_match = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", raw)
+        if not date_match:
+            return None, False
+        year, month, day = (int(part) for part in date_match.groups())
+        return datetime(year, month, day, tzinfo=PUBLIC_TZ), False
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=PUBLIC_TZ)
+    else:
+        parsed = parsed.astimezone(PUBLIC_TZ)
+    return parsed, has_time
+
+
+def format_public_time_ru(value: object) -> str:
+    parsed, has_time = parse_public_datetime(value)
+    if parsed is None:
         return "дата не указана"
-    cleaned = raw.replace("T", " ")
-    if cleaned.endswith("+00:00"):
-        return cleaned[:-6].split(".", 1)[0] + " UTC"
-    return cleaned.split(".", 1)[0][:19]
+    day = f"{parsed.day} {MONTHS_RU[parsed.month]}"
+    if has_time and parsed.date() == datetime.now(PUBLIC_TZ).date():
+        return f"Сегодня, {parsed:%H:%M}"
+    if has_time and parsed.timetz().replace(tzinfo=None) != time(0, 0):
+        return f"{day}, {parsed:%H:%M}"
+    return day
 
 
 def item_sort_key(item: dict[str, Any]) -> str:
@@ -160,7 +204,62 @@ def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list
 
 
 def public_title(item: dict[str, Any]) -> str:
-    return public_text(reader_title_ru(item))
+    title = public_text(reader_title_ru(item))
+    generic_prefixes = (
+        "Источник сообщает: ",
+        "Источник описывает ",
+    )
+    if title.startswith(generic_prefixes):
+        original = public_text(source_original_title(item))
+        source = public_text(source_name(item))
+        if original:
+            return f"{source}: {original}"
+    return title
+
+
+def reliability_label(item: dict[str, Any]) -> str:
+    source_class = str(item.get("source_class") or "").strip()
+    source_type = str(item.get("source_type") or "").strip()
+    labels = {
+        "official_source": "официальный источник",
+        "official": "официальный источник",
+        "regulator": "регулятор",
+        "company": "компания",
+        "public_media": "публичное медиа",
+        "specialized_media": "профильное медиа",
+        "business_media": "деловое медиа",
+        "industry_media": "отраслевое медиа",
+        "research_media": "исследовательский источник",
+    }
+    return labels.get(source_class) or labels.get(source_type) or "публичный источник"
+
+
+def public_news_meta(item: dict[str, Any]) -> str:
+    parts = [
+        public_text(source_name(item)),
+        stream_label(item_stream(item)),
+        item_time(item),
+        reliability_label(item),
+    ]
+    return " · ".join(part for part in parts if part)
+
+
+def useful_excerpt(item: dict[str, Any], max_len: int = 240) -> str:
+    forbidden = (
+        "Источник описывает тему",
+        "Подробности и формулировки сохранены",
+        "Короткое сообщение источника",
+        "Источник сообщает: ",
+    )
+    existing = str(item.get("reader_excerpt_ru") or "").strip()
+    if existing:
+        text = public_text(reader_excerpt_ru(item, max_len=max_len))
+        return "" if any(phrase in text for phrase in forbidden) else text
+    excerpt = str(item.get("source_excerpt") or item.get("summary") or "").strip()
+    if excerpt and re.search(r"[А-Яа-яЁё]", excerpt):
+        text = public_text(reader_excerpt_ru(item, max_len=max_len))
+        return "" if any(phrase in text for phrase in forbidden) else text
+    return ""
 
 
 def source_link(item: dict[str, Any], text: str) -> str:
@@ -173,8 +272,9 @@ def source_link(item: dict[str, Any], text: str) -> str:
 def feed_item_card(item: dict[str, Any]) -> str:
     title = public_title(item)
     original = public_text(source_original_title(item))
-    excerpt = public_text(reader_excerpt_ru(item))
-    source_line = public_text(reader_source_line_ru(item))
+    excerpt = useful_excerpt(item)
+    excerpt_line = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
+    meta = public_news_meta(item)
     original_line = ""
     if original and original != title:
         original_line = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
@@ -182,10 +282,9 @@ def feed_item_card(item: dict[str, Any]) -> str:
     return f"""<article class="news-item news-item--text">
   <span class="news-stream-marker stream-dot--{esc(slug)}" aria-hidden="true"></span>
   <div class="news-item-body">
-    <h3>{source_link(item, title)}</h3>
-    <p class="news-excerpt">{esc(excerpt)}</p>
-    <p class="news-meta">{esc(source_line)}</p>{original_line}
-    <p class="news-source-link">{source_link(item, "Открыть источник")}</p>
+    <p class="news-meta">{esc(meta)}</p>
+    <h3>{source_link(item, title)}</h3>{excerpt_line}
+    <p class="news-source-link">{source_link(item, "Открыть источник")}</p>{original_line}
   </div>
 </article>"""
 
@@ -218,37 +317,36 @@ def head(title: str, description: str, css_href: str = "../styles/main.css") -> 
 </head>"""
 
 
-def stream_overview_card(stream: str, rows: list[dict[str, Any]]) -> str:
+def stream_overview_row(stream: str, rows: list[dict[str, Any]]) -> str:
     count = len(rows)
     latest = item_time(rows[0]) if rows else "нет новых материалов"
-    label = f"{count} материалов · последнее: {latest}" if rows else "Сегодня новых материалов нет"
-    return f"""<article class="card feed-overview-card">
-  {stream_visual(stream, variant="tile")}
-  <p class="label">{esc(label)}</p>
-  <h3><a href="{esc(stream)}.html">{esc(stream_label(stream))}</a></h3>
+    return f"""<article class="news-index-row">
+  <span class="news-stream-marker stream-dot--{esc(stream)}" aria-hidden="true"></span>
+  <h2><a href="{esc(stream)}.html">{esc(stream_label(stream))}</a></h2>
+  <p><span>{count} материалов</span><span>последнее: {esc(latest)}</span></p>
 </article>"""
 
 
 def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
-    cards = "\n".join(stream_overview_card(stream, grouped.get(stream, [])) for stream in STREAM_ORDER)
+    rows = "\n".join(stream_overview_row(stream, grouped.get(stream, [])) for stream in STREAM_ORDER)
     total = sum(len(rows) for rows in grouped.values())
-    latest_rows = dedupe_items([row for rows in grouped.values() for row in rows])[:10]
+    latest_rows = dedupe_items([row for rows in grouped.values() for row in rows])[:20]
     latest_cards = "\n".join(feed_item_card(item) for item in latest_rows)
     return f"""<!doctype html>
 <html lang="ru">
-{head("Ленты новостей — News Dispatch", "Хронологические ленты публичных источников.", css_href="../styles/main.css")}
+{head("Новости — News Dispatch", "Хронологические ленты публичных источников.", css_href="../styles/main.css")}
 <body>
   <header class="masthead compact">
     <a class="backlink" href="../index.html">News Dispatch</a>
     {top_nav("../")}
-    <p class="eyebrow">Ленты новостей</p>
-    <h1>Ленты новостей</h1>
-    <p class="lede">Хронологические ленты по рубрикам. В них попадают принятые публичные сообщения, даже если они не выбраны в короткий обзор дня.</p>
+    <h1>Новости</h1>
   </header>
   <main>
-    <section class="panel"><h2>Все рубрики</h2><p>Всего в лентах: {total} материалов.</p></section>
-    <section class="grid">{cards}</section>
-    <section class="panel"><h2>Последние материалы</h2></section>
+    <section class="news-index-summary" aria-label="Темы новостей">
+      <div class="news-index-heading"><h2>Темы новостей</h2><p>Всего: {total} материалов</p></div>
+      <div class="news-index-list">{rows}</div>
+    </section>
+    <section class="news-index-heading"><h2>Последние материалы</h2><a href="#top">К началу</a></section>
     <section class="news-list news-list--preview">{latest_cards or empty_feed_card()}</section>
   </main>
 </body>
@@ -256,7 +354,7 @@ def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
 
 
 def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
-    cards = "\n".join(feed_item_card(item) for item in rows[:120]) or empty_feed_card()
+    cards = "\n".join(feed_item_card(item) for item in rows[:50]) or empty_feed_card()
     return f"""<!doctype html>
 <html lang="ru">
 {head(f"{stream_label(stream)} — лента новостей", f"Хронологическая лента: {stream_label(stream)}.")}
@@ -264,9 +362,8 @@ def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
   <header class="masthead compact">
     <a class="backlink" href="index.html">Ленты новостей</a>
     {top_nav("../")}
-    <p class="eyebrow">Лента новостей</p>
     <h1>{esc(stream_label(stream))}</h1>
-    <p class="lede">Принятые публичные сообщения по теме в обратной хронологии.</p>
+    <p class="lede">Новейшие материалы сверху. Показано до 50 строк.</p>
   </header>
   <main>
     <section class="news-list">{cards}</section>
