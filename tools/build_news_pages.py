@@ -12,23 +12,20 @@ import hashlib
 import json
 import re
 from collections import Counter
-from datetime import datetime, time
 from pathlib import Path
 from typing import Any
-from zoneinfo import ZoneInfo
 
 from build_today_page import (
     GENERAL_SPECIAL_USE_STREAM,
     public_href,
-    public_text,
-    stream_label,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
 from reader_text import (
-    reader_excerpt_ru,
-    reader_title_ru,
-    source_name,
-    source_original_title,
+    PUBLIC_TZ,
+    build_public_item,
+    format_public_time_ru,
+    public_meta_ru,
+    stream_label,
 )
 from newsroom_visuals import stream_visual
 from render_site import output_slug
@@ -48,23 +45,6 @@ STREAM_ORDER = [
     "science-discovery",
     "general",
 ]
-
-PUBLIC_TZ = ZoneInfo("Europe/Moscow")
-MONTHS_RU = {
-    1: "января",
-    2: "февраля",
-    3: "марта",
-    4: "апреля",
-    5: "мая",
-    6: "июня",
-    7: "июля",
-    8: "августа",
-    9: "сентября",
-    10: "октября",
-    11: "ноября",
-    12: "декабря",
-}
-
 
 def esc(value: object) -> str:
     return html.escape(str(value or ""), quote=True)
@@ -93,39 +73,6 @@ def item_stream(item: dict[str, Any]) -> str:
 
 def item_time(item: dict[str, Any]) -> str:
     return format_public_time_ru(item.get("published") or item.get("date"))
-
-
-def parse_public_datetime(value: object) -> tuple[datetime | None, bool]:
-    raw = str(value or "").strip()
-    if not raw:
-        return None, False
-    has_time = bool(re.search(r"[T ]\d{1,2}:\d{2}", raw))
-    cleaned = raw.replace("Z", "+00:00")
-    try:
-        parsed = datetime.fromisoformat(cleaned)
-    except ValueError:
-        date_match = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", raw)
-        if not date_match:
-            return None, False
-        year, month, day = (int(part) for part in date_match.groups())
-        return datetime(year, month, day, tzinfo=PUBLIC_TZ), False
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=PUBLIC_TZ)
-    else:
-        parsed = parsed.astimezone(PUBLIC_TZ)
-    return parsed, has_time
-
-
-def format_public_time_ru(value: object) -> str:
-    parsed, has_time = parse_public_datetime(value)
-    if parsed is None:
-        return "дата не указана"
-    day = f"{parsed.day} {MONTHS_RU[parsed.month]}"
-    if has_time and parsed.date() == datetime.now(PUBLIC_TZ).date():
-        return f"Сегодня, {parsed:%H:%M}"
-    if has_time and parsed.timetz().replace(tzinfo=None) != time(0, 0):
-        return f"{day}, {parsed:%H:%M}"
-    return day
 
 
 def item_sort_key(item: dict[str, Any]) -> str:
@@ -203,63 +150,8 @@ def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list
     return {stream: dedupe_items(rows) for stream, rows in grouped.items()}
 
 
-def public_title(item: dict[str, Any]) -> str:
-    title = public_text(reader_title_ru(item))
-    generic_prefixes = (
-        "Источник сообщает: ",
-        "Источник описывает ",
-    )
-    if title.startswith(generic_prefixes):
-        original = public_text(source_original_title(item))
-        source = public_text(source_name(item))
-        if original:
-            return f"{source}: {original}"
-    return title
-
-
-def reliability_label(item: dict[str, Any]) -> str:
-    source_class = str(item.get("source_class") or "").strip()
-    source_type = str(item.get("source_type") or "").strip()
-    labels = {
-        "official_source": "официальный источник",
-        "official": "официальный источник",
-        "regulator": "регулятор",
-        "company": "компания",
-        "public_media": "публичное медиа",
-        "specialized_media": "профильное медиа",
-        "business_media": "деловое медиа",
-        "industry_media": "отраслевое медиа",
-        "research_media": "исследовательский источник",
-    }
-    return labels.get(source_class) or labels.get(source_type) or "публичный источник"
-
-
 def public_news_meta(item: dict[str, Any]) -> str:
-    parts = [
-        public_text(source_name(item)),
-        stream_label(item_stream(item)),
-        item_time(item),
-        reliability_label(item),
-    ]
-    return " · ".join(part for part in parts if part)
-
-
-def useful_excerpt(item: dict[str, Any], max_len: int = 240) -> str:
-    forbidden = (
-        "Источник описывает тему",
-        "Подробности и формулировки сохранены",
-        "Короткое сообщение источника",
-        "Источник сообщает: ",
-    )
-    existing = str(item.get("reader_excerpt_ru") or "").strip()
-    if existing:
-        text = public_text(reader_excerpt_ru(item, max_len=max_len))
-        return "" if any(phrase in text for phrase in forbidden) else text
-    excerpt = str(item.get("source_excerpt") or item.get("summary") or "").strip()
-    if excerpt and re.search(r"[А-Яа-яЁё]", excerpt):
-        text = public_text(reader_excerpt_ru(item, max_len=max_len))
-        return "" if any(phrase in text for phrase in forbidden) else text
-    return ""
+    return public_meta_ru(item, item_stream(item))
 
 
 def source_link(item: dict[str, Any], text: str) -> str:
@@ -270,11 +162,12 @@ def source_link(item: dict[str, Any], text: str) -> str:
 
 
 def feed_item_card(item: dict[str, Any]) -> str:
-    title = public_title(item)
-    original = public_text(source_original_title(item))
-    excerpt = useful_excerpt(item)
+    public_item = build_public_item(item, stream=item_stream(item))
+    title = public_item["title"]
+    original = public_item["original_title"]
+    excerpt = public_item["excerpt"]
     excerpt_line = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
-    meta = public_news_meta(item)
+    meta = public_item["meta"]
     original_line = ""
     if original and original != title:
         original_line = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'

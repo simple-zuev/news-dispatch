@@ -49,6 +49,8 @@ def fixture_report() -> dict:
                 "feed_title": "Fixture Source",
                 "title": "Markets react to central bank liquidity signal",
                 "url": "https://example.com/signal",
+                "published": "2026-06-28T09:00:00+00:00",
+                "reader_excerpt_ru": "Перед выводами нужно открыть первичный материал и проверить контекст сообщения источника.",
                 "final_score": 1.10,
                 "relevance_score": 0.76,
                 "include_hits": ["central bank", "liquidity"],

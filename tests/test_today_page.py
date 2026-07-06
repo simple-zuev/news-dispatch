@@ -19,6 +19,8 @@ build_today_page = importlib.util.module_from_spec(spec)
 sys.modules["build_today_page"] = build_today_page
 spec.loader.exec_module(build_today_page)
 
+from public_html_scan import assert_public_html_clean
+
 
 def sample_report() -> dict:
     return {
@@ -35,6 +37,8 @@ def sample_report() -> dict:
                 "feed_title": "Example Regulator",
                 "title": "Central bank updates digital asset rules",
                 "url": "https://example.com/item",
+                "published": "2026-06-28T00:00:00+00:00",
+                "reader_excerpt_ru": "Центральный банк опубликовал обновление правил для цифровых активов.",
                 "final_score": 1.25,
                 "relevance_score": 0.82,
                 "include_hits": ["central bank", "digital asset"],
@@ -50,6 +54,8 @@ def sample_report() -> dict:
                 "feed_title": "Example Media",
                 "title": "Digital asset rules updated by central bank",
                 "url": "https://example.com/item-2",
+                "published": "2026-06-28T00:05:00+00:00",
+                "reader_excerpt_ru": "Медиа пересказывает обновление правил и указывает на контекст надзора.",
                 "final_score": 1.10,
                 "relevance_score": 0.76,
                 "include_hits": ["central bank", "digital asset"],
@@ -426,6 +432,7 @@ def test_public_today_html_contains_no_debug_terms() -> None:
     text = visible_text(html).lower()
     for term in PUBLIC_FORBIDDEN_TERMS:
         assert term not in text
+    assert_public_html_clean(html)
 
 
 def test_public_today_uses_required_stream_labels() -> None:
