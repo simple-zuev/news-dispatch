@@ -218,6 +218,12 @@ def card_headings(html: str) -> list[str]:
     return re.findall(r"<article class=\"card signal-card[^\"]*\">.*?<h3>(.*?)</h3>", html, flags=re.S)
 
 
+def highlight_count(html: str) -> int:
+    section = re.search(r"<section class=\"panel today-highlights\".*?</section>", html, flags=re.S)
+    assert section is not None
+    return len(re.findall(r"<li>", section.group(0)))
+
+
 def visible_text(html: str) -> str:
     without_scripts = re.sub(r"<(script|style).*?</\1>", " ", html, flags=re.I | re.S)
     return re.sub(r"<[^>]+>", " ", without_scripts)
@@ -231,8 +237,9 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "digests/index.html" in html
     assert "radar/index.html" in html
     assert "Главное за сегодня" in html
-    assert "today-feature" in html
-    assert "stream-visual" in html
+    assert "today-highlights" in html
+    assert "today-feature" not in html
+    assert "stream-visual" not in html
     assert "source-note" in html
     assert "Сводка выпуска" not in html
     assert "не инвестиционная" in html
@@ -240,11 +247,10 @@ def test_render_includes_required_links_and_boundary() -> None:
 
 def test_today_is_news_first_without_service_block() -> None:
     html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
-    assert "today-feature" in html
     assert "today-highlights" in html
     assert "today-grouped-cards" in html
     assert "reader-card-list" in html
-    assert html.index("today-feature") < html.index("today-highlights") < html.index("today-grouped-cards") < html.index("source-note")
+    assert html.index("today-highlights") < html.index("today-grouped-cards") < html.index("source-note")
     assert "Сводка выпуска" not in html
     assert "Публично показаны" not in html
     assert "Источники публичные" not in html
@@ -279,9 +285,9 @@ def test_gate_failure_renders_safe_fallback_without_human_decision() -> None:
     report["items"][0]["source_type"] = ""
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
     html = build_today_page.render(report, policy, auto_report={"generated": []})
-    assert "Сегодняшний дайджест не показан полностью" in html
-    assert "Ниже оставлены только осторожные публичные материалы" in html
-    assert "Доступные публичные сигналы" in html
+    assert "Главное за сегодня" in html
+    assert "Сегодняшний дайджест не показан полностью" not in html
+    assert "Ниже оставлены только осторожные публичные материалы" not in html
     assert "Gate:" not in html
     assert "gate-fallback" not in html
 
@@ -301,6 +307,21 @@ def test_render_includes_analytical_card_structure() -> None:
     assert "Тезис:" not in html
     assert "Почему важно:" not in html
     assert "Открыть источник" in html
+    assert "28 июня, 03:00" in html
+
+
+def test_today_starts_with_three_to_five_highlights_when_available() -> None:
+    report = mixed_accepted_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    html = build_today_page.render(report, policy, auto_report={"generated": []})
+    assert html.index("today-highlights") < html.index("today-grouped-cards")
+    assert 3 <= highlight_count(html) <= 5
+
+
+def test_today_uses_no_giant_hero_or_fake_media_classes() -> None:
+    html = build_today_page.render(sample_report(), auto_report={"generated": []})
+    for class_name in ["today-feature", "stream-visual", "stream-visual--feature", "latest-grid", "homepage-hero", "featured-card"]:
+        assert class_name not in html
 
 
 def test_render_clusters_similar_signals() -> None:
@@ -463,6 +484,8 @@ def main() -> int:
     test_auto_dispatch_artifacts_are_not_finished_analysis()
     test_gate_failure_renders_safe_fallback_without_human_decision()
     test_render_includes_analytical_card_structure()
+    test_today_starts_with_three_to_five_highlights_when_available()
+    test_today_uses_no_giant_hero_or_fake_media_classes()
     test_render_clusters_similar_signals()
     test_today_radar_css_has_cluster_materials_styles()
     test_card_stays_non_directive()
