@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,8 @@ assert render_spec is not None and render_spec.loader is not None
 render_site = importlib.util.module_from_spec(render_spec)
 sys.modules["render_site"] = render_site
 render_spec.loader.exec_module(render_site)
+
+from public_html_scan import assert_public_html_clean, assert_public_pages_clean
 
 def test_default_modes_are_deterministic() -> None:
     args = build_site.parse_args([])
@@ -155,8 +158,34 @@ def test_homepage_template_matches_public_reader_blocks() -> None:
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
     assert "Источник сообщает: Криптофинансы" not in html
+    assert "2026-07-02 11:00:00 UTC" not in html
+    assert "2 июля, 14:00" in html
     for term in ["selected", "reader_safe", "source_rule_status", "validation", "draft-only", "review-only", "generated", "prompt", "json", "score=", "final_score", "selection_score", "fetch warnings", "gate"]:
         assert term not in lower
+    assert_public_html_clean(html)
+
+
+def test_public_generated_page_scan_checks_reader_pages() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        site_dir = Path(tmp)
+        news_dir = site_dir / "news"
+        news_dir.mkdir(parents=True)
+        clean_html = "<html><body><p>Fixture Regulator · Криптофинансы · 28 июня · регулятор</p></body></html>"
+        for path in [
+            site_dir / "index.html",
+            news_dir / "index.html",
+            news_dir / "crypto-finance.html",
+            site_dir / "today.html",
+        ]:
+            path.write_text(clean_html, encoding="utf-8")
+        assert_public_pages_clean(site_dir)
+
+        (site_dir / "index.html").write_text("2026-07-06 14:09:58 UTC", encoding="utf-8")
+        try:
+            assert_public_pages_clean(site_dir)
+        except AssertionError:
+            return
+        raise AssertionError("public generated-page scan did not catch raw public metadata")
 
 
 def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
@@ -193,6 +222,7 @@ def main() -> int:
     test_pages_modes_are_explicit()
     test_offline_ranking_fixture_contract()
     test_homepage_template_matches_public_reader_blocks()
+    test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
     test_homepage_omits_missing_excerpts_instead_of_generic_filler()
     test_old_home_hero_css_is_removed()

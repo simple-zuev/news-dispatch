@@ -20,13 +20,9 @@ from dataclasses import dataclass
 from email.utils import formatdate
 from pathlib import Path
 
-from build_today_page import (
-    public_href as safe_href,
-    public_text as reader_public_text,
-    source_name as ranking_source_name,
-)
+from build_today_page import public_href as safe_href
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
-from reader_text import reader_excerpt_ru, reader_title_ru
+from reader_text import build_public_item, format_public_time_ru
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -635,13 +631,7 @@ def ranking_stream(item: dict[str, object]) -> str:
 
 
 def ranking_published(item: dict[str, object]) -> str:
-    raw = str(item.get("published") or item.get("date") or "").strip()
-    if not raw:
-        return "время не указано"
-    cleaned = raw.replace("T", " ")
-    if cleaned.endswith("+00:00"):
-        return cleaned[:-6].split(".", 1)[0] + " UTC"
-    return cleaned.split(".", 1)[0][:19]
+    return format_public_time_ru(item.get("published") or item.get("date"))
 
 
 def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
@@ -683,17 +673,12 @@ def home_item_link(item: dict[str, object], text: str) -> str:
 
 
 def home_ranking_title(item: dict[str, object]) -> str:
-    return reader_public_text(reader_title_ru(item))
+    return build_public_item(item)["title"]
 
 
 def home_ranking_excerpt(item: dict[str, object], max_len: int = 180) -> str:
-    existing = str(item.get("reader_excerpt_ru") or "").strip()
-    if existing:
-        return reader_public_text(reader_excerpt_ru(item, max_len=max_len))
-    excerpt = str(item.get("source_excerpt") or item.get("summary") or "").strip()
-    if excerpt and has_cyrillic(excerpt):
-        return reader_public_text(reader_excerpt_ru(item, max_len=max_len))
-    return ""
+    public_item = build_public_item(item)
+    return public_item["excerpt"][:max_len].rstrip()
 
 
 def home_latest_items(items: list[dict[str, object]], limit: int = 8) -> list[dict[str, object]]:
@@ -720,13 +705,13 @@ def home_source_link(item: dict[str, object], text: str = "Открыть ист
 
 
 def home_news_row(item: dict[str, object]) -> str:
-    title = home_ranking_title(item)
-    excerpt = home_ranking_excerpt(item, max_len=190)
+    public_item = build_public_item(item)
+    title = public_item["title"]
+    excerpt = public_item["excerpt"][:190].rstrip()
     excerpt_html = f'\n  <p class="home-news-excerpt">{html.escape(excerpt)}</p>' if excerpt else ""
-    source = reader_public_text(ranking_source_name(item))
-    rubric = home_rubric_title(ranking_stream(item))
+    meta = public_item["meta"]
     return f"""<article class="home-news-row">
-  <p class="home-news-meta"><time>{html.escape(ranking_published(item))}</time><span>{html.escape(source)}</span><span>{html.escape(rubric)}</span></p>
+  <p class="home-news-meta">{html.escape(meta)}</p>
   <h3>{home_item_link(item, title)}</h3>{excerpt_html}
   <p class="home-news-source">{home_source_link(item)}</p>
 </article>"""
@@ -735,8 +720,9 @@ def home_news_row(item: dict[str, object]) -> str:
 def home_today_summary(items: list[dict[str, object]]) -> str:
     rows = []
     for item in items[:3]:
-        title = home_ranking_title(item)
-        source = reader_public_text(ranking_source_name(item))
+        public_item = build_public_item(item)
+        title = public_item["title"]
+        source = public_item["source"]
         rows.append(
             f"""<article class="home-today-row">
   <h3>{home_item_link(item, title)}</h3>
@@ -781,7 +767,7 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
     all_ranking_items = load_ranking_items(limit=None)
     ranking_items = all_ranking_items[:24]
     latest_items = home_latest_items(all_ranking_items, limit=8)
-    latest_time = ranking_published(latest_items[0]) if latest_items else "сегодня"
+    latest_time = build_public_item(latest_items[0])["time"] if latest_items else "сегодня"
     latest_rows = "\n".join(home_news_row(item) for item in latest_items)
     if not latest_rows:
         latest_rows = """<article class="home-news-row empty-state">

@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import re
 import sys
 import tempfile
 from datetime import datetime
@@ -22,36 +21,7 @@ build_news_pages = importlib.util.module_from_spec(spec)
 sys.modules["build_news_pages"] = build_news_pages
 spec.loader.exec_module(build_news_pages)
 
-
-FORBIDDEN_PUBLIC_TERMS = [
-    "UTC",
-    "selected",
-    "reader_safe",
-    "source_rule_status",
-    "validation",
-    "item_key",
-    "feed_id",
-    "draft-only",
-    "review-only",
-    "generated",
-    "prompt",
-    "json",
-    "score=",
-    "final_score",
-    "selection_score",
-    "fetch warnings",
-    "gate",
-    "gates",
-    "lifecycle",
-    "threshold",
-    "coverage",
-    "техническая пустота покрытия",
-]
-
-FORBIDDEN_PUBLIC_PATTERNS = [
-    r"\b20\d{2}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}\b",
-    r"\b\d{1,2}:\d{2}:\d{2}\b",
-]
+from public_html_scan import assert_public_html_clean
 
 
 def ranking_item(
@@ -133,11 +103,7 @@ def hashed_policy_for_report(report: dict[str, object]) -> dict[str, object]:
 
 
 def assert_public_clean(html: str) -> None:
-    lower = html.lower()
-    for term in FORBIDDEN_PUBLIC_TERMS:
-        assert term.lower() not in lower
-    for pattern in FORBIDDEN_PUBLIC_PATTERNS:
-        assert not re.search(pattern, html)
+    assert_public_html_clean(html)
 
 
 def test_public_time_formatter_uses_reader_dates() -> None:

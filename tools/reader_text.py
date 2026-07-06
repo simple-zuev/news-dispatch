@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
+from datetime import datetime, time
 from typing import Any
 from zoneinfo import ZoneInfo
 
@@ -20,6 +20,22 @@ STREAM_LABELS = {
     "dj-audio-creative": "DJ / аудио / креатив",
     "science-discovery": "Наука",
     "general": "Спецвыпуски",
+}
+
+PUBLIC_TZ = ZoneInfo("Europe/Moscow")
+MONTHS_RU = {
+    1: "января",
+    2: "февраля",
+    3: "марта",
+    4: "апреля",
+    5: "мая",
+    6: "июня",
+    7: "июля",
+    8: "августа",
+    9: "сентября",
+    10: "октября",
+    11: "ноября",
+    12: "декабря",
 }
 
 SOURCE_CLASS_LABELS = {
@@ -127,6 +143,39 @@ def compact_time_ru(value: object) -> str:
     except (ValueError, TypeError):
         cleaned = raw.replace("T", " ").split(".", 1)[0].replace("+00:00", "")
         return cleaned[:16] if cleaned else "время не указано"
+
+
+def parse_public_datetime(value: object) -> tuple[datetime | None, bool]:
+    raw = str(value or "").strip()
+    if not raw:
+        return None, False
+    has_time = bool(re.search(r"[T ]\d{1,2}:\d{2}", raw))
+    cleaned = raw.replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(cleaned)
+    except ValueError:
+        date_match = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", raw)
+        if not date_match:
+            return None, False
+        year, month, day = (int(part) for part in date_match.groups())
+        return datetime(year, month, day, tzinfo=PUBLIC_TZ), False
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=PUBLIC_TZ)
+    else:
+        parsed = parsed.astimezone(PUBLIC_TZ)
+    return parsed, has_time
+
+
+def format_public_time_ru(value: object) -> str:
+    parsed, has_time = parse_public_datetime(value)
+    if parsed is None:
+        return "дата не указана"
+    day = f"{parsed.day} {MONTHS_RU[parsed.month]}"
+    if has_time and parsed.date() == datetime.now(PUBLIC_TZ).date():
+        return f"Сегодня, {parsed:%H:%M}"
+    if has_time and parsed.timetz().replace(tzinfo=None) != time(0, 0):
+        return f"{day}, {parsed:%H:%M}"
+    return day
 
 
 def clean_source_excerpt(value: object, max_len: int = 360) -> str:
@@ -330,4 +379,82 @@ def build_reader_fields(item: dict[str, Any]) -> dict[str, str]:
         "reader_title_ru": reader_title_ru(item),
         "reader_excerpt_ru": reader_excerpt_ru(item),
         "reader_source_line_ru": reader_source_line_ru(item),
+    }
+
+
+def public_source_name(item: dict[str, Any]) -> str:
+    source = str(item.get("feed_title") or "").strip()
+    if not source:
+        return "Публичный источник"
+    return public_text(source)
+
+
+def public_stream_name(item: dict[str, Any], stream: object | None = None) -> str:
+    return stream_label(stream if stream is not None else stream_slug(item))
+
+
+def public_reliability_label(item: dict[str, Any]) -> str:
+    source_class = str(item.get("source_class") or "").strip()
+    source_type = str(item.get("source_type") or "").strip()
+    return source_class_label(source_class) if source_class else source_type_label(source_type)
+
+
+def public_title_ru(item: dict[str, Any]) -> str:
+    if is_market_forecast_item(item):
+        return f"Источник сообщает об оценке участника рынка: {russian_topic(item)}"
+    title = public_text(reader_title_ru(item)).strip()
+    if re.search(r"Источник сообщает:\s*.+\s+—\s+", title) or title.startswith(("Источник сообщает: ", "Источник описывает ")):
+        original = public_text(source_original_title(item)).strip()
+        source = public_source_name(item)
+        if original:
+            return f"{source}: {original}"
+    return title or "Без заголовка"
+
+
+def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
+    forbidden = (
+        "Источник описывает тему",
+        "Подробности и формулировки сохранены",
+        "Короткое сообщение источника",
+        "Источник сообщает: ",
+    )
+    if is_market_forecast_item(item):
+        return clean_source_excerpt(
+            f"Источник сообщает об оценке участника рынка по теме «{russian_topic(item)}». Это не факт будущей цены и не рекомендация.",
+            max_len=max_len,
+        )
+    existing = str(item.get("reader_excerpt_ru") or "").strip()
+    if existing:
+        text = public_text(reader_excerpt_ru(item, max_len=max_len))
+        return "" if any(phrase in text for phrase in forbidden) else text
+    excerpt = str(item.get("source_excerpt") or item.get("summary") or "").strip()
+    if excerpt and has_cyrillic(excerpt):
+        text = public_text(reader_excerpt_ru(item, max_len=max_len))
+        return "" if any(phrase in text for phrase in forbidden) else text
+    return ""
+
+
+def public_meta_ru(item: dict[str, Any], stream: object | None = None) -> str:
+    parts = [
+        public_source_name(item),
+        public_stream_name(item, stream),
+        format_public_time_ru(item.get("published") or item.get("date")),
+        public_reliability_label(item),
+    ]
+    return " · ".join(part for part in parts if part)
+
+
+def build_public_item(item: dict[str, Any], stream: object | None = None) -> dict[str, str]:
+    original = public_text(source_original_title(item)).strip()
+    title = public_title_ru(item)
+    return {
+        "title": title,
+        "excerpt": public_excerpt_ru(item),
+        "meta": public_meta_ru(item, stream),
+        "time": format_public_time_ru(item.get("published") or item.get("date")),
+        "source": public_source_name(item),
+        "stream": public_stream_name(item, stream),
+        "reliability": public_reliability_label(item),
+        "url": str(item.get("url") or "").strip(),
+        "original_title": original if original != title else "",
     }
