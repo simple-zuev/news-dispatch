@@ -17,7 +17,6 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
-from newsroom_visuals import stream_visual
 from reader_text import (
     build_public_item,
     compact_time_ru,
@@ -721,24 +720,6 @@ def cards_block(items: list[dict[str, Any]]) -> str:
     return "\n".join(card_for_item(cluster[0]) for cluster in cluster_items(items))
 
 
-def today_feature(items: list[dict[str, Any]]) -> str:
-    if not items:
-        return ""
-    item = items[0]
-    public_item = build_public_item(item)
-    title = public_item["title"]
-    excerpt = public_item["excerpt"][:220].rstrip()
-    source_line = public_item["meta"]
-    excerpt_block = f"\n    <p>{esc(excerpt)}</p>" if excerpt else ""
-    return f"""<section class="today-feature" aria-label="Главное событие">
-  {stream_visual(stream_slug(item), variant="feature")}
-  <div>
-    <p class="label">{esc(source_line)}</p>
-    <h2>{esc(title)}</h2>{excerpt_block}
-  </div>
-</section>"""
-
-
 def pattern_present(patterns: list[str], text: str) -> bool:
     return any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns)
 
@@ -906,12 +887,25 @@ def digest_section(title: str, body: str) -> str:
     return f'<section class="panel digest-section"><h2>{esc(title)}</h2>{body}</section>'
 
 
+def today_highlight_row(item: dict[str, Any]) -> str:
+    public_item = build_public_item(item)
+    excerpt = public_item["excerpt"]
+    excerpt_line = f'\n      <p>{esc(excerpt)}</p>' if excerpt else ""
+    return f"""<li>
+      <h3>{item_source_action(item, public_item["title"])}</h3>
+      <p class="news-meta">{esc(public_item["meta"])}</p>{excerpt_line}
+    </li>"""
+
+
 def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 5) -> str:
-    lines: list[str] = []
-    for cluster in clusters[:limit]:
-        item = cluster[0]
-        lines.append(f"{public_title_ru(item)} — {stream_label(stream_slug(item))}.")
-    return '<section class="panel today-highlights"><h2>Главное за сегодня</h2>' + list_html(lines) + "</section>"
+    rows = "\n".join(today_highlight_row(cluster[0]) for cluster in clusters[:limit])
+    if not rows:
+        rows = '<li><h3>Нет публичных сигналов</h3><p>Сегодня нет материалов для отображения.</p></li>'
+    return f"""<section class="panel today-highlights" aria-label="Главное за сегодня">
+  <h2>Главное за сегодня</h2>
+  <p class="today-lede">Короткая подборка текущих публичных сообщений.</p>
+  <ol class="today-highlight-list">{rows}</ol>
+</section>"""
 
 
 def grouped_today_cards(items: list[dict[str, Any]]) -> str:
@@ -931,22 +925,31 @@ def grouped_today_cards(items: list[dict[str, Any]]) -> str:
 
 
 def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> str:
-    counts = source_counts(items)
-    review_count = len(policy_decisions(policy, "review_only"))
-    blocked_count = len(policy_decisions(policy, "blocked"))
+    del policy
+    sources: list[str] = []
+    reliability: list[str] = []
+    for item in items:
+        public_item = build_public_item(item)
+        if public_item["source"] not in sources:
+            sources.append(public_item["source"])
+        if public_item["reliability"] not in reliability:
+            reliability.append(public_item["reliability"])
+    source_text = ", ".join(sources[:6]) if sources else "нет публичных источников"
+    reliability_text = ", ".join(reliability[:4]) if reliability else "публичные источники"
+    forecast_note = " Прогнозы и оценки участников рынка подписаны как оценки." if any(is_market_forecast_item(item) for item in items) else ""
     text = (
-        f"Типы источников: {counts}. "
-        "Сообщения источников не являются готовым выводом; прогнозы и оценки участников рынка подписаны как оценки. "
-        "Это не инвестиционная, юридическая или операционная рекомендация. "
-        f"Не вошли в выпуск: требуют проверки — {review_count}, исключены — {blocked_count}."
+        f"Источники: {source_text}. "
+        f"Типы: {reliability_text}."
+        " Сообщения источников не являются готовым выводом."
+        f"{forecast_note} Это не инвестиционная, юридическая или операционная рекомендация."
     )
     return f'<section class="panel source-note"><h2>Источники и проверка</h2><p>{esc(text)}</p></section>'
 
 
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
+    del report, auto_report, gate, diagnostics
     clusters = cluster_items(items)
     return "\n".join([
-        today_feature(items),
         today_highlights(clusters),
         grouped_today_cards(items),
         compact_source_note(items, policy),
@@ -954,15 +957,13 @@ def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: lis
 
 
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
-    safe_summary = stream_summary(items) if items else "<p>Нет публичных сигналов для сегодняшней сводки.</p>"
-    return "\n".join([
-        '<section class="panel safe-fallback"><h2>Сегодняшний дайджест не показан полностью</h2><p>Часть входных сообщений не показана публично. Ниже оставлены только осторожные публичные материалы.</p>'
-        + list_html(gate.reasons)
-        + "</section>",
-        f'<section class="panel"><h2>Доступные публичные сигналы</h2>{safe_summary}</section>',
-        f'<section class="grid latest-grid" aria-label="Публичные карточки сигналов">{cards_block(items)}</section>',
-        '<section class="panel boundary"><h2>Граница интерпретации</h2><p>Это не итоговая аналитическая публикация. Сообщения источников не представлены как подтверждённые факты последствий.</p></section>',
-    ])
+    del report, gate
+    clusters = cluster_items(items)
+    blocks = [today_highlights(clusters)]
+    if items:
+        blocks.append(grouped_today_cards(items))
+    blocks.append(compact_source_note(items, policy))
+    return "\n".join(blocks)
 
 
 def policy_summary(policy: dict[str, Any]) -> str:

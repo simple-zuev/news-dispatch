@@ -76,7 +76,6 @@ def test_today_radar_keeps_source_signal_boundary() -> None:
     assert "ежедневное ручное решение не требуется" not in html
     assert "не инвестиционная" in html
     assert "сообщения источников не являются готовым выводом" in html
-    assert "прогнозы и оценки участников рынка подписаны как оценки" in html
 
 
 def test_today_radar_uses_monitoring_not_commands() -> None:
