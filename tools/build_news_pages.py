@@ -27,7 +27,6 @@ from reader_text import (
     public_meta_ru,
     stream_label,
 )
-from newsroom_visuals import stream_visual
 from render_site import output_slug
 
 RANKING_PATH = ROOT / "validation" / "daily-radar-ranking-latest.json"
@@ -295,31 +294,30 @@ def collect_digests() -> list[dict[str, str]]:
 
 
 def digest_card(item: dict[str, str]) -> str:
-    return f"""<article class="card digest-card">
-  {stream_visual(item["stream"], variant="tile")}
-  <p class="label">{esc(item["date"])} · {esc(item["stream_title"])}</p>
-  <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>
-  <p>{esc(item["summary"])}</p>
+    summary = item["summary"].strip()
+    summary_line = f"\n  <p>{esc(summary)}</p>" if summary else ""
+    return f"""<article class="digest-list-card">
+  <p class="news-meta">{esc(item["date"])} · {esc(item["stream_title"])}</p>
+  <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>{summary_line}
+  <p class="news-source-link"><a href="{esc(item["url"])}">Открыть выпуск</a></p>
 </article>"""
 
 
 def digests_index(digests: list[dict[str, str]]) -> str:
-    cards = "\n".join(digest_card(item) for item in digests) or """<article class="card empty-state">
+    cards = "\n".join(digest_card(item) for item in digests) or """<article class="digest-list-card empty-state">
   <p class="label">Нет дайджестов</p>
-  <h3>Большие дайджесты пока не опубликованы.</h3>
+  <h3>Дайджесты пока не опубликованы.</h3>
 </article>"""
     return f"""<!doctype html>
 <html lang="ru">
-{head("Большие дайджесты — News Dispatch", "Аналитические выпуски News Dispatch.", css_href="../styles/main.css")}
+{head("Дайджесты — News Dispatch", "Аналитические выпуски News Dispatch.", css_href="../styles/main.css")}
 <body>
   <header class="masthead compact">
     <a class="backlink" href="../index.html">News Dispatch</a>
     {top_nav("../")}
-    <p class="eyebrow">Большие дайджесты</p>
-    <h1>Большие дайджесты</h1>
-    <p class="lede">Аналитические выпуски с тезисами, источниками и интерпретацией. Это отдельный слой, не новостная лента.</p>
+    <h1>Дайджесты</h1>
   </header>
-  <main><section class="grid">{cards}</section></main>
+  <main><section class="news-list digest-list">{cards}</section></main>
 </body>
 </html>"""
 

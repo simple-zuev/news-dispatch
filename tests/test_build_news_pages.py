@@ -231,6 +231,7 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert (build_news_pages.DIGESTS_DIR / "index.html").exists()
             index_html = (build_news_pages.NEWS_DIR / "index.html").read_text(encoding="utf-8")
             stream_html = (build_news_pages.NEWS_DIR / "crypto-finance.html").read_text(encoding="utf-8")
+            digest_html = (build_news_pages.DIGESTS_DIR / "index.html").read_text(encoding="utf-8")
             assert "Новости" in index_html
             assert "Темы новостей" in index_html
             assert "Рубрики анализа" not in index_html
@@ -240,8 +241,17 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert "news-item--text" in stream_html
             assert "Открыть источник" in stream_html
             assert "stream-visual" not in stream_html
+            assert "Дайджесты" in digest_html
+            assert "digest-list-card" in digest_html
+            assert "Открыть выпуск" in digest_html
+            assert "stream-visual" not in digest_html
+            assert "stream-visual--tile" not in digest_html
+            assert "PUBLIC-SAFE EDITORIAL BRIEFING SYSTEM" not in digest_html
+            assert "Publication boundary" not in digest_html
+            assert "Большие дайджесты" not in digest_html
             assert_public_clean(index_html)
             assert_public_clean(stream_html)
+            assert_public_clean(digest_html)
         finally:
             build_news_pages.NEWS_DIR = old_news_dir
             build_news_pages.DIGESTS_DIR = old_digests_dir
