@@ -10,7 +10,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "tools" / "build_site.py"
 RENDER_PATH = ROOT / "tools" / "render_site.py"
-VISUALS_PATH = ROOT / "tools" / "newsroom_visuals.py"
 
 sys.path.insert(0, str(ROOT / "tools"))
 
@@ -24,13 +23,6 @@ assert render_spec is not None and render_spec.loader is not None
 render_site = importlib.util.module_from_spec(render_spec)
 sys.modules["render_site"] = render_site
 render_spec.loader.exec_module(render_site)
-
-visuals_spec = importlib.util.spec_from_file_location("newsroom_visuals", VISUALS_PATH)
-assert visuals_spec is not None and visuals_spec.loader is not None
-newsroom_visuals = importlib.util.module_from_spec(visuals_spec)
-sys.modules["newsroom_visuals"] = newsroom_visuals
-visuals_spec.loader.exec_module(newsroom_visuals)
-
 
 def test_default_modes_are_deterministic() -> None:
     args = build_site.parse_args([])
@@ -56,39 +48,119 @@ def test_offline_ranking_fixture_contract() -> None:
     }
 
 
-def test_homepage_template_matches_simple_newsroom_blocks() -> None:
-    html = render_site.homepage_template([], {})
+def has_cyrillic(value: str) -> bool:
+    return any("а" <= char.lower() <= "я" or char == "ё" for char in value)
+
+
+def ranking_item(
+    key: str,
+    *,
+    title: str,
+    source: str,
+    stream: str = "crypto-finance",
+    published: str = "2026-07-02T09:00:00+00:00",
+    excerpt: str = "",
+    selected: bool = False,
+) -> dict[str, object]:
+    item: dict[str, object] = {
+        "item_key": key,
+        "feed_id": source.lower(),
+        "feed_title": source,
+        "configured_stream": stream,
+        "routed_stream": stream,
+        "source_class": "regulator",
+        "source_type": "official",
+        "language": "en",
+        "title": title,
+        "reader_title_ru": title if has_cyrillic(title) else "",
+        "url": f"https://example.com/{key}",
+        "published": published,
+        "source_rule_status": "accepted_by_source_rules",
+        "selected": selected,
+        "selection_score": 12.0 if selected else 8.0,
+        "final_score": 12.0 if selected else 8.0,
+    }
+    if excerpt:
+        item["reader_excerpt_ru"] = excerpt
+    else:
+        item["source_excerpt"] = "The source published a short English update without a Russian reader excerpt."
+    return item
+
+
+def homepage_html() -> str:
+    items = [
+        ranking_item(
+            "latest-ai",
+            title="OpenAI опубликовала заметку о безопасности агентов",
+            source="OpenAI",
+            stream="ai",
+            published="2026-07-02T11:00:00+00:00",
+            excerpt="Компания описала практики безопасности для агентных сценариев.",
+            selected=True,
+        ),
+        ranking_item(
+            "latest-finance",
+            title="ЦБ обновил обзор по ликвидности банков",
+            source="Банк России",
+            stream="finance",
+            published="2026-07-02T10:00:00+00:00",
+        ),
+    ]
+    dispatches = [
+        render_site.Dispatch(
+            source_path=ROOT / "dispatches" / "sample.md",
+            title="Что меняется в регулировании цифровых активов",
+            date="2026-07-02",
+            stream="crypto-finance",
+            summary="Короткий аналитический тезис.",
+            body="",
+            output_name="sample.html",
+        )
+    ]
+    original_loader = render_site.load_ranking_items
+    render_site.load_ranking_items = lambda limit=None: items[:limit] if limit is not None else items
+    try:
+        return render_site.homepage_template(dispatches, {})
+    finally:
+        render_site.load_ranking_items = original_loader
+
+
+def test_homepage_template_matches_public_reader_blocks() -> None:
+    html = homepage_html()
     lower = html.lower()
-    for block in [
-        "newsroom-top",
-        "feature-card",
-        "quick-signals",
-        "rubric-tiles",
-        "latest-news",
-        "digest-preview",
-        "source-strip",
-    ]:
+    for block in ["home-header", "home-latest", "home-today", "home-rubrics", "home-digests", "home-sources"]:
         assert block in html
-    assert "quick-signals" in html
-    assert "stream-visual" in html
+    assert html.index("home-latest") < html.index("home-today") < html.index("home-rubrics") < html.index("home-digests")
+    assert "Последние новости" in html
+    assert "OpenAI" in html
+    assert "Открыть источник" in html
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
     assert "radar/index.html" in html
+    assert "sources/index.html" not in html
     assert "drafts.html" not in html
     assert "Статус обновления" not in html
     assert "Как читать" not in html
     assert "Рубрики анализа" not in html
     assert "порог релевантности" not in lower
+    assert "feature-card" not in html
+    assert "quick-signals" not in html
+    assert "stream-visual" not in html
+    assert "rubric-tile" not in html
+    assert "news-preview-card" not in html
     assert "featured-card" not in html
     assert "homepage-hero" not in html
     assert "техническая пустота покрытия" not in lower
+    assert "Источник описывает тему" not in html
+    assert "Подробности и формулировки сохранены" not in html
+    assert "Источник сообщает: Криптофинансы" not in html
     for term in ["selected", "reader_safe", "source_rule_status", "validation", "draft-only", "review-only", "generated", "prompt", "json", "score=", "final_score", "selection_score", "fetch warnings", "gate"]:
         assert term not in lower
 
 
 def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
-    html = render_site.homepage_template([], {})
+    html = homepage_html()
     for title in [
         "Финансы",
         "Криптофинансы",
@@ -102,13 +174,11 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         assert title in html
 
 
-def test_stream_fallback_visuals_exist_for_all_public_streams() -> None:
-    html = render_site.homepage_template([], {})
-    for slug in newsroom_visuals.visual_streams():
-        assert f"stream-visual--{slug}" in html or slug == "general"
-        visual = newsroom_visuals.stream_visual(slug)
-        assert "Иллюстрация темы" in visual
-        assert f"stream-visual--{slug}" in visual
+def test_homepage_omits_missing_excerpts_instead_of_generic_filler() -> None:
+    html = homepage_html()
+    assert "The source published a short English update" not in html
+    assert "Короткое сообщение источника" not in html
+    assert "Источник описывает тему" not in html
 
 
 def test_old_home_hero_css_is_removed() -> None:
@@ -122,9 +192,9 @@ def main() -> int:
     test_default_modes_are_deterministic()
     test_pages_modes_are_explicit()
     test_offline_ranking_fixture_contract()
-    test_homepage_template_matches_simple_newsroom_blocks()
+    test_homepage_template_matches_public_reader_blocks()
     test_public_stream_labels_are_exact_on_homepage_cards()
-    test_stream_fallback_visuals_exist_for_all_public_streams()
+    test_homepage_omits_missing_excerpts_instead_of_generic_filler()
     test_old_home_hero_css_is_removed()
     print("build_site regression tests passed")
     return 0
