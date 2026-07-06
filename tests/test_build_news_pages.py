@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import sys
 import tempfile
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,10 +24,13 @@ spec.loader.exec_module(build_news_pages)
 
 
 FORBIDDEN_PUBLIC_TERMS = [
+    "UTC",
     "selected",
     "reader_safe",
     "source_rule_status",
     "validation",
+    "item_key",
+    "feed_id",
     "draft-only",
     "review-only",
     "generated",
@@ -43,6 +48,11 @@ FORBIDDEN_PUBLIC_TERMS = [
     "техническая пустота покрытия",
 ]
 
+FORBIDDEN_PUBLIC_PATTERNS = [
+    r"\b20\d{2}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}\b",
+    r"\b\d{1,2}:\d{2}:\d{2}\b",
+]
+
 
 def ranking_item(
     key: str,
@@ -54,8 +64,9 @@ def ranking_item(
     status: str = "accepted_by_source_rules",
     relevance: float = 0.82,
     minimum: float = 0.45,
+    reader_excerpt: str | None = "Регулятор сообщил о публичном обновлении правил: в фокусе надзор, хранение активов и требования к стейблкоинам.",
 ) -> dict[str, object]:
-    return {
+    item: dict[str, object] = {
         "item_key": key,
         "feed_id": source.lower(),
         "feed_title": source,
@@ -70,7 +81,6 @@ def ranking_item(
         "source_excerpt_language": "en",
         "source_original_title": title,
         "source_original_url": f"https://example.com/{key}",
-        "reader_excerpt_ru": "Регулятор сообщил о публичном обновлении правил: в фокусе надзор, хранение активов и требования к стейблкоинам.",
         "reader_source_line_ru": f"{source} · Криптофинансы · 12:00 · регулятор",
         "published": "2026-07-02T09:00:00+00:00",
         "relevance_score": relevance,
@@ -80,6 +90,9 @@ def ranking_item(
         "selection_score": 12.0,
         "final_score": 12.0,
     }
+    if reader_excerpt is not None:
+        item["reader_excerpt_ru"] = reader_excerpt
+    return item
 
 
 def sample_report() -> dict[str, object]:
@@ -122,7 +135,24 @@ def hashed_policy_for_report(report: dict[str, object]) -> dict[str, object]:
 def assert_public_clean(html: str) -> None:
     lower = html.lower()
     for term in FORBIDDEN_PUBLIC_TERMS:
-        assert term not in lower
+        assert term.lower() not in lower
+    for pattern in FORBIDDEN_PUBLIC_PATTERNS:
+        assert not re.search(pattern, html)
+
+
+def test_public_time_formatter_uses_reader_dates() -> None:
+    today = datetime.now(build_news_pages.PUBLIC_TZ).date()
+    assert build_news_pages.format_public_time_ru(f"{today.isoformat()}T10:10:12+03:00") == "Сегодня, 10:10"
+    assert build_news_pages.format_public_time_ru("2026-06-28T00:00:00+00:00") == "28 июня, 03:00"
+    assert build_news_pages.format_public_time_ru("2026-06-28") == "28 июня"
+    assert build_news_pages.format_public_time_ru("2026-07-06") == "6 июля"
+
+
+def test_public_news_meta_is_reader_facing() -> None:
+    item = ranking_item("meta-item", source="Financial Conduct Authority")
+    meta = build_news_pages.public_news_meta(item)
+    assert meta == "Financial Conduct Authority · Криптофинансы · 2 июля, 12:00 · регулятор"
+    assert_public_clean(meta)
 
 
 def test_feed_items_include_non_selected_safe_items() -> None:
@@ -143,19 +173,35 @@ def test_feed_items_accept_reader_policy_hash_keys() -> None:
 def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     grouped = build_news_pages.feed_items(sample_report(), sample_policy())
     html = build_news_pages.news_stream_page("crypto-finance", grouped["crypto-finance"])
-    assert "Лента новостей" in html
+    assert "Криптофинансы" in html
     assert "reader_excerpt_ru" not in html
     assert "Регулятор сообщил о публичном обновлении правил" in html
     assert "Оригинал" in html
     assert "Открыть источник" in html
     assert "news-stream-marker" in html
     assert "news-item--text" in html
-    assert "stream-visual--thumb" not in html
+    assert "stream-visual" not in html
+    assert "FCA · Криптофинансы · 2 июля, 12:00 · регулятор" in html
     assert "2026-07-02 09:00:00 UTC" not in html
-    assert "FCA · Криптофинансы · 12:00 · регулятор" in html
     assert "Тезис" not in html
     assert "Почему важно" not in html
+    assert "Что отслеживать" not in html
     assert_public_clean(html)
+
+
+def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
+    rows = [
+        ranking_item(
+            "no-useful-excerpt",
+            title="FCA publishes crypto custody update",
+            reader_excerpt=None,
+        )
+    ]
+    html = build_news_pages.news_stream_page("crypto-finance", rows)
+    assert "news-excerpt" not in html
+    assert "Источник описывает тему" not in html
+    assert "Подробности и формулировки сохранены" not in html
+    assert "Короткое сообщение источника" not in html
 
 
 def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
@@ -165,7 +211,7 @@ def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
         ranking_item("three", title="Taiwan legislature passes crypto and stablecoin regulations", source="Taiwan News"),
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
-    assert html.count("Источник сообщает: Криптофинансы — регуляторика и надзор") <= 1
+    assert "Источник сообщает: Криптофинансы — регуляторика и надзор" not in html
     assert "FCA и Банк Англии описали подход к системным стейблкоинам" in html
     assert "Европейские правила MiCA" in html
 
@@ -218,10 +264,18 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
                 assert (build_news_pages.NEWS_DIR / f"{stream}.html").exists()
             assert (build_news_pages.DIGESTS_DIR / "index.html").exists()
             index_html = (build_news_pages.NEWS_DIR / "index.html").read_text(encoding="utf-8")
-            assert "Ленты новостей" in index_html
-            assert "stream-visual" in index_html
+            stream_html = (build_news_pages.NEWS_DIR / "crypto-finance.html").read_text(encoding="utf-8")
+            assert "Новости" in index_html
+            assert "Темы новостей" in index_html
+            assert "Рубрики анализа" not in index_html
+            assert "news-index-row" in index_html
+            assert "stream-visual" not in index_html
             assert "Последние материалы" in index_html
+            assert "news-item--text" in stream_html
+            assert "Открыть источник" in stream_html
+            assert "stream-visual" not in stream_html
             assert_public_clean(index_html)
+            assert_public_clean(stream_html)
         finally:
             build_news_pages.NEWS_DIR = old_news_dir
             build_news_pages.DIGESTS_DIR = old_digests_dir
@@ -230,9 +284,12 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
 
 
 def main() -> int:
+    test_public_time_formatter_uses_reader_dates()
+    test_public_news_meta_is_reader_facing()
     test_feed_items_include_non_selected_safe_items()
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
+    test_news_stream_omits_non_useful_fallback_excerpt()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
     test_news_empty_state_is_simple_russian_copy()
