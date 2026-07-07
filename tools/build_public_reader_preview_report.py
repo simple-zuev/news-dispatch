@@ -50,6 +50,7 @@ def check_internal_links(site_dir: Path) -> tuple[int, int, list[str]]:
     checked = 0
     external = 0
     missing: list[str] = []
+    site_dir = site_dir.resolve()
     for page in html_pages(site_dir):
         for href in page_hrefs(page):
             clean_href = urldefrag(href)[0]
@@ -66,7 +67,7 @@ def check_internal_links(site_dir: Path) -> tuple[int, int, list[str]]:
                 target = target / "index.html"
             checked += 1
             try:
-                target.relative_to(site_dir.resolve())
+                target.relative_to(site_dir)
             except ValueError:
                 continue
             if not target.exists():
@@ -74,7 +75,7 @@ def check_internal_links(site_dir: Path) -> tuple[int, int, list[str]]:
     return checked, external, missing
 
 
-def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> None:
+def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> list[str]:
     site_dir = site_dir.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     pages = html_pages(site_dir)
@@ -105,6 +106,7 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
 {missing_lines}
 """
     output.write_text(text, encoding="utf-8")
+    return missing
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -113,18 +115,26 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--output", default=str(REPORT_PATH))
     parser.add_argument("--build-mode", default="fixture / media skip")
     parser.add_argument("--commit-sha", default=os.environ.get("GITHUB_SHA", "local"))
+    parser.add_argument(
+        "--allow-missing-links",
+        action="store_true",
+        help="Write the QA report but do not fail when internal links are missing.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    write_report(
+    missing = write_report(
         site_dir=Path(args.site_dir),
         output=Path(args.output),
         build_mode=str(args.build_mode),
         commit_sha=str(args.commit_sha),
     )
     print(f"Wrote {args.output}")
+    if missing and not args.allow_missing_links:
+        print(f"Missing internal links: {len(missing)}", file=sys.stderr)
+        return 1
     return 0
 
 

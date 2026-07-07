@@ -19,6 +19,7 @@ DISPATCH_DIR = ROOT / "dispatches"
 RUBRICS_PATH = ROOT / "data" / "rubrics.json"
 BASE_URL = "https://simple-zuev.github.io/news-dispatch"
 EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
+HTML_TAG_RE = re.compile(r"(<[^>]+>)")
 
 TEXT_REPLACEMENTS = {
     "News Dispatch": "Дайджест",
@@ -194,10 +195,26 @@ def collect_dispatches() -> tuple[list[dict[str, object]], list[dict[str, object
     return published, hidden
 
 
-def clean_copy(text: str) -> str:
+def replace_public_text(text: str) -> str:
     for source, target in TEXT_REPLACEMENTS.items():
         text = text.replace(source, target)
     return text
+
+
+def clean_copy(text: str) -> str:
+    """Apply reader copy substitutions only to visible text, not HTML attributes.
+
+    Older cleanup replaced slug-like strings globally and could mutate href/src
+    values, for example `infrastructure-radar.html` inside a generated link.
+    Splitting on tags is intentionally conservative: tag attributes stay byte-for-byte
+    intact while visible text still gets reader-facing Russian labels.
+    """
+    parts = HTML_TAG_RE.split(text)
+    for index, part in enumerate(parts):
+        if part.startswith("<") and part.endswith(">"):
+            continue
+        parts[index] = replace_public_text(part)
+    return "".join(parts)
 
 
 def remove_hidden_pages(items: list[dict[str, object]]) -> None:
