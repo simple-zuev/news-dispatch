@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
-"""Build the complete News Dispatch static reader site.
-
-This script is the canonical site-build orchestrator.  It keeps the GitHub
-Actions workflow from becoming the hidden source of truth for render order.
-
-Default mode is CI-friendly and deterministic: it uses an offline ranking
-fixture and skips remote media enrichment.  Pages deployment can opt into live
-ranking and live media enrichment explicitly.
-"""
+"""Build the complete News Dispatch static reader site."""
 
 from __future__ import annotations
 
@@ -23,7 +15,6 @@ SITE_DIR = ROOT / "site"
 VALIDATION_DIR = ROOT / "validation"
 RANKING_REPORT = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 READER_POLICY_REPORT = VALIDATION_DIR / "reader-policy-latest.json"
-
 
 OFFLINE_RANKING_FIXTURE = {
     "date": "2026-06-28",
@@ -121,13 +112,7 @@ def build_ranking(args: argparse.Namespace) -> None:
         write_json(RANKING_REPORT, OFFLINE_RANKING_FIXTURE)
         print(f"[build-site] wrote offline fixture {repo_path(RANKING_REPORT)}")
     else:
-        run_tool(
-            "build_daily_radar_ranking_report.py",
-            "--timeout",
-            str(args.ranking_timeout),
-            "--max-rows",
-            str(args.ranking_max_rows),
-        )
+        run_tool("build_daily_radar_ranking_report.py", "--timeout", str(args.ranking_timeout), "--max-rows", str(args.ranking_max_rows))
     copy_to_site(RANKING_REPORT)
 
 
@@ -138,22 +123,12 @@ def build_reader_policy() -> None:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--ranking-mode",
-        choices=("fixture", "live", "skip"),
-        default="fixture",
-        help="How to build validation/daily-radar-ranking-latest.json. Use 'live' for Pages deploys; default is deterministic.",
-    )
+    parser.add_argument("--ranking-mode", choices=("fixture", "live", "skip"), default="fixture")
     parser.add_argument("--ranking-timeout", type=int, default=8)
     parser.add_argument("--ranking-max-rows", type=int, default=200)
-    parser.add_argument(
-        "--media-mode",
-        choices=("skip", "live"),
-        default="skip",
-        help="Use 'live' to fetch Open Graph/Twitter media metadata. Default skips remote fetches.",
-    )
-    parser.add_argument("--skip-validation", action="store_true", help="Build output without final reader/public-safety validators.")
-    parser.add_argument("--skip-privacy-scan", action="store_true", help="Skip final public-safety scan.")
+    parser.add_argument("--media-mode", choices=("skip", "live"), default="skip")
+    parser.add_argument("--skip-validation", action="store_true")
+    parser.add_argument("--skip-privacy-scan", action="store_true")
     return parser.parse_args(argv)
 
 
@@ -166,12 +141,10 @@ def build(args: argparse.Namespace) -> int:
     run_tool("build_sources_page.py")
     run_tool("build_today_page.py")
     run_tool("enhance_site.py")
-
     if args.media_mode == "live":
         run_tool("enrich_media_registry.py")
     else:
         print("[build-site] skipping remote media enrichment")
-
     run_tool("validate_media_registry.py")
     run_tool("apply_media_previews.py")
     run_tool("apply_reader_sections.py")
@@ -179,13 +152,12 @@ def build(args: argparse.Namespace) -> int:
     run_tool("apply_editorial_home_layout.py")
     run_tool("apply_today_link.py")
     run_tool("apply_empty_states.py")
-
+    run_tool("apply_reader_title_quality.py")
     if not args.skip_validation:
         run_tool("validate_reader_output.py")
         run_tool("validate_render_visibility.py")
     if not args.skip_privacy_scan:
         run_tool("privacy_scan.py")
-
     print("[build-site] complete")
     return 0
 
