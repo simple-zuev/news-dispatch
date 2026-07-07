@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
 FORBIDDEN_PUBLIC_TERMS = [
@@ -60,3 +61,15 @@ def assert_public_pages_clean(site_dir: Path) -> None:
     for path in public_page_paths(site_dir):
         assert path.exists(), path
         assert_public_html_clean(path.read_text(encoding="utf-8"))
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = sys.argv[1:] if argv is None else argv
+    site_dir = Path(args[0]) if args else Path("site")
+    assert_public_pages_clean(site_dir)
+    print(f"Public HTML scan passed for {len(public_page_paths(site_dir))} page(s) in {site_dir}.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

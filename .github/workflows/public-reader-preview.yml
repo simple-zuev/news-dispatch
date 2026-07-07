@@ -1,0 +1,62 @@
+name: Public Reader Preview
+
+on:
+  pull_request:
+    paths:
+      - "tools/**"
+      - "site/styles/**"
+      - "tests/**"
+      - "docs/public-reader-*.md"
+      - "sources/**"
+      - "dispatches/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build public reader preview
+        run: python3 tools/build_site.py --ranking-mode fixture --media-mode skip
+
+      - name: Validate reader output
+        run: python3 tools/validate_reader_output.py
+
+      - name: Validate render visibility
+        run: python3 tools/validate_render_visibility.py
+
+      - name: Run privacy scan
+        run: python3 tools/privacy_scan.py
+
+      - name: Run public HTML scan
+        run: python3 tests/public_html_scan.py site
+
+      - name: Build preview QA report
+        run: python3 tools/build_public_reader_preview_report.py --build-mode "fixture / media skip" --commit-sha "${{ github.sha }}"
+
+      - name: Upload public reader site preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-reader-site-preview
+          path: site/
+          retention-days: 14
+
+      - name: Upload public reader QA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-reader-preview-qa
+          path: |
+            validation/public-reader-preview-report.md
+            validation/daily-radar-ranking-latest.json
+            validation/reader-policy-latest.json
+          retention-days: 14
