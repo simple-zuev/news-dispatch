@@ -6,7 +6,9 @@ from __future__ import annotations
 import argparse
 import html.parser
 import os
+import re
 import sys
+from collections import Counter
 from pathlib import Path
 from urllib.parse import urldefrag
 
@@ -43,6 +45,23 @@ TRUST_TERMS = [
     "исследовательский источник",
 ]
 
+GENERIC_HEADLINE_PHRASES = [
+    "без заголовка",
+    "источник сообщает: криптофинансы",
+    "источник сообщает: финансы",
+    "источник сообщает: ии",
+    "источник описывает тему",
+    "короткое сообщение источника",
+    "свежих новостей для показа сейчас нет",
+]
+
+CONTENT_SURFACE_ROUTES = [
+    "index.html",
+    "news/index.html",
+    "news/crypto-finance.html",
+    "today.html",
+]
+
 
 class LinkParser(html.parser.HTMLParser):
     def __init__(self) -> None:
@@ -55,6 +74,31 @@ class LinkParser(html.parser.HTMLParser):
         for name, value in attrs:
             if name == "href" and value:
                 self.hrefs.append(value)
+
+
+class HeadingParser(html.parser.HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.current: str | None = None
+        self.buffer: list[str] = []
+        self.headings: list[tuple[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in {"h1", "h2", "h3"}:
+            self.current = tag
+            self.buffer = []
+
+    def handle_data(self, data: str) -> None:
+        if self.current:
+            self.buffer.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.current == tag:
+            text = " ".join("".join(self.buffer).split())
+            if text:
+                self.headings.append((tag, text))
+            self.current = None
+            self.buffer = []
 
 
 def html_pages(site_dir: Path) -> list[Path]:
@@ -70,6 +114,21 @@ def page_hrefs(path: Path) -> list[str]:
     parser = LinkParser()
     parser.feed(path.read_text(encoding="utf-8"))
     return parser.hrefs
+
+
+def page_headings(text: str) -> list[tuple[str, str]]:
+    parser = HeadingParser()
+    parser.feed(text)
+    return parser.headings
+
+
+def visible_text(text: str) -> str:
+    return " ".join(re.sub(r"<[^>]+>", " ", text).split())
+
+
+def normalize_headline(text: str) -> str:
+    text = re.sub(r"\s+", " ", text).strip().lower()
+    return re.sub(r"[^0-9a-zа-яё]+", " ", text).strip()
 
 
 def read_page(site_dir: Path, relative: str) -> str:
@@ -141,7 +200,57 @@ def check_reader_trust(site_dir: Path) -> list[str]:
     return issues
 
 
-def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> tuple[list[str], list[str]]:
+def check_content_quality(site_dir: Path) -> list[str]:
+    issues: list[str] = []
+    page_text = {relative: read_page(site_dir, relative) for relative in CONTENT_SURFACE_ROUTES}
+    public_surface = "\n".join(page_text.values())
+    public_lower = visible_text(public_surface).lower()
+
+    for phrase in GENERIC_HEADLINE_PHRASES:
+        if phrase in public_lower:
+            issues.append(f"generic or fallback copy is visible: {phrase}")
+
+    for relative in ["index.html", "today.html"]:
+        headings = [
+            text
+            for tag, text in page_headings(page_text.get(relative, ""))
+            if tag == "h3" and not text.lower().startswith(("нет ", "дайджесты пока"))
+        ]
+        counts = Counter(normalize_headline(text) for text in headings if normalize_headline(text))
+        duplicates = [title for title, count in counts.items() if count > 1]
+        if duplicates:
+            issues.append(f"duplicate reader headlines on {relative}: {', '.join(duplicates[:5])}")
+
+    surface_headings = [text for html_text in page_text.values() for tag, text in page_headings(html_text) if tag == "h3"]
+    weak_headings = [
+        text
+        for text in surface_headings
+        if len(text.strip()) < 12 or any(phrase in text.lower() for phrase in GENERIC_HEADLINE_PHRASES)
+    ]
+    if weak_headings:
+        issues.append("weak reader headlines: " + "; ".join(weak_headings[:8]))
+
+    home = page_text.get("index.html", "")
+    news = page_text.get("news/index.html", "") + page_text.get("news/crypto-finance.html", "")
+    today = page_text.get("today.html", "")
+
+    if "home-news-row" in home and ("home-news-meta" not in home or "Открыть источник" not in home):
+        issues.append("homepage news rows lack metadata or source action")
+    if "news-item--text" in news and ("news-meta" not in news or "Открыть источник" not in news):
+        issues.append("news feed rows lack metadata or source action")
+    if "today-highlight-list" in today and "news-meta" not in today:
+        issues.append("today highlights lack source metadata")
+    if "Нет публичных сигналов" in today and "news-item--text" in news:
+        issues.append("today is empty while reader-safe news items exist")
+
+    if "официальный источник" in public_lower or "регулятор" in public_lower:
+        if "Источники и проверка" not in today:
+            issues.append("official/regulatory source context exists but Today lacks verification context")
+
+    return issues
+
+
+def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> tuple[list[str], list[str], list[str]]:
     site_dir = site_dir.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     pages = html_pages(site_dir)
@@ -149,10 +258,13 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
     assert_public_pages_clean(site_dir)
     checked, external, missing = check_internal_links(site_dir)
     trust_issues = check_reader_trust(site_dir)
+    content_issues = check_content_quality(site_dir)
     link_status = "passed" if not missing else "failed"
     trust_status = "passed" if not trust_issues else "failed"
+    content_status = "passed" if not content_issues else "failed"
     missing_lines = "\n".join(f"- {item}" for item in missing[:50]) if missing else "- none"
     trust_lines = "\n".join(f"- {item}" for item in trust_issues[:50]) if trust_issues else "- none"
+    content_lines = "\n".join(f"- {item}" for item in content_issues[:50]) if content_issues else "- none"
     route_lines = "\n".join(f"- {route(path, site_dir)}" for path in pages[:120])
     if len(pages) > 120:
         route_lines += f"\n- ... {len(pages) - 120} more"
@@ -166,6 +278,7 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
 - External links observed: {external}
 - Link check result: {link_status}
 - Daily reader trust check: {trust_status}
+- Daily content quality check: {content_status}
 
 ## Generated routes
 
@@ -178,9 +291,13 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
 ## Reader trust issues
 
 {trust_lines}
+
+## Content quality issues
+
+{content_lines}
 """
     output.write_text(text, encoding="utf-8")
-    return missing, trust_issues
+    return missing, trust_issues, content_issues
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -199,12 +316,17 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="Write the QA report but do not fail when daily reader trust checks fail.",
     )
+    parser.add_argument(
+        "--allow-content-issues",
+        action="store_true",
+        help="Write the QA report but do not fail when daily content quality checks fail.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    missing, trust_issues = write_report(
+    missing, trust_issues, content_issues = write_report(
         site_dir=Path(args.site_dir),
         output=Path(args.output),
         build_mode=str(args.build_mode),
@@ -217,6 +339,9 @@ def main(argv: list[str] | None = None) -> int:
         failed = True
     if trust_issues and not args.allow_trust_issues:
         print(f"Reader trust issues: {len(trust_issues)}", file=sys.stderr)
+        failed = True
+    if content_issues and not args.allow_content_issues:
+        print(f"Content quality issues: {len(content_issues)}", file=sys.stderr)
         failed = True
     return 1 if failed else 0
 
