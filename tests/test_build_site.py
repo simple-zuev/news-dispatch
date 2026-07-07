@@ -364,6 +364,18 @@ def test_old_home_hero_css_is_removed() -> None:
     assert "homepage-hero" not in css
     assert "featured-card" not in css
     assert "font-size: clamp(2.6rem" not in css
+    for forbidden in ["linear-gradient", "radial-gradient", ".stream-visual", ".visual-shape", ".visual-grid-line"]:
+        assert forbidden not in css
+    for selector in [
+        ".home-news-row h3 a",
+        ".news-item h3 a",
+        ".digest-list-card h3 a",
+        ".source-row h3",
+        ".signal-card h3",
+    ]:
+        assert selector in css
+    assert ".digest-list-card h3 a {\n  color: var(--ink);\n  text-decoration: none;" in css
+    assert ".news-item h3 a {\n  color: inherit;\n  text-decoration: none;" in css
 
 
 def main() -> int:
