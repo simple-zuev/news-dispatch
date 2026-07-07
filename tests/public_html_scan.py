@@ -48,6 +48,9 @@ def public_page_paths(site_dir: Path) -> list[Path]:
         news_dir / "index.html",
         site_dir / "today.html",
     ]
+    sources_index = site_dir / "sources" / "index.html"
+    if sources_index.exists():
+        paths.append(sources_index)
     if news_dir.exists():
         paths.extend(sorted(path for path in news_dir.glob("*.html") if path.name != "index.html"))
     return paths
