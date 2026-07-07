@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 VALIDATE = ROOT / ".github" / "workflows" / "validate.yml"
 PAGES = ROOT / ".github" / "workflows" / "pages.yml"
+PUBLIC_READER_PREVIEW = ROOT / ".github" / "workflows" / "public-reader-preview.yml"
 REGRESSION = ROOT / ".github" / "workflows" / "regression-tests.yml"
 DAILY_RADAR = ROOT / ".github" / "workflows" / "daily-radar.yml"
 RUN_DAILY = ROOT / "tools" / "run_daily_radar_safe.py"
@@ -33,7 +34,7 @@ def require_absent(errors: list[str], label: str, text: str, needle: str) -> Non
 def main() -> int:
     errors: list[str] = []
 
-    for path in (VALIDATE, PAGES, REGRESSION, DAILY_RADAR, RUN_DAILY, BUILD_SITE, ARCH_DOC, SYNTHESIS_GATE):
+    for path in (VALIDATE, PAGES, PUBLIC_READER_PREVIEW, REGRESSION, DAILY_RADAR, RUN_DAILY, BUILD_SITE, ARCH_DOC, SYNTHESIS_GATE):
         if not path.exists():
             errors.append(f"missing required file: {path.relative_to(ROOT)}")
 
@@ -56,7 +57,26 @@ def main() -> int:
     require_contains(errors, "pages workflow", pages, "python tools/validate_front_matter.py")
     require_contains(errors, "pages workflow", pages, "python tools/validate_source_rules.py")
     require_contains(errors, "pages workflow", pages, "python tools/validate_published.py")
-    require_contains(errors, "pages workflow", pages, "python tools/build_site.py --ranking-mode live --media-mode live")
+    require_contains(errors, "pages workflow", pages, "python3 tools/build_site.py --ranking-mode live --media-mode skip")
+    require_contains(errors, "pages workflow", pages, "python3 tools/validate_reader_output.py")
+    require_contains(errors, "pages workflow", pages, "python3 tools/validate_render_visibility.py")
+    require_contains(errors, "pages workflow", pages, "python3 tools/privacy_scan.py")
+    require_contains(errors, "pages workflow", pages, "uses: actions/configure-pages")
+    require_contains(errors, "pages workflow", pages, "uses: actions/upload-pages-artifact")
+    require_contains(errors, "pages workflow", pages, "uses: actions/deploy-pages")
+
+    public_reader_preview = read(PUBLIC_READER_PREVIEW)
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "pull_request:")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tools/build_site.py --ranking-mode fixture --media-mode skip")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tools/validate_reader_output.py")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tools/validate_render_visibility.py")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tools/privacy_scan.py")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tests/public_html_scan.py site")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "python3 tools/build_public_reader_preview_report.py")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "name: public-reader-site-preview")
+    require_contains(errors, "public reader preview workflow", public_reader_preview, "name: public-reader-preview-qa")
+    require_absent(errors, "public reader preview workflow", public_reader_preview, "actions/deploy-pages")
+    require_absent(errors, "public reader preview workflow", public_reader_preview, "upload-pages-artifact")
 
     regression = read(REGRESSION)
     require_contains(errors, "regression workflow", regression, "python tests/run_regression_tests.py")

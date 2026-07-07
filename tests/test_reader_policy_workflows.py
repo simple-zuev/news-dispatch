@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
 PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
+PUBLIC_READER_PREVIEW_WORKFLOW = ROOT / ".github" / "workflows" / "public-reader-preview.yml"
 BUILD_SITE = ROOT / "tools" / "build_site.py"
 
 
@@ -44,14 +45,48 @@ def test_validate_uses_deterministic_site_orchestrator() -> None:
 
 def test_pages_uses_live_site_orchestrator() -> None:
     text = read(PAGES_WORKFLOW)
-    assert "run: python tools/build_site.py --ranking-mode live --media-mode live" in text
+    assert "run: python3 tools/build_site.py --ranking-mode live --media-mode skip" in text
+    assert "uses: actions/configure-pages" in text
+    assert "uses: actions/upload-pages-artifact" in text
+    assert "uses: actions/deploy-pages" in text
+    assert "run: python3 tools/validate_reader_output.py" in text
+    assert "run: python3 tools/validate_render_visibility.py" in text
+    assert "run: python3 tools/privacy_scan.py" in text
     assert "path: site/" in text
+
+
+def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
+    text = read(PUBLIC_READER_PREVIEW_WORKFLOW)
+    assert "pull_request:" in text
+    for path_filter in [
+        '"tools/**"',
+        '"site/styles/**"',
+        '"tests/**"',
+        '"docs/public-reader-*.md"',
+        '"sources/**"',
+        '"dispatches/**"',
+    ]:
+        assert path_filter in text
+    assert "run: python3 tools/build_site.py --ranking-mode fixture --media-mode skip" in text
+    assert "run: python3 tools/validate_reader_output.py" in text
+    assert "run: python3 tools/validate_render_visibility.py" in text
+    assert "run: python3 tools/privacy_scan.py" in text
+    assert "run: python3 tests/public_html_scan.py site" in text
+    assert "run: python3 tools/build_public_reader_preview_report.py" in text
+    assert "name: public-reader-site-preview" in text
+    assert "name: public-reader-preview-qa" in text
+    assert "validation/public-reader-preview-report.md" in text
+    assert "validation/daily-radar-ranking-latest.json" in text
+    assert "validation/reader-policy-latest.json" in text
+    assert "actions/deploy-pages" not in text
+    assert "upload-pages-artifact" not in text
 
 
 def main() -> int:
     test_build_site_keeps_policy_after_ranking_before_today()
     test_validate_uses_deterministic_site_orchestrator()
     test_pages_uses_live_site_orchestrator()
+    test_public_reader_preview_uploads_pr_artifacts_without_deploying()
     print("reader policy workflow tests passed")
     return 0
 

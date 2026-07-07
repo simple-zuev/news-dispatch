@@ -48,7 +48,16 @@ jobs:
         run: python tools/validate_published.py
 
       - name: Build static reader site
-        run: python tools/build_site.py --ranking-mode live --media-mode live
+        run: python3 tools/build_site.py --ranking-mode live --media-mode skip
+
+      - name: Validate reader output
+        run: python3 tools/validate_reader_output.py
+
+      - name: Validate render visibility
+        run: python3 tools/validate_render_visibility.py
+
+      - name: Run privacy scan
+        run: python3 tools/privacy_scan.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
