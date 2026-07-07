@@ -787,7 +787,7 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
 <body>
   <header class="home-header">
     <a class="home-brand" href="index.html">News Dispatch</a>
-    <nav class="home-nav" aria-label="Навигация"><a href="today.html">Сегодня</a><a href="news/index.html">Новости</a><a href="digests/index.html">Дайджесты</a><a href="radar/index.html">Источники</a></nav>
+    <nav class="home-nav" aria-label="Навигация"><a href="today.html">Сегодня</a><a href="news/index.html">Новости</a><a href="digests/index.html">Дайджесты</a><a href="sources/index.html">Источники</a></nav>
   </header>
 
   <main class="home-main">
@@ -814,7 +814,7 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
         </section>
 
         <section class="home-sources" aria-label="Источники">
-          <div class="home-section-heading"><h2>Источники</h2><a href="radar/index.html">Открыть</a></div>
+          <div class="home-section-heading"><h2>Источники</h2><a href="sources/index.html">Открыть</a></div>
         </section>
       </aside>
     </section>

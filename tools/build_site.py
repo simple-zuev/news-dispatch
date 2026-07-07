@@ -163,6 +163,7 @@ def build(args: argparse.Namespace) -> int:
     run_tool("render_site.py")
     run_tool("build_radar_pages.py")
     run_tool("build_news_pages.py")
+    run_tool("build_sources_page.py")
     run_tool("build_today_page.py")
     run_tool("enhance_site.py")
 

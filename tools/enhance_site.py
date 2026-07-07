@@ -264,13 +264,16 @@ def add_reader_css(text: str, path: Path) -> str:
 
 def enhance_html(path: Path) -> None:
     raw_text = path.read_text(encoding="utf-8")
-    text = raw_text if path.relative_to(SITE_DIR).as_posix() == "index.html" else clean_copy(raw_text)
+    rel = path.relative_to(SITE_DIR).as_posix()
+    preserve_reader_copy = rel in {"index.html", "sources/index.html"}
+    text = raw_text if preserve_reader_copy else clean_copy(raw_text)
     if 'property="og:title"' not in text:
         title_match = re.search(r"<title>(.*?)</title>", text, re.S)
-        title = html.unescape(title_match.group(1)) if title_match else "Дайджест"
+        site_name = "News Dispatch" if rel == "sources/index.html" else "Дайджест"
+        title = html.unescape(title_match.group(1)) if title_match else site_name
         description_match = re.search(r'<meta name="description" content="(.*?)">', text, re.S)
         description = html.unescape(description_match.group(1)) if description_match else "Публичный аналитический обзор."
-        meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"Дайджест\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
+        meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"{site_name}\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
         text = text.replace("<link rel=\"stylesheet\"", meta + "<link rel=\"stylesheet\"", 1)
     text = add_reader_css(text, path)
     path.write_text(text, encoding="utf-8")
@@ -289,6 +292,7 @@ def write_sitemap(items: list[dict[str, object]]) -> None:
         f"{BASE_URL}/news/index.html",
         f"{BASE_URL}/digests/index.html",
         f"{BASE_URL}/today.html",
+        f"{BASE_URL}/sources/index.html",
         f"{BASE_URL}/dispatches.html",
         f"{BASE_URL}/rss.xml",
         f"{BASE_URL}/sitemap.xml",

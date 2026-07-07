@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -11,6 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "tools" / "build_site.py"
 RENDER_PATH = ROOT / "tools" / "render_site.py"
+SOURCES_PATH = ROOT / "tools" / "build_sources_page.py"
+ENHANCE_PATH = ROOT / "tools" / "enhance_site.py"
 
 sys.path.insert(0, str(ROOT / "tools"))
 
@@ -24,6 +27,18 @@ assert render_spec is not None and render_spec.loader is not None
 render_site = importlib.util.module_from_spec(render_spec)
 sys.modules["render_site"] = render_site
 render_spec.loader.exec_module(render_site)
+
+sources_spec = importlib.util.spec_from_file_location("build_sources_page", SOURCES_PATH)
+assert sources_spec is not None and sources_spec.loader is not None
+build_sources_page = importlib.util.module_from_spec(sources_spec)
+sys.modules["build_sources_page"] = build_sources_page
+sources_spec.loader.exec_module(build_sources_page)
+
+enhance_spec = importlib.util.spec_from_file_location("enhance_site", ENHANCE_PATH)
+assert enhance_spec is not None and enhance_spec.loader is not None
+enhance_site = importlib.util.module_from_spec(enhance_spec)
+sys.modules["enhance_site"] = enhance_site
+enhance_spec.loader.exec_module(enhance_site)
 
 from public_html_scan import assert_public_html_clean, assert_public_pages_clean
 
@@ -49,6 +64,137 @@ def test_offline_ranking_fixture_contract() -> None:
         "selected_top_ranked",
         "filtered_by_source_rules",
     }
+
+
+def test_build_orchestrator_writes_sources_page() -> None:
+    calls: list[str] = []
+    original_build_ranking = build_site.build_ranking
+    original_build_reader_policy = build_site.build_reader_policy
+    original_run_tool = build_site.run_tool
+    try:
+        build_site.build_ranking = lambda args: calls.append("ranking")
+        build_site.build_reader_policy = lambda: calls.append("reader-policy")
+        build_site.run_tool = lambda script, *args: calls.append(script)
+        build_site.build(build_site.parse_args(["--skip-validation", "--skip-privacy-scan"]))
+    finally:
+        build_site.build_ranking = original_build_ranking
+        build_site.build_reader_policy = original_build_reader_policy
+        build_site.run_tool = original_run_tool
+
+    assert "build_sources_page.py" in calls
+    assert calls.index("build_sources_page.py") > calls.index("build_news_pages.py")
+    assert calls.index("build_sources_page.py") < calls.index("build_today_page.py")
+
+
+def test_sources_page_is_grouped_public_transparency() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        tmpdir = Path(tmp)
+        old_sources_path = build_sources_page.SOURCES_PATH
+        old_ranking_path = build_sources_page.RANKING_PATH
+        old_policy_path = build_sources_page.POLICY_PATH
+        old_output_dir = build_sources_page.OUTPUT_DIR
+        old_output_path = build_sources_page.OUTPUT_PATH
+        old_enhance_site_dir = enhance_site.SITE_DIR
+        try:
+            build_sources_page.SOURCES_PATH = tmpdir / "feeds.json"
+            build_sources_page.RANKING_PATH = tmpdir / "daily-radar-ranking-latest.json"
+            build_sources_page.POLICY_PATH = tmpdir / "reader-policy-latest.json"
+            build_sources_page.OUTPUT_DIR = tmpdir / "site" / "sources"
+            build_sources_page.OUTPUT_PATH = build_sources_page.OUTPUT_DIR / "index.html"
+            enhance_site.SITE_DIR = tmpdir / "site"
+            build_sources_page.SOURCES_PATH.write_text(
+                json.dumps(
+                    {
+                        "feeds": [
+                            {
+                                "id": "fca-news",
+                                "title": "Financial Conduct Authority",
+                                "url": "https://example.com/feed",
+                                "stream": "crypto-finance",
+                                "source_type": "Официальный источник / регулятор",
+                                "source_class": "official_source",
+                                "reliability_tier": "A",
+                                "priority": 0.8,
+                                "tags": ["regulation"],
+                            },
+                            {
+                                "id": "disabled-source",
+                                "title": "Disabled Source",
+                                "url": "https://example.com/disabled",
+                                "stream": "finance",
+                                "source_type": "Деловое медиа",
+                                "source_class": "public_media",
+                                "enabled": False,
+                                "priority": 0.2,
+                                "tags": ["finance"],
+                            },
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            build_sources_page.RANKING_PATH.write_text(
+                json.dumps(
+                    {
+                        "items": [
+                            {
+                                "item_key": "recent-fca",
+                                "feed_id": "fca-news",
+                                "feed_title": "Financial Conduct Authority",
+                                "configured_stream": "crypto-finance",
+                                "routed_stream": "crypto-finance",
+                                "source_class": "official_source",
+                                "source_type": "official",
+                                "title": "FCA updates stablecoin custody rules",
+                                "reader_title_ru": "FCA обновило правила хранения стейблкоинов",
+                                "reader_excerpt_ru": "Регулятор описал требования к хранению и надзору.",
+                                "url": "https://example.com/fca",
+                                "published": "2026-07-02T09:00:00+00:00",
+                                "source_rule_status": "accepted_by_source_rules",
+                                "relevance_score": 0.9,
+                                "min_relevance_score": 0.2,
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            build_sources_page.POLICY_PATH.write_text(
+                json.dumps({"decisions": [{"item_key": "recent-fca", "decision": "reader_safe"}]}, ensure_ascii=False),
+                encoding="utf-8",
+            )
+
+            build_sources_page.build()
+
+            assert build_sources_page.OUTPUT_PATH.exists()
+            html = build_sources_page.OUTPUT_PATH.read_text(encoding="utf-8")
+            assert "Источники" in html
+            assert "Криптофинансы" in html
+            assert "Financial Conduct Authority" in html
+            assert "Тип: официальный источник / регулятор" in html
+            assert "Надёжность: высокая" in html
+            assert "Роль: первичные заявления, решения и документы." in html
+            assert "FCA обновило правила хранения стейблкоинов" in html
+            assert "Disabled Source" not in html
+            for term in ["source_rule_status", "validation", "threshold", "coverage", "feed_id", "final_score", "selection_score"]:
+                assert term not in html.lower()
+            assert_public_html_clean(html)
+
+            enhance_site.enhance_html(build_sources_page.OUTPUT_PATH)
+            enhanced_html = build_sources_page.OUTPUT_PATH.read_text(encoding="utf-8")
+            assert "News Dispatch" in enhanced_html
+            assert "Рубрики анализа" not in enhanced_html
+            assert 'property="og:site_name" content="News Dispatch"' in enhanced_html
+            assert_public_html_clean(enhanced_html)
+        finally:
+            build_sources_page.SOURCES_PATH = old_sources_path
+            build_sources_page.RANKING_PATH = old_ranking_path
+            build_sources_page.POLICY_PATH = old_policy_path
+            build_sources_page.OUTPUT_DIR = old_output_dir
+            build_sources_page.OUTPUT_PATH = old_output_path
+            enhance_site.SITE_DIR = old_enhance_site_dir
 
 
 def has_cyrillic(value: str) -> bool:
@@ -140,8 +286,8 @@ def test_homepage_template_matches_public_reader_blocks() -> None:
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
-    assert "radar/index.html" in html
-    assert "sources/index.html" not in html
+    assert "sources/index.html" in html
+    assert "radar/index.html" not in html
     assert "drafts.html" not in html
     assert "Статус обновления" not in html
     assert "Как читать" not in html
@@ -178,6 +324,9 @@ def test_public_generated_page_scan_checks_reader_pages() -> None:
             site_dir / "today.html",
         ]:
             path.write_text(clean_html, encoding="utf-8")
+        sources_dir = site_dir / "sources"
+        sources_dir.mkdir(parents=True)
+        (sources_dir / "index.html").write_text(clean_html, encoding="utf-8")
         assert_public_pages_clean(site_dir)
 
         (site_dir / "index.html").write_text("2026-07-06 14:09:58 UTC", encoding="utf-8")
@@ -221,6 +370,8 @@ def main() -> int:
     test_default_modes_are_deterministic()
     test_pages_modes_are_explicit()
     test_offline_ranking_fixture_contract()
+    test_build_orchestrator_writes_sources_page()
+    test_sources_page_is_grouped_public_transparency()
     test_homepage_template_matches_public_reader_blocks()
     test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
