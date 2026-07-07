@@ -1,14 +1,14 @@
 :root {
-  --bg: #f7f6f2;
+  --bg: #f7f7f5;
   --ink: #171717;
-  --muted: #62645f;
+  --muted: #666864;
   --line: rgba(23, 23, 23, 0.12);
   --card: #fff;
   --accent: #0a4f86;
   --accent-soft: #e7f1fb;
   --strict: #1f4e5f;
   --soft: rgba(10, 79, 134, 0.08);
-  --shadow: 0 16px 45px rgba(23, 23, 23, 0.06);
+  --shadow: none;
   color-scheme: light;
 }
 
@@ -21,7 +21,8 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .masthead,
@@ -32,12 +33,12 @@ main {
 }
 
 .masthead {
-  padding: 36px 0 28px;
+  padding: 24px 0 18px;
   border-bottom: 1px solid var(--line);
 }
 
 .masthead.compact {
-  padding-bottom: 26px;
+  padding-bottom: 18px;
 }
 
 .eyebrow,
@@ -63,7 +64,7 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 18px;
-  margin: 16px 0 26px;
+  margin: 12px 0 18px;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 0.95rem;
   font-weight: 750;
@@ -134,8 +135,8 @@ main {
 h1 {
   margin: 0;
   max-width: 980px;
-  font-size: clamp(2rem, 3.7vw, 2.5rem);
-  line-height: 1.08;
+  font-size: 2.125rem;
+  line-height: 1.12;
   letter-spacing: 0;
   overflow-wrap: anywhere;
   text-wrap: balance;
@@ -143,19 +144,20 @@ h1 {
 
 .masthead.compact h1 {
   max-width: 920px;
-  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
-  line-height: 1.1;
+  font-size: 2rem;
+  line-height: 1.14;
 }
 
 .lede {
   max-width: 820px;
-  margin: 18px 0 0;
+  margin: 12px 0 0;
   color: var(--muted);
-  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 main {
-  padding: 30px 0 64px;
+  padding: 20px 0 48px;
 }
 
 .home-header {
@@ -198,13 +200,13 @@ main {
 
 .home-main {
   width: min(1080px, calc(100vw - 32px));
-  padding: 20px 0 52px;
+  padding: 16px 0 44px;
 }
 
 .home-grid {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(280px, 0.82fr);
-  gap: 28px;
+  gap: 24px;
   align-items: start;
 }
 
@@ -213,7 +215,7 @@ main {
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .home-section-heading h1,
@@ -224,7 +226,7 @@ main {
 }
 
 .home-section-heading h1 {
-  font-size: 1.72rem;
+  font-size: 1.62rem;
 }
 
 .home-section-heading h2 {
@@ -245,13 +247,13 @@ main {
 }
 
 .home-side {
-  gap: 20px;
+  gap: 16px;
 }
 
 .home-news-row,
 .home-today-row,
 .home-digest-row {
-  padding: 14px 0;
+  padding: 11px 0;
   border-top: 1px solid var(--line);
 }
 
@@ -277,7 +279,7 @@ main {
 .home-digest-row h3 {
   margin: 0;
   color: var(--ink);
-  font-size: 1.08rem;
+  font-size: 1.06rem;
   line-height: 1.28;
   letter-spacing: 0;
   overflow-wrap: anywhere;
@@ -287,14 +289,21 @@ main {
 .home-today-row h3 a,
 .home-digest-row h3 a {
   color: inherit;
+  text-decoration: none;
+}
+
+.home-news-row h3 a:hover,
+.home-today-row h3 a:hover,
+.home-digest-row h3 a:hover {
+  text-decoration: underline;
   text-decoration-thickness: 0.06em;
   text-underline-offset: 0.14em;
 }
 
 .home-news-excerpt {
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: #2b2b2b;
-  font-size: 0.96rem;
+  font-size: 0.95rem;
   line-height: 1.48;
 }
 
@@ -308,7 +317,7 @@ main {
 .home-rubrics,
 .home-digests,
 .home-sources {
-  padding: 14px 0 0;
+  padding: 12px 0 0;
   border-top: 1px solid var(--line);
 }
 
@@ -403,13 +412,13 @@ main {
   overflow: hidden;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 8px;
   box-shadow: var(--shadow);
 }
 
 .today-feature h2 {
   margin: 0 0 10px;
-  font-size: clamp(1.75rem, 3vw, 2.12rem);
+  font-size: 1.5rem;
   line-height: 1.12;
   letter-spacing: 0;
   overflow-wrap: anywhere;
@@ -427,111 +436,14 @@ main {
   font-size: 0.94rem;
 }
 
-.stream-visual {
-  --visual-a: #365b5f;
-  --visual-b: #c7a36e;
-  --visual-c: #f2e8d8;
-  position: relative;
-  display: block;
-  overflow: hidden;
-  min-height: 150px;
-  aspect-ratio: 16 / 9;
-  background:
-    radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--visual-b) 58%, transparent), transparent 28%),
-    linear-gradient(135deg, color-mix(in srgb, var(--visual-a) 88%, #fff 0%), color-mix(in srgb, var(--visual-c) 85%, #fff 15%));
-  border: 1px solid rgba(23, 23, 23, 0.1);
-  border-radius: 12px;
-  isolation: isolate;
-}
-
-.stream-visual--feature {
-  min-height: 300px;
-  border-radius: 0;
-  border-width: 0 0 1px;
-}
-
-.stream-visual--thumb {
-  min-height: 92px;
-  aspect-ratio: 4 / 3;
-}
-
-.stream-visual--tile {
-  min-height: 96px;
-}
-
-.stream-visual--mini {
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
-  min-height: 42px;
-  aspect-ratio: 1;
-  border-radius: 9px;
-}
-
-.visual-grid-line,
-.visual-shape {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-}
-
-.visual-grid-line {
-  inset: 18% 12%;
-  border-top: 1px solid rgba(255, 255, 255, 0.42);
-  border-bottom: 1px solid rgba(23, 23, 23, 0.12);
-  transform: rotate(-8deg);
-}
-
-.visual-grid-line--two {
-  inset: 36% 10%;
-  transform: rotate(8deg);
-}
-
-.visual-shape--one {
-  width: 34%;
-  height: 34%;
-  left: 12%;
-  bottom: 14%;
-  border: 1px solid rgba(255, 255, 255, 0.54);
-  border-radius: 999px;
-}
-
-.visual-shape--two {
-  width: 28%;
-  height: 24%;
-  right: 12%;
-  top: 16%;
-  background: rgba(255, 255, 255, 0.24);
-  border-radius: 8px;
-}
-
-.visual-shape--three {
-  width: 42%;
-  height: 2px;
-  right: 12%;
-  bottom: 22%;
-  background: rgba(23, 23, 23, 0.22);
-  transform: rotate(-18deg);
-}
-
-.stream-visual--finance { --visual-a: #294f46; --visual-b: #d9b55e; --visual-c: #e9f0db; }
-.stream-visual--crypto-finance { --visual-a: #273e5c; --visual-b: #b9c46a; --visual-c: #dde6ef; }
-.stream-visual--ai { --visual-a: #303e6c; --visual-b: #70b4a7; --visual-c: #e5e7f2; }
-.stream-visual--tech-hardware-software { --visual-a: #2c4653; --visual-b: #79a6d2; --visual-c: #e7edf1; }
-.stream-visual--gear-style-edc { --visual-a: #4b453b; --visual-b: #d0a65f; --visual-c: #eee7dc; }
-.stream-visual--moscow-city { --visual-a: #334b54; --visual-b: #c8644f; --visual-c: #e8edf0; }
-.stream-visual--dj-audio-creative { --visual-a: #31324f; --visual-b: #d2788a; --visual-c: #eee5ee; }
-.stream-visual--science-discovery { --visual-a: #214a60; --visual-b: #9bc1d9; --visual-c: #e5f0f2; }
-.stream-visual--general { --visual-a: #4a4a44; --visual-b: #b88c5a; --visual-c: #ece7df; }
-
 .panel {
-  padding: 24px 0;
+  padding: 18px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .panel h2 {
   margin: 0 0 10px;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-size: 1.5rem;
   letter-spacing: 0;
 }
 
@@ -539,17 +451,17 @@ main {
   max-width: 780px;
   margin: 0;
   color: var(--muted);
-  font-size: 1.08rem;
+  font-size: 1rem;
 }
 
 .site-status,
 .reader-home-intro,
 .reader-topic-context {
   margin: 0 0 22px;
-  padding: 26px;
-  background: linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(155, 77, 34, 0.055));
+  padding: 20px;
+  background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 8px;
   box-shadow: var(--shadow);
 }
 
@@ -617,8 +529,8 @@ main {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 16px;
-  padding: 24px 0;
+  gap: 14px;
+  padding: 18px 0;
 }
 
 .card,
@@ -626,19 +538,18 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: 18px;
+  padding: 16px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: none;
-  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  transition: border-color 160ms ease;
 }
 
 .card:hover,
 .stream-card:hover {
-  transform: translateY(-1px);
-  border-color: rgba(155, 77, 34, 0.28);
-  box-shadow: 0 12px 30px rgba(21, 21, 21, 0.045);
+  border-color: rgba(10, 79, 134, 0.24);
+  box-shadow: none;
 }
 
 .card.is-sample {
@@ -646,8 +557,8 @@ main {
 }
 
 .signal-card {
-  border-color: rgba(155, 77, 34, 0.22);
-  background: linear-gradient(180deg, var(--card), rgba(155, 77, 34, 0.045));
+  border-color: rgba(10, 79, 134, 0.18);
+  background: var(--card);
 }
 
 .signal-card .label,
@@ -681,8 +592,8 @@ main {
 
 .card h3,
 .stream-card h3 {
-  margin: 0 0 14px;
-  font-size: 1.25rem;
+  margin: 0 0 10px;
+  font-size: 1.12rem;
   line-height: 1.22;
   letter-spacing: 0;
   overflow-wrap: anywhere;
@@ -709,13 +620,13 @@ main {
 }
 
 .product-section {
-  padding: 26px 0;
+  padding: 20px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .product-section h2 {
   margin: 0 0 10px;
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  font-size: 1.5rem;
   line-height: 1.16;
 }
 
@@ -733,7 +644,7 @@ main {
 }
 
 .news-index-summary {
-  padding: 4px 0 26px;
+  padding: 2px 0 20px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -742,12 +653,12 @@ main {
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 }
 
 .news-index-heading h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.32rem;
   line-height: 1.25;
 }
 
@@ -767,9 +678,9 @@ main {
 .news-index-row {
   display: grid;
   grid-template-columns: 12px minmax(170px, 0.7fr) minmax(0, 1fr);
-  gap: 12px;
+  gap: 10px;
   align-items: baseline;
-  padding: 10px 0;
+  padding: 8px 0;
   border-top: 1px solid var(--line);
 }
 
@@ -803,25 +714,25 @@ main {
   display: grid;
   max-width: 840px;
   gap: 0;
-  padding: 10px 0 36px;
+  padding: 4px 0 30px;
 }
 
 .news-item {
-  padding: 14px 0;
+  padding: 11px 0;
   border-bottom: 1px solid var(--line);
 }
 
 .news-item--text {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 9px minmax(0, 1fr);
+  gap: 11px;
   align-items: start;
 }
 
 .news-stream-marker {
-  width: 9px;
-  height: 9px;
-  margin-top: 0.65rem;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.7rem;
   background: var(--accent);
   border-radius: 999px;
 }
@@ -840,16 +751,21 @@ main {
 
 .news-item h3 a {
   color: inherit;
+  text-decoration: none;
+}
+
+.news-item h3 a:hover {
+  text-decoration: underline;
   text-decoration-thickness: 0.06em;
   text-underline-offset: 0.14em;
 }
 
 .news-excerpt {
   max-width: 760px;
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: var(--ink);
-  font-size: 0.96rem;
-  line-height: 1.48;
+  font-size: 0.95rem;
+  line-height: 1.45;
 }
 
 .news-meta {
@@ -857,9 +773,9 @@ main {
   flex-wrap: wrap;
   gap: 6px 10px;
   max-width: 760px;
-  margin: 0 0 6px;
+  margin: 0 0 5px;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 650;
   line-height: 1.35;
 }
@@ -867,10 +783,10 @@ main {
 .news-original,
 .news-source-link {
   max-width: 760px;
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: var(--muted);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -878,7 +794,7 @@ main {
 .news-original summary {
   color: var(--accent);
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .news-original p {
@@ -887,14 +803,52 @@ main {
 
 .news-source-link a {
   color: var(--accent);
-  font-weight: 800;
+  font-weight: 700;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.14em;
 }
 
 .news-item.empty-state {
-  padding: 18px;
+  padding: 14px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 8px;
+}
+
+.digest-list-card {
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.digest-list-card:first-child {
+  padding-top: 4px;
+}
+
+.digest-list-card h3 {
+  max-width: 760px;
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.digest-list-card h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.digest-list-card h3 a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.14em;
+}
+
+.digest-list-card p {
+  max-width: 760px;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.45;
 }
 
 .news-list--preview {
@@ -907,12 +861,12 @@ main {
 
 .sources-rubrics,
 .sources-group {
-  padding: 4px 0 26px;
+  padding: 2px 0 20px;
   border-bottom: 1px solid var(--line);
 }
 
 .sources-group {
-  padding-top: 26px;
+  padding-top: 20px;
 }
 
 .sources-list {
@@ -922,9 +876,9 @@ main {
 
 .source-row {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr);
-  gap: 14px;
-  padding: 14px 0;
+  grid-template-columns: 9px minmax(0, 1fr);
+  gap: 11px;
+  padding: 11px 0;
   border-top: 1px solid var(--line);
 }
 
@@ -950,13 +904,13 @@ main {
   max-width: 760px;
   margin: 0;
   color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.45;
+  font-size: 0.82rem;
+  line-height: 1.42;
 }
 
 .source-role,
 .source-recent {
-  margin-top: 7px;
+  margin-top: 5px;
 }
 
 .source-recent a {
@@ -1037,7 +991,7 @@ main {
 
 .draft-review-card {
   border-color: rgba(31, 78, 95, 0.24);
-  background: linear-gradient(180deg, var(--card), rgba(31, 78, 95, 0.055));
+  background: var(--card);
 }
 
 .stream-grid {
@@ -1120,14 +1074,14 @@ main {
 }
 
 .article-hero {
-  padding: 56px 0 36px;
+  padding: 30px 0 22px;
   border-bottom: 1px solid var(--line);
 }
 
 .article-hero h1 {
   max-width: 980px;
-  font-size: clamp(1.9rem, 4vw, 2.75rem);
-  line-height: 1.1;
+  font-size: 2.125rem;
+  line-height: 1.14;
   overflow-wrap: anywhere;
   text-wrap: balance;
 }
@@ -1146,40 +1100,40 @@ main {
 .article-body h1,
 .article-body h2,
 .article-body h3 {
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+  letter-spacing: 0;
+  line-height: 1.18;
   overflow-wrap: anywhere;
 }
 
 .article-body h1 {
-  margin: 0 0 28px;
-  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  margin: 0 0 20px;
+  font-size: 2rem;
 }
 
 .article-body h2 {
-  margin: 52px 0 16px;
-  padding-top: 20px;
+  margin: 34px 0 12px;
+  padding-top: 16px;
   border-top: 1px solid var(--line);
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  font-size: 1.5rem;
 }
 
 .article-body h3 {
-  margin: 34px 0 10px;
-  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  margin: 24px 0 8px;
+  font-size: 1.18rem;
 }
 
 .article-body p,
 .article-body li {
   color: #272727;
-  font-size: 1.08rem;
+  font-size: 1rem;
 }
 
 .article-body p {
-  margin: 0 0 18px;
+  margin: 0 0 14px;
 }
 
 .article-body ul {
-  margin: 0 0 24px;
+  margin: 0 0 18px;
   padding-left: 1.2rem;
 }
 
@@ -1288,11 +1242,11 @@ main {
   }
 
   .masthead {
-    padding-top: 28px;
+    padding-top: 22px;
   }
 
   h1 {
-    font-size: clamp(1.75rem, 8vw, 2rem);
+    font-size: 1.65rem;
     line-height: 1.12;
   }
 
@@ -1301,7 +1255,7 @@ main {
   }
 
   .lede {
-    margin-top: 24px;
+    margin-top: 12px;
   }
 
   .hero-actions {
@@ -1331,8 +1285,8 @@ main {
   }
 
   .news-item--text {
-    grid-template-columns: 10px minmax(0, 1fr);
-    gap: 12px;
+    grid-template-columns: 8px minmax(0, 1fr);
+    gap: 10px;
   }
 
   .news-index-heading {
@@ -1350,19 +1304,11 @@ main {
     grid-column: 2;
   }
 
-  .stream-visual--feature {
-    min-height: 190px;
-  }
-
-  .stream-visual--thumb {
-    min-height: 72px;
-  }
-
   .site-status,
   .reader-home-intro,
   .reader-topic-context {
-    padding: 20px;
-    border-radius: 18px;
+    padding: 16px;
+    border-radius: 8px;
   }
 
   .card,
@@ -1376,28 +1322,28 @@ main {
 /* Today Radar analytical cards */
 .today-highlights ul {
   margin: 0;
-  padding-left: 1.25rem;
+  padding-left: 1.1rem;
 }
 
 .today-highlights li {
-  margin: 0 0 8px;
-  line-height: 1.45;
+  margin: 0 0 6px;
+  line-height: 1.4;
 }
 
 .today-grouped-cards {
   display: grid;
-  gap: 22px;
-  padding: 8px 0 24px;
+  gap: 16px;
+  padding: 4px 0 20px;
 }
 
 .today-stream-group {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .today-stream-group h2 {
   margin: 0;
-  font-size: clamp(1.24rem, 2.2vw, 1.55rem);
+  font-size: 1.32rem;
   line-height: 1.16;
 }
 
@@ -1411,14 +1357,16 @@ main {
 }
 
 .signal-card {
-  gap: 12px;
+  gap: 10px;
 }
 
 .signal-card--reader {
   display: grid;
-  grid-template-columns: 12px minmax(0, 1fr);
-  gap: 14px;
-  padding: 16px;
+  grid-template-columns: 9px minmax(0, 1fr);
+  gap: 11px;
+  padding: 13px 0;
+  border-width: 1px 0 0;
+  border-radius: 0;
 }
 
 .signal-card-body {
@@ -1430,16 +1378,16 @@ main {
 }
 
 .signal-card h3 {
-  margin-top: 2px;
-  margin-bottom: 8px;
-  font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+  margin-top: 0;
+  margin-bottom: 6px;
+  font-size: 1.08rem;
   line-height: 1.22;
 }
 
 .signal-card p {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   color: #262626;
-  font-size: 0.98rem;
+  font-size: 0.95rem;
 }
 
 .signal-card .news-source-link {
@@ -1458,11 +1406,11 @@ main {
 .cluster-materials {
   display: grid;
   gap: 8px;
-  margin: -4px 0 2px;
-  padding: 12px;
+  margin: -2px 0 2px;
+  padding: 10px;
   background: rgba(21, 21, 21, 0.035);
   border: 1px solid rgba(21, 21, 21, 0.08);
-  border-radius: 14px;
+  border-radius: 8px;
   list-style: none;
 }
 
