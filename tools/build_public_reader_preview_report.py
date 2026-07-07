@@ -18,6 +18,32 @@ sys.path.insert(0, str(ROOT / "tests"))
 from public_html_scan import assert_public_pages_clean, public_page_paths  # noqa: E402
 
 
+REQUIRED_READER_ROUTES = [
+    "index.html",
+    "news/index.html",
+    "news/crypto-finance.html",
+    "today.html",
+    "digests/index.html",
+    "sources/index.html",
+]
+
+FORBIDDEN_PRODUCT_COPY = [
+    "Как читать",
+    "Рубрики анализа анализа",
+    "PUBLIC-SAFE EDITORIAL BRIEFING SYSTEM",
+    "Publication boundary",
+]
+
+TRUST_TERMS = [
+    "регулятор",
+    "официальный источник",
+    "деловое медиа",
+    "публичное медиа",
+    "компания",
+    "исследовательский источник",
+]
+
+
 class LinkParser(html.parser.HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -44,6 +70,11 @@ def page_hrefs(path: Path) -> list[str]:
     parser = LinkParser()
     parser.feed(path.read_text(encoding="utf-8"))
     return parser.hrefs
+
+
+def read_page(site_dir: Path, relative: str) -> str:
+    path = site_dir / relative
+    return path.read_text(encoding="utf-8") if path.exists() else ""
 
 
 def check_internal_links(site_dir: Path) -> tuple[int, int, list[str]]:
@@ -75,15 +106,53 @@ def check_internal_links(site_dir: Path) -> tuple[int, int, list[str]]:
     return checked, external, missing
 
 
-def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> list[str]:
+def check_reader_trust(site_dir: Path) -> list[str]:
+    issues: list[str] = []
+    for route_path in REQUIRED_READER_ROUTES:
+        if not (site_dir / route_path).exists():
+            issues.append(f"missing required reader route: {route_path}")
+
+    home = read_page(site_dir, "index.html")
+    news = read_page(site_dir, "news/index.html") + read_page(site_dir, "news/crypto-finance.html")
+    today = read_page(site_dir, "today.html")
+    sources = read_page(site_dir, "sources/index.html")
+    public_surface = "\n".join([home, news, today, sources])
+    public_lower = public_surface.lower()
+
+    for phrase in FORBIDDEN_PRODUCT_COPY:
+        if phrase.lower() in public_lower:
+            issues.append(f"forbidden old reader copy is visible: {phrase}")
+
+    if "Последние новости" not in home or "Сегодня" not in home or "Дайджесты" not in home:
+        issues.append("homepage does not expose daily-use reader sections")
+    if "Открыть источник" not in public_surface:
+        issues.append("reader surface does not expose source links")
+    if not any(term in public_lower for term in TRUST_TERMS):
+        issues.append("reader surface does not expose source type / reliability labels")
+    if "Источники и проверка" not in today:
+        issues.append("today page does not expose source verification note")
+    if "Сообщения источников не являются готовым выводом" not in today:
+        issues.append("today page does not separate source messages from conclusions")
+    if "не инвестиционная" not in today:
+        issues.append("today page does not show no-advice boundary")
+    if "Надёжность" not in sources:
+        issues.append("sources page does not expose reliability tiers")
+
+    return issues
+
+
+def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str) -> tuple[list[str], list[str]]:
     site_dir = site_dir.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     pages = html_pages(site_dir)
     public_pages = public_page_paths(site_dir)
     assert_public_pages_clean(site_dir)
     checked, external, missing = check_internal_links(site_dir)
-    status = "passed" if not missing else "failed"
+    trust_issues = check_reader_trust(site_dir)
+    link_status = "passed" if not missing else "failed"
+    trust_status = "passed" if not trust_issues else "failed"
     missing_lines = "\n".join(f"- {item}" for item in missing[:50]) if missing else "- none"
+    trust_lines = "\n".join(f"- {item}" for item in trust_issues[:50]) if trust_issues else "- none"
     route_lines = "\n".join(f"- {route(path, site_dir)}" for path in pages[:120])
     if len(pages) > 120:
         route_lines += f"\n- ... {len(pages) - 120} more"
@@ -95,7 +164,8 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
 - Public HTML forbidden-pattern scan: passed ({len(public_pages)} reader page(s))
 - Internal links checked: {checked}
 - External links observed: {external}
-- Link check result: {status}
+- Link check result: {link_status}
+- Daily reader trust check: {trust_status}
 
 ## Generated routes
 
@@ -104,9 +174,13 @@ def write_report(site_dir: Path, output: Path, build_mode: str, commit_sha: str)
 ## Missing internal links
 
 {missing_lines}
+
+## Reader trust issues
+
+{trust_lines}
 """
     output.write_text(text, encoding="utf-8")
-    return missing
+    return missing, trust_issues
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
@@ -120,22 +194,31 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         action="store_true",
         help="Write the QA report but do not fail when internal links are missing.",
     )
+    parser.add_argument(
+        "--allow-trust-issues",
+        action="store_true",
+        help="Write the QA report but do not fail when daily reader trust checks fail.",
+    )
     return parser.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
-    missing = write_report(
+    missing, trust_issues = write_report(
         site_dir=Path(args.site_dir),
         output=Path(args.output),
         build_mode=str(args.build_mode),
         commit_sha=str(args.commit_sha),
     )
     print(f"Wrote {args.output}")
+    failed = False
     if missing and not args.allow_missing_links:
         print(f"Missing internal links: {len(missing)}", file=sys.stderr)
-        return 1
-    return 0
+        failed = True
+    if trust_issues and not args.allow_trust_issues:
+        print(f"Reader trust issues: {len(trust_issues)}", file=sys.stderr)
+        failed = True
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
