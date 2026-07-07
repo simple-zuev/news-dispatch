@@ -46,6 +46,11 @@ jobs:
         continue-on-error: true
         run: python3 tools/build_public_reader_preview_report.py --build-mode "fixture / media skip" --commit-sha "${{ github.sha }}"
 
+      - name: Run content quality check
+        id: content-quality
+        continue-on-error: true
+        run: python3 tools/validate_public_reader_content_quality.py
+
       - name: Upload public reader site preview
         uses: actions/upload-artifact@v4
         with:
@@ -61,8 +66,9 @@ jobs:
             validation/public-reader-preview-report.md
             validation/daily-radar-ranking-latest.json
             validation/reader-policy-latest.json
+            validation/public-reader-content-quality-latest.json
           retention-days: 14
 
       - name: Fail when preview QA failed
-        if: steps.preview-qa.outcome == 'failure'
+        if: steps.preview-qa.outcome == 'failure' || steps.content-quality.outcome == 'failure'
         run: exit 1
