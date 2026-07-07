@@ -24,6 +24,13 @@ GENERIC = [
     "источник описывает тему",
     "короткое сообщение источника",
 ]
+GENERIC_SOURCE_TOPICS = {
+    "регуляторика и надзор",
+    "банки ставки и ликвидность",
+    "безопасность и технологическая инфраструктура",
+    "модели и инфраструктура ии",
+    "движение крипторынка",
+}
 
 
 class HeadingParser(html.parser.HTMLParser):
@@ -71,6 +78,13 @@ def norm(text: str) -> str:
     return re.sub(r"[^0-9a-zа-яё]+", " ", text).strip()
 
 
+def source_topic_generic(title: str) -> bool:
+    if ":" not in title:
+        return False
+    _source, topic = title.split(":", 1)
+    return norm(topic) in GENERIC_SOURCE_TOPICS
+
+
 def check(site_dir: Path) -> list[str]:
     pages = {rel: read(site_dir, rel) for rel in SURFACE}
     combined = visible("\n".join(pages.values())).lower()
@@ -79,6 +93,11 @@ def check(site_dir: Path) -> list[str]:
     for phrase in GENERIC:
         if phrase in combined:
             issues.append(f"generic fallback copy is visible: {phrase}")
+
+    surface_headings = [text for html_text in pages.values() for tag, text in headings(html_text) if tag == "h3"]
+    weak_source_topic = [text for text in surface_headings if source_topic_generic(text)]
+    if weak_source_topic:
+        issues.append("weak source-topic headlines: " + "; ".join(weak_source_topic[:8]))
 
     for rel in ["index.html", "today.html"]:
         h3 = [text for tag, text in headings(pages.get(rel, "")) if tag == "h3" and not text.lower().startswith("нет ")]
