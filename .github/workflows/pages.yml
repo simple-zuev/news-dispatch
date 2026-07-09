@@ -60,7 +60,7 @@ jobs:
         run: python3 tools/privacy_scan.py
 
       - name: Run content quality check
-        run: python3 tools/validate_public_reader_content_quality.py
+        run: python3 tools/validate_public_reader_content_quality.py --fail-on critical
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
