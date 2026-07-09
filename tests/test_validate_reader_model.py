@@ -43,6 +43,14 @@ def safe_item() -> dict[str, object]:
     }
 
 
+def unresolved_generic_item() -> dict[str, object]:
+    item = safe_item()
+    item["title"] = ""
+    item["source_original_title"] = ""
+    item["reader_title_ru"] = "Google Security Blog: регуляторика и надзор"
+    return item
+
+
 def policy_for(item: dict[str, object]) -> dict[str, object]:
     return {"decisions": [{"item_key": validate_reader_model.item_key(item), "decision": "reader_safe"}]}
 
@@ -63,18 +71,16 @@ def test_reader_model_validation_blocks_comment_feed_url() -> None:
     assert "comment feed URL" in str(report["blocking_issues"])
 
 
-def test_reader_model_validation_reports_generic_title_as_advisory_in_critical_mode() -> None:
-    item = safe_item()
-    item["reader_title_ru"] = "Google Security Blog: регуляторика и надзор"
+def test_reader_model_validation_reports_unresolved_generic_title_as_advisory_in_critical_mode() -> None:
+    item = unresolved_generic_item()
     report = validate_reader_model.validate({"items": [item]}, policy_for(item), fail_on="critical")
     assert report["passed"] is True
     assert "title is generic" in str(report["issues"])
     assert report["blocking_issues"] == []
 
 
-def test_reader_model_validation_blocks_generic_title_in_any_mode() -> None:
-    item = safe_item()
-    item["reader_title_ru"] = "Google Security Blog: регуляторика и надзор"
+def test_reader_model_validation_blocks_unresolved_generic_title_in_any_mode() -> None:
+    item = unresolved_generic_item()
     report = validate_reader_model.validate({"items": [item]}, policy_for(item), fail_on="any")
     assert report["passed"] is False
     assert "title is generic" in str(report["blocking_issues"])
@@ -109,8 +115,8 @@ def test_reader_model_validator_writes_report_and_returns_failure() -> None:
 def main() -> int:
     test_reader_model_validation_passes_safe_item()
     test_reader_model_validation_blocks_comment_feed_url()
-    test_reader_model_validation_reports_generic_title_as_advisory_in_critical_mode()
-    test_reader_model_validation_blocks_generic_title_in_any_mode()
+    test_reader_model_validation_reports_unresolved_generic_title_as_advisory_in_critical_mode()
+    test_reader_model_validation_blocks_unresolved_generic_title_in_any_mode()
     test_reader_model_validation_falls_back_to_selected_when_policy_is_absent()
     test_reader_model_validator_writes_report_and_returns_failure()
     print("reader model validator tests passed")
