@@ -21,7 +21,7 @@ def assert_ordered(text: str, markers: list[str]) -> None:
     assert positions == sorted(positions), markers
 
 
-def test_build_site_keeps_public_filter_before_policy_and_today() -> None:
+def test_build_site_keeps_public_filter_model_gate_before_rendering() -> None:
     text = read(BUILD_SITE)
     build_body = text[text.index("def build(args") :]
     assert_ordered(
@@ -30,6 +30,8 @@ def test_build_site_keeps_public_filter_before_policy_and_today() -> None:
             "build_ranking(args)",
             'run_tool("filter_public_source_items.py")',
             "build_reader_policy()",
+            'run_tool("validate_reader_model.py")',
+            'run_tool("render_site.py")',
             'run_tool("build_news_pages.py")',
             'run_tool("build_today_page.py")',
             'run_tool("apply_reader_title_quality.py")',
@@ -100,7 +102,7 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
 
 
 def main() -> int:
-    test_build_site_keeps_public_filter_before_policy_and_today()
+    test_build_site_keeps_public_filter_model_gate_before_rendering()
     test_validate_uses_deterministic_site_orchestrator()
     test_pages_uses_live_site_orchestrator()
     test_public_reader_preview_uploads_pr_artifacts_without_deploying()
