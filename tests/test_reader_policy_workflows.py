@@ -21,15 +21,18 @@ def assert_ordered(text: str, markers: list[str]) -> None:
     assert positions == sorted(positions), markers
 
 
-def test_build_site_keeps_policy_after_ranking_before_today() -> None:
+def test_build_site_keeps_public_filter_before_policy_and_today() -> None:
     text = read(BUILD_SITE)
     build_body = text[text.index("def build(args") :]
     assert_ordered(
         build_body,
         [
             "build_ranking(args)",
+            'run_tool("filter_public_source_items.py")',
             "build_reader_policy()",
+            'run_tool("build_news_pages.py")',
             'run_tool("build_today_page.py")',
+            'run_tool("apply_reader_title_quality.py")',
         ],
     )
     assert "copy_to_site(READER_POLICY_REPORT)" in text
@@ -52,6 +55,18 @@ def test_pages_uses_live_site_orchestrator() -> None:
     assert "run: python3 tools/validate_reader_output.py" in text
     assert "run: python3 tools/validate_render_visibility.py" in text
     assert "run: python3 tools/privacy_scan.py" in text
+    assert "run: python3 tools/validate_public_reader_content_quality.py" in text
+    assert_ordered(
+        text,
+        [
+            "run: python3 tools/build_site.py --ranking-mode live --media-mode skip",
+            "run: python3 tools/validate_reader_output.py",
+            "run: python3 tools/validate_render_visibility.py",
+            "run: python3 tools/privacy_scan.py",
+            "run: python3 tools/validate_public_reader_content_quality.py",
+            "uses: actions/configure-pages",
+        ],
+    )
     assert "path: site/" in text
 
 
@@ -73,17 +88,19 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     assert "run: python3 tools/privacy_scan.py" in text
     assert "run: python3 tests/public_html_scan.py site" in text
     assert "run: python3 tools/build_public_reader_preview_report.py" in text
+    assert "run: python3 tools/validate_public_reader_content_quality.py" in text
     assert "name: public-reader-site-preview" in text
     assert "name: public-reader-preview-qa" in text
     assert "validation/public-reader-preview-report.md" in text
     assert "validation/daily-radar-ranking-latest.json" in text
     assert "validation/reader-policy-latest.json" in text
+    assert "validation/public-reader-content-quality-latest.json" in text
     assert "actions/deploy-pages" not in text
     assert "upload-pages-artifact" not in text
 
 
 def main() -> int:
-    test_build_site_keeps_policy_after_ranking_before_today()
+    test_build_site_keeps_public_filter_before_policy_and_today()
     test_validate_uses_deterministic_site_orchestrator()
     test_pages_uses_live_site_orchestrator()
     test_public_reader_preview_uploads_pr_artifacts_without_deploying()
