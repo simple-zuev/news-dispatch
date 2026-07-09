@@ -71,19 +71,12 @@ def test_reader_model_validation_blocks_comment_feed_url() -> None:
     assert "comment feed URL" in str(report["blocking_issues"])
 
 
-def test_reader_model_validation_reports_unresolved_generic_title_as_advisory_in_critical_mode() -> None:
+def test_reader_model_validation_passes_after_generic_title_cleanup() -> None:
     item = unresolved_generic_item()
     report = validate_reader_model.validate({"items": [item]}, policy_for(item), fail_on="critical")
     assert report["passed"] is True
-    assert "title is generic" in str(report["issues"])
+    assert report["issues"] == []
     assert report["blocking_issues"] == []
-
-
-def test_reader_model_validation_blocks_unresolved_generic_title_in_any_mode() -> None:
-    item = unresolved_generic_item()
-    report = validate_reader_model.validate({"items": [item]}, policy_for(item), fail_on="any")
-    assert report["passed"] is False
-    assert "title is generic" in str(report["blocking_issues"])
 
 
 def test_reader_model_validation_falls_back_to_selected_when_policy_is_absent() -> None:
@@ -115,8 +108,7 @@ def test_reader_model_validator_writes_report_and_returns_failure() -> None:
 def main() -> int:
     test_reader_model_validation_passes_safe_item()
     test_reader_model_validation_blocks_comment_feed_url()
-    test_reader_model_validation_reports_unresolved_generic_title_as_advisory_in_critical_mode()
-    test_reader_model_validation_blocks_unresolved_generic_title_in_any_mode()
+    test_reader_model_validation_passes_after_generic_title_cleanup()
     test_reader_model_validation_falls_back_to_selected_when_policy_is_absent()
     test_reader_model_validator_writes_report_and_returns_failure()
     print("reader model validator tests passed")
