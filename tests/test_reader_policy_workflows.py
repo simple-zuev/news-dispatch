@@ -96,6 +96,7 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     assert "validation/public-reader-preview-report.md" in text
     assert "validation/daily-radar-ranking-latest.json" in text
     assert "validation/reader-policy-latest.json" in text
+    assert "validation/reader-model-latest.json" in text
     assert "validation/public-reader-content-quality-latest.json" in text
     assert "actions/deploy-pages" not in text
     assert "upload-pages-artifact" not in text
