@@ -136,6 +136,8 @@ def build(args: argparse.Namespace) -> int:
     build_ranking(args)
     run_tool("filter_public_source_items.py")
     build_reader_policy()
+    if not args.skip_validation:
+        run_tool("validate_reader_model.py")
     run_tool("render_site.py")
     run_tool("build_radar_pages.py")
     run_tool("build_news_pages.py")
