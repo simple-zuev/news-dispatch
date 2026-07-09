@@ -92,6 +92,14 @@ BOILERPLATE_PATTERNS = [
     r"читать далее\s*",
 ]
 
+GENERIC_SOURCE_TOPICS = {
+    "регуляторика и надзор",
+    "банки ставки и ликвидность",
+    "безопасность и технологическая инфраструктура",
+    "модели и инфраструктура ии",
+    "движение крипторынка",
+}
+
 
 def has_cyrillic(text: object) -> bool:
     return bool(re.search(r"[А-Яа-яЁё]", str(text or "")))
@@ -102,6 +110,24 @@ def public_text(value: object) -> str:
     for pattern, replacement in PUBLIC_TEXT_REPLACEMENTS:
         text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
     return text
+
+
+def normalized_public_topic(text: object) -> str:
+    raw = re.sub(r"\s+", " ", str(text or "")).strip().lower()
+    return re.sub(r"[^0-9a-zа-яё]+", " ", raw).strip()
+
+
+def has_market_regulator_token(text: str, token: str | None = None) -> bool:
+    pattern = r"\b(sec|fca|esma|cftc)\b" if token is None else rf"\b{re.escape(token)}\b"
+    return bool(re.search(pattern, text, flags=re.IGNORECASE))
+
+
+def is_source_topic_title(title: object) -> bool:
+    text = str(title or "")
+    if ":" not in text:
+        return False
+    _source, topic = text.split(":", 1)
+    return normalized_public_topic(topic) in GENERIC_SOURCE_TOPICS
 
 
 def stream_slug(item: dict[str, Any]) -> str:
@@ -225,11 +251,11 @@ def russian_topic(item: dict[str, Any]) -> str:
         return "идентификация клиентов эмитентов стейблкоинов"
     if "stablecoin" in text or "стейбл" in text:
         return "стейблкоины и платёжная инфраструктура"
-    if "sec" in text and "market statistics" in text:
+    if has_market_regulator_token(text, "sec") and "market statistics" in text:
         return "статистика рынка SEC"
     if "central bank" in text and "digital asset" in text:
         return "правила центрального банка для цифровых активов"
-    if "sec" in text or "fca" in text or "esma" in text or "cftc" in text:
+    if has_market_regulator_token(text):
         return "регуляторика и надзор"
     if "post-quantum" in text or ("quantum" in text and "android" in text):
         return "постквантовая защита Android"
@@ -285,7 +311,7 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "Европейские правила MiCA снова в фокусе регуляторов"
     if "dora" in text and "ict" in text:
         return "Европейские надзорные органы публикуют отчёт об ICT-инцидентах DORA"
-    if "sec" in text and "market statistics" in text:
+    if has_market_regulator_token(text, "sec") and "market statistics" in text:
         return "SEC обновила статистику рынка"
     if "crédit agricole" in text or "credit agricole" in text:
         return "Crédit Agricole запускает евро-стейблкоин EURXT"
@@ -403,11 +429,14 @@ def public_title_ru(item: dict[str, Any]) -> str:
     if is_market_forecast_item(item):
         return f"Источник сообщает об оценке участника рынка: {russian_topic(item)}"
     title = public_text(reader_title_ru(item)).strip()
+    original = public_text(source_original_title(item)).strip()
     if re.search(r"Источник сообщает:\s*.+\s+—\s+", title) or title.startswith(("Источник сообщает: ", "Источник описывает ")):
-        original = public_text(source_original_title(item)).strip()
         source = public_source_name(item)
         if original:
             return f"{source}: {original}"
+    if is_source_topic_title(title) and original:
+        source = public_source_name(item)
+        return f"{source}: {original}"
     return title or "Без заголовка"
 
 
