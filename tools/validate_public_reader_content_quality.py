@@ -31,6 +31,10 @@ GENERIC_SOURCE_TOPICS = {
     "модели и инфраструктура ии",
     "движение крипторынка",
 }
+FORBIDDEN_URL_PARTS = (
+    "/comments/default",
+    "/feeds/comments",
+)
 
 
 class HeadingParser(html.parser.HTMLParser):
@@ -87,8 +91,13 @@ def source_topic_generic(title: str) -> bool:
 
 def check(site_dir: Path) -> list[str]:
     pages = {rel: read(site_dir, rel) for rel in SURFACE}
+    raw = "\n".join(pages.values()).lower()
     combined = visible("\n".join(pages.values())).lower()
     issues: list[str] = []
+
+    for marker in FORBIDDEN_URL_PARTS:
+        if marker in raw:
+            issues.append(f"comment feed URL is visible: {marker}")
 
     for phrase in GENERIC:
         if phrase in combined:
