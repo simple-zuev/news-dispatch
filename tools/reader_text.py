@@ -425,6 +425,16 @@ def public_reliability_label(item: dict[str, Any]) -> str:
     return source_class_label(source_class) if source_class else source_type_label(source_type)
 
 
+def public_topic_sentence(item: dict[str, Any]) -> str:
+    source = public_source_name(item)
+    topic = russian_topic(item)
+    if source == "Google Security Blog" and topic == "безопасность и технологическая инфраструктура":
+        return "Google описывает безопасность и технологическую инфраструктуру"
+    if source == "Google Security Blog":
+        return f"Google описывает тему «{topic}»"
+    return f"{source} описывает тему «{topic}»"
+
+
 def public_title_ru(item: dict[str, Any]) -> str:
     if is_market_forecast_item(item):
         return f"Источник сообщает об оценке участника рынка: {russian_topic(item)}"
@@ -434,9 +444,11 @@ def public_title_ru(item: dict[str, Any]) -> str:
         source = public_source_name(item)
         if original:
             return f"{source}: {original}"
-    if is_source_topic_title(title) and original:
+    if is_source_topic_title(title):
         source = public_source_name(item)
-        return f"{source}: {original}"
+        if original and original != title and not is_source_topic_title(original):
+            return f"{source}: {original}"
+        return public_topic_sentence(item)
     return title or "Без заголовка"
 
 
