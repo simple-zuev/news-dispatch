@@ -66,10 +66,21 @@ def test_source_topic_fallback_uses_original_title_when_available() -> None:
     assert title == "Google Security Blog: New memory safety protections for Android"
 
 
+def test_unresolved_security_source_topic_gets_clean_public_title() -> None:
+    item = security_item()
+    item["title"] = "Google Security Blog: регуляторика и надзор"
+    item["source_original_title"] = "Google Security Blog: регуляторика и надзор"
+    item["reader_title_ru"] = "Google Security Blog: регуляторика и надзор"
+    title = reader_text.public_title_ru(item)
+    assert title == "Google описывает безопасность и технологическую инфраструктуру"
+    assert "регуляторика и надзор" not in title.lower()
+
+
 def main() -> int:
     test_security_blog_is_not_treated_as_sec_regulator_signal()
     test_sec_regulator_token_still_maps_to_regulatory_topic()
     test_source_topic_fallback_uses_original_title_when_available()
+    test_unresolved_security_source_topic_gets_clean_public_title()
     print("reader title quality tests passed")
     return 0
 
