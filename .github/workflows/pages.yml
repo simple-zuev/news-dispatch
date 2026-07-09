@@ -59,6 +59,9 @@ jobs:
       - name: Run privacy scan
         run: python3 tools/privacy_scan.py
 
+      - name: Run content quality check
+        run: python3 tools/validate_public_reader_content_quality.py
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
