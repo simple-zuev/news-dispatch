@@ -1,0 +1,38 @@
+name: Public Site Smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_run:
+    workflows:
+      - Deploy News Dispatch Pages
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run public site smoke
+        run: python3 tools/validate_public_site_smoke.py
+
+      - name: Upload smoke report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-site-smoke
+          path: validation/public-site-smoke-latest.json
+          retention-days: 14
