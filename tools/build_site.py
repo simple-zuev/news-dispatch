@@ -134,6 +134,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def build(args: argparse.Namespace) -> int:
     build_ranking(args)
+    run_tool("filter_public_source_items.py")
     build_reader_policy()
     run_tool("render_site.py")
     run_tool("build_radar_pages.py")
