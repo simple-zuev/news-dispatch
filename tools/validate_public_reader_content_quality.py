@@ -35,6 +35,10 @@ FORBIDDEN_URL_PARTS = (
     "/comments/default",
     "/feeds/comments",
 )
+ADVISORY_PREFIXES = (
+    "weak source-topic headlines:",
+    "excessive duplicate headlines on",
+)
 
 
 class HeadingParser(html.parser.HTMLParser):
@@ -89,6 +93,16 @@ def source_topic_generic(title: str) -> bool:
     return norm(topic) in GENERIC_SOURCE_TOPICS
 
 
+def is_advisory(issue: str) -> bool:
+    return issue.startswith(ADVISORY_PREFIXES)
+
+
+def blocking_issues(issues: list[str], *, fail_on: str) -> list[str]:
+    if fail_on == "any":
+        return issues
+    return [issue for issue in issues if not is_advisory(issue)]
+
+
 def check(site_dir: Path) -> list[str]:
     pages = {rel: read(site_dir, rel) for rel in SURFACE}
     raw = "\n".join(pages.values()).lower()
@@ -131,26 +145,50 @@ def check(site_dir: Path) -> list[str]:
     return issues
 
 
-def write_outputs(issues: list[str], output: Path) -> None:
+def write_outputs(issues: list[str], output: Path, *, fail_on: str) -> None:
     JSON_PATH.parent.mkdir(parents=True, exist_ok=True)
-    payload = {"passed": not issues, "issues": issues}
+    blocking = blocking_issues(issues, fail_on=fail_on)
+    payload = {
+        "passed": not blocking,
+        "fail_on": fail_on,
+        "blocking_issues": blocking,
+        "issues": issues,
+        "advisory_issues": [issue for issue in issues if is_advisory(issue)],
+    }
     JSON_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    status = "passed" if not issues else "failed"
+    status = "passed" if not blocking else "failed"
     lines = "\n".join(f"- {issue}" for issue in issues) if issues else "- none"
+    blocking_lines = "\n".join(f"- {issue}" for issue in blocking) if blocking else "- none"
     with output.open("a", encoding="utf-8") as handle:
-        handle.write(f"\n## Daily content quality check\n\n- Result: {status}\n\n{lines}\n")
+        handle.write(
+            f"\n## Daily content quality check\n\n"
+            f"- Result: {status}\n"
+            f"- Fail mode: {fail_on}\n\n"
+            f"Blocking issues:\n{blocking_lines}\n\n"
+            f"All issues:\n{lines}\n"
+        )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--site-dir", default=str(SITE_DIR))
     parser.add_argument("--report", default=str(REPORT_PATH))
+    parser.add_argument(
+        "--fail-on",
+        choices=("any", "critical"),
+        default="any",
+        help="Use 'critical' for live Pages deploys so advisory editorial drift is reported but does not block deployment.",
+    )
     args = parser.parse_args(argv)
     issues = check(Path(args.site_dir))
-    write_outputs(issues, Path(args.report))
-    if issues:
-        print(f"Content quality issues: {len(issues)}")
+    blocking = blocking_issues(issues, fail_on=args.fail_on)
+    write_outputs(issues, Path(args.report), fail_on=args.fail_on)
+    if blocking:
+        print(f"Content quality blocking issues: {len(blocking)}")
         return 1
+    if issues:
+        print(f"Content quality check passed with advisory issues: {len(issues)}")
+        return 0
     print("Content quality check passed")
     return 0
 
