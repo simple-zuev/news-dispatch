@@ -66,6 +66,7 @@ jobs:
             validation/public-reader-preview-report.md
             validation/daily-radar-ranking-latest.json
             validation/reader-policy-latest.json
+            validation/reader-model-latest.json
             validation/public-reader-content-quality-latest.json
           retention-days: 14
 
