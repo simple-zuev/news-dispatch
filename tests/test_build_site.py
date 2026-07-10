@@ -60,6 +60,7 @@ def test_offline_ranking_fixture_contract() -> None:
     fixture = build_site.OFFLINE_RANKING_FIXTURE
     assert fixture["report_type"] == "daily_radar_ranking"
     assert isinstance(fixture["items"], list)
+    assert "The central bank published an update" in str(fixture["items"][0]["source_excerpt"])
     assert {item["selection_reason"] for item in fixture["items"]} == {
         "selected_top_ranked",
         "filtered_by_source_rules",
