@@ -86,6 +86,24 @@ def test_reader_model_validation_falls_back_to_selected_when_policy_is_absent() 
     assert report["checked_items"] == 1
 
 
+def test_reader_model_allows_coverage_in_source_title_and_url() -> None:
+    item = safe_item()
+    item["source_original_title"] = "NASA Sets Coverage for Astronaut Launch"
+    item["url"] = "https://www.nasa.gov/news-release/nasa-sets-coverage-for-launch/"
+    report = validate_reader_model.validate({"items": [item]}, policy_for(item))
+    assert report["passed"] is True
+    assert report["issues"] == []
+
+
+def test_reader_model_blocks_raw_diagnostic_assignments() -> None:
+    item = safe_item()
+    item["reader_excerpt_ru"] = 'Служебные данные: {"coverage": 0.8, "threshold": 0.7}'
+    report = validate_reader_model.validate({"items": [item]}, policy_for(item))
+    assert report["passed"] is False
+    assert "diagnostic text leaked into model: coverage" in str(report["blocking_issues"])
+    assert "diagnostic text leaked into model: threshold" in str(report["blocking_issues"])
+
+
 def test_reader_model_validator_writes_report_and_returns_failure() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
@@ -110,6 +128,8 @@ def main() -> int:
     test_reader_model_validation_blocks_comment_feed_url()
     test_reader_model_validation_passes_after_generic_title_cleanup()
     test_reader_model_validation_falls_back_to_selected_when_policy_is_absent()
+    test_reader_model_allows_coverage_in_source_title_and_url()
+    test_reader_model_blocks_raw_diagnostic_assignments()
     test_reader_model_validator_writes_report_and_returns_failure()
     print("reader model validator tests passed")
     return 0
