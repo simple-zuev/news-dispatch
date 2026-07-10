@@ -70,6 +70,14 @@ def test_pages_uses_live_site_orchestrator() -> None:
         ],
     )
     assert "path: site/" in text
+    for action in [
+        "actions/checkout@v7",
+        "actions/setup-python@v6",
+        "actions/configure-pages@v6",
+        "actions/upload-pages-artifact@v5",
+        "actions/deploy-pages@v5",
+    ]:
+        assert action in text
 
 
 def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
@@ -144,6 +152,8 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     )
     assert "actions/deploy-pages" not in text
     assert "upload-pages-artifact" not in text
+    for action in ["actions/checkout@v7", "actions/setup-python@v6", "actions/upload-artifact@v7"]:
+        assert action in text
 
 
 def main() -> int:

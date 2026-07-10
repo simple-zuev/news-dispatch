@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -106,7 +106,7 @@ jobs:
         id: upload_site
         if: always() && steps.build.outcome == 'success'
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: public-reader-site-preview
           path: site/
@@ -117,7 +117,7 @@ jobs:
         id: upload_qa
         if: always() && steps.build.outcome == 'success'
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: public-reader-preview-qa
           path: |
@@ -133,7 +133,7 @@ jobs:
         id: upload_screenshots
         if: always() && steps.screenshot_capture.outcome == 'success'
         continue-on-error: true
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: public-reader-preview-screenshots
           path: validation/public-reader-preview-screenshots/

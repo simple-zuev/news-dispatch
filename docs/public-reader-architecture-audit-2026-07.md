@@ -8,7 +8,7 @@ This audit uses expert lenses from product architecture, data engineering, edito
 
 The current direction is correct: a public-safe reader with separate Today, News, Digests, Sources, preview artifacts, privacy scan, HTML scan, content quality checks, and production Pages gates.
 
-The current implementation is functional, but it is still an evolutionary architecture. Quality is protected by a chain of scripts, post-build steps, and validators. That is acceptable for the current stage, but it should not become the long-term design.
+The current implementation is functional, with a typed public-reader boundary, production smoke checks, and artifact-based review. Quality is still protected by a chain of scripts, post-build steps, and validators. That is acceptable for the current stage, but it should not become the long-term design.
 
 Refactoring is recommended. It should be incremental and contract-driven, not a rewrite.
 
@@ -48,11 +48,11 @@ Risks:
 
 - Product semantics are spread across multiple renderer and postprocessor scripts.
 - Some product rules are inferred from HTML structure rather than represented as first-class data.
-- There is no single public reader model that all pages consume.
+- `PublicReaderItem` defines the public-only fields, but existing renderers have not migrated to it yet.
 
 Recommendation:
 
-Introduce a typed reader contract before further large UI changes.
+Migrate renderers incrementally to the existing typed reader contract before further large UI changes.
 
 ### 2. Data engineering and data quality lens
 
@@ -70,7 +70,7 @@ Risks:
 
 Recommendation:
 
-Add a normalized `ReaderItem` model with strict fields for public title, excerpt, source, URL, stream, reliability label, and proof/source metadata. Keep ranking diagnostics outside that public model.
+Keep `PublicReaderItem` as the only public payload shape. Expand its focused unit coverage while keeping ranking diagnostics outside the model.
 
 ### 3. Editorial/content systems lens
 
@@ -119,12 +119,12 @@ Strengths:
 Risks:
 
 - The build pipeline is a sequential script chain. Order is critical and can become brittle.
-- There is no production smoke workflow that fetches the deployed Pages URL after deploy and checks the live HTML.
+- Production smoke fetches the deployed Pages URL after a successful deploy and on an hourly schedule.
 - Failures are not yet summarized as release health states.
 
 Recommendation:
 
-Add a production smoke check after Pages deploy, with a small public-page contract: homepage loads, Today link exists, no forbidden strings, no comment-feed URLs, source links present.
+Extend the existing production smoke contract only when a new public route or reader-facing safety boundary is introduced.
 
 ### 6. Frontend performance and UX lens
 
@@ -155,7 +155,7 @@ Risks:
 
 - Some tests assert strings in workflows and scripts. That is useful, but can become brittle.
 - The most important model-level behavior does not yet have enough unit tests.
-- The preview artifact is strong, but production smoke is still missing.
+- PR artifacts and production smoke cover both pre-merge and deployed-reader checks.
 
 Recommendation:
 
@@ -213,17 +213,13 @@ Target state:
 - ranking receives only candidate article/update feeds;
 - post-ranking filter remains as defense-in-depth.
 
-### Finding D — Production smoke is still missing
+### Finding D — Production smoke is in place
 
 Severity: medium-high.
 
-Current state: preview artifacts and production build gates are strong, but there is no post-deploy verification of the live Pages URL.
+Current state: `public-site-smoke.yml` runs after a successful Pages deployment and hourly. It checks the public root, News, and Today routes, required reader markers, and forbidden public patterns; it also stores a JSON report artifact.
 
-Target state:
-
-- after Pages deploy, fetch public root and key pages;
-- check forbidden strings and key reader components;
-- store a production smoke artifact.
+Next improvement: include any newly introduced primary public route in this small contract, rather than creating a parallel smoke path.
 
 ### Finding E — Editorial quality gates are still basic
 
@@ -254,16 +250,16 @@ No runtime behavior changes.
 
 ### P1 — Public Reader model contract
 
-Goal: introduce `tools/reader_model.py` and unit tests.
+Status: delivered in #164 and enforced by the build pipeline.
 
-Scope:
+Delivered:
 
-- `ReaderItem` and `ReaderSource` dataclasses or typed dictionaries;
-- converter from ranking row + reader policy decision to public model;
-- explicit public-only fields;
-- tests preventing score/feed/source-rule leakage.
+- `PublicReaderItem` dataclass and a conversion boundary from ranking rows;
+- explicit public-only render fields;
+- tests preventing score/feed/source-rule leakage;
+- model validation before rendering.
 
-Risk: low if introduced beside the current renderers first.
+Remaining: migrate renderers without changing public output.
 
 ### P2 — Renderer consolidation
 
@@ -281,7 +277,9 @@ Risk: medium. Requires artifact review.
 
 ### P3 — Source hygiene upstream
 
-Goal: move comment-feed and low-quality feed filtering closer to source registry/ingestion.
+Status: partially delivered. Comment-feed and low-quality feed rows are filtered before reader policy as a defense-in-depth gate.
+
+Goal: move these checks closer to source registry/ingestion without changing source coverage unintentionally.
 
 Scope:
 
@@ -294,15 +292,14 @@ Risk: medium. Could change coverage if source registry contains bad feeds.
 
 ### P4 — Validation tiering
 
-Goal: split validations by layer.
+Status: substantially delivered.
 
-Scope:
+Delivered:
 
 - model-level validation before HTML;
 - HTML-level validation after render;
-- production smoke after deploy.
+- production smoke after deploy with an artifact report.
 
-Risk: low-medium. Needs stable contracts.
 
 ### P5 — Reduce HTML postprocessors
 
@@ -318,20 +315,14 @@ Risk: medium-high. Do after P1/P2.
 
 ## Recommended next PRs
 
-1. `#164 reader model contract`
-   Add `tools/reader_model.py` and tests. Do not change public HTML yet.
+1. `renderer migration`
+   Move the shared news row to `PublicReaderItem`; compare the generated preview artifact before each small merge.
 
-2. `#165 model-level public reader validator`
-   Validate ReaderItem quality before HTML render.
+2. `source registry hygiene`
+   Move comment-feed detection closer to sources/ingestion without changing coverage.
 
-3. `#166 production Pages smoke artifact`
-   Add post-deploy or workflow-dispatch smoke for live Pages.
-
-4. `#167 source registry hygiene`
-   Move comment-feed detection closer to sources/ingestion.
-
-5. `#168 renderer component consolidation`
-   Start with news row only; compare artifact output.
+3. `postprocessor reduction`
+   Classify and remove product-logic HTML mutations after the renderer migration is stable.
 
 ## Risk register
 
@@ -353,7 +344,7 @@ Do not rewrite the reader. First create a typed public model and model-level val
 The safe sequence is:
 
 ```text
-Reader model -> model validator -> shared render components -> upstream source hygiene -> production smoke -> postprocessor reduction
+Reader model and validator -> shared render components -> upstream source hygiene -> postprocessor reduction
 ```
 
 This keeps the product usable while reducing architectural risk.
