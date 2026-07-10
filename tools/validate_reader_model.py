@@ -34,12 +34,14 @@ FORBIDDEN_URL_MARKERS = (
     "/comments/default",
     "/feeds/comments",
 )
-FORBIDDEN_PUBLIC_TEXT = (
+FORBIDDEN_PUBLIC_IDENTIFIERS = (
     "source_rule_status",
     "final_score",
     "relevance_score",
     "feed_id",
     "reader_safe",
+)
+FORBIDDEN_PUBLIC_ASSIGNMENTS = (
     "validation",
     "threshold",
     "coverage",
@@ -75,6 +77,23 @@ def blocking_issue_texts(issue_texts: list[str], *, fail_on: str) -> list[str]:
     if fail_on == "any":
         return issue_texts
     return [issue for issue in issue_texts if not is_advisory(issue)]
+
+
+def diagnostic_text_issues(payload: dict[str, str]) -> list[str]:
+    joined = " ".join(payload.values()).lower()
+    issues: list[str] = []
+    for text in FORBIDDEN_PUBLIC_IDENTIFIERS:
+        if text in joined:
+            issues.append(f"diagnostic text leaked into model: {text}")
+    for field in FORBIDDEN_PUBLIC_ASSIGNMENTS:
+        patterns = (
+            rf'["\']{re.escape(field)}["\']\s*:',
+            rf"\b{re.escape(field)}\s*=",
+            rf"(?:^|[\s,{{]){re.escape(field)}\s*:\s*(?:[-+]?\d|true\b|false\b|null\b|\[|{{)",
+        )
+        if any(re.search(pattern, joined, flags=re.IGNORECASE) for pattern in patterns):
+            issues.append(f"diagnostic text leaked into model: {field}")
+    return issues
 
 
 def safe_decision_keys(policy: dict[str, Any]) -> set[str]:
@@ -124,10 +143,7 @@ def validate_model(model: PublicReaderItem) -> list[str]:
     for marker in FORBIDDEN_URL_MARKERS:
         if marker in lowered_url:
             issues.append(f"comment feed URL in model: {marker}")
-    joined = " ".join(payload.values()).lower()
-    for text in FORBIDDEN_PUBLIC_TEXT:
-        if text in joined:
-            issues.append(f"diagnostic text leaked into model: {text}")
+    issues.extend(diagnostic_text_issues(payload))
     return issues
 
 
