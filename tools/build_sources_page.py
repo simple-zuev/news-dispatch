@@ -18,6 +18,7 @@ from build_news_pages import (
 )
 from build_today_page import public_href
 from core import ROOT, SITE_DIR
+from reader_shell import public_nav
 from reader_text import build_public_item, source_type_label, stream_label
 
 SOURCES_PATH = ROOT / "sources" / "feeds.json"
@@ -192,7 +193,7 @@ def page_html(rows: list[dict[str, Any]], recent_lookup: dict[str, list[dict[str
 <body>
   <header class="masthead compact sources-header">
     <a class="backlink" href="../index.html">News Dispatch</a>
-    <nav class="top-nav" aria-label="Навигация"><a href="../today.html">Сегодня</a><a href="../news/index.html">Новости</a><a href="../digests/index.html">Дайджесты</a><a href="index.html">Источники</a></nav>
+    {public_nav("../", current="sources")}
     <h1>Источники</h1>
     <p class="lede">Публичные источники, из которых собираются читательские ленты. Здесь показаны роль источника, рубрика и понятный уровень доверия без служебных деталей.</p>
   </header>

@@ -22,7 +22,6 @@ EMPTY_SCALARS = {"", "[]", "null", "None", "none"}
 HTML_TAG_RE = re.compile(r"(<[^>]+>)")
 
 TEXT_REPLACEMENTS = {
-    "News Dispatch": "Дайджест",
     "Public-safe editorial briefing system": "Публичный аналитический обзор",
     "Public-safe editorial dispatches across technology, finance, culture, gear, infrastructure, and science.": "Публичный аналитический обзор по рынкам, технологиям, ИИ, криптофинансам, городской среде, вещам, аудио и науке.",
     "Персональный reader/radar": "Публичный аналитический обзор",
@@ -270,15 +269,6 @@ def page_url(path: Path) -> str:
     return f"{BASE_URL}/" if rel == "index.html" else f"{BASE_URL}/{rel}"
 
 
-def add_reader_css(text: str, path: Path) -> str:
-    rel = path.relative_to(SITE_DIR).as_posix()
-    prefix = "../" if "/" in rel else ""
-    href = f"{prefix}styles/reader.css"
-    if href in text:
-        return text
-    return text.replace("</head>", f'<link rel="stylesheet" href="{href}"></head>', 1)
-
-
 def enhance_html(path: Path) -> None:
     raw_text = path.read_text(encoding="utf-8")
     rel = path.relative_to(SITE_DIR).as_posix()
@@ -286,13 +276,12 @@ def enhance_html(path: Path) -> None:
     text = raw_text if preserve_reader_copy else clean_copy(raw_text)
     if 'property="og:title"' not in text:
         title_match = re.search(r"<title>(.*?)</title>", text, re.S)
-        site_name = "News Dispatch" if rel == "sources/index.html" else "Дайджест"
+        site_name = "News Dispatch"
         title = html.unescape(title_match.group(1)) if title_match else site_name
         description_match = re.search(r'<meta name="description" content="(.*?)">', text, re.S)
         description = html.unescape(description_match.group(1)) if description_match else "Публичный аналитический обзор."
         meta = f"""  <link rel=\"canonical\" href=\"{html.escape(page_url(path))}\"><meta property=\"og:type\" content=\"article\"><meta property=\"og:site_name\" content=\"{site_name}\"><meta property=\"og:title\" content=\"{html.escape(title)}\"><meta property=\"og:description\" content=\"{html.escape(description)}\"><meta property=\"og:url\" content=\"{html.escape(page_url(path))}\"><meta name=\"twitter:card\" content=\"summary\"><meta name=\"twitter:title\" content=\"{html.escape(title)}\"><meta name=\"twitter:description\" content=\"{html.escape(description)}\">"""
         text = text.replace("<link rel=\"stylesheet\"", meta + "<link rel=\"stylesheet\"", 1)
-    text = add_reader_css(text, path)
     path.write_text(text, encoding="utf-8")
 
 
@@ -300,7 +289,7 @@ def write_rss(items: list[dict[str, object]]) -> None:
     rss_items = []
     for item in items[:20]:
         rss_items.append(f"<item><title>{html.escape(str(item['title']))}</title><link>{html.escape(str(item['url']))}</link><guid>{html.escape(str(item['url']))}</guid><pubDate>{formatdate(usegmt=True)}</pubDate><description>{html.escape(str(item['summary']))}</description></item>")
-    (SITE_DIR / "rss.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>Дайджест</title><link>{BASE_URL}/</link><description>Публичный аналитический обзор.</description><language>ru</language>{''.join(rss_items)}</channel></rss>", encoding="utf-8")
+    (SITE_DIR / "rss.xml").write_text(f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>News Dispatch</title><link>{BASE_URL}/</link><description>Публичный аналитический обзор.</description><language>ru</language>{''.join(rss_items)}</channel></rss>", encoding="utf-8")
 
 
 def write_sitemap(items: list[dict[str, object]]) -> None:

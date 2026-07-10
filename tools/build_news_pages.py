@@ -10,7 +10,6 @@ from __future__ import annotations
 import html
 import hashlib
 import json
-import re
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -20,11 +19,13 @@ from build_today_page import (
     public_href,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from reader_shell import public_nav
 from reader_text import (
     PUBLIC_TZ,
     build_public_item,
     format_public_time_ru,
     public_meta_ru,
+    public_story_key,
     stream_label,
 )
 from render_site import output_slug
@@ -120,16 +121,18 @@ def accepted_by_policy(item: dict[str, Any], safe_keys: set[str]) -> bool:
 
 
 def dedupe_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    seen: set[str] = set()
+    seen_urls: set[str] = set()
+    seen_stories: set[str] = set()
     result: list[dict[str, Any]] = []
     for item in sorted(items, key=item_sort_key, reverse=True):
-        key = str(item.get("url") or "").strip().lower()
-        if not key:
-            title = re.sub(r"\W+", " ", str(item.get("title") or "").lower()).strip()
-            key = f"{item_stream(item)}:{title}"
-        if key in seen:
+        url_key = str(item.get("url") or "").strip().lower()
+        story_key = public_story_key(item)
+        if (url_key and url_key in seen_urls) or (story_key and story_key in seen_stories):
             continue
-        seen.add(key)
+        if url_key:
+            seen_urls.add(url_key)
+        if story_key:
+            seen_stories.add(story_key)
         result.append(item)
     return result
 
@@ -189,14 +192,7 @@ def empty_feed_card() -> str:
 
 
 def top_nav(prefix: str = "") -> str:
-    return (
-        f'<nav class="top-nav" aria-label="Навигация">'
-        f'<a href="{prefix}news/index.html">Ленты</a>'
-        f'<a href="{prefix}digests/index.html">Дайджесты</a>'
-        f'<a href="{prefix}today.html">Сегодня</a>'
-        f'<a href="{prefix}radar/index.html">Источники</a>'
-        f"</nav>"
-    )
+    return public_nav(prefix, current="news")
 
 
 def head(title: str, description: str, css_href: str = "../styles/main.css") -> str:

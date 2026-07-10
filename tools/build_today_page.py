@@ -17,6 +17,7 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
+from reader_shell import public_nav
 from reader_text import (
     build_public_item,
     compact_time_ru,
@@ -475,9 +476,12 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
     seen_ids: set[str] = set()
     for stream in sorted({stream_slug(item) for item in candidates}):
         stream_items = [item for item in candidates if stream_slug(item) == stream]
-        if stream_items and len(selected) < limit and can_add(stream_items[0]):
-            add(stream_items[0])
-            seen_ids.add(item_key(stream_items[0]))
+        if not stream_items:
+            continue
+        first = stream_items[0]
+        if len(selected) < limit and can_add(first):
+            add(first)
+            seen_ids.add(item_key(first))
 
     for item in candidates:
         if len(selected) >= limit:
@@ -997,7 +1001,7 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
 <body>
   <header class="masthead compact">
     <a class="backlink" href="index.html">News Dispatch</a>
-    <nav class="top-nav" aria-label="Навигация"><a href="news/index.html">Ленты</a><a href="digests/index.html">Дайджесты</a><a href="today.html">Сегодня</a><a href="radar/index.html">Источники</a></nav>
+    {public_nav(current="today")}
     <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
     <h1>{h1}</h1>
   </header>

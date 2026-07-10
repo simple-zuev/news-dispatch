@@ -22,7 +22,8 @@ from pathlib import Path
 
 from build_today_page import public_href as safe_href
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
-from reader_text import build_public_item, format_public_time_ru
+from reader_shell import public_nav
+from reader_text import build_public_item, format_public_time_ru, public_story_key
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -638,7 +639,8 @@ def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
     report = load_json(RANKING_PATH)
     safe_keys = reader_safe_keys()
     rows: list[dict[str, object]] = []
-    seen: set[str] = set()
+    seen_urls: set[str] = set()
+    seen_stories: set[str] = set()
     for item in report.get("items", []):
         if not isinstance(item, dict):
             continue
@@ -649,10 +651,14 @@ def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
             continue
         if safe_keys and ranking_item_key(item) not in safe_keys and ranking_policy_key(item) not in safe_keys:
             continue
-        key = str(item.get("url") or item.get("title") or "").strip().lower()
-        if not key or key in seen:
+        url_key = str(item.get("url") or "").strip().lower()
+        story_key = public_story_key(item)
+        if (url_key and url_key in seen_urls) or (story_key and story_key in seen_stories):
             continue
-        seen.add(key)
+        if url_key:
+            seen_urls.add(url_key)
+        if story_key:
+            seen_stories.add(story_key)
         rows.append(item)
     rows.sort(
         key=lambda item: (
@@ -682,11 +688,17 @@ def home_ranking_excerpt(item: dict[str, object], max_len: int = 180) -> str:
 
 
 def home_latest_items(items: list[dict[str, object]], limit: int = 8) -> list[dict[str, object]]:
-    return sorted(
-        items,
-        key=lambda item: str(item.get("published") or item.get("date") or ""),
-        reverse=True,
-    )[:limit]
+    result: list[dict[str, object]] = []
+    seen_stories: set[str] = set()
+    for item in sorted(items, key=lambda row: str(row.get("published") or row.get("date") or ""), reverse=True):
+        story_key = public_story_key(item)
+        if story_key in seen_stories:
+            continue
+        seen_stories.add(story_key)
+        result.append(item)
+        if len(result) >= limit:
+            break
+    return result
 
 
 def home_rubric_title(slug: str) -> str:
@@ -774,7 +786,8 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
   <h3>Свежих новостей для показа сейчас нет.</h3>
   <p class="home-news-source"><a href="news/index.html">Открыть ленты</a></p>
 </article>"""
-    today_items = [item for item in ranking_items if item.get("selected")] or ranking_items
+    latest_story_keys = {public_story_key(item) for item in latest_items}
+    today_items = [item for item in ranking_items if item.get("selected") and public_story_key(item) not in latest_story_keys]
     today_rows = home_today_summary(today_items)
     stream_order = ["crypto-finance", "finance", "ai", "tech-hardware-software", "moscow-city", "dj-audio-creative", "gear-style-edc", "science-discovery"]
     stream_lookup = {stream.slug: stream for stream in STREAMS}
@@ -787,7 +800,7 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
 <body>
   <header class="home-header">
     <a class="home-brand" href="index.html">News Dispatch</a>
-    <nav class="home-nav" aria-label="Навигация"><a href="today.html">Сегодня</a><a href="news/index.html">Новости</a><a href="digests/index.html">Дайджесты</a><a href="sources/index.html">Источники</a></nav>
+    {public_nav(extra_class="home-nav")}
   </header>
 
   <main class="home-main">
