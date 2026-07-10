@@ -9,10 +9,15 @@ on:
       - "docs/public-reader-*.md"
       - "sources/**"
       - "dispatches/**"
+      - ".github/workflows/public-reader-preview.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: public-reader-preview-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   preview:
@@ -27,38 +32,91 @@ jobs:
           python-version: "3.12"
 
       - name: Build public reader preview
+        id: build
+        continue-on-error: true
         run: python3 tools/build_site.py --ranking-mode fixture --media-mode skip
 
       - name: Validate reader output
+        id: reader_output
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
         run: python3 tools/validate_reader_output.py
 
       - name: Validate render visibility
+        id: render_visibility
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
         run: python3 tools/validate_render_visibility.py
 
       - name: Run privacy scan
+        id: privacy
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
         run: python3 tools/privacy_scan.py
 
       - name: Run public HTML scan
+        id: public_html
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
         run: python3 tests/public_html_scan.py site
 
       - name: Build preview QA report
         id: preview-qa
+        if: steps.build.outcome == 'success'
         continue-on-error: true
-        run: python3 tools/build_public_reader_preview_report.py --build-mode "fixture / media skip" --commit-sha "${{ github.sha }}"
+        run: python3 tools/build_public_reader_preview_report.py --build-mode "fixture / media skip" --commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"
 
       - name: Run content quality check
         id: content-quality
+        if: steps.build.outcome == 'success'
         continue-on-error: true
         run: python3 tools/validate_public_reader_content_quality.py
 
+      - name: Capture public reader screenshots
+        id: screenshot_capture
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: python3 tools/capture_public_reader_screenshots.py
+
+      - name: Verify preview artifact files
+        id: preview_files
+        if: always() && steps.build.outcome == 'success'
+        continue-on-error: true
+        run: |
+          test -f site/index.html
+          test -f validation/public-reader-preview-report.md
+          test -f validation/daily-radar-ranking-latest.json
+          test -f validation/reader-policy-latest.json
+          test -f validation/reader-model-latest.json
+          test -f validation/public-reader-content-quality-latest.json
+          test -f validation/public-reader-preview-screenshots/index.html
+          test -f validation/public-reader-preview-screenshots/manifest.json
+          test -f validation/public-reader-preview-screenshots/home-desktop.png
+          test -f validation/public-reader-preview-screenshots/home-mobile.png
+          test -f validation/public-reader-preview-screenshots/news-desktop.png
+          test -f validation/public-reader-preview-screenshots/news-mobile.png
+          test -f validation/public-reader-preview-screenshots/today-desktop.png
+          test -f validation/public-reader-preview-screenshots/today-mobile.png
+          test -f validation/public-reader-preview-screenshots/digests-desktop.png
+          test -f validation/public-reader-preview-screenshots/digests-mobile.png
+          test -f validation/public-reader-preview-screenshots/sources-desktop.png
+          test -f validation/public-reader-preview-screenshots/sources-mobile.png
+
       - name: Upload public reader site preview
+        id: upload_site
+        if: always() && steps.build.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: public-reader-site-preview
           path: site/
+          if-no-files-found: error
           retention-days: 14
 
       - name: Upload public reader QA report
+        id: upload_qa
+        if: always() && steps.build.outcome == 'success'
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: public-reader-preview-qa
@@ -68,8 +126,54 @@ jobs:
             validation/reader-policy-latest.json
             validation/reader-model-latest.json
             validation/public-reader-content-quality-latest.json
+          if-no-files-found: error
           retention-days: 14
 
+      - name: Upload public reader screenshots
+        id: upload_screenshots
+        if: always() && steps.screenshot_capture.outcome == 'success'
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-reader-preview-screenshots
+          path: validation/public-reader-preview-screenshots/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish preview review links
+        id: preview_summary
+        if: always()
+        continue-on-error: true
+        env:
+          SITE_ARTIFACT_URL: ${{ steps.upload_site.outputs.artifact-url }}
+          QA_ARTIFACT_URL: ${{ steps.upload_qa.outputs.artifact-url }}
+          SCREENSHOT_ARTIFACT_URL: ${{ steps.upload_screenshots.outputs.artifact-url }}
+        run: |
+          echo "## Public Reader Preview" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$SITE_ARTIFACT_URL" ]; then echo "- [Generated site]($SITE_ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -n "$QA_ARTIFACT_URL" ]; then echo "- [QA report]($QA_ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -n "$SCREENSHOT_ARTIFACT_URL" ]; then echo "- [Desktop and mobile screenshots]($SCREENSHOT_ARTIFACT_URL)" >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f validation/public-reader-preview-report.md ]; then
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            cat validation/public-reader-preview-report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Fail when preview QA failed
-        if: steps.preview-qa.outcome == 'failure' || steps.content-quality.outcome == 'failure'
+        if: >-
+          always() && (
+            steps.build.outcome == 'failure' ||
+            steps.reader_output.outcome == 'failure' ||
+            steps.render_visibility.outcome == 'failure' ||
+            steps.privacy.outcome == 'failure' ||
+            steps.public_html.outcome == 'failure' ||
+            steps.preview-qa.outcome == 'failure' ||
+            steps.content-quality.outcome == 'failure' ||
+            steps.screenshot_capture.outcome == 'failure' ||
+            steps.preview_files.outcome == 'failure' ||
+            steps.upload_site.outcome == 'failure' ||
+            steps.upload_qa.outcome == 'failure' ||
+            steps.upload_screenshots.outcome == 'failure' ||
+            steps.preview_summary.outcome == 'failure'
+          )
         run: exit 1

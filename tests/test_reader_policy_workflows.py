@@ -82,22 +82,66 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
         '"docs/public-reader-*.md"',
         '"sources/**"',
         '"dispatches/**"',
+        '".github/workflows/public-reader-preview.yml"',
     ]:
         assert path_filter in text
+    assert "group: public-reader-preview-${{ github.event.pull_request.number || github.ref }}" in text
+    assert "cancel-in-progress: true" in text
+    assert "id: build" in text
     assert "run: python3 tools/build_site.py --ranking-mode fixture --media-mode skip" in text
     assert "run: python3 tools/validate_reader_output.py" in text
     assert "run: python3 tools/validate_render_visibility.py" in text
     assert "run: python3 tools/privacy_scan.py" in text
     assert "run: python3 tests/public_html_scan.py site" in text
     assert "run: python3 tools/build_public_reader_preview_report.py" in text
+    assert 'commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"' in text
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
+    assert "run: python3 tools/capture_public_reader_screenshots.py" in text
+    assert "name: Verify preview artifact files" in text
+    assert "if: always() && steps.build.outcome == 'success'" in text
     assert "name: public-reader-site-preview" in text
     assert "name: public-reader-preview-qa" in text
+    assert "name: public-reader-preview-screenshots" in text
     assert "validation/public-reader-preview-report.md" in text
     assert "validation/daily-radar-ranking-latest.json" in text
     assert "validation/reader-policy-latest.json" in text
     assert "validation/reader-model-latest.json" in text
     assert "validation/public-reader-content-quality-latest.json" in text
+    assert "validation/public-reader-preview-screenshots/index.html" in text
+    assert "validation/public-reader-preview-screenshots/sources-mobile.png" in text
+    assert text.count("if-no-files-found: error") == 3
+    assert "SITE_ARTIFACT_URL: ${{ steps.upload_site.outputs.artifact-url }}" in text
+    assert "QA_ARTIFACT_URL: ${{ steps.upload_qa.outputs.artifact-url }}" in text
+    assert "SCREENSHOT_ARTIFACT_URL: ${{ steps.upload_screenshots.outputs.artifact-url }}" in text
+    for step_id in [
+        "build",
+        "reader_output",
+        "render_visibility",
+        "privacy",
+        "public_html",
+        "preview-qa",
+        "content-quality",
+        "screenshot_capture",
+        "preview_files",
+        "upload_site",
+        "upload_qa",
+        "upload_screenshots",
+        "preview_summary",
+    ]:
+        assert f"steps.{step_id}.outcome == 'failure'" in text
+    assert_ordered(
+        text,
+        [
+            "name: Build public reader preview",
+            "name: Capture public reader screenshots",
+            "name: Verify preview artifact files",
+            "name: Upload public reader site preview",
+            "name: Upload public reader QA report",
+            "name: Upload public reader screenshots",
+            "name: Publish preview review links",
+            "name: Fail when preview QA failed",
+        ],
+    )
     assert "actions/deploy-pages" not in text
     assert "upload-pages-artifact" not in text
 

@@ -48,6 +48,7 @@ def public_page_paths(site_dir: Path) -> list[Path]:
         site_dir / "index.html",
         news_dir / "index.html",
         site_dir / "today.html",
+        site_dir / "digests" / "index.html",
     ]
     sources_index = site_dir / "sources" / "index.html"
     if sources_index.exists():
