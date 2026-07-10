@@ -327,14 +327,26 @@ def test_public_generated_page_scan_checks_reader_pages() -> None:
         sources_dir = site_dir / "sources"
         sources_dir.mkdir(parents=True)
         (sources_dir / "index.html").write_text(clean_html, encoding="utf-8")
+        digests_dir = site_dir / "digests"
+        digests_dir.mkdir(parents=True)
+        (digests_dir / "index.html").write_text(clean_html, encoding="utf-8")
         assert_public_pages_clean(site_dir)
 
         (site_dir / "index.html").write_text("2026-07-06 14:09:58 UTC", encoding="utf-8")
         try:
             assert_public_pages_clean(site_dir)
         except AssertionError:
+            pass
+        else:
+            raise AssertionError("public generated-page scan did not catch raw homepage metadata")
+
+        (site_dir / "index.html").write_text(clean_html, encoding="utf-8")
+        (digests_dir / "index.html").write_text("source_rule_status", encoding="utf-8")
+        try:
+            assert_public_pages_clean(site_dir)
+        except AssertionError:
             return
-        raise AssertionError("public generated-page scan did not catch raw public metadata")
+        raise AssertionError("public generated-page scan did not catch raw digest metadata")
 
 
 def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
@@ -378,6 +390,16 @@ def test_old_home_hero_css_is_removed() -> None:
     assert ".news-item h3 a {\n  color: inherit;\n  text-decoration: none;" in css
 
 
+def test_mobile_homepage_prioritizes_two_news_rows_before_today() -> None:
+    css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
+    selector = ".home-news-list > .home-news-row:nth-child(n + 3)"
+    assert selector in css
+    rule = css[css.index(selector) :]
+    assert "display: none;" in rule[:120]
+    assert "@media (max-width: 360px)" in css
+    assert "font-size: 0.78rem;" in css
+
+
 def main() -> int:
     test_default_modes_are_deterministic()
     test_pages_modes_are_explicit()
@@ -389,6 +411,7 @@ def main() -> int:
     test_public_stream_labels_are_exact_on_homepage_cards()
     test_homepage_omits_missing_excerpts_instead_of_generic_filler()
     test_old_home_hero_css_is_removed()
+    test_mobile_homepage_prioritizes_two_news_rows_before_today()
     print("build_site regression tests passed")
     return 0
 
