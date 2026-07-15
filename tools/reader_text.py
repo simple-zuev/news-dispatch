@@ -444,12 +444,23 @@ def public_title_ru(item: dict[str, Any]) -> str:
         source = public_source_name(item)
         if original:
             return f"{source}: {original}"
+    source = public_source_name(item)
+    generic_source_topic = f"{source}: {russian_topic(item)}"
     if is_source_topic_title(title):
-        source = public_source_name(item)
         if original and original != title and not is_source_topic_title(original):
             return f"{source}: {original}"
         return public_topic_sentence(item)
+    if title == generic_source_topic and original and original != title:
+        return f"{source}: {original}"
     return title or "Без заголовка"
+
+
+def public_story_key(item: dict[str, Any], stream: object | None = None) -> str:
+    """Return a stable reader-facing identity used to suppress visible repeats."""
+    del stream
+    title = public_title_ru(item).lower()
+    normalized = re.sub(r"[^0-9a-zа-яё]+", " ", title).strip()
+    return normalized or str(item.get("url") or item.get("item_key") or "").strip().lower()
 
 
 def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
@@ -468,9 +479,9 @@ def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
     if existing:
         text = public_text(reader_excerpt_ru(item, max_len=max_len))
         return "" if any(phrase in text for phrase in forbidden) else text
-    excerpt = str(item.get("source_excerpt") or item.get("summary") or "").strip()
-    if excerpt and has_cyrillic(excerpt):
-        text = public_text(reader_excerpt_ru(item, max_len=max_len))
+    excerpt = clean_source_excerpt(item.get("source_excerpt") or item.get("summary") or "", max_len=max_len)
+    if excerpt:
+        text = public_text(excerpt)
         return "" if any(phrase in text for phrase in forbidden) else text
     return ""
 

@@ -1,13 +1,13 @@
 :root {
-  --bg: #f7f7f5;
+  --bg: #f7f7f4;
   --ink: #171717;
   --muted: #666864;
   --line: rgba(23, 23, 23, 0.12);
   --card: #fff;
-  --accent: #0a4f86;
-  --accent-soft: #e7f1fb;
-  --strict: #1f4e5f;
-  --soft: rgba(10, 79, 134, 0.08);
+  --accent: #1d5f73;
+  --accent-soft: #eaf3f2;
+  --strict: #1d5f73;
+  --soft: rgba(29, 95, 115, 0.08);
   --shadow: none;
   color-scheme: light;
 }
@@ -74,6 +74,11 @@ main {
   color: var(--ink);
   text-decoration-color: rgba(21, 21, 21, 0.32);
   text-underline-offset: 0.18em;
+}
+
+.top-nav-link.is-current {
+  color: var(--accent);
+  text-decoration-color: currentColor;
 }
 
 .top-nav a:hover {
@@ -189,7 +194,6 @@ main {
   font-weight: 750;
 }
 
-.home-nav a,
 .home-section-heading a,
 .home-news-source a,
 .home-rubric-pill {
@@ -290,6 +294,12 @@ main {
 .home-digest-row h3 a {
   color: inherit;
   text-decoration: none;
+}
+
+.home-nav a {
+  color: var(--ink);
+  text-decoration-color: rgba(23, 23, 23, 0.28);
+  text-underline-offset: 0.18em;
 }
 
 .home-news-row h3 a:hover,

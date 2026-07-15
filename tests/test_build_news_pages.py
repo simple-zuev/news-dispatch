@@ -144,6 +144,8 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     assert "Регулятор сообщил о публичном обновлении правил" in html
     assert "Оригинал" in html
     assert "Открыть источник" in html
+    assert '../sources/index.html' in html
+    assert "radar/index.html" not in html
     assert "news-stream-marker" in html
     assert "news-item--text" in html
     assert "stream-visual" not in html
@@ -164,10 +166,21 @@ def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
         )
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
-    assert "news-excerpt" not in html
+    assert "news-excerpt" in html
+    assert "The regulator published a public update" in html
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
     assert "Короткое сообщение источника" not in html
+
+
+def test_feed_deduplicates_identical_reader_story_titles() -> None:
+    first = ranking_item("same-story-one", title="Apple announces new AI tools", source="Apple")
+    second = ranking_item("same-story-two", title="Apple announces new AI tools", source="Apple")
+    grouped = build_news_pages.feed_items(
+        {"items": [first, second]},
+        {"decisions": [{"item_key": "same-story-one", "decision": "reader_safe"}, {"item_key": "same-story-two", "decision": "reader_safe"}]},
+    )
+    assert len(grouped["crypto-finance"]) == 1
 
 
 def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
@@ -266,6 +279,7 @@ def main() -> int:
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
     test_news_stream_omits_non_useful_fallback_excerpt()
+    test_feed_deduplicates_identical_reader_story_titles()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
     test_news_empty_state_is_simple_russian_copy()

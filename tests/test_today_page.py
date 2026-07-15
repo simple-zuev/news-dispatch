@@ -235,7 +235,8 @@ def test_render_includes_required_links_and_boundary() -> None:
     assert "reader-policy-latest.json" not in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
-    assert "radar/index.html" in html
+    assert "sources/index.html" in html
+    assert "radar/index.html" not in html
     assert "Главное за сегодня" in html
     assert "today-highlights" in html
     assert "today-feature" not in html
@@ -435,7 +436,7 @@ def test_today_diagnostics_remain_internal_not_public() -> None:
     assert "Криптофинансы" in html
     headings = card_headings(html)
     assert headings
-    assert not any("FCA sets systemic stablecoin rules" in heading for heading in headings)
+    assert any("FCA sets systemic stablecoin rules" in heading for heading in headings)
 
 
 def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None:

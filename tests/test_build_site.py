@@ -60,6 +60,7 @@ def test_offline_ranking_fixture_contract() -> None:
     fixture = build_site.OFFLINE_RANKING_FIXTURE
     assert fixture["report_type"] == "daily_radar_ranking"
     assert isinstance(fixture["items"], list)
+    assert "The central bank published an update" in str(fixture["items"][0]["source_excerpt"])
     assert {item["selection_reason"] for item in fixture["items"]} == {
         "selected_top_ranked",
         "filtered_by_source_rules",
@@ -283,6 +284,8 @@ def test_homepage_template_matches_public_reader_blocks() -> None:
     assert "Последние новости" in html
     assert "OpenAI" in html
     assert "Открыть источник" in html
+    assert html.count("OpenAI опубликовала заметку о безопасности агентов") == 1
+    assert "Открыть сегодняшний обзор" in html
     assert "today.html" in html
     assert "news/index.html" in html
     assert "digests/index.html" in html
@@ -364,9 +367,9 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         assert title in html
 
 
-def test_homepage_omits_missing_excerpts_instead_of_generic_filler() -> None:
+def test_homepage_keeps_source_excerpt_when_russian_summary_is_unavailable() -> None:
     html = homepage_html()
-    assert "The source published a short English update" not in html
+    assert "The source published a short English update" in html
     assert "Короткое сообщение источника" not in html
     assert "Источник описывает тему" not in html
 
@@ -390,6 +393,39 @@ def test_old_home_hero_css_is_removed() -> None:
     assert ".news-item h3 a {\n  color: inherit;\n  text-decoration: none;" in css
 
 
+def test_public_builders_share_sources_navigation_and_skip_reader_css() -> None:
+    html = homepage_html()
+    assert 'class="top-nav home-nav"' in html
+    assert 'href="sources/index.html"' in html
+    assert "radar/index.html" not in html
+    enhanced = enhance_site.enhance_html
+    with tempfile.TemporaryDirectory() as tmp:
+        page = Path(tmp) / "news.html"
+        page.write_text('<html><head><link rel="stylesheet" href="styles/main.css"></head><body></body></html>', encoding="utf-8")
+        original_site_dir = enhance_site.SITE_DIR
+        try:
+            enhance_site.SITE_DIR = Path(tmp)
+            enhanced(page)
+        finally:
+            enhance_site.SITE_DIR = original_site_dir
+        assert "reader.css" not in page.read_text(encoding="utf-8")
+
+
+def test_enhancement_keeps_the_reader_brand() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        page = Path(tmp) / "news.html"
+        page.write_text('<html><head><title>News Dispatch</title><link rel="stylesheet" href="styles/main.css"></head><body>News Dispatch</body></html>', encoding="utf-8")
+        original_site_dir = enhance_site.SITE_DIR
+        try:
+            enhance_site.SITE_DIR = Path(tmp)
+            enhance_site.enhance_html(page)
+        finally:
+            enhance_site.SITE_DIR = original_site_dir
+        text = page.read_text(encoding="utf-8")
+        assert "News Dispatch" in text
+        assert "Дайджест" not in text
+
+
 def test_mobile_homepage_prioritizes_two_news_rows_before_today() -> None:
     css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
     selector = ".home-news-list > .home-news-row:nth-child(n + 3)"
@@ -409,8 +445,10 @@ def main() -> int:
     test_homepage_template_matches_public_reader_blocks()
     test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
-    test_homepage_omits_missing_excerpts_instead_of_generic_filler()
+    test_homepage_keeps_source_excerpt_when_russian_summary_is_unavailable()
     test_old_home_hero_css_is_removed()
+    test_public_builders_share_sources_navigation_and_skip_reader_css()
+    test_enhancement_keeps_the_reader_brand()
     test_mobile_homepage_prioritizes_two_news_rows_before_today()
     print("build_site regression tests passed")
     return 0
