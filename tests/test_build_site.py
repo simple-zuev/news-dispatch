@@ -14,6 +14,7 @@ MODULE_PATH = ROOT / "tools" / "build_site.py"
 RENDER_PATH = ROOT / "tools" / "render_site.py"
 SOURCES_PATH = ROOT / "tools" / "build_sources_page.py"
 ENHANCE_PATH = ROOT / "tools" / "enhance_site.py"
+READER_SECTIONS_PATH = ROOT / "tools" / "apply_reader_sections.py"
 
 sys.path.insert(0, str(ROOT / "tools"))
 
@@ -39,6 +40,11 @@ assert enhance_spec is not None and enhance_spec.loader is not None
 enhance_site = importlib.util.module_from_spec(enhance_spec)
 sys.modules["enhance_site"] = enhance_site
 enhance_spec.loader.exec_module(enhance_site)
+
+reader_sections_spec = importlib.util.spec_from_file_location("apply_reader_sections", READER_SECTIONS_PATH)
+assert reader_sections_spec is not None and reader_sections_spec.loader is not None
+apply_reader_sections = importlib.util.module_from_spec(reader_sections_spec)
+reader_sections_spec.loader.exec_module(apply_reader_sections)
 
 from public_html_scan import assert_public_html_clean, assert_public_pages_clean
 
@@ -175,7 +181,7 @@ def test_sources_page_is_grouped_public_transparency() -> None:
             assert "Криптофинансы" in html
             assert "Financial Conduct Authority" in html
             assert "Тип: официальный источник / регулятор" in html
-            assert "Надёжность: высокая" in html
+            assert "Доверие: первичный" in html
             assert "Роль: первичные заявления, решения и документы." in html
             assert "FCA обновило правила хранения стейблкоинов" in html
             assert "Disabled Source" not in html
@@ -414,7 +420,7 @@ def test_public_builders_share_sources_navigation_and_skip_reader_css() -> None:
 def test_enhancement_keeps_the_reader_brand() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         page = Path(tmp) / "news.html"
-        page.write_text('<html><head><title>News Dispatch</title><link rel="stylesheet" href="styles/main.css"></head><body>News Dispatch</body></html>', encoding="utf-8")
+        page.write_text('<html><head><title>News Dispatch</title><link rel="stylesheet" href="styles/main.css"></head><body>News Dispatch · an AI crisis stopgap</body></html>', encoding="utf-8")
         original_site_dir = enhance_site.SITE_DIR
         try:
             enhance_site.SITE_DIR = Path(tmp)
@@ -424,16 +430,30 @@ def test_enhancement_keeps_the_reader_brand() -> None:
         text = page.read_text(encoding="utf-8")
         assert "News Dispatch" in text
         assert "Дайджест" not in text
+        assert "an AI crisis stopgap" in text
 
 
-def test_mobile_homepage_prioritizes_two_news_rows_before_today() -> None:
+def test_mobile_homepage_keeps_reader_news_visible() -> None:
     css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
     selector = ".home-news-list > .home-news-row:nth-child(n + 3)"
-    assert selector in css
-    rule = css[css.index(selector) :]
-    assert "display: none;" in rule[:120]
+    assert selector not in css
     assert "@media (max-width: 360px)" in css
     assert "font-size: 0.78rem;" in css
+
+
+def test_reader_sections_accept_main_with_accessibility_id() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        page = Path(tmp) / "dispatch.html"
+        page.write_text(
+            '<html><body><main class="article-body" id="main-content">'
+            '<h1>Выпуск</h1><h2>Главное</h2><p>Короткий итог.</p></main></body></html>',
+            encoding="utf-8",
+        )
+        assert apply_reader_sections.process_page(page)
+        html = page.read_text(encoding="utf-8")
+        assert 'id="main-content"' in html
+        assert 'class="reader-map"' in html
+        assert 'reader-section-main' in html
 
 
 def main() -> int:
@@ -449,7 +469,8 @@ def main() -> int:
     test_old_home_hero_css_is_removed()
     test_public_builders_share_sources_navigation_and_skip_reader_css()
     test_enhancement_keeps_the_reader_brand()
-    test_mobile_homepage_prioritizes_two_news_rows_before_today()
+    test_mobile_homepage_keeps_reader_news_visible()
+    test_reader_sections_accept_main_with_accessibility_id()
     print("build_site regression tests passed")
     return 0
 

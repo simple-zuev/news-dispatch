@@ -153,7 +153,18 @@ def validate(ranking: dict[str, Any], policy: dict[str, Any], *, fail_on: str = 
     rows = selected_items(ranking, policy)
     for item in rows:
         model = from_ranking_item(item)
-        item_issues = validate_model(model)
+        raw_public_text = {
+            key: str(item.get(key) or "")
+            for key in (
+                "title",
+                "source_original_title",
+                "reader_title_ru",
+                "reader_excerpt_ru",
+                "source_excerpt",
+                "summary",
+            )
+        }
+        item_issues = list(dict.fromkeys(diagnostic_text_issues(raw_public_text) + validate_model(model)))
         if not item_issues:
             continue
         entry = {

@@ -402,7 +402,10 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
     source_excerpt = clean_source_excerpt(raw_summary, max_len=360)
     guid = clean_text(daily_radar.text_of(node, ("guid", "id")), 500) or url
     item_key = hashlib.sha256((url or guid or title).encode("utf-8")).hexdigest()[:16]
-    published = daily_radar.parse_date(daily_radar.text_of(node, ("pubDate", "published", "updated", "date")), now)
+    raw_published = daily_radar.text_of(node, ("pubDate", "published", "updated", "date")).strip()
+    if not raw_published:
+        return None
+    published = daily_radar.parse_date(raw_published, now)
     evidence = source_rule_evidence(feed, title, summary)
 
     routed_stream = ""

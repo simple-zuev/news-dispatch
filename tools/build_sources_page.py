@@ -18,7 +18,7 @@ from build_news_pages import (
 )
 from build_today_page import public_href
 from core import ROOT, SITE_DIR
-from reader_shell import public_nav
+from reader_shell import public_nav, public_skip_link
 from reader_text import build_public_item, source_type_label, stream_label
 
 SOURCES_PATH = ROOT / "sources" / "feeds.json"
@@ -51,15 +51,15 @@ SOURCE_ROLE_BY_CLASS = {
 }
 
 RELIABILITY_BY_TIER = {
-    "A": "высокая: первичный или официальный источник",
-    "B": "средняя: профильный публичный источник",
-    "C": "ограниченная: ранний или специализированный сигнал",
+    "A": "первичный: надёжен для собственных документов и заявлений",
+    "B": "профильный: требует сверки значимых утверждений",
+    "C": "сигнальный: требует дополнительного подтверждения",
 }
 
 RELIABILITY_BY_CLASS = {
-    "official_source": "высокая: первичный источник",
-    "official": "высокая: первичный источник",
-    "regulator": "высокая: первичный источник",
+    "official_source": "первичный: для собственных документов и заявлений",
+    "official": "первичный: для собственных документов и заявлений",
+    "regulator": "первичный: для собственных документов и заявлений",
     "research_media": "ограниченная: выводы требуют сверки",
     "public_media": "редакционная: публичная лента",
     "business_media": "редакционная: деловая публичная лента",
@@ -145,8 +145,8 @@ def source_row(row: dict[str, Any], recent_lookup: dict[str, list[dict[str, Any]
     return f"""<article class="source-row">
   <span class="news-stream-marker stream-dot--{esc(stream)}" aria-hidden="true"></span>
   <div class="source-row-body">
-    <p class="source-meta">Рубрика: {esc(stream_label(stream))} · Тип: {esc(source_type)} · Надёжность: {esc(reliability)}</p>
     <h3>{esc(title)}</h3>
+    <p class="source-meta">Рубрика: {esc(stream_label(stream))} · Тип: {esc(source_type)} · Доверие: {esc(reliability)}</p>
     <p class="source-role">Роль: {esc(role)}.</p>
     {recent}
   </div>
@@ -191,13 +191,14 @@ def page_html(rows: list[dict[str, Any]], recent_lookup: dict[str, list[dict[str
   <link rel="stylesheet" href="../styles/main.css">
 </head>
 <body>
+  {public_skip_link()}
   <header class="masthead compact sources-header">
     <a class="backlink" href="../index.html">News Dispatch</a>
     {public_nav("../", current="sources")}
     <h1>Источники</h1>
     <p class="lede">Публичные источники, из которых собираются читательские ленты. Здесь показаны роль источника, рубрика и понятный уровень доверия без служебных деталей.</p>
   </header>
-  <main class="sources-page">
+  <main class="sources-page" id="main-content">
     <section class="sources-rubrics" aria-label="Рубрики">
       <div class="news-index-heading"><h2>Рубрики</h2><p>{len(rows)} источн.</p></div>
       <div class="home-rubric-list">{rubric_nav(streams)}</div>

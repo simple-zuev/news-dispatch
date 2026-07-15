@@ -152,7 +152,7 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     assert "FCA · Криптофинансы · 2 июля, 12:00 · регулятор" in html
     assert "2026-07-02 09:00:00 UTC" not in html
     assert "Тезис" not in html
-    assert "Почему важно" not in html
+    assert "Почему важно" in html
     assert "Что отслеживать" not in html
     assert_public_clean(html)
 
@@ -173,11 +173,28 @@ def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
     assert "Короткое сообщение источника" not in html
 
 
+def test_news_stream_uses_source_excerpt_after_generated_fallback() -> None:
+    rows = [
+        ranking_item(
+            "generated-fallback-with-source-excerpt",
+            title="FCA publishes crypto custody update",
+            reader_excerpt=(
+                "Источник описывает тему «FCA publishes crypto custody update». "
+                "Подробности и формулировки сохранены в оригинале источника."
+            ),
+        )
+    ]
+    html = build_news_pages.news_stream_page("crypto-finance", rows)
+    assert "The regulator published a public update" in html
+    assert "Источник описывает тему" not in html
+    assert "Подробности и формулировки сохранены" not in html
+
+
 def test_feed_deduplicates_identical_reader_story_titles() -> None:
     first = ranking_item("same-story-one", title="Apple announces new AI tools", source="Apple")
     second = ranking_item("same-story-two", title="Apple announces new AI tools", source="Apple")
     grouped = build_news_pages.feed_items(
-        {"items": [first, second]},
+        {"date": "2026-07-02", "items": [first, second]},
         {"decisions": [{"item_key": "same-story-one", "decision": "reader_safe"}, {"item_key": "same-story-two", "decision": "reader_safe"}]},
     )
     assert len(grouped["crypto-finance"]) == 1
@@ -197,6 +214,7 @@ def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
 
 def test_public_original_title_sanitizes_security_terms() -> None:
     report = {
+        "date": "2026-07-02",
         "items": [
             ranking_item(
                 "security-item",
@@ -211,6 +229,17 @@ def test_public_original_title_sanitizes_security_terms() -> None:
     assert "Credentials" not in html
     assert "Session" not in html
     assert "учётные данные" in html
+
+
+def test_news_feed_excludes_items_older_than_seven_days() -> None:
+    current = ranking_item("current")
+    old = ranking_item("old")
+    old["published"] = "2026-06-20T09:00:00+00:00"
+    grouped = build_news_pages.feed_items(
+        {"date": "2026-07-02", "items": [current, old]},
+        {"decisions": [{"item_key": "current", "decision": "reader_safe"}, {"item_key": "old", "decision": "reader_safe"}]},
+    )
+    assert [item["item_key"] for item in grouped["crypto-finance"]] == ["current"]
 
 
 def test_news_empty_state_is_simple_russian_copy() -> None:
@@ -279,9 +308,11 @@ def main() -> int:
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
     test_news_stream_omits_non_useful_fallback_excerpt()
+    test_news_stream_uses_source_excerpt_after_generated_fallback()
     test_feed_deduplicates_identical_reader_story_titles()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
+    test_news_feed_excludes_items_older_than_seven_days()
     test_news_empty_state_is_simple_russian_copy()
     test_news_and_digest_pages_are_written_to_configured_output()
     print("news feed page tests passed")

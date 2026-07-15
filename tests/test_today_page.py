@@ -88,6 +88,8 @@ def live_balance_report() -> dict:
                 "feed_title": "OpenAI News",
                 "title": f"OpenAI model update {index}",
                 "url": f"https://openai.com/news/{index}",
+                "published": "2026-07-01T10:00:00+00:00",
+                "source_excerpt": f"OpenAI published model update {index} with product and safety details.",
                 "selection_score": 12.0 - index,
                 "final_score": 12.0 - index,
                 "relevance_score": 0.9,
@@ -107,6 +109,8 @@ def live_balance_report() -> dict:
             "feed_title": "Financial Conduct Authority",
             "title": "FCA sets systemic stablecoin rules",
             "url": "https://www.fca.org.uk/news/stablecoin-rules",
+            "published": "2026-07-01T09:00:00+00:00",
+            "source_excerpt": "The FCA published an update on systemic stablecoin rules and supervision.",
             "selection_score": 8.0,
             "final_score": 7.2,
             "relevance_score": 0.86,
@@ -142,12 +146,14 @@ def mixed_accepted_report(count: int = 200) -> dict:
                 "routed_stream": stream,
                 "feed_id": feed_id,
                 "feed_title": feed_id,
-                "title": f"{stream} accepted signal {index}",
+                "title": f"uniqueevent{index} policy{index} release{index}",
                 "url": f"https://example.com/{stream}/{index}",
+                "published": "2026-07-01T08:00:00+00:00",
+                "source_excerpt": f"A source published a detailed update about {stream} item {index}.",
                 "selection_score": 16.0 - index * 0.01,
                 "final_score": 16.0 - index * 0.01,
                 "relevance_score": 0.82,
-                "include_hits": [stream],
+                "include_hits": [f"topic{index}"],
                 "translation_required": True,
             }
         )
@@ -170,6 +176,7 @@ def forecast_report() -> dict:
                 "feed_title": "CoinDesk",
                 "title": "Citi slashes 12-month bitcoin, ether targets",
                 "url": "https://example.com/citi-crypto-targets",
+                "published": "2026-07-01T08:00:00+00:00",
                 "market_signal_type": "third_party_forecast",
                 "ranking_adjustments": ["third_party_market_forecast_labeled", "market_forecast_downweighted"],
                 "selection_score": 7.0,
@@ -215,11 +222,11 @@ PUBLIC_FORBIDDEN_TERMS = [
 
 
 def card_headings(html: str) -> list[str]:
-    return re.findall(r"<article class=\"card signal-card[^\"]*\">.*?<h3>(.*?)</h3>", html, flags=re.S)
+    return re.findall(r"<h3>(.*?)</h3>", html, flags=re.S)
 
 
 def highlight_count(html: str) -> int:
-    section = re.search(r"<section class=\"panel today-highlights\".*?</section>", html, flags=re.S)
+    section = re.search(r"<section class=\"panel today-highlights[^\"]*\".*?</section>", html, flags=re.S)
     assert section is not None
     return len(re.findall(r"<li>", section.group(0)))
 
@@ -247,11 +254,13 @@ def test_render_includes_required_links_and_boundary() -> None:
 
 
 def test_today_is_news_first_without_service_block() -> None:
-    html = build_today_page.render(sample_report(), auto_report={"date": "2026-06-28", "generated": []})
+    report = mixed_accepted_report()
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    html = build_today_page.render(report, policy, auto_report={"date": "2026-07-01", "generated": []})
     assert "today-highlights" in html
-    assert "today-grouped-cards" in html
+    assert "today-secondary-list" in html
     assert "reader-card-list" in html
-    assert html.index("today-highlights") < html.index("today-grouped-cards") < html.index("source-note")
+    assert html.index("today-highlights") < html.index("today-secondary-list") < html.index("source-note")
     assert "Сводка выпуска" not in html
     assert "Публично показаны" not in html
     assert "Источники публичные" not in html
@@ -306,17 +315,19 @@ def test_render_includes_analytical_card_structure() -> None:
     assert "score 1.25" not in html
     assert "relevance 0.82" not in html
     assert "Тезис:" not in html
-    assert "Почему важно:" not in html
+    assert "Почему важно:" in html
     assert "Открыть источник" in html
     assert "28 июня, 03:00" in html
 
 
-def test_today_starts_with_three_to_five_highlights_when_available() -> None:
+def test_today_starts_with_one_main_story_when_available() -> None:
     report = mixed_accepted_report()
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
     html = build_today_page.render(report, policy, auto_report={"generated": []})
-    assert html.index("today-highlights") < html.index("today-grouped-cards")
-    assert 3 <= highlight_count(html) <= 5
+    assert html.index("today-highlights") < html.index("today-secondary-list")
+    assert highlight_count(html) == 1
+    items = build_today_page.selected_items(report, policy)
+    assert build_today_page.stream_slug(build_today_page.cluster_items(items)[0][0]) in build_today_page.PRIMARY_STREAMS
 
 
 def test_today_uses_no_giant_hero_or_fake_media_classes() -> None:
@@ -343,8 +354,11 @@ def test_render_clusters_similar_signals() -> None:
 def test_today_radar_css_has_cluster_materials_styles() -> None:
     css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
     assert "/* Today Radar analytical cards */" in css
-    assert ".today-grouped-cards" in css
+    assert ".today-secondary-list" in css
     assert ".signal-card--reader" in css
+    assert ".reader-title-link" in css
+    assert ".reader-action-link" in css
+    assert "background: transparent" in css
 
 
 def test_card_stays_non_directive() -> None:
@@ -359,16 +373,15 @@ def test_today_selection_caps_overfed_source_and_keeps_crypto() -> None:
     assert any(item["feed_id"] == "fca-news" for item in items)
     assert sum(1 for item in items if item["feed_id"] == "openai-news") <= build_today_page.SOURCE_TODAY_CAPS["openai-news"]
     assert diagnostics["selected_today_by_stream"]["crypto-finance"] == 1
-    assert diagnostics["capped_sources"]["openai-news"] > 0
+    assert diagnostics["capped_sources"].get("openai-news", 0) + diagnostics["story_duplicate_skips"] > 0
 
 
 def test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags() -> None:
     report = mixed_accepted_report()
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
-    items, diagnostics = build_today_page.select_today_items(report, policy, limit=18)
+    items, diagnostics = build_today_page.select_today_items(report, policy, limit=10)
 
-    assert len(items) >= 10
-    assert len(items) == 18
+    assert len(items) == 10
     assert len(diagnostics["selected_today_by_stream"]) >= 4
     assert diagnostics["selected_today_by_stream"]["crypto-finance"] >= 1
     assert diagnostics["selected_today_by_stream"]["tech-hardware-software"] >= 1
@@ -391,6 +404,8 @@ def test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_round
                 "feed_title": feed_id,
                 "title": title,
                 "url": f"https://example.com/crypto/{index}",
+                "published": "2026-07-01T08:00:00+00:00",
+                "source_excerpt": f"The source published a detailed crypto policy update {index}.",
                 "selection_score": score,
                 "final_score": score,
                 "relevance_score": 0.86,
@@ -421,6 +436,33 @@ def test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_round
     assert any("SEC Publishes Updated Market Statistics" in title for title in titles)
     assert not any("Citi slashes" in title for title in titles)
     assert not any("Here’s what happened" in title for title in titles)
+
+
+def test_today_excludes_low_relevance_human_interest_from_finance() -> None:
+    report = mixed_accepted_report(count=40)
+    report["items"].append(
+        {
+            "selected": False,
+            "source_rule_status": "accepted_by_source_rules",
+            "source_class": "public_media",
+            "source_type": "media",
+            "configured_stream": "finance",
+            "routed_stream": "finance",
+            "feed_id": "general-business-media",
+            "feed_title": "General Business Media",
+            "title": "Resident changes surname to avoid personal debt",
+            "url": "https://example.com/human-interest-debt",
+            "published": "2026-07-01T12:00:00+00:00",
+            "source_excerpt": "A local human-interest report mentions a personal loan dispute.",
+            "selection_score": 99.0,
+            "final_score": 99.0,
+            "relevance_score": 0.57,
+            "include_hits": ["credit"],
+        }
+    )
+    policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
+    items, _diagnostics = build_today_page.select_today_items(report, policy)
+    assert not any(item.get("feed_id") == "general-business-media" for item in items)
 
 
 def test_today_diagnostics_remain_internal_not_public() -> None:
@@ -485,7 +527,7 @@ def main() -> int:
     test_auto_dispatch_artifacts_are_not_finished_analysis()
     test_gate_failure_renders_safe_fallback_without_human_decision()
     test_render_includes_analytical_card_structure()
-    test_today_starts_with_three_to_five_highlights_when_available()
+    test_today_starts_with_one_main_story_when_available()
     test_today_uses_no_giant_hero_or_fake_media_classes()
     test_render_clusters_similar_signals()
     test_today_radar_css_has_cluster_materials_styles()
@@ -493,6 +535,7 @@ def main() -> int:
     test_today_selection_caps_overfed_source_and_keeps_crypto()
     test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags()
     test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_roundup()
+    test_today_excludes_low_relevance_human_interest_from_finance()
     test_today_diagnostics_remain_internal_not_public()
     test_forecast_flavored_crypto_card_is_not_presented_as_future_fact()
     test_public_today_html_contains_no_debug_terms()

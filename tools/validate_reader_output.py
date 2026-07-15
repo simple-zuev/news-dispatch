@@ -108,11 +108,10 @@ def registry_preview_urls() -> set[str]:
 
 
 def body_html(text: str) -> str:
-    marker = '<main class="article-body">'
-    start = text.find(marker)
-    if start == -1:
+    match = re.search(r'<main class="article-body"[^>]*>', text)
+    if match is None:
         return ""
-    start += len(marker)
+    start = match.end()
     end = text.find("</main>", start)
     return text[start:] if end == -1 else text[start:end]
 
