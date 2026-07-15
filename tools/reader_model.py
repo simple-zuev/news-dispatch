@@ -14,8 +14,12 @@ from typing import Any, Mapping
 PUBLIC_RENDER_KEYS = (
     "title",
     "excerpt",
+    "summary",
+    "why_it_matters",
     "meta",
     "time",
+    "published_at",
+    "story_key",
     "source",
     "stream",
     "reliability",
@@ -50,8 +54,12 @@ class PublicReaderItem:
 
     title: str
     excerpt: str
+    summary: str
+    why_it_matters: str
     meta: str
     time: str
+    published_at: str
+    story_key: str
     source: str
     stream: str
     reliability: str
@@ -63,8 +71,12 @@ class PublicReaderItem:
         payload = {
             "title": self.title,
             "excerpt": self.excerpt,
+            "summary": self.summary,
+            "why_it_matters": self.why_it_matters,
             "meta": self.meta,
             "time": self.time,
+            "published_at": self.published_at,
+            "story_key": self.story_key,
             "source": self.source,
             "stream": self.stream,
             "reliability": self.reliability,
@@ -101,20 +113,27 @@ def from_ranking_item(item: Mapping[str, Any], stream: object | None = None) -> 
         public_meta_ru,
         public_reliability_label,
         public_source_name,
+        public_story_key,
         public_stream_name,
         public_text,
         public_title_ru,
+        public_why_it_matters_ru,
         source_original_title,
     )
 
     row = dict(item)
     original = public_text(source_original_title(row)).strip()
     title = public_title_ru(row)
+    excerpt = public_excerpt_ru(row)
     return PublicReaderItem(
         title=title,
-        excerpt=public_excerpt_ru(row),
+        excerpt=excerpt,
+        summary=excerpt,
+        why_it_matters=public_why_it_matters_ru(row, stream),
         meta=public_meta_ru(row, stream),
         time=format_public_time_ru(row.get("published") or row.get("date")),
+        published_at=str(row.get("published") or row.get("date") or "").strip(),
+        story_key=public_story_key(row, stream),
         source=public_source_name(row),
         stream=public_stream_name(row, stream),
         reliability=public_reliability_label(row),

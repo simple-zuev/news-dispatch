@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SITE_DIR = ROOT / "site"
 ASSET_MARKER = '<section class="sources-block reader-assets">'
+ARTICLE_MAIN_RE = re.compile(r'<main class="article-body"[^>]*>')
 
 SECTION_CLASS = {
     "Лид": "reader-section-lede",
@@ -67,12 +68,12 @@ def add_toc(text: str) -> str:
     if not links:
         return text
     block = '<nav class="reader-map" aria-label="Карта выпуска"><span>Карта выпуска</span>' + "".join(links) + "</nav>"
-    return text.replace('<main class="article-body">', f'<main class="article-body">{block}', 1)
+    return ARTICLE_MAIN_RE.sub(lambda match: match.group(0) + block, text, count=1)
 
 
 def drop_redundant_body_h1(text: str) -> str:
     pattern = re.compile(
-        r'(<main class="article-body">(?:\s*<nav class="reader-map"[^>]*>.*?</nav>)?\s*)<h1>.*?</h1>\s*',
+        r'(<main class="article-body"[^>]*>(?:\s*<nav class="reader-map"[^>]*>.*?</nav>)?\s*)<h1>.*?</h1>\s*',
         re.S,
     )
     return pattern.sub(r"\1", text, count=1)
@@ -80,7 +81,7 @@ def drop_redundant_body_h1(text: str) -> str:
 
 def promote_orphan_subtitle(text: str) -> str:
     """Turn a stand-alone body subtitle into a scannable deck line instead of a huge empty h2."""
-    match = re.search(r'(<main class="article-body">\s*)<h2>([^<]+)</h2>\s*(?=<h2>)', text, re.S)
+    match = re.search(r'(<main class="article-body"[^>]*>\s*)<h2>([^<]+)</h2>\s*(?=<h2>)', text, re.S)
     if not match:
         return text
     title = match.group(2).strip()
@@ -156,7 +157,7 @@ def upgrade_numbered_highlights(text: str) -> str:
 
 def process_page(path: Path) -> bool:
     text = path.read_text(encoding="utf-8")
-    if '<main class="article-body">' not in text:
+    if not ARTICLE_MAIN_RE.search(text):
         return False
     article_text, asset_text = split_assets(text)
     new_article = drop_redundant_body_h1(article_text)

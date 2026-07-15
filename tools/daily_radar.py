@@ -205,6 +205,14 @@ def parse_date(value: str, fallback: datetime) -> datetime:
     except (TypeError, ValueError):
         pass
 
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
+    except ValueError:
+        pass
+
     for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%d"):
         try:
             parsed = datetime.strptime(value[:25], fmt)

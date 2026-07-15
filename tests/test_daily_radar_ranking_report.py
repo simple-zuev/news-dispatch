@@ -233,6 +233,7 @@ def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
   <link>https://example.com/stablecoin</link>
   <description><![CDATA[<p>The regulators published a public update describing their approach to systemic stablecoin issuers.</p>]]></description>
   <guid>stablecoin-guid</guid>
+  <pubDate>Thu, 02 Jul 2026 09:00:00 GMT</pubDate>
 </item>"""
     )
     row = ranking_report.row_for(
@@ -250,6 +251,29 @@ def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
     assert row["reader_title_ru"] == "FCA и Банк Англии описали подход к системным стейблкоинам"
     assert "Источник описывает тему" in str(row["reader_excerpt_ru"])
     assert "Криптофинансы" in str(row["reader_source_line_ru"])
+
+
+def test_ranking_row_rejects_undated_feed_entry() -> None:
+    node = ranking_report.ET.fromstring(
+        """<item>
+  <title>Undated product announcement</title>
+  <link>https://example.com/undated</link>
+  <description>A source summary without a publication date.</description>
+</item>"""
+    )
+    row = ranking_report.row_for(
+        feed(include_keywords=("product",), exclude_keywords=()),
+        node,
+        ranking_report.datetime(2026, 7, 15, tzinfo=ranking_report.timezone.utc),
+        set(),
+    )
+    assert row is None
+
+
+def test_fractional_atom_date_does_not_fall_back_to_collection_time() -> None:
+    fallback = ranking_report.datetime(2026, 7, 15, tzinfo=ranking_report.timezone.utc)
+    parsed = ranking_report.daily_radar.parse_date("2026-06-08T18:17:44.449Z", fallback)
+    assert parsed.isoformat() == "2026-06-08T18:17:44.449000+00:00"
 
 
 def test_crypto_regulatory_forecast_context_stays_high_priority() -> None:
@@ -282,6 +306,8 @@ def main() -> int:
     test_crypto_regulatory_items_beat_forecasts_and_roundups_when_stream_is_capped()
     test_pure_crypto_price_target_is_labeled_and_downweighted()
     test_ranking_row_preserves_source_excerpt_and_reader_fields()
+    test_ranking_row_rejects_undated_feed_entry()
+    test_fractional_atom_date_does_not_fall_back_to_collection_time()
     test_crypto_regulatory_forecast_context_stays_high_priority()
     print("daily radar ranking report tests passed")
     return 0

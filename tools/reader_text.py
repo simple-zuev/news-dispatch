@@ -78,6 +78,8 @@ PUBLIC_TEXT_REPLACEMENTS = [
     (r"\breader_safe\b", "публичный"),
     (r"\bsource_rule_status\b", "статус источника"),
     (r"\bvalidation\b", "проверка"),
+    (r"\bcoverage\b", "reporting"),
+    (r"\bthreshold\b", "limit"),
     (r"\bdraft-only\b", "подготовительный"),
     (r"\breview-only\b", "требующий проверки"),
     (r"\bscore\b", "оценка"),
@@ -98,6 +100,36 @@ GENERIC_SOURCE_TOPICS = {
     "безопасность и технологическая инфраструктура",
     "модели и инфраструктура ии",
     "движение крипторынка",
+}
+
+WHY_IT_MATTERS_BY_STREAM = {
+    "finance": (
+        "Материал помогает отслеживать изменения денежно-кредитной политики, "
+        "банковского регулирования и условий работы финансового рынка."
+    ),
+    "crypto-finance": (
+        "Материал помогает отслеживать правила и инфраструктуру цифровых активов; "
+        "практический эффект зависит от статуса документа и сроков применения."
+    ),
+    "ai": (
+        "Материал помогает отслеживать возможности, ограничения и инфраструктуру ИИ; "
+        "заявленные результаты требуют проверки по первоисточнику."
+    ),
+    "tech-hardware-software": (
+        "Материал помогает оценить изменения платформ, безопасности и технологических зависимостей."
+    ),
+    "gear-style-edc": (
+        "Материал помогает оценить практическую полезность, качество и изменения потребительских сценариев."
+    ),
+    "moscow-city": (
+        "Материал помогает понять изменения городской среды, инфраструктуры и доступности сервисов."
+    ),
+    "dj-audio-creative": (
+        "Материал помогает отслеживать инструменты, совместимость и условия творческой работы."
+    ),
+    "science-discovery": (
+        "Материал помогает отслеживать новые результаты; границы применимости зависят от методики и независимой проверки."
+    ),
 }
 
 
@@ -202,6 +234,17 @@ def format_public_time_ru(value: object) -> str:
     if has_time and parsed.timetz().replace(tzinfo=None) != time(0, 0):
         return f"{day}, {parsed:%H:%M}"
     return day
+
+
+def public_item_is_fresh(item: dict[str, Any], reference: object, max_age_hours: int) -> bool:
+    published, _published_has_time = parse_public_datetime(item.get("published") or item.get("date"))
+    reference_dt, reference_has_time = parse_public_datetime(reference)
+    if published is None or reference_dt is None:
+        return False
+    if not reference_has_time:
+        reference_dt = reference_dt.replace(hour=23, minute=59, second=59)
+    age_hours = (reference_dt - published).total_seconds() / 3600
+    return -6 <= age_hours <= max_age_hours
 
 
 def clean_source_excerpt(value: object, max_len: int = 360) -> str:
@@ -463,6 +506,14 @@ def public_story_key(item: dict[str, Any], stream: object | None = None) -> str:
     return normalized or str(item.get("url") or item.get("item_key") or "").strip().lower()
 
 
+def public_why_it_matters_ru(item: dict[str, Any], stream: object | None = None, max_len: int = 280) -> str:
+    existing = str(item.get("why_it_matters") or item.get("reader_why_it_matters_ru") or "").strip()
+    if existing:
+        return clean_source_excerpt(public_text(existing), max_len=max_len)
+    slug = str(stream or stream_slug(item)).strip()
+    return clean_source_excerpt(WHY_IT_MATTERS_BY_STREAM.get(slug, ""), max_len=max_len)
+
+
 def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
     forbidden = (
         "Источник описывает тему",
@@ -478,7 +529,8 @@ def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
     existing = str(item.get("reader_excerpt_ru") or "").strip()
     if existing:
         text = public_text(reader_excerpt_ru(item, max_len=max_len))
-        return "" if any(phrase in text for phrase in forbidden) else text
+        if not any(phrase in text for phrase in forbidden):
+            return text
     excerpt = clean_source_excerpt(item.get("source_excerpt") or item.get("summary") or "", max_len=max_len)
     if excerpt:
         text = public_text(excerpt)
@@ -499,11 +551,16 @@ def public_meta_ru(item: dict[str, Any], stream: object | None = None) -> str:
 def build_public_item(item: dict[str, Any], stream: object | None = None) -> dict[str, str]:
     original = public_text(source_original_title(item)).strip()
     title = public_title_ru(item)
+    excerpt = public_excerpt_ru(item)
     return {
         "title": title,
-        "excerpt": public_excerpt_ru(item),
+        "excerpt": excerpt,
+        "summary": excerpt,
+        "why_it_matters": public_why_it_matters_ru(item, stream),
         "meta": public_meta_ru(item, stream),
         "time": format_public_time_ru(item.get("published") or item.get("date")),
+        "published_at": str(item.get("published") or item.get("date") or "").strip(),
+        "story_key": public_story_key(item, stream),
         "source": public_source_name(item),
         "stream": public_stream_name(item, stream),
         "reliability": public_reliability_label(item),

@@ -16,14 +16,15 @@ import html
 import hashlib
 import json
 import re
+from collections import Counter
 from dataclasses import dataclass
 from email.utils import formatdate
 from pathlib import Path
 
 from build_today_page import public_href as safe_href
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
-from reader_shell import public_nav
-from reader_text import build_public_item, format_public_time_ru, public_story_key
+from reader_shell import public_nav, public_skip_link
+from reader_text import build_public_item, format_public_time_ru, public_excerpt_ru, public_item_is_fresh, public_story_key
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -567,13 +568,15 @@ def page_template(dispatch: Dispatch, body_html: str) -> str:
 <html lang="ru">
 {head(dispatch.title, dispatch.summary, css_href="../styles/main.css")}
 <body class="dispatch-page">
+  {public_skip_link()}
   <header class="article-hero">
     <a class="backlink" href="../index.html">News Dispatch</a>
+    {public_nav("../", current="digests")}
     <p class="eyebrow">{html.escape(dispatch_meta_label(dispatch))}</p>
     <h1>{html.escape(dispatch.title)}</h1>
     <p class="lede">{html.escape(dispatch.summary)}</p>
   </header>
-  <main class="article-body">
+  <main class="article-body" id="main-content">
     {body_html}
   </main>
 </body>
@@ -638,6 +641,7 @@ def ranking_published(item: dict[str, object]) -> str:
 def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
     report = load_json(RANKING_PATH)
     safe_keys = reader_safe_keys()
+    reference = report.get("date")
     rows: list[dict[str, object]] = []
     seen_urls: set[str] = set()
     seen_stories: set[str] = set()
@@ -650,6 +654,10 @@ def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
         if item.get("source_rule_status") != "accepted_by_source_rules":
             continue
         if safe_keys and ranking_item_key(item) not in safe_keys and ranking_policy_key(item) not in safe_keys:
+            continue
+        if not public_item_is_fresh(item, reference, max_age_hours=72):
+            continue
+        if not public_excerpt_ru(item):
             continue
         url_key = str(item.get("url") or "").strip().lower()
         story_key = public_story_key(item)
@@ -688,17 +696,40 @@ def home_ranking_excerpt(item: dict[str, object], max_len: int = 180) -> str:
 
 
 def home_latest_items(items: list[dict[str, object]], limit: int = 8) -> list[dict[str, object]]:
+    primary_streams = ("finance", "crypto-finance", "ai")
+    ordered = list(items)
     result: list[dict[str, object]] = []
     seen_stories: set[str] = set()
-    for item in sorted(items, key=lambda row: str(row.get("published") or row.get("date") or ""), reverse=True):
+    source_counts: Counter[str] = Counter()
+
+    def add(item: dict[str, object]) -> bool:
         story_key = public_story_key(item)
-        if story_key in seen_stories:
-            continue
+        source_key = str(item.get("feed_id") or item.get("feed_title") or "unknown")
+        if story_key in seen_stories or source_counts[source_key] >= 2:
+            return False
         seen_stories.add(story_key)
+        source_counts[source_key] += 1
         result.append(item)
+        return True
+
+    for stream in primary_streams:
+        for item in ordered:
+            if ranking_stream(item) == stream and add(item):
+                break
+
+    primary_target = min(5, limit)
+    for item in ordered:
+        if len(result) >= primary_target:
+            break
+        if ranking_stream(item) in primary_streams:
+            add(item)
+
+    for item in ordered:
         if len(result) >= limit:
             break
-    return result
+        add(item)
+
+    return sorted(result, key=lambda row: str(row.get("published") or row.get("date") or ""), reverse=True)
 
 
 def home_rubric_title(slug: str) -> str:
@@ -721,10 +752,12 @@ def home_news_row(item: dict[str, object]) -> str:
     title = public_item["title"]
     excerpt = public_item["excerpt"][:190].rstrip()
     excerpt_html = f'\n  <p class="home-news-excerpt">{html.escape(excerpt)}</p>' if excerpt else ""
+    why = public_item["why_it_matters"]
+    why_html = f'\n  <p class="home-news-why"><strong>Почему важно:</strong> {html.escape(why)}</p>' if why else ""
     meta = public_item["meta"]
     return f"""<article class="home-news-row">
   <p class="home-news-meta">{html.escape(meta)}</p>
-  <h3>{home_item_link(item, title)}</h3>{excerpt_html}
+  <h3>{home_item_link(item, title)}</h3>{excerpt_html}{why_html}
   <p class="home-news-source">{home_source_link(item)}</p>
 </article>"""
 
@@ -798,12 +831,13 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
 <html lang="ru">
 {head("News Dispatch — новости и дайджесты", "Новости и аналитические дайджесты по рубрикам.")}
 <body>
+  {public_skip_link()}
   <header class="home-header">
     <a class="home-brand" href="index.html">News Dispatch</a>
     {public_nav(extra_class="home-nav")}
   </header>
 
-  <main class="home-main">
+  <main class="home-main" id="main-content">
     <section class="home-grid" aria-label="Главная">
       <section class="home-latest" aria-label="Последние новости">
         <div class="home-section-heading"><h1>Последние новости</h1><a href="news/index.html">Все новости</a></div>

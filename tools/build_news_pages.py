@@ -19,12 +19,14 @@ from build_today_page import (
     public_href,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
-from reader_shell import public_nav
+from reader_shell import public_nav, public_skip_link
 from reader_text import (
     PUBLIC_TZ,
     build_public_item,
     format_public_time_ru,
     public_meta_ru,
+    public_excerpt_ru,
+    public_item_is_fresh,
     public_story_key,
     stream_label,
 )
@@ -139,6 +141,7 @@ def dedupe_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     safe_keys = reader_safe_keys(policy)
+    reference = report.get("date")
     grouped: dict[str, list[dict[str, Any]]] = {stream: [] for stream in STREAM_ORDER}
     for item in report.get("items", []):
         if not isinstance(item, dict):
@@ -148,6 +151,10 @@ def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list
             continue
         if not accepted_by_policy(item, safe_keys):
             continue
+        if not public_item_is_fresh(item, reference, max_age_hours=24 * 7):
+            continue
+        if not public_excerpt_ru(item):
+            continue
         grouped[stream].append(item)
     return {stream: dedupe_items(rows) for stream, rows in grouped.items()}
 
@@ -156,11 +163,12 @@ def public_news_meta(item: dict[str, Any]) -> str:
     return public_meta_ru(item, item_stream(item))
 
 
-def source_link(item: dict[str, Any], text: str) -> str:
+def source_link(item: dict[str, Any], text: str, css_class: str = "") -> str:
     url = str(item.get("url") or "").strip()
     if not url:
         return esc(text)
-    return f'<a href="{esc(public_href(url))}">{esc(text)}</a>'
+    class_attr = f' class="{esc(css_class)}"' if css_class else ""
+    return f'<a{class_attr} href="{esc(public_href(url))}">{esc(text)}</a>'
 
 
 def feed_item_card(item: dict[str, Any]) -> str:
@@ -169,6 +177,8 @@ def feed_item_card(item: dict[str, Any]) -> str:
     original = public_item["original_title"]
     excerpt = public_item["excerpt"]
     excerpt_line = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
+    why = public_item["why_it_matters"]
+    why_line = f'\n    <p class="news-why"><strong>Почему важно:</strong> {esc(why)}</p>' if why else ""
     meta = public_item["meta"]
     original_line = ""
     if original and original != title:
@@ -178,8 +188,8 @@ def feed_item_card(item: dict[str, Any]) -> str:
   <span class="news-stream-marker stream-dot--{esc(slug)}" aria-hidden="true"></span>
   <div class="news-item-body">
     <p class="news-meta">{esc(meta)}</p>
-    <h3>{source_link(item, title)}</h3>{excerpt_line}
-    <p class="news-source-link">{source_link(item, "Открыть источник")}</p>{original_line}
+    <h3>{source_link(item, title, "reader-title-link")}</h3>{excerpt_line}{why_line}
+    <p class="news-source-link">{source_link(item, "Открыть источник", "reader-action-link")}</p>{original_line}
   </div>
 </article>"""
 
@@ -191,8 +201,8 @@ def empty_feed_card() -> str:
 </article>"""
 
 
-def top_nav(prefix: str = "") -> str:
-    return public_nav(prefix, current="news")
+def top_nav(prefix: str = "", current: str = "news") -> str:
+    return public_nav(prefix, current=current)
 
 
 def head(title: str, description: str, css_href: str = "../styles/main.css") -> str:
@@ -224,18 +234,19 @@ def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
 <html lang="ru">
 {head("Новости — News Dispatch", "Хронологические ленты публичных источников.", css_href="../styles/main.css")}
 <body>
+  {public_skip_link()}
   <header class="masthead compact">
     <a class="backlink" href="../index.html">News Dispatch</a>
     {top_nav("../")}
     <h1>Новости</h1>
   </header>
-  <main>
+  <main id="main-content">
+    <section class="news-index-heading"><h2>Последние материалы</h2><a href="#top">К началу</a></section>
+    <section class="news-list news-list--preview">{latest_cards or empty_feed_card()}</section>
     <section class="news-index-summary" aria-label="Темы новостей">
       <div class="news-index-heading"><h2>Темы новостей</h2><p>Всего: {total} материалов</p></div>
       <div class="news-index-list">{rows}</div>
     </section>
-    <section class="news-index-heading"><h2>Последние материалы</h2><a href="#top">К началу</a></section>
-    <section class="news-list news-list--preview">{latest_cards or empty_feed_card()}</section>
   </main>
 </body>
 </html>"""
@@ -247,13 +258,14 @@ def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
 <html lang="ru">
 {head(f"{stream_label(stream)} — лента новостей", f"Хронологическая лента: {stream_label(stream)}.")}
 <body>
+  {public_skip_link()}
   <header class="masthead compact">
     <a class="backlink" href="index.html">Ленты новостей</a>
     {top_nav("../")}
     <h1>{esc(stream_label(stream))}</h1>
     <p class="lede">Новейшие материалы сверху. Показано до 50 строк.</p>
   </header>
-  <main>
+  <main id="main-content">
     <section class="news-list">{cards}</section>
   </main>
 </body>
@@ -308,12 +320,13 @@ def digests_index(digests: list[dict[str, str]]) -> str:
 <html lang="ru">
 {head("Дайджесты — News Dispatch", "Аналитические выпуски News Dispatch.", css_href="../styles/main.css")}
 <body>
+  {public_skip_link()}
   <header class="masthead compact">
     <a class="backlink" href="../index.html">News Dispatch</a>
-    {top_nav("../")}
+    {top_nav("../", current="digests")}
     <h1>Дайджесты</h1>
   </header>
-  <main><section class="news-list digest-list">{cards}</section></main>
+  <main id="main-content"><section class="news-list digest-list">{cards}</section></main>
 </body>
 </html>"""
 

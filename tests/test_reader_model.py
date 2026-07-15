@@ -53,6 +53,10 @@ def test_public_reader_item_matches_legacy_render_dict() -> None:
     row = sample_item()
     model = reader_model.from_ranking_item(row)
     assert model.to_render_dict() == reader_text.build_public_item(row)
+    assert model.summary == model.excerpt
+    assert model.why_it_matters
+    assert model.published_at == "2026-07-02T09:00:00+00:00"
+    assert model.story_key
 
 
 def test_public_reader_item_exposes_only_public_keys() -> None:
@@ -85,11 +89,20 @@ def test_public_reader_item_preserves_original_title_only_when_distinct() -> Non
     assert same_title_model.original_title == ""
 
 
+def test_public_excerpt_sanitizes_guarded_diagnostic_words_in_source_copy() -> None:
+    row = sample_item()
+    row["reader_excerpt_ru"] = ""
+    row["source_excerpt"] = "The report reviews crypto coverage and a publication threshold."
+    payload = reader_text.build_public_item(row)
+    assert payload["excerpt"] == "The report reviews crypto reporting and a publication limit."
+
+
 def main() -> int:
     test_public_reader_item_matches_legacy_render_dict()
     test_public_reader_item_exposes_only_public_keys()
     test_public_render_dict_rejects_diagnostic_keys()
     test_public_reader_item_preserves_original_title_only_when_distinct()
+    test_public_excerpt_sanitizes_guarded_diagnostic_words_in_source_copy()
     print("reader model tests passed")
     return 0
 

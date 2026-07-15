@@ -17,10 +17,13 @@ from typing import Any
 
 from build_reader_policy import build_policy_report, item_key
 from core import SITE_DIR, VALIDATION_DIR, write_text
-from reader_shell import public_nav
+from reader_shell import public_nav, public_skip_link
 from reader_text import (
     build_public_item,
     compact_time_ru,
+    public_excerpt_ru,
+    public_item_is_fresh,
+    public_story_key,
     public_title_ru,
     reader_title_ru as shared_reader_title_ru,
     source_original_title as shared_source_original_title,
@@ -77,6 +80,11 @@ SOURCE_TODAY_CAPS = {
 
 STREAM_TODAY_CAP = 4
 GENERAL_SPECIAL_USE_STREAM = "general"
+PRIMARY_STREAMS = ("finance", "crypto-finance", "ai")
+TODAY_ITEM_LIMIT = 10
+TODAY_PRIMARY_TARGET = 7
+TODAY_SOURCE_CAP = 2
+SECONDARY_STREAM_CAP = 1
 
 STOPWORDS = {
     "the", "and", "for", "from", "with", "this", "that", "into", "over", "after", "before", "about", "news", "update", "updates",
@@ -397,6 +405,8 @@ def public_text(value: object) -> str:
         (r"\breader_safe\b", "публичный"),
         (r"\bsource_rule_status\b", "статус источника"),
         (r"\bvalidation\b", "проверка"),
+        (r"\bcoverage\b", "reporting"),
+        (r"\bthreshold\b", "limit"),
         (r"\bdraft-only\b", "подготовительный"),
         (r"\breview-only\b", "требующий проверки"),
         (r"\bscore\b", "оценка"),
@@ -432,16 +442,28 @@ def selected_items(report: dict[str, Any], policy: dict[str, Any] | None = None,
 
 
 def source_cap(item: dict[str, Any]) -> int:
-    return SOURCE_TODAY_CAPS.get(str(item.get("feed_id") or ""), 3)
+    return min(SOURCE_TODAY_CAPS.get(str(item.get("feed_id") or ""), TODAY_SOURCE_CAP), TODAY_SOURCE_CAP)
 
 
 def eligible_today_items(report: dict[str, Any], policy: dict[str, Any] | None) -> list[dict[str, Any]]:
+    reference = report.get("date")
     items = [
         item
         for item in report.get("items", [])
         if isinstance(item, dict)
         and item.get("source_rule_status") == "accepted_by_source_rules"
         and stream_slug(item) != GENERAL_SPECIAL_USE_STREAM
+        and public_item_is_fresh(item, reference, max_age_hours=48)
+        and bool(public_excerpt_ru(item))
+    ]
+    items = [
+        item
+        for item in items
+        if not (
+            stream_slug(item) == "finance"
+            and str(item.get("source_class") or "") in {"public_media", "business_media"}
+            and numeric(item.get("relevance_score")) < 0.65
+        )
     ]
     if policy is None:
         return items
@@ -449,32 +471,48 @@ def eligible_today_items(report: dict[str, Any], policy: dict[str, Any] | None) 
     return [item for item in items if item_key(item) in allowed]
 
 
-def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = 18) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = None, limit: int = TODAY_ITEM_LIMIT) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     candidates = sorted(eligible_today_items(report, policy), key=today_selection_priority, reverse=True)
     selected: list[dict[str, Any]] = []
     source_counts: Counter[str] = Counter()
     stream_counts: Counter[str] = Counter()
     capped: Counter[str] = Counter()
     skipped_stream: Counter[str] = Counter()
+    skipped_story_duplicates = 0
 
     def can_add(item: dict[str, Any]) -> bool:
-        feed_id = str(item.get("feed_id") or "unknown")
+        nonlocal skipped_story_duplicates
+        feed_id = str(item.get("feed_id") or item.get("feed_title") or "unknown")
         stream = stream_slug(item)
+        story_key = public_story_key(item)
+        matching_story = [
+            existing
+            for existing in selected
+            if public_story_key(existing) == story_key or topic_similarity(item, existing) >= 0.65
+        ]
+        if any(str(existing.get("feed_id") or existing.get("feed_title") or "unknown") == feed_id for existing in matching_story):
+            skipped_story_duplicates += 1
+            return False
         if source_counts[feed_id] >= source_cap(item):
             capped[feed_id] += 1
             return False
-        if stream_counts[stream] >= STREAM_TODAY_CAP:
+        stream_cap = STREAM_TODAY_CAP if stream in PRIMARY_STREAMS else SECONDARY_STREAM_CAP
+        if stream_counts[stream] >= stream_cap:
             skipped_stream[stream] += 1
             return False
         return True
 
     def add(item: dict[str, Any]) -> None:
         selected.append(item)
-        source_counts[str(item.get("feed_id") or "unknown")] += 1
+        source_counts[str(item.get("feed_id") or item.get("feed_title") or "unknown")] += 1
         stream_counts[stream_slug(item)] += 1
 
     seen_ids: set[str] = set()
-    for stream in sorted({stream_slug(item) for item in candidates}):
+
+    def unique_story_count(rows: list[dict[str, Any]]) -> int:
+        return len(cluster_items(rows, limit=limit))
+
+    for stream in PRIMARY_STREAMS:
         stream_items = [item for item in candidates if stream_slug(item) == stream]
         if not stream_items:
             continue
@@ -484,7 +522,20 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
             seen_ids.add(item_key(first))
 
     for item in candidates:
-        if len(selected) >= limit:
+        primary_selected = [row for row in selected if stream_slug(row) in PRIMARY_STREAMS]
+        if unique_story_count(primary_selected) >= min(limit, TODAY_PRIMARY_TARGET):
+            break
+        if stream_slug(item) not in PRIMARY_STREAMS:
+            continue
+        key = item_key(item)
+        if key in seen_ids:
+            continue
+        if can_add(item):
+            add(item)
+            seen_ids.add(key)
+
+    for item in candidates:
+        if unique_story_count(selected) >= limit:
             break
         key = item_key(item)
         if key in seen_ids:
@@ -493,7 +544,11 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
             add(item)
             seen_ids.add(key)
 
-    selected = sorted(selected, key=today_selection_priority, reverse=True)
+    selected = sorted(
+        selected,
+        key=lambda item: (stream_slug(item) in PRIMARY_STREAMS, today_selection_priority(item)),
+        reverse=True,
+    )
     diagnostics = {
         "source_counts_by_stream": dict(Counter(stream_slug(item) for item in report.get("items", []) if isinstance(item, dict))),
         "eligible_reader_safe_by_stream": dict(Counter(stream_slug(item) for item in candidates)),
@@ -501,8 +556,12 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
         "selected_today_by_source": dict(source_counts),
         "source_caps": SOURCE_TODAY_CAPS,
         "stream_cap": STREAM_TODAY_CAP,
+        "secondary_stream_cap": SECONDARY_STREAM_CAP,
+        "primary_streams": list(PRIMARY_STREAMS),
+        "primary_target": TODAY_PRIMARY_TARGET,
         "capped_sources": dict(capped),
         "stream_cap_skips": dict(skipped_stream),
+        "story_duplicate_skips": skipped_story_duplicates,
         "ranking_capped_rows": (report.get("ranking_diagnostics") or {}).get("capped_rows", {}),
         "downweighted_sources": downweighted_sources(report),
     }
@@ -600,7 +659,14 @@ def cluster_items(items: list[dict[str, Any]], limit: int = 12) -> list[list[dic
                 break
         else:
             clusters.append([item])
-    clusters = sorted(clusters, key=lambda cluster: numeric(cluster[0].get("final_score")), reverse=True)
+    clusters = sorted(
+        clusters,
+        key=lambda cluster: (
+            stream_slug(cluster[0]) in PRIMARY_STREAMS,
+            today_selection_priority(cluster[0]),
+        ),
+        reverse=True,
+    )
     return clusters[:limit]
 
 
@@ -626,11 +692,12 @@ def cluster_materials(cluster: list[dict[str, Any]]) -> str:
     return '<ul class="cluster-materials">' + "".join(rows) + "</ul>"
 
 
-def item_source_action(item: dict[str, Any], text: str = "Открыть источник") -> str:
+def item_source_action(item: dict[str, Any], text: str = "Открыть источник", css_class: str = "") -> str:
     url = item.get("url") or ""
     if not url:
         return esc(text)
-    return f'<a href="{esc(public_href(url))}">{esc(text)}</a>'
+    class_attr = f' class="{esc(css_class)}"' if css_class else ""
+    return f'<a{class_attr} href="{esc(public_href(url))}">{esc(text)}</a>'
 
 
 def confirmation_level(item: dict[str, Any]) -> str:
@@ -698,7 +765,16 @@ def monitoring(item: dict[str, Any]) -> str:
     )
 
 
-def card_for_item(item: dict[str, Any]) -> str:
+def related_sources_line(cluster: list[dict[str, Any]]) -> str:
+    links: list[str] = []
+    for item in cluster[1:4]:
+        links.append(item_source_action(item, public_text(source_name(item)), "reader-action-link"))
+    if not links:
+        return ""
+    return f'\n    <p class="today-related-sources">Другие источники: {"; ".join(links)}</p>'
+
+
+def card_for_item(item: dict[str, Any], cluster: list[dict[str, Any]] | None = None) -> str:
     public_item = build_public_item(item)
     title = public_item["title"]
     excerpt = public_item["excerpt"]
@@ -708,12 +784,15 @@ def card_for_item(item: dict[str, Any]) -> str:
     if original and original != title:
         original_block = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
     excerpt_block = f'\n    <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
+    why = public_item["why_it_matters"]
+    why_block = f'\n    <p class="news-why"><strong>Почему важно:</strong> {esc(why)}</p>' if why else ""
+    related_block = related_sources_line(cluster or [item])
     return f"""<article class="card signal-card signal-card--reader">
   <span class="news-stream-marker stream-dot--{esc(stream_slug(item))}" aria-hidden="true"></span>
   <div class="signal-card-body">
-    <h3>{item_source_action(item, title)}</h3>{excerpt_block}
-    <p class="news-meta">{esc(source_line)}</p>{original_block}
-    <p class="news-source-link">{item_source_action(item)}</p>
+    <h3>{item_source_action(item, title, "reader-title-link")}</h3>{excerpt_block}{why_block}
+    <p class="news-meta">{esc(source_line)}</p>{original_block}{related_block}
+    <p class="news-source-link">{item_source_action(item, css_class="reader-action-link")}</p>
   </div>
 </article>"""
 
@@ -891,24 +970,40 @@ def digest_section(title: str, body: str) -> str:
     return f'<section class="panel digest-section"><h2>{esc(title)}</h2>{body}</section>'
 
 
-def today_highlight_row(item: dict[str, Any]) -> str:
+def today_highlight_row(cluster: list[dict[str, Any]]) -> str:
+    item = cluster[0]
     public_item = build_public_item(item)
     excerpt = public_item["excerpt"]
-    excerpt_line = f'\n      <p>{esc(excerpt)}</p>' if excerpt else ""
+    excerpt_line = f'\n      <p class="news-excerpt">{esc(excerpt)}</p>' if excerpt else ""
+    why = public_item["why_it_matters"]
+    why_line = f'\n      <p class="news-why"><strong>Почему важно:</strong> {esc(why)}</p>' if why else ""
+    original = public_item["original_title"]
+    original_line = f'\n      <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>' if original else ""
+    related_line = related_sources_line(cluster)
     return f"""<li>
-      <h3>{item_source_action(item, public_item["title"])}</h3>
-      <p class="news-meta">{esc(public_item["meta"])}</p>{excerpt_line}
+      <h3>{item_source_action(item, public_item["title"], "reader-title-link")}</h3>
+      <p class="news-meta">{esc(public_item["meta"])}</p>{excerpt_line}{why_line}{original_line}
+      <p class="news-source-link">{item_source_action(item, css_class="reader-action-link")}</p>{related_line}
     </li>"""
 
 
-def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 5) -> str:
-    rows = "\n".join(today_highlight_row(cluster[0]) for cluster in clusters[:limit])
+def today_highlights(clusters: list[list[dict[str, Any]]], limit: int = 1) -> str:
+    rows = "\n".join(today_highlight_row(cluster) for cluster in clusters[:limit])
     if not rows:
         rows = '<li><h3>Нет публичных сигналов</h3><p>Сегодня нет материалов для отображения.</p></li>'
-    return f"""<section class="panel today-highlights" aria-label="Главное за сегодня">
-  <h2>Главное за сегодня</h2>
-  <p class="today-lede">Короткая подборка текущих публичных сообщений.</p>
+    return f"""<section class="panel today-highlights today-main-story" aria-label="Главная история">
+  <h2>Главная история</h2>
   <ol class="today-highlight-list">{rows}</ol>
+</section>"""
+
+
+def today_secondary_items(clusters: list[list[dict[str, Any]]]) -> str:
+    if not clusters:
+        return ""
+    cards = "\n".join(card_for_item(cluster[0], cluster) for cluster in clusters)
+    return f"""<section class="today-secondary-list" aria-label="Другие важные события">
+  <h2>Другие важные события</h2>
+  <div class="reader-card-list">{cards}</div>
 </section>"""
 
 
@@ -953,20 +1048,22 @@ def compact_source_note(items: list[dict[str, Any]], policy: dict[str, Any]) -> 
 def autonomous_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], auto_report: dict[str, Any], gate: DigestGate, diagnostics: dict[str, Any]) -> str:
     del report, auto_report, gate, diagnostics
     clusters = cluster_items(items)
+    representatives = [cluster[0] for cluster in clusters]
     return "\n".join([
-        today_highlights(clusters),
-        grouped_today_cards(items),
-        compact_source_note(items, policy),
+        today_highlights(clusters[:1]),
+        today_secondary_items(clusters[1:]),
+        compact_source_note(representatives, policy),
     ])
 
 
 def fallback_digest(report: dict[str, Any], policy: dict[str, Any], items: list[dict[str, Any]], gate: DigestGate) -> str:
     del report, gate
     clusters = cluster_items(items)
-    blocks = [today_highlights(clusters)]
-    if items:
-        blocks.append(grouped_today_cards(items))
-    blocks.append(compact_source_note(items, policy))
+    representatives = [cluster[0] for cluster in clusters]
+    blocks = [today_highlights(clusters[:1])]
+    if len(representatives) > 1:
+        blocks.append(today_secondary_items(clusters[1:]))
+    blocks.append(compact_source_note(representatives, policy))
     return "\n".join(blocks)
 
 
@@ -999,13 +1096,14 @@ def render(report: dict[str, Any], policy: dict[str, Any] | None = None, auto_re
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+  {public_skip_link()}
   <header class="masthead compact">
     <a class="backlink" href="index.html">News Dispatch</a>
     {public_nav(current="today")}
     <p class="eyebrow">{mode_label} · {esc(report.get("date"))}</p>
     <h1>{h1}</h1>
   </header>
-  <main>
+  <main id="main-content">
     {digest_body}
   </main>
 </body>
