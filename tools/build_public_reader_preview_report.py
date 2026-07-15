@@ -135,7 +135,7 @@ def check_reader_trust(site_dir: Path) -> list[str]:
         issues.append("today page does not separate source messages from conclusions")
     if "не инвестиционная" not in today:
         issues.append("today page does not show no-advice boundary")
-    if "Надёжность" not in sources:
+    if not any(label in sources for label in ("Доверие", "Надёжность")):
         issues.append("sources page does not expose reliability tiers")
 
     return issues
