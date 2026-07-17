@@ -72,6 +72,12 @@ jobs:
         continue-on-error: true
         run: python3 tools/validate_public_reader_content_quality.py
 
+      - name: Build seven-day reader quality report
+        id: quality-report
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        run: python3 tools/build_public_reader_quality_report.py
+
       - name: Capture public reader screenshots
         id: screenshot_capture
         if: steps.build.outcome == 'success'
@@ -89,6 +95,8 @@ jobs:
           test -f validation/reader-policy-latest.json
           test -f validation/reader-model-latest.json
           test -f validation/public-reader-content-quality-latest.json
+          test -f validation/public-reader-quality-latest.json
+          test -f validation/public-reader-quality-latest.md
           test -f validation/public-reader-preview-screenshots/index.html
           test -f validation/public-reader-preview-screenshots/manifest.json
           test -f validation/public-reader-preview-screenshots/home-desktop.png
@@ -126,6 +134,8 @@ jobs:
             validation/reader-policy-latest.json
             validation/reader-model-latest.json
             validation/public-reader-content-quality-latest.json
+            validation/public-reader-quality-latest.json
+            validation/public-reader-quality-latest.md
           if-no-files-found: error
           retention-days: 14
 
@@ -169,6 +179,7 @@ jobs:
             steps.public_html.outcome == 'failure' ||
             steps.preview-qa.outcome == 'failure' ||
             steps.content-quality.outcome == 'failure' ||
+            steps.quality-report.outcome == 'failure' ||
             steps.screenshot_capture.outcome == 'failure' ||
             steps.preview_files.outcome == 'failure' ||
             steps.upload_site.outcome == 'failure' ||

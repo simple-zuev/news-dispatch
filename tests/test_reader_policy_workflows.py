@@ -61,8 +61,10 @@ def test_pages_uses_live_site_orchestrator() -> None:
     assert "run: python3 tools/privacy_scan.py" in text
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
     assert "run: python3 tools/validate_public_reader_freshness.py" in text
-    assert "uses: actions/cache/restore@v4" in text
-    assert "uses: actions/cache/save@v4" in text
+    assert "run: python3 tools/build_public_reader_quality_report.py" in text
+    assert "uses: actions/cache/restore@v6" in text
+    assert "uses: actions/cache/save@v6" in text
+    assert "name: public-reader-quality-report" in text
     assert "path: validation/public-reader-history-latest.json" in text
     assert "public-reader-history-${{ github.run_id }}" in text
     assert_ordered(
@@ -74,6 +76,7 @@ def test_pages_uses_live_site_orchestrator() -> None:
             "run: python3 tools/privacy_scan.py",
             "run: python3 tools/validate_public_reader_content_quality.py",
             "run: python3 tools/validate_public_reader_freshness.py",
+            "run: python3 tools/build_public_reader_quality_report.py",
             "uses: actions/configure-pages",
         ],
     )
@@ -112,6 +115,7 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     assert "run: python3 tools/build_public_reader_preview_report.py" in text
     assert 'commit-sha "${{ github.event.pull_request.head.sha || github.sha }}"' in text
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
+    assert "run: python3 tools/build_public_reader_quality_report.py" in text
     assert "run: python3 tools/capture_public_reader_screenshots.py" in text
     assert "name: Verify preview artifact files" in text
     assert "if: always() && steps.build.outcome == 'success'" in text
@@ -123,6 +127,8 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     assert "validation/reader-policy-latest.json" in text
     assert "validation/reader-model-latest.json" in text
     assert "validation/public-reader-content-quality-latest.json" in text
+    assert "validation/public-reader-quality-latest.json" in text
+    assert "validation/public-reader-quality-latest.md" in text
     assert "validation/public-reader-preview-screenshots/index.html" in text
     assert "validation/public-reader-preview-screenshots/sources-mobile.png" in text
     assert text.count("if-no-files-found: error") == 3
@@ -137,6 +143,7 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
         "public_html",
         "preview-qa",
         "content-quality",
+        "quality-report",
         "screenshot_capture",
         "preview_files",
         "upload_site",

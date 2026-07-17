@@ -51,7 +51,7 @@ jobs:
 
       - name: Restore two-week reader history
         id: reader_history
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: validation/public-reader-history-latest.json
           key: public-reader-history-${{ github.run_id }}
@@ -76,11 +76,27 @@ jobs:
       - name: Validate live reader freshness
         run: python3 tools/validate_public_reader_freshness.py
 
+      - name: Build seven-day reader quality report
+        run: python3 tools/build_public_reader_quality_report.py
+
+      - name: Publish reader quality summary
+        run: cat validation/public-reader-quality-latest.md >> "$GITHUB_STEP_SUMMARY"
+
       - name: Save two-week reader history
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: validation/public-reader-history-latest.json
           key: ${{ steps.reader_history.outputs.cache-primary-key }}
+
+      - name: Upload reader quality report
+        uses: actions/upload-artifact@v7
+        with:
+          name: public-reader-quality-report
+          path: |
+            validation/public-reader-quality-latest.json
+            validation/public-reader-quality-latest.md
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Configure Pages
         uses: actions/configure-pages@v6
