@@ -20,6 +20,7 @@ MAX_ITEMS = 1200
 
 RETAINED_KEYS = {
     "feed_id",
+    "publisher_id",
     "feed_title",
     "configured_stream",
     "routed_stream",

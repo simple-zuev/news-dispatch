@@ -106,6 +106,19 @@ def test_tomshardware_rejects_discount_bundles_but_keeps_product_availability() 
     ) == "accepted_by_source_rules"
 
 
+def test_fourth_wave_sources_keep_substance_and_reject_noise() -> None:
+    feeds = feeds_by_id()
+    field_mag = feeds["field-mag-gear"]
+    quanta = feeds["quanta-magazine"]
+    science_news = feeds["science-news"]
+    assert status(field_mag, "The Best Ultralight Tents, Tested and Reviewed") == "accepted_by_source_rules"
+    assert status(field_mag, "The Ultimate Travel Guide to a Mountain Resort Hotel") == "rejected_by_exclude_keywords"
+    assert status(quanta, "Researchers Reveal the Power of Quantum Proofs") == "accepted_by_source_rules"
+    assert status(quanta, "Subscribe to the Quanta podcast newsletter") == "rejected_by_exclude_keywords"
+    assert status(science_news, "Genes offer new clues to stopping Huntington's disease") == "accepted_by_source_rules"
+    assert status(science_news, "Math puzzle: a sequence of odd events") == "rejected_by_exclude_keywords"
+
+
 def main() -> int:
     test_mskagency_transport_keeps_city_mobility_and_rejects_regional_noise()
     test_govorit_moskva_keeps_city_services_and_rejects_incident_noise()
@@ -115,6 +128,7 @@ def main() -> int:
     test_mskagency_sections_share_one_publisher_cap()
     test_third_wave_sources_keep_useful_design_and_moscow_items()
     test_tomshardware_rejects_discount_bundles_but_keeps_product_availability()
+    test_fourth_wave_sources_keep_substance_and_reject_noise()
     print("source expansion quality tests passed")
     return 0
 

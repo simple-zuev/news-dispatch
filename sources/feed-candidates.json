@@ -343,6 +343,30 @@
       "stream": "moscow-city",
       "status": "promoted-to-live-source",
       "rationale": "The publisher's official RSS page links this city Atom feed; live probe returned HTTP 200, valid Atom and 20 current items on 2026-07-17. Promoted on probation with Moscow and urban-culture filters."
+    },
+    {
+      "id": "field-mag-gear-candidate",
+      "title": "Field Mag",
+      "url": "https://www.fieldmag.com/feed",
+      "stream": "gear-style-edc",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 100 current items on 2026-07-17. Promoted on probation with strict tested-gear, material and design filters plus travel and destination exclusions."
+    },
+    {
+      "id": "quanta-magazine-candidate",
+      "title": "Quanta Magazine",
+      "url": "https://www.quantamagazine.org/feed/",
+      "stream": "science-discovery",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and five current explanatory science items on 2026-07-17. Promoted on probation as an independent source for mathematics, physics, biology and theoretical computer science."
+    },
+    {
+      "id": "science-news-candidate",
+      "title": "Science News",
+      "url": "https://www.sciencenews.org/feed/",
+      "stream": "science-discovery",
+      "status": "promoted-to-live-source",
+      "rationale": "The publisher documents its RSS feed; live probe returned HTTP 200, valid RSS and 20 current science items on 2026-07-17. Promoted on probation with puzzle, opinion and promotional exclusions."
     }
   ]
 }
