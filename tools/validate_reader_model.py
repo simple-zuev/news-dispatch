@@ -130,6 +130,8 @@ def validate_model(model: PublicReaderItem) -> list[str]:
     title = model.title.strip()
     if not title:
         issues.append("title is empty")
+    elif not has_cyrillic(title):
+        issues.append("title is not Russian")
     if norm(title) in GENERIC_TITLES or is_generic_source_topic(title):
         issues.append(f"title is generic: {title}")
     if not model.summary.strip():

@@ -34,6 +34,7 @@ from render_site import output_slug
 
 RANKING_PATH = ROOT / "validation" / "daily-radar-ranking-latest.json"
 POLICY_PATH = ROOT / "validation" / "reader-policy-latest.json"
+HISTORY_PATH = ROOT / "validation" / "public-reader-history-latest.json"
 NEWS_DIR = SITE_DIR / "news"
 DIGESTS_DIR = SITE_DIR / "digests"
 STREAM_ORDER = [
@@ -124,30 +125,49 @@ def accepted_by_policy(item: dict[str, Any], safe_keys: set[str]) -> bool:
 
 def dedupe_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen_urls: set[str] = set()
-    result: list[dict[str, Any]] = []
+    clusters: list[list[dict[str, Any]]] = []
     for item in sorted(items, key=item_sort_key, reverse=True):
         url_key = str(item.get("url") or "").strip().lower()
-        if (url_key and url_key in seen_urls) or any(public_items_same_story(item, existing) for existing in result):
+        if url_key and url_key in seen_urls:
             continue
         if url_key:
             seen_urls.add(url_key)
-        result.append(item)
+        for cluster in clusters:
+            if public_items_same_story(item, cluster[0]):
+                cluster.append(item)
+                break
+        else:
+            clusters.append([item])
+
+    result: list[dict[str, Any]] = []
+    for cluster in clusters:
+        representative = dict(cluster[0])
+        related = cluster[1:]
+        if related:
+            representative["_public_related_items"] = related
+        result.append(representative)
     return result
 
 
-def feed_items(report: dict[str, Any], policy: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+def feed_items(
+    report: dict[str, Any],
+    policy: dict[str, Any],
+    retained_items: list[dict[str, Any]] | None = None,
+) -> dict[str, list[dict[str, Any]]]:
     safe_keys = reader_safe_keys(policy)
     reference = report.get("date")
     grouped: dict[str, list[dict[str, Any]]] = {stream: [] for stream in STREAM_ORDER}
-    for item in report.get("items", []):
+    candidates = [(item, safe_keys, False) for item in report.get("items", [])]
+    candidates.extend((item, set(), True) for item in (retained_items or []))
+    for item, item_safe_keys, retained in candidates:
         if not isinstance(item, dict):
             continue
         stream = item_stream(item)
         if stream not in grouped:
             continue
-        if not accepted_by_policy(item, safe_keys):
+        if not retained and not accepted_by_policy(item, item_safe_keys):
             continue
-        if not public_item_is_fresh(item, reference, max_age_hours=24 * 7):
+        if not public_item_is_fresh(item, reference, max_age_hours=24 * 14):
             continue
         if not public_excerpt_ru(item):
             continue
@@ -167,6 +187,28 @@ def source_link(item: dict[str, Any], text: str, css_class: str = "") -> str:
     return f'<a{class_attr} href="{esc(public_href(url))}">{esc(text)}</a>'
 
 
+def related_sources_line(item: dict[str, Any]) -> str:
+    related = item.get("_public_related_items")
+    if not isinstance(related, list):
+        return ""
+    primary_source = str(item.get("feed_title") or item.get("feed_id") or "").strip()
+    links: list[str] = []
+    seen_sources = {primary_source}
+    for row in related:
+        if not isinstance(row, dict):
+            continue
+        source = str(row.get("feed_title") or row.get("feed_id") or "Публичный источник").strip()
+        if source in seen_sources:
+            continue
+        seen_sources.add(source)
+        links.append(source_link(row, source, "reader-action-link"))
+        if len(links) == 3:
+            break
+    if not links:
+        return ""
+    return f'\n    <p class="news-related-sources">Другие источники: {"; ".join(links)}</p>'
+
+
 def feed_item_card(item: dict[str, Any]) -> str:
     public_item = build_public_item(item, stream=item_stream(item))
     title = public_item["title"]
@@ -179,13 +221,14 @@ def feed_item_card(item: dict[str, Any]) -> str:
     original_line = ""
     if original and original != title:
         original_line = f'\n    <details class="news-original"><summary>Оригинал</summary><p>{esc(original)}</p></details>'
+    related_line = related_sources_line(item)
     slug = item_stream(item)
     return f"""<article class="news-item news-item--text">
   <span class="news-stream-marker stream-dot--{esc(slug)}" aria-hidden="true"></span>
   <div class="news-item-body">
     <p class="news-meta">{esc(meta)}</p>
     <h3>{source_link(item, title, "reader-title-link")}</h3>{excerpt_line}{why_line}
-    <p class="news-source-link">{source_link(item, "Открыть источник", "reader-action-link")}</p>{original_line}
+    <p class="news-source-link">{source_link(item, "Открыть источник", "reader-action-link")}</p>{original_line}{related_line}
   </div>
 </article>"""
 
@@ -249,7 +292,23 @@ def news_index(grouped: dict[str, list[dict[str, Any]]]) -> str:
 
 
 def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
-    cards = "\n".join(feed_item_card(item) for item in rows[:50]) or empty_feed_card()
+    limited_rows = rows[:50]
+    days: dict[str, list[dict[str, Any]]] = {}
+    for item in limited_rows:
+        day = str(item.get("published") or item.get("date") or "")[:10]
+        days.setdefault(day or "unknown", []).append(item)
+    day_links = "".join(
+        f'<a href="#day-{esc(day)}">{esc(format_public_time_ru(day) if day != "unknown" else "Без даты")}</a>'
+        for day in days
+    )
+    archive_nav = f'<nav class="news-archive-nav" aria-label="Дни архива">{day_links}</nav>' if len(days) > 1 else ""
+    day_sections = "\n".join(
+        f'<section class="news-day-group" id="day-{esc(day)}"><h2>{esc(format_public_time_ru(day) if day != "unknown" else "Без даты")}</h2>'
+        + "\n".join(feed_item_card(item) for item in day_rows)
+        + "</section>"
+        for day, day_rows in days.items()
+    )
+    cards = day_sections or empty_feed_card()
     return f"""<!doctype html>
 <html lang="ru">
 {head(f"{stream_label(stream)} — лента новостей", f"Хронологическая лента: {stream_label(stream)}.")}
@@ -259,10 +318,11 @@ def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
     <a class="backlink" href="index.html">Ленты новостей</a>
     {top_nav("../")}
     <h1>{esc(stream_label(stream))}</h1>
-    <p class="lede">Новейшие материалы сверху. Показано до 50 строк.</p>
+    <p class="lede">Материалы за последние 14 дней, новейшие сверху. Показано до 50 строк.</p>
   </header>
   <main id="main-content">
-    <section class="news-list">{cards}</section>
+    {archive_nav}
+    <section class="news-list news-list--archive">{cards}</section>
   </main>
 </body>
 </html>"""
@@ -330,7 +390,9 @@ def digests_index(digests: list[dict[str, str]]) -> str:
 def build() -> None:
     report = load_json(RANKING_PATH)
     policy = load_json(POLICY_PATH)
-    grouped = feed_items(report, policy)
+    history = load_json(HISTORY_PATH)
+    retained_items = [item for item in history.get("items", []) if isinstance(item, dict)]
+    grouped = feed_items(report, policy, retained_items)
     NEWS_DIR.mkdir(parents=True, exist_ok=True)
     DIGESTS_DIR.mkdir(parents=True, exist_ok=True)
     (NEWS_DIR / "index.html").write_text(news_index(grouped), encoding="utf-8")

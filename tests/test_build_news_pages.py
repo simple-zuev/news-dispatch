@@ -106,6 +106,16 @@ def assert_public_clean(html: str) -> None:
     assert_public_html_clean(html)
 
 
+def test_public_scan_distinguishes_utc_from_dutch_text() -> None:
+    assert_public_clean("BitPay secures Dutch licensing")
+    try:
+        assert_public_clean("Обновлено 12:00 UTC")
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("standalone UTC marker must remain forbidden")
+
+
 def test_public_time_formatter_uses_reader_dates() -> None:
     today = datetime.now(build_news_pages.PUBLIC_TZ).date()
     assert build_news_pages.format_public_time_ru(f"{today.isoformat()}T10:10:12+03:00") == "Сегодня, 10:10"
@@ -157,7 +167,7 @@ def test_news_stream_page_is_reader_first_and_public_clean() -> None:
     assert_public_clean(html)
 
 
-def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
+def test_news_stream_replaces_non_useful_fallback_with_source_detail() -> None:
     rows = [
         ranking_item(
             "no-useful-excerpt",
@@ -167,8 +177,9 @@ def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
     assert "news-excerpt" in html
-    assert "По сообщению FCA, опубликовано изменение правил" in html
-    assert "The regulator published a public update" not in html
+    assert "Кратко по сообщению FCA" in html
+    assert "The regulator published a public update" in html
+    assert "опубликовано изменение правил" not in html
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
     assert "Короткое сообщение источника" not in html
@@ -186,8 +197,9 @@ def test_news_stream_uses_source_excerpt_after_generated_fallback() -> None:
         )
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
-    assert "По сообщению FCA, опубликовано изменение правил" in html
-    assert "The regulator published a public update" not in html
+    assert "Кратко по сообщению FCA" in html
+    assert "The regulator published a public update" in html
+    assert "опубликовано изменение правил" not in html
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
 
@@ -225,6 +237,10 @@ def test_feed_deduplicates_cross_source_story_wording() -> None:
         },
     )
     assert len(grouped["finance"]) == 1
+    html = build_news_pages.news_stream_page("finance", grouped["finance"])
+    assert "Другие источники:" in html
+    assert "Коммерсантъ" in html
+    assert "https://example.com/gazprom-kommersant" in html
 
 
 def test_feed_keeps_distinct_events_with_similar_templates() -> None:
@@ -283,15 +299,28 @@ def test_public_original_title_sanitizes_security_terms() -> None:
     assert "учётные данные" in html
 
 
-def test_news_feed_excludes_items_older_than_seven_days() -> None:
+def test_news_feed_keeps_two_weeks_and_excludes_older_items() -> None:
     current = ranking_item("current")
-    old = ranking_item("old")
-    old["published"] = "2026-06-20T09:00:00+00:00"
+    recent = ranking_item("recent", title="FCA publishes a separate custody consultation")
+    recent["published"] = "2026-06-19T09:00:00+00:00"
+    old = ranking_item("old", title="FCA publishes an older market notice")
+    old["published"] = "2026-06-17T08:00:00+00:00"
     grouped = build_news_pages.feed_items(
-        {"date": "2026-07-02", "items": [current, old]},
-        {"decisions": [{"item_key": "current", "decision": "reader_safe"}, {"item_key": "old", "decision": "reader_safe"}]},
+        {"date": "2026-07-02", "items": [current, recent, old]},
+        {
+            "decisions": [
+                {"item_key": "current", "decision": "reader_safe"},
+                {"item_key": "recent", "decision": "reader_safe"},
+                {"item_key": "old", "decision": "reader_safe"},
+            ]
+        },
     )
-    assert [item["item_key"] for item in grouped["crypto-finance"]] == ["current"]
+    assert [item["item_key"] for item in grouped["crypto-finance"]] == ["current", "recent"]
+    html = build_news_pages.news_stream_page("crypto-finance", grouped["crypto-finance"])
+    assert "Материалы за последние 14 дней" in html
+    assert "news-archive-nav" in html
+    assert 'id="day-2026-07-02"' in html
+    assert 'id="day-2026-06-19"' in html
 
 
 def test_news_empty_state_is_simple_russian_copy() -> None:
@@ -354,19 +383,20 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
 
 
 def main() -> int:
+    test_public_scan_distinguishes_utc_from_dutch_text()
     test_public_time_formatter_uses_reader_dates()
     test_public_news_meta_is_reader_facing()
     test_feed_items_include_non_selected_safe_items()
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
-    test_news_stream_omits_non_useful_fallback_excerpt()
+    test_news_stream_replaces_non_useful_fallback_with_source_detail()
     test_news_stream_uses_source_excerpt_after_generated_fallback()
     test_feed_deduplicates_identical_reader_story_titles()
     test_feed_deduplicates_cross_source_story_wording()
     test_feed_keeps_distinct_events_with_similar_templates()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
-    test_news_feed_excludes_items_older_than_seven_days()
+    test_news_feed_keeps_two_weeks_and_excludes_older_items()
     test_news_empty_state_is_simple_russian_copy()
     test_news_and_digest_pages_are_written_to_configured_output()
     print("news feed page tests passed")

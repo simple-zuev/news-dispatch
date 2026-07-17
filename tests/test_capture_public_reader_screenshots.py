@@ -43,6 +43,12 @@ def test_browser_command_is_deterministic() -> None:
     assert command[-1] == "about:blank"
 
 
+def test_capture_checks_public_navigation_overflow() -> None:
+    source = MODULE_PATH.read_text(encoding="utf-8")
+    assert "top navigation overflows its mobile container" in source
+    assert "source rubric navigation overflows its mobile container" in source
+
+
 def test_gallery_and_manifest_include_every_capture() -> None:
     records = [
         screenshots.ScreenshotRecord(
@@ -116,6 +122,7 @@ def test_capture_retries_once_with_a_clean_profile() -> None:
 def main() -> int:
     test_reader_routes_and_viewports_are_complete()
     test_browser_command_is_deterministic()
+    test_capture_checks_public_navigation_overflow()
     test_gallery_and_manifest_include_every_capture()
     test_complete_png_requires_final_iend_chunk()
     test_capture_retries_once_with_a_clean_profile()

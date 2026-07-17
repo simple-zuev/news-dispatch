@@ -80,6 +80,32 @@ def test_mskagency_sections_share_one_publisher_cap() -> None:
     assert status(culture, "Тренер футбольного клуба рассказал о задачах на сезон") == "rejected_by_exclude_keywords"
 
 
+def test_third_wave_sources_keep_useful_design_and_moscow_items() -> None:
+    feeds = feeds_by_id()
+    core77 = feeds["core77-design"]
+    ria_moscow = feeds["ria-moscow-city"]
+    big_city = feeds["big-city-moscow"]
+    assert status(core77, "Striking Chinese Industrial Design: Aulumu's M10 Powerbank") == "accepted_by_source_rules"
+    assert status(core77, "Willem de Haan's Highrise Campsite") == "rejected_by_exclude_keywords"
+    assert status(ria_moscow, "Верхний Люблинский пруд на юго-востоке Москвы привели в порядок") == "accepted_by_source_rules"
+    assert status(ria_moscow, "На площадке Театрального бульвара выступят звезды балета Большого театра") == "accepted_by_source_rules"
+    assert status(ria_moscow, "На ракете Союз-2.1а отправили корабль к МКС") == "rejected_by_exclude_keywords"
+    assert status(big_city, "На Саввинской набережной в Москве начался снос исторического корпуса фабрики") == "accepted_by_source_rules"
+    assert status(big_city, "Посольство Черногории изменило правила выдачи виз") == "rejected_by_exclude_keywords"
+
+
+def test_tomshardware_rejects_discount_bundles_but_keeps_product_availability() -> None:
+    feed = feeds_by_id()["tomshardware"]
+    assert status(
+        feed,
+        "Get AMD Ryzen 7 7700X3D with RAM and a motherboard for $450 — save 31% on this bundle",
+    ) == "rejected_by_exclude_keywords"
+    assert status(
+        feed,
+        "AMD Ryzen 7 7700X3D is exclusive to Newegg in North America until Q4",
+    ) == "accepted_by_source_rules"
+
+
 def main() -> int:
     test_mskagency_transport_keeps_city_mobility_and_rejects_regional_noise()
     test_govorit_moskva_keeps_city_services_and_rejects_incident_noise()
@@ -87,6 +113,8 @@ def main() -> int:
     test_second_wave_official_sources_keep_policy_and_reject_housekeeping()
     test_second_wave_editorial_sources_keep_substance_and_reject_promotions()
     test_mskagency_sections_share_one_publisher_cap()
+    test_third_wave_sources_keep_useful_design_and_moscow_items()
+    test_tomshardware_rejects_discount_bundles_but_keeps_product_availability()
     print("source expansion quality tests passed")
     return 0
 

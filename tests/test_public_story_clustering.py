@@ -50,6 +50,22 @@ def test_same_publisher_related_updates_are_not_merged() -> None:
     assert not public_items_same_story(first, second)
 
 
+def test_identical_specific_reader_titles_are_one_story() -> None:
+    first = item("First source wording", "publisher", "tech-hardware-software")
+    second = item("Second source wording", "publisher", "tech-hardware-software")
+    first["reader_title_ru"] = "AMD Ryzen 7 7700X3D доступен только в Newegg за $329"
+    second["reader_title_ru"] = "AMD Ryzen 7 7700X3D доступен только в Newegg за $329"
+    assert public_items_same_story(first, second)
+
+
+def test_identical_reader_titles_in_different_streams_stay_separate() -> None:
+    first = item("First wording", "publisher-one", "finance")
+    second = item("Second wording", "publisher-two", "ai")
+    first["reader_title_ru"] = "Компания представила новую платформу"
+    second["reader_title_ru"] = "Компания представила новую платформу"
+    assert not public_items_same_story(first, second)
+
+
 def test_identical_url_is_always_one_story() -> None:
     url = "https://example.com/story"
     assert public_items_same_story(item("First wording", "one", url=url), item("Second wording", "two", url=url))
@@ -59,6 +75,8 @@ def main() -> int:
     test_cross_source_duplicates_are_clustered()
     test_related_but_distinct_city_events_stay_separate()
     test_same_publisher_related_updates_are_not_merged()
+    test_identical_specific_reader_titles_are_one_story()
+    test_identical_reader_titles_in_different_streams_stay_separate()
     test_identical_url_is_always_one_story()
     print("public story clustering tests passed")
     return 0

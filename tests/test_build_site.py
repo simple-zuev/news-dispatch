@@ -374,10 +374,10 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         assert title in html
 
 
-def test_homepage_builds_russian_summary_when_source_excerpt_is_english() -> None:
+def test_homepage_attributes_english_source_detail_in_russian() -> None:
     html = homepage_html()
-    assert "По сообщению" in html
-    assert "The source published a short English update" not in html
+    assert "Кратко по сообщению" in html
+    assert "The source published a short English update" in html
     assert "Короткое сообщение источника" not in html
     assert "Источник описывает тему" not in html
 
@@ -399,6 +399,8 @@ def test_old_home_hero_css_is_removed() -> None:
         assert selector in css
     assert ".digest-list-card h3 a {\n  color: var(--ink);\n  text-decoration: none;" in css
     assert ".news-item h3 a {\n  color: inherit;\n  text-decoration: none;" in css
+    assert "grid-template-columns: repeat(2, max-content);" in css
+    assert ".sources-rubrics .home-rubric-list" in css
 
 
 def test_public_builders_share_sources_navigation_and_skip_reader_css() -> None:
@@ -441,11 +443,25 @@ def test_mobile_homepage_keeps_reader_news_visible() -> None:
     assert selector not in css
     assert "@media (max-width: 360px)" in css
     assert ".home-header .home-nav" in css
-    assert "overflow-x: auto;" in css
-    assert "overscroll-behavior-x: contain;" in css
+    assert "grid-template-columns: repeat(2, max-content);" in css
+    assert "overflow: visible;" in css
+    assert "flex-wrap: wrap;" in css
     assert "white-space: nowrap;" in css
     assert "width: min(100% - 32px, 1180px);" in css
     assert "overflow-x: hidden;" not in css
+
+
+def test_two_week_archive_controls_are_compact_and_mobile_safe() -> None:
+    css = (ROOT / "site" / "styles" / "main.css").read_text(encoding="utf-8")
+    for selector in [
+        ".news-archive-nav",
+        ".news-day-group",
+        ".news-related-sources",
+        ".today-related-sources",
+    ]:
+        assert selector in css
+    assert "scrollbar-width: none;" in css
+    assert "scroll-margin-top: 12px;" in css
 
 
 def test_reader_sections_accept_main_with_accessibility_id() -> None:
@@ -472,11 +488,12 @@ def main() -> int:
     test_homepage_template_matches_public_reader_blocks()
     test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
-    test_homepage_builds_russian_summary_when_source_excerpt_is_english()
+    test_homepage_attributes_english_source_detail_in_russian()
     test_old_home_hero_css_is_removed()
     test_public_builders_share_sources_navigation_and_skip_reader_css()
     test_enhancement_keeps_the_reader_brand()
     test_mobile_homepage_keeps_reader_news_visible()
+    test_two_week_archive_controls_are_compact_and_mobile_safe()
     test_reader_sections_accept_main_with_accessibility_id()
     print("build_site regression tests passed")
     return 0

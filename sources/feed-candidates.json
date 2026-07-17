@@ -319,6 +319,30 @@
       "stream": "ai",
       "status": "rejected-410",
       "rationale": "The previously documented Microsoft AI RSS endpoint returned HTTP 410 during the 2026-07-16 probe."
+    },
+    {
+      "id": "core77-design-candidate",
+      "title": "Core77",
+      "url": "https://www.core77.com/blog/rss.xml",
+      "stream": "gear-style-edc",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 16 current industrial-design items on 2026-07-17. Promoted on probation with strict practical-object, material and manufacturing filters."
+    },
+    {
+      "id": "ria-moscow-city-candidate",
+      "title": "РИА.Москва",
+      "url": "https://ria.moscow/feed/",
+      "stream": "moscow-city",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and current 2026-07-17 city items. Promoted on probation with Moscow infrastructure, service and culture filters."
+    },
+    {
+      "id": "big-city-moscow-candidate",
+      "title": "Большой город: Город",
+      "url": "https://bg.ru/feeds/posts.atom?topic=city",
+      "stream": "moscow-city",
+      "status": "promoted-to-live-source",
+      "rationale": "The publisher's official RSS page links this city Atom feed; live probe returned HTTP 200, valid Atom and 20 current items on 2026-07-17. Promoted on probation with Moscow and urban-culture filters."
     }
   ]
 }

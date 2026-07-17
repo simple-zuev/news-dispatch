@@ -139,6 +139,8 @@ def build(args: argparse.Namespace) -> int:
     build_ranking(args)
     run_tool("filter_public_source_items.py")
     build_reader_policy()
+    history_args = ("--reset",) if args.ranking_mode == "fixture" else ()
+    run_tool("build_public_reader_history.py", *history_args)
     if not args.skip_validation:
         run_tool("validate_reader_model.py")
     run_tool("render_site.py")

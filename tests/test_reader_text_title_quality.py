@@ -41,7 +41,10 @@ def test_security_blog_is_not_treated_as_sec_regulator_signal() -> None:
     item = security_item()
     assert reader_text.russian_topic(item) == "безопасность и технологическая инфраструктура"
     title = reader_text.public_title_ru(item)
-    assert title == "Google Security Blog: New memory safety protections for Android"
+    assert title == (
+        "Google Security Blog сообщает об изменениях в технологиях и безопасности: "
+        "New memory safety protections for Android"
+    )
     assert "регуляторика и надзор" not in title.lower()
 
 
@@ -59,11 +62,14 @@ def test_sec_regulator_token_still_maps_to_regulatory_topic() -> None:
     assert reader_text.public_title_ru(item) == "SEC обновила статистику рынка"
 
 
-def test_source_topic_fallback_uses_original_title_when_available() -> None:
+def test_source_topic_fallback_stays_reader_facing_and_russian() -> None:
     item = security_item()
     item["reader_title_ru"] = "Google Security Blog: безопасность и технологическая инфраструктура"
     title = reader_text.public_title_ru(item)
-    assert title == "Google Security Blog: New memory safety protections for Android"
+    assert title == (
+        "Google Security Blog сообщает об изменениях в технологиях и безопасности: "
+        "New memory safety protections for Android"
+    )
 
 
 def test_unresolved_security_source_topic_gets_clean_public_title() -> None:
@@ -76,11 +82,26 @@ def test_unresolved_security_source_topic_gets_clean_public_title() -> None:
     assert "регуляторика и надзор" not in title.lower()
 
 
+def test_english_title_with_model_word_is_not_mistaken_for_russian() -> None:
+    item = {
+        "feed_title": "OpenAI News",
+        "configured_stream": "ai",
+        "routed_stream": "ai",
+        "title": "Previewing a next-generation model",
+        "source_original_title": "Previewing a next-generation model",
+        "reader_title_ru": "OpenAI News представил материал о развитии ИИ",
+    }
+    title = reader_text.public_title_ru(item)
+    assert title.startswith("OpenAI News представил материал о развитии ИИ:")
+    assert "Previewing a next-generation модель" in title
+
+
 def main() -> int:
     test_security_blog_is_not_treated_as_sec_regulator_signal()
     test_sec_regulator_token_still_maps_to_regulatory_topic()
-    test_source_topic_fallback_uses_original_title_when_available()
+    test_source_topic_fallback_stays_reader_facing_and_russian()
     test_unresolved_security_source_topic_gets_clean_public_title()
+    test_english_title_with_model_word_is_not_mistaken_for_russian()
     print("reader title quality tests passed")
     return 0
 
