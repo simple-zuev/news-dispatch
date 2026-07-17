@@ -16,6 +16,7 @@ FORBIDDEN_PUBLIC_TERMS = [
     "reader_safe",
     "source_rule_status",
     "item_key",
+    "publisher_id",
     "feed_id",
     "final_score",
     "selection_score",

@@ -45,7 +45,8 @@ def test_load_moscow_candidates() -> None:
     assert all(row["stream"] == "moscow-city" for row in rows)
     statuses = {row["id"]: row["status"] for row in rows}
     assert statuses["m24-news-candidate"] == "promoted-to-live-source"
-    assert statuses["mskagency-candidate"] == "rejected-404"
+    assert statuses["mskagency-candidate"] == "promoted-to-live-source"
+    assert statuses["govorit-moskva-city-candidate"] == "promoted-to-live-source"
     assert statuses["interfax-moscow-candidate"] == "held-too-broad"
 
 

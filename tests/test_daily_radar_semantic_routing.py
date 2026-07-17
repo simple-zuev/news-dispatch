@@ -4,7 +4,10 @@
 from __future__ import annotations
 
 import importlib.util
+import ssl
 import sys
+import urllib.error
+from xml.etree import ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +25,7 @@ spec.loader.exec_module(daily_radar)
 def feed(stream: str, **kwargs):
     defaults = {
         "id": "test-feed",
+        "publisher_id": "test-feed",
         "title": "Test Feed",
         "url": "https://example.com/feed.xml",
         "stream": stream,
@@ -36,6 +40,60 @@ def feed(stream: str, **kwargs):
 
 def route(stream: str, title: str, summary: str = "") -> str:
     return daily_radar.classify(feed(stream), title, summary)
+
+
+def test_audio_instrument_feed_stays_in_audio_stream() -> None:
+    assert route(
+        "dj-audio-creative",
+        "Native Instruments SuperStarSaw: a playground for supersaw synth sounds",
+    ) == "dj-audio-creative"
+
+
+def test_feed_nodes_support_rss_1_rdf_items() -> None:
+    root = ET.fromstring(
+        """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/">
+        <channel rdf:about="https://example.com/feed"><title>Example</title></channel>
+        <item rdf:about="https://example.com/one"><title>First</title><link>https://example.com/one</link></item>
+        <item rdf:about="https://example.com/two"><title>Second</title><link>https://example.com/two</link></item>
+        </rdf:RDF>"""
+    )
+    nodes = daily_radar.feed_nodes(root)
+    assert [daily_radar.text_of(node, ("title",)) for node in nodes] == ["First", "Second"]
+
+
+def test_download_retries_certificate_failure_with_next_trusted_context() -> None:
+    calls: list[object] = []
+
+    class Response:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def read(self) -> bytes:
+            return b"feed"
+
+    original_contexts = daily_radar.ssl_contexts
+    original_urlopen = daily_radar.urllib.request.urlopen
+    first = object()
+    second = object()
+
+    def fake_urlopen(_request, *, timeout, context):
+        del timeout
+        calls.append(context)
+        if context is first:
+            raise urllib.error.URLError(ssl.SSLCertVerificationError(1, "CERTIFICATE_VERIFY_FAILED"))
+        return Response()
+
+    daily_radar.ssl_contexts = lambda: [first, second]
+    daily_radar.urllib.request.urlopen = fake_urlopen
+    try:
+        assert daily_radar.download("https://example.com/feed", 3) == b"feed"
+    finally:
+        daily_radar.ssl_contexts = original_contexts
+        daily_radar.urllib.request.urlopen = original_urlopen
+    assert calls == [first, second]
 
 
 def test_ai_story_from_broad_tech_feed_routes_to_ai() -> None:
@@ -155,6 +213,9 @@ def test_source_rule_include_and_boost_raise_relevance() -> None:
 
 
 def main() -> int:
+    test_audio_instrument_feed_stays_in_audio_stream()
+    test_feed_nodes_support_rss_1_rdf_items()
+    test_download_retries_certificate_failure_with_next_trusted_context()
     test_ai_story_from_broad_tech_feed_routes_to_ai()
     test_hardware_story_stays_in_tech()
     test_crypto_story_from_finance_feed_routes_to_crypto_finance()

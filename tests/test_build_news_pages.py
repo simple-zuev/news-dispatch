@@ -167,7 +167,8 @@ def test_news_stream_omits_non_useful_fallback_excerpt() -> None:
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
     assert "news-excerpt" in html
-    assert "The regulator published a public update" in html
+    assert "По сообщению FCA, опубликовано изменение правил" in html
+    assert "The regulator published a public update" not in html
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
     assert "Короткое сообщение источника" not in html
@@ -185,7 +186,8 @@ def test_news_stream_uses_source_excerpt_after_generated_fallback() -> None:
         )
     ]
     html = build_news_pages.news_stream_page("crypto-finance", rows)
-    assert "The regulator published a public update" in html
+    assert "По сообщению FCA, опубликовано изменение правил" in html
+    assert "The regulator published a public update" not in html
     assert "Источник описывает тему" not in html
     assert "Подробности и формулировки сохранены" not in html
 
@@ -198,6 +200,56 @@ def test_feed_deduplicates_identical_reader_story_titles() -> None:
         {"decisions": [{"item_key": "same-story-one", "decision": "reader_safe"}, {"item_key": "same-story-two", "decision": "reader_safe"}]},
     )
     assert len(grouped["crypto-finance"]) == 1
+
+
+def test_feed_deduplicates_cross_source_story_wording() -> None:
+    first = ranking_item(
+        "gazprom-rbc",
+        stream="finance",
+        title="Акции Газпрома обновили исторический минимум",
+        source="РБК",
+    )
+    second = ranking_item(
+        "gazprom-kommersant",
+        stream="finance",
+        title="Акции «Газпрома» обновили исторический минимум",
+        source="Коммерсантъ",
+    )
+    grouped = build_news_pages.feed_items(
+        {"date": "2026-07-02", "items": [first, second]},
+        {
+            "decisions": [
+                {"item_key": "gazprom-rbc", "decision": "reader_safe"},
+                {"item_key": "gazprom-kommersant", "decision": "reader_safe"},
+            ]
+        },
+    )
+    assert len(grouped["finance"]) == 1
+
+
+def test_feed_keeps_distinct_events_with_similar_templates() -> None:
+    first = ranking_item(
+        "borisovo",
+        stream="moscow-city",
+        title="Эскалатор на станции метро Борисово закроют на ремонт 16 июля",
+        source="Агентство Москва",
+    )
+    second = ranking_item(
+        "frunzenskaya",
+        stream="moscow-city",
+        title="Эскалатор на станции метро Фрунзенская закроют на ремонт 16 июля",
+        source="Москва 24",
+    )
+    grouped = build_news_pages.feed_items(
+        {"date": "2026-07-02", "items": [first, second]},
+        {
+            "decisions": [
+                {"item_key": "borisovo", "decision": "reader_safe"},
+                {"item_key": "frunzenskaya", "decision": "reader_safe"},
+            ]
+        },
+    )
+    assert len(grouped["moscow-city"]) == 2
 
 
 def test_generic_fallback_title_is_not_repeated_on_stream_page() -> None:
@@ -310,6 +362,8 @@ def main() -> int:
     test_news_stream_omits_non_useful_fallback_excerpt()
     test_news_stream_uses_source_excerpt_after_generated_fallback()
     test_feed_deduplicates_identical_reader_story_titles()
+    test_feed_deduplicates_cross_source_story_wording()
+    test_feed_keeps_distinct_events_with_similar_templates()
     test_generic_fallback_title_is_not_repeated_on_stream_page()
     test_public_original_title_sanitizes_security_terms()
     test_news_feed_excludes_items_older_than_seven_days()

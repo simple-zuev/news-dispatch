@@ -24,7 +24,7 @@ from pathlib import Path
 from build_today_page import public_href as safe_href
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
 from reader_shell import public_nav, public_skip_link
-from reader_text import build_public_item, format_public_time_ru, public_excerpt_ru, public_item_is_fresh, public_story_key
+from reader_text import build_public_item, clean_source_excerpt, format_public_time_ru, public_excerpt_ru, public_item_is_fresh, public_items_same_story
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -644,7 +644,6 @@ def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
     reference = report.get("date")
     rows: list[dict[str, object]] = []
     seen_urls: set[str] = set()
-    seen_stories: set[str] = set()
     for item in report.get("items", []):
         if not isinstance(item, dict):
             continue
@@ -660,13 +659,10 @@ def load_ranking_items(limit: int | None = 32) -> list[dict[str, object]]:
         if not public_excerpt_ru(item):
             continue
         url_key = str(item.get("url") or "").strip().lower()
-        story_key = public_story_key(item)
-        if (url_key and url_key in seen_urls) or (story_key and story_key in seen_stories):
+        if (url_key and url_key in seen_urls) or any(public_items_same_story(item, existing) for existing in rows):
             continue
         if url_key:
             seen_urls.add(url_key)
-        if story_key:
-            seen_stories.add(story_key)
         rows.append(item)
     rows.sort(
         key=lambda item: (
@@ -692,22 +688,19 @@ def home_ranking_title(item: dict[str, object]) -> str:
 
 def home_ranking_excerpt(item: dict[str, object], max_len: int = 180) -> str:
     public_item = build_public_item(item)
-    return public_item["excerpt"][:max_len].rstrip()
+    return clean_source_excerpt(public_item["excerpt"], max_len=max_len)
 
 
 def home_latest_items(items: list[dict[str, object]], limit: int = 8) -> list[dict[str, object]]:
     primary_streams = ("finance", "crypto-finance", "ai")
     ordered = list(items)
     result: list[dict[str, object]] = []
-    seen_stories: set[str] = set()
     source_counts: Counter[str] = Counter()
 
     def add(item: dict[str, object]) -> bool:
-        story_key = public_story_key(item)
-        source_key = str(item.get("feed_id") or item.get("feed_title") or "unknown")
-        if story_key in seen_stories or source_counts[source_key] >= 2:
+        source_key = str(item.get("publisher_id") or item.get("feed_id") or item.get("feed_title") or "unknown")
+        if any(public_items_same_story(item, existing) for existing in result) or source_counts[source_key] >= 2:
             return False
-        seen_stories.add(story_key)
         source_counts[source_key] += 1
         result.append(item)
         return True
@@ -750,7 +743,7 @@ def home_source_link(item: dict[str, object], text: str = "Открыть ист
 def home_news_row(item: dict[str, object]) -> str:
     public_item = build_public_item(item)
     title = public_item["title"]
-    excerpt = public_item["excerpt"][:190].rstrip()
+    excerpt = home_ranking_excerpt(item, max_len=190)
     excerpt_html = f'\n  <p class="home-news-excerpt">{html.escape(excerpt)}</p>' if excerpt else ""
     why = public_item["why_it_matters"]
     why_html = f'\n  <p class="home-news-why"><strong>Почему важно:</strong> {html.escape(why)}</p>' if why else ""
@@ -819,8 +812,11 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
   <h3>Свежих новостей для показа сейчас нет.</h3>
   <p class="home-news-source"><a href="news/index.html">Открыть ленты</a></p>
 </article>"""
-    latest_story_keys = {public_story_key(item) for item in latest_items}
-    today_items = [item for item in ranking_items if item.get("selected") and public_story_key(item) not in latest_story_keys]
+    today_items = [
+        item
+        for item in ranking_items
+        if item.get("selected") and not any(public_items_same_story(item, latest) for latest in latest_items)
+    ]
     today_rows = home_today_summary(today_items)
     stream_order = ["crypto-finance", "finance", "ai", "tech-hardware-software", "moscow-city", "dj-audio-creative", "gear-style-edc", "science-discovery"]
     stream_lookup = {stream.slug: stream for stream in STREAMS}

@@ -17,7 +17,7 @@ from xml.etree import ElementTree as ET
 
 import daily_radar
 from core import ROOT, VALIDATION_DIR, clean_text, read_json, repo_path, write_json
-from reader_text import build_reader_fields, clean_source_excerpt
+from reader_text import build_reader_fields, clean_source_excerpt, public_items_same_story
 
 REPORT_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 
@@ -25,18 +25,30 @@ SOURCE_ROW_CAPS = {
     "openai-news": 20,
     "arxiv-cs-ai": 8,
     "google-security-blog": 16,
+    "huggingface-blog": 12,
+    "mskagency-transport": 16,
+    "mskagency-culture": 12,
+    "nature-news": 16,
 }
 
 RANKING_SELECTION_LIMIT = 18
 RANKING_SELECTION_MIN_SCORE = 10.0
 RANKING_SELECTION_STREAM_CAP = 4
 RANKING_SELECTION_DEFAULT_SOURCE_CAP = 3
+RANKING_SELECTION_DEFAULT_PUBLISHER_CAP = 3
 RANKING_SELECTION_SOURCE_CAPS = {
     "openai-news": 2,
     "arxiv-cs-ai": 1,
     "google-security-blog": 2,
+    "huggingface-blog": 1,
+    "nature-news": 2,
     "tomshardware": 2,
     "science-daily": 1,
+}
+RANKING_SELECTION_PUBLISHER_CAPS = {
+    "bank-of-canada": 1,
+    "cftc": 2,
+    "mskagency": 1,
 }
 WEAK_STREAM_MIN_RELEVANCE = {
     "gear-style-edc": 0.5,
@@ -86,7 +98,6 @@ HIGH_SIGNAL_CRYPTO_TERMS = (
 MARKET_FORECAST_TERMS = (
     "price target",
     "price targets",
-    "targets",
     "forecast",
     "forecasts",
     "prediction",
@@ -97,7 +108,6 @@ MARKET_FORECAST_TERMS = (
     "12-month",
     "year-end",
     "slashes",
-    "raises",
     "analyst",
     "strategist",
 )
@@ -251,6 +261,10 @@ def row_stream(row: dict[str, object]) -> str:
     return str(row.get("routed_stream") or row.get("configured_stream") or "")
 
 
+def row_publisher(row: dict[str, object]) -> str:
+    return str(row.get("publisher_id") or row.get("feed_id") or "unknown")
+
+
 def row_score(row: dict[str, object]) -> float:
     try:
         return float(row.get("selection_score", row.get("final_score", 0.0)) or 0.0)
@@ -298,6 +312,13 @@ def selection_source_cap(row: dict[str, object]) -> int:
     )
 
 
+def selection_publisher_cap(row: dict[str, object]) -> int:
+    return RANKING_SELECTION_PUBLISHER_CAPS.get(
+        row_publisher(row),
+        RANKING_SELECTION_DEFAULT_PUBLISHER_CAP,
+    )
+
+
 def eligible_for_current_selection(row: dict[str, object]) -> bool:
     if row.get("source_rule_status") != "accepted_by_source_rules":
         return False
@@ -334,15 +355,26 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
     )
     selected: list[dict[str, object]] = []
     source_counts: dict[str, int] = {}
+    publisher_counts: dict[str, int] = {}
     stream_counts: dict[str, int] = {}
     capped_sources: dict[str, int] = {}
+    capped_publishers: dict[str, int] = {}
     capped_streams: dict[str, int] = {}
+    story_duplicate_skips = 0
 
     def can_add(row: dict[str, object]) -> bool:
+        nonlocal story_duplicate_skips
         feed_id = str(row.get("feed_id") or "unknown")
+        publisher_id = row_publisher(row)
         stream = row_stream(row)
+        if any(public_items_same_story(row, existing) for existing in selected):
+            story_duplicate_skips += 1
+            return False
         if source_counts.get(feed_id, 0) >= selection_source_cap(row):
             capped_sources[feed_id] = capped_sources.get(feed_id, 0) + 1
+            return False
+        if publisher_counts.get(publisher_id, 0) >= selection_publisher_cap(row):
+            capped_publishers[publisher_id] = capped_publishers.get(publisher_id, 0) + 1
             return False
         if stream_counts.get(stream, 0) >= RANKING_SELECTION_STREAM_CAP:
             capped_streams[stream] = capped_streams.get(stream, 0) + 1
@@ -352,8 +384,10 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
     def add(row: dict[str, object]) -> None:
         selected.append(row)
         feed_id = str(row.get("feed_id") or "unknown")
+        publisher_id = row_publisher(row)
         stream = row_stream(row)
         source_counts[feed_id] = source_counts.get(feed_id, 0) + 1
+        publisher_counts[publisher_id] = publisher_counts.get(publisher_id, 0) + 1
         stream_counts[stream] = stream_counts.get(stream, 0) + 1
         row["selected"] = True
         row["selection_reason"] = "selected_current_balanced_ranking"
@@ -381,13 +415,18 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
         "selection_stream_cap": RANKING_SELECTION_STREAM_CAP,
         "selection_source_caps": RANKING_SELECTION_SOURCE_CAPS,
         "selection_default_source_cap": RANKING_SELECTION_DEFAULT_SOURCE_CAP,
+        "selection_publisher_caps": RANKING_SELECTION_PUBLISHER_CAPS,
+        "selection_default_publisher_cap": RANKING_SELECTION_DEFAULT_PUBLISHER_CAP,
         "weak_stream_min_relevance": WEAK_STREAM_MIN_RELEVANCE,
         "eligible_current_selection_rows": len(candidates),
         "selected_count": len(selected),
         "selected_by_stream": stream_counts,
         "selected_by_source": source_counts,
+        "selected_by_publisher": publisher_counts,
         "selection_capped_sources": capped_sources,
+        "selection_capped_publishers": capped_publishers,
         "selection_capped_streams": capped_streams,
+        "story_duplicate_skips": story_duplicate_skips,
     }
 
 
@@ -426,6 +465,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
     row: dict[str, object] = {
         "item_key": item_key,
         "feed_id": feed.id,
+        "publisher_id": feed.publisher_id,
         "feed_title": feed.title,
         "configured_stream": feed.stream,
         "routed_stream": routed_stream,

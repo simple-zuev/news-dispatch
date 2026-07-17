@@ -94,7 +94,9 @@ def test_public_excerpt_sanitizes_guarded_diagnostic_words_in_source_copy() -> N
     row["reader_excerpt_ru"] = ""
     row["source_excerpt"] = "The report reviews crypto coverage and a publication threshold."
     payload = reader_text.build_public_item(row)
-    assert payload["excerpt"] == "The report reviews crypto reporting and a publication limit."
+    assert "FCA представила новый набор правил" in payload["excerpt"]
+    assert "coverage" not in payload["excerpt"].lower()
+    assert "threshold" not in payload["excerpt"].lower()
 
 
 def main() -> int:

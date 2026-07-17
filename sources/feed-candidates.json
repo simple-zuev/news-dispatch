@@ -10,11 +10,11 @@
     },
     {
       "id": "mskagency-candidate",
-      "title": "Агентство Москва",
-      "url": "https://www.mskagency.ru/rss",
+      "title": "Агентство Москва: транспорт",
+      "url": "https://www.mskagency.ru/rss/transport.rss",
       "stream": "moscow-city",
-      "status": "rejected-404",
-      "rationale": "Earlier probe returned HTTP 404 and the final discovery v2 probe timed out; keep disabled until a stable parseable endpoint is found."
+      "status": "promoted-to-live-source",
+      "rationale": "The publisher RSS directory lists this section endpoint. Live probe on 2026-07-16 returned HTTP 200, valid RSS, 50 items and current publication dates; promoted with strict Moscow transport and regional-noise filters."
     },
     {
       "id": "interfax-moscow-candidate",
@@ -177,12 +177,20 @@
       "rationale": "Moscow city-media candidate, but discovery v2 probe reached HTTP 200 and failed XML parsing."
     },
     {
+      "id": "govorit-moskva-city-candidate",
+      "title": "Говорит Москва: Москва",
+      "url": "https://govoritmoskva.ru/rss/news/15/",
+      "stream": "moscow-city",
+      "status": "promoted-to-live-source",
+      "rationale": "The publisher RSS directory exposes a dedicated Moscow feed. Live probe on 2026-07-16 returned HTTP 200, valid RSS, 100 items and current publication dates; promoted with strict city-service filters and incident/war exclusions."
+    },
+    {
       "id": "gearjunkie-candidate",
       "title": "GearJunkie",
       "url": "https://gearjunkie.com/feed",
       "stream": "gear-style-edc",
-      "status": "candidate-probe-ok-too-broad",
-      "rationale": "Probe returned valid RSS, but sample leaned broad outdoor/adventure rather than EDC/design; keep candidate until stream-specific filtering is proven."
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe on 2026-07-16 returned HTTP 200, valid RSS and current items including practical knife, backpack and apparel reviews. Promoted on probation with strict material, carry and field-review filters plus outdoor/travel/recall exclusions."
     },
     {
       "id": "dezeen-candidate",
@@ -223,6 +231,94 @@
       "stream": "science-discovery",
       "status": "candidate-probe-ok-high-volume",
       "rationale": "Probe returned valid RSS with high-volume astronomy preprints; keep candidate until topic gates and preprint labeling are reviewed."
+    },
+    {
+      "id": "bank-canada-news-candidate",
+      "title": "Bank of Canada",
+      "url": "https://www.bankofcanada.ca/utility/news/feed/",
+      "stream": "finance",
+      "status": "promoted-to-live-source",
+      "rationale": "Official RSS directory and live probe on 2026-07-16 returned HTTP 200, valid RSS, 10 items and current policy-rate and Monetary Policy Report releases."
+    },
+    {
+      "id": "cftc-general-candidate",
+      "title": "CFTC Press Releases",
+      "url": "https://www.cftc.gov/RSS/RSSGP/rssgp.xml",
+      "stream": "finance",
+      "status": "promoted-to-live-source",
+      "rationale": "Official CFTC RSS directory and live probe returned HTTP 200, valid RSS and current derivatives, margin and event-contract releases; advisory-only items are excluded."
+    },
+    {
+      "id": "cftc-enforcement-crypto-candidate",
+      "title": "CFTC Enforcement",
+      "url": "https://www.cftc.gov/RSS/RSSENF/rssenf.xml",
+      "stream": "crypto-finance",
+      "status": "promoted-to-live-source",
+      "rationale": "Official enforcement RSS returned valid current items. Promotion uses explicit digital-asset terms so unrelated commodity cases do not enter crypto-finance."
+    },
+    {
+      "id": "huggingface-blog-candidate",
+      "title": "Hugging Face Blog",
+      "url": "https://huggingface.co/blog/feed.xml",
+      "stream": "ai",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and current model, agent and security items. High volume is controlled by row and selection caps."
+    },
+    {
+      "id": "nature-news-candidate",
+      "title": "Nature",
+      "url": "https://www.nature.com/nature.rss",
+      "stream": "science-discovery",
+      "status": "promoted-to-live-source",
+      "rationale": "Re-probe returned HTTP 200, valid RSS, 75 items and current publication dates after the prior XML parse failure; restored on probation with research filters."
+    },
+    {
+      "id": "synth-anatomy-candidate",
+      "title": "SYNTH ANATOMY",
+      "url": "https://synthanatomy.com/feed",
+      "stream": "dj-audio-creative",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and current synthesizer, MIDI controller and effects-hardware releases; sale and giveaway terms are excluded."
+    },
+    {
+      "id": "mskagency-culture-candidate",
+      "title": "Агентство Москва: культура",
+      "url": "https://www.mskagency.ru/rss/culture.rss",
+      "stream": "moscow-city",
+      "status": "promoted-to-live-source",
+      "rationale": "Official section feed returned HTTP 200, valid RSS, 50 items and current museum, theatre and festival news. Shared publisher caps prevent two agency sections from dominating Moscow coverage."
+    },
+    {
+      "id": "hodinkee-candidate",
+      "title": "Hodinkee",
+      "url": "https://www.hodinkee.com/articles/rss.xml",
+      "stream": "gear-style-edc",
+      "status": "held-too-product-heavy",
+      "rationale": "Live probe returned current valid RSS, but the sample was dominated by product introductions and branded watch announcements; keep outside active ingestion until editorial filters prove useful yield."
+    },
+    {
+      "id": "niehs-news-candidate",
+      "title": "NIEHS News",
+      "url": "https://www.niehs.nih.gov/news/newsroom/rssfeed/rss_news.xml",
+      "stream": "science-discovery",
+      "status": "held-stale",
+      "rationale": "Official RSS is valid, but the newest probed item was from 2025-11-13 and does not improve the current reader window."
+    },
+    {
+      "id": "noaa-nos-news-candidate",
+      "title": "NOAA National Ocean Service News",
+      "url": "https://oceanservice.noaa.gov/newsroom/nosmedia.xml",
+      "stream": "science-discovery",
+      "status": "held-stale",
+      "rationale": "Official feed parsed successfully, but the newest item was from 2023; keep as a documented alternative rather than an active source."
+    },
+    {
+      "id": "microsoft-ai-feed-candidate",
+      "title": "Microsoft AI Blog",
+      "url": "https://blogs.microsoft.com/ai/feed/",
+      "stream": "ai",
+      "status": "rejected-410",
+      "rationale": "The previously documented Microsoft AI RSS endpoint returned HTTP 410 during the 2026-07-16 probe."
     }
   ]
 }

@@ -5,6 +5,7 @@ import html
 import json
 import re
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -54,6 +55,7 @@ def feed_health_counts() -> dict[str, int]:
 
 def status_payload() -> dict[str, Any]:
     radar = load_json(VALIDATION_DIR / "daily-radar-latest.json")
+    ranking = load_json(VALIDATION_DIR / "daily-radar-ranking-latest.json")
     auto = load_json(VALIDATION_DIR / "auto-dispatch-latest.json")
     dispatches = load_json(SITE_DIR / "dispatches.json")
     signals = 0
@@ -67,9 +69,27 @@ def status_payload() -> dict[str, Any]:
         streams += 1 if count else 0
     published = dispatches.get("dispatches", []) if isinstance(dispatches.get("dispatches", []), list) else []
     drafts = auto.get("generated", []) if isinstance(auto.get("generated", []), list) else []
+    ranking_items = ranking.get("items", []) if isinstance(ranking.get("items", []), list) else []
+    published_values: list[datetime] = []
+    for item in ranking_items:
+        if not isinstance(item, dict) or item.get("source_rule_status") != "accepted_by_source_rules":
+            continue
+        raw = str(item.get("published") or item.get("date") or "").strip()
+        if not raw:
+            continue
+        try:
+            parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        published_values.append(parsed.astimezone(timezone.utc))
+    latest_public_item = max(published_values) if published_values else None
     payload: dict[str, Any] = {
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "radar_date": str(radar.get("date", "")),
+        "ranking_date": str(ranking.get("date", "")),
+        "latest_public_item_at": latest_public_item.isoformat() if latest_public_item else "",
         "signals": signals,
         "streams_with_signals": streams,
         "media_candidates": media,

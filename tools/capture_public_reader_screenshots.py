@@ -4,14 +4,22 @@
 from __future__ import annotations
 
 import argparse
+import base64
+import hashlib
 import html
 import json
+import os
 import shutil
+import socket
+import struct
 import subprocess
 import sys
 import tempfile
 import threading
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from dataclasses import asdict, dataclass
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -96,13 +104,7 @@ def validate_routes(site_dir: Path) -> None:
         raise FileNotFoundError("missing public reader routes: " + ", ".join(missing))
 
 
-def browser_command(
-    browser: Path,
-    url: str,
-    output: Path,
-    viewport: Viewport,
-    profile_dir: Path,
-) -> list[str]:
+def browser_command(browser: Path, profile_dir: Path) -> list[str]:
     return [
         str(browser),
         "--headless=new",
@@ -112,12 +114,10 @@ def browser_command(
         "--hide-scrollbars",
         "--no-sandbox",
         "--run-all-compositor-stages-before-draw",
-        "--force-device-scale-factor=1",
-        "--virtual-time-budget=1200",
+        "--remote-allow-origins=*",
+        "--remote-debugging-port=0",
         f"--user-data-dir={profile_dir}",
-        f"--window-size={viewport.width},{viewport.height}",
-        f"--screenshot={output}",
-        url,
+        "about:blank",
     ]
 
 
@@ -129,21 +129,214 @@ def complete_png(path: Path) -> bool:
         return handle.read() == b"\x00\x00\x00\x00IEND\xaeB`\x82"
 
 
-def run_browser_capture(command: list[str], output: Path, timeout: float = 45.0) -> None:
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+class WebSocketClient:
+    def __init__(self, url: str, timeout: float) -> None:
+        parsed = urllib.parse.urlsplit(url)
+        if parsed.scheme != "ws" or not parsed.hostname or not parsed.port:
+            raise RuntimeError(f"unsupported DevTools WebSocket URL: {url}")
+        self.socket = socket.create_connection((parsed.hostname, parsed.port), timeout=timeout)
+        self.socket.settimeout(timeout)
+        self.buffer = b""
+        key = base64.b64encode(os.urandom(16)).decode("ascii")
+        target = parsed.path or "/"
+        if parsed.query:
+            target += "?" + parsed.query
+        request = "\r\n".join(
+            [
+                f"GET {target} HTTP/1.1",
+                f"Host: {parsed.hostname}:{parsed.port}",
+                "Upgrade: websocket",
+                "Connection: Upgrade",
+                f"Sec-WebSocket-Key: {key}",
+                "Sec-WebSocket-Version: 13",
+                "Origin: http://127.0.0.1",
+                "",
+                "",
+            ]
+        )
+        self.socket.sendall(request.encode("ascii"))
+        response = self._read_headers()
+        expected = base64.b64encode(
+            hashlib.sha1((key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").encode("ascii")).digest()
+        ).decode("ascii")
+        expected_header = f"sec-websocket-accept: {expected}".lower()
+        if not response.startswith("HTTP/1.1 101") or expected_header not in response.lower():
+            self.close()
+            raise RuntimeError("Chrome rejected the DevTools WebSocket connection")
+
+    def _read_headers(self) -> str:
+        data = self.buffer
+        while b"\r\n\r\n" not in data:
+            chunk = self.socket.recv(4096)
+            if not chunk:
+                raise RuntimeError("Chrome closed the DevTools handshake")
+            data += chunk
+        header, self.buffer = data.split(b"\r\n\r\n", 1)
+        return header.decode("iso-8859-1")
+
+    def _read_exact(self, size: int) -> bytes:
+        data = self.buffer[:size]
+        self.buffer = self.buffer[size:]
+        while len(data) < size:
+            chunk = self.socket.recv(size - len(data))
+            if not chunk:
+                raise RuntimeError("Chrome closed the DevTools connection")
+            data += chunk
+        return data
+
+    def send(self, payload: str, opcode: int = 1) -> None:
+        data = payload.encode("utf-8")
+        mask = os.urandom(4)
+        length = len(data)
+        if length < 126:
+            header = bytes((0x80 | opcode, 0x80 | length))
+        elif length < 65536:
+            header = bytes((0x80 | opcode, 0x80 | 126)) + struct.pack("!H", length)
+        else:
+            header = bytes((0x80 | opcode, 0x80 | 127)) + struct.pack("!Q", length)
+        masked = bytes(value ^ mask[index % 4] for index, value in enumerate(data))
+        self.socket.sendall(header + mask + masked)
+
+    def receive(self) -> str:
+        fragments = bytearray()
+        while True:
+            first, second = self._read_exact(2)
+            finished = bool(first & 0x80)
+            opcode = first & 0x0F
+            masked = bool(second & 0x80)
+            length = second & 0x7F
+            if length == 126:
+                length = struct.unpack("!H", self._read_exact(2))[0]
+            elif length == 127:
+                length = struct.unpack("!Q", self._read_exact(8))[0]
+            mask = self._read_exact(4) if masked else b""
+            payload = self._read_exact(length)
+            if masked:
+                payload = bytes(value ^ mask[index % 4] for index, value in enumerate(payload))
+            if opcode == 8:
+                raise RuntimeError("Chrome closed the DevTools connection")
+            if opcode == 9:
+                self.send(payload.decode("utf-8", errors="ignore"), opcode=10)
+                continue
+            if opcode in (0, 1):
+                fragments.extend(payload)
+                if finished:
+                    return fragments.decode("utf-8")
+
+    def close(self) -> None:
+        try:
+            self.socket.close()
+        except OSError:
+            pass
+
+    def __enter__(self) -> WebSocketClient:
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, traceback: object) -> None:
+        self.close()
+
+
+class DevToolsClient:
+    def __init__(self, websocket: WebSocketClient) -> None:
+        self.websocket = websocket
+        self.request_id = 0
+        self.events: list[dict[str, object]] = []
+
+    def command(self, method: str, params: dict[str, object] | None = None) -> dict[str, object]:
+        self.request_id += 1
+        request_id = self.request_id
+        self.websocket.send(json.dumps({"id": request_id, "method": method, "params": params or {}}))
+        while True:
+            message = json.loads(self.websocket.receive())
+            if message.get("id") == request_id:
+                if "error" in message:
+                    raise RuntimeError(f"DevTools {method} failed: {message['error']}")
+                return message.get("result", {})
+            if "method" in message:
+                self.events.append(message)
+
+    def wait_for_event(self, method: str) -> None:
+        while True:
+            for index, event in enumerate(self.events):
+                if event.get("method") == method:
+                    self.events.pop(index)
+                    return
+            message = json.loads(self.websocket.receive())
+            if message.get("method") == method:
+                return
+            if "method" in message:
+                self.events.append(message)
+
+
+def devtools_websocket_url(profile_dir: Path, process: subprocess.Popen[bytes], deadline: float) -> str:
+    active_port = profile_dir / "DevToolsActivePort"
+    while time.monotonic() < deadline:
+        if process.poll() is not None:
+            raise RuntimeError(f"browser exited with {process.returncode}")
+        if active_port.is_file():
+            port = active_port.read_text(encoding="utf-8").splitlines()[0]
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/json/list", timeout=2) as response:
+                    targets = json.load(response)
+                for target in targets:
+                    if target.get("type") == "page" and target.get("webSocketDebuggerUrl"):
+                        return str(target["webSocketDebuggerUrl"])
+            except (OSError, ValueError, urllib.error.URLError):
+                pass
+        time.sleep(0.05)
+    raise RuntimeError("browser timed out before DevTools became ready")
+
+
+def run_browser_capture(
+    browser: Path,
+    url: str,
+    output: Path,
+    viewport: Viewport,
+    profile_dir: Path,
+    timeout: float = 45.0,
+) -> None:
+    profile_dir.mkdir(parents=True, exist_ok=True)
+    process = subprocess.Popen(browser_command(browser, profile_dir), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     deadline = time.monotonic() + timeout
     try:
-        while time.monotonic() < deadline:
-            if complete_png(output):
-                return
-            if process.poll() is not None:
-                break
-            time.sleep(0.1)
-        if process.poll() is None:
-            raise RuntimeError(f"browser timed out after {timeout:.0f}s")
-        stdout, stderr = process.communicate()
-        detail = stderr.strip() or stdout.strip() or f"browser exited with {process.returncode}"
-        raise RuntimeError(detail)
+        websocket_url = devtools_websocket_url(profile_dir, process, deadline)
+        remaining = max(1.0, deadline - time.monotonic())
+        with WebSocketClient(websocket_url, remaining) as websocket:
+            devtools = DevToolsClient(websocket)
+            devtools.command("Page.enable")
+            devtools.command(
+                "Emulation.setDeviceMetricsOverride",
+                {
+                    "width": viewport.width,
+                    "height": viewport.height,
+                    "deviceScaleFactor": 1,
+                    "mobile": viewport.name == "mobile",
+                    "screenWidth": viewport.width,
+                    "screenHeight": viewport.height,
+                },
+            )
+            devtools.command("Page.navigate", {"url": url})
+            devtools.wait_for_event("Page.loadEventFired")
+            devtools.command(
+                "Runtime.evaluate",
+                {
+                    "expression": "new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))",
+                    "awaitPromise": True,
+                    "returnByValue": True,
+                },
+            )
+            metrics = devtools.command("Page.getLayoutMetrics")
+            layout = metrics.get("cssLayoutViewport") or metrics.get("layoutViewport") or {}
+            actual_width = round(float(layout.get("clientWidth", 0)))
+            if actual_width != viewport.width:
+                raise RuntimeError(f"viewport mismatch: expected {viewport.width}px, got {actual_width}px")
+            screenshot = devtools.command(
+                "Page.captureScreenshot",
+                {"format": "png", "fromSurface": True, "captureBeyondViewport": False},
+            )
+            output.write_bytes(base64.b64decode(str(screenshot["data"])))
+            if not complete_png(output):
+                raise RuntimeError("browser returned an incomplete PNG")
     finally:
         if process.poll() is None:
             process.terminate()
@@ -152,6 +345,27 @@ def run_browser_capture(command: list[str], output: Path, timeout: float = 45.0)
             except subprocess.TimeoutExpired:
                 process.kill()
                 process.wait(timeout=3)
+
+
+def capture_with_retry(
+    browser: Path,
+    url: str,
+    output: Path,
+    viewport: Viewport,
+    profile_root: Path,
+    attempts: int = 2,
+) -> None:
+    last_error: RuntimeError | None = None
+    for attempt in range(1, attempts + 1):
+        output.unlink(missing_ok=True)
+        profile_dir = profile_root / f"attempt-{attempt}"
+        try:
+            run_browser_capture(browser, url, output, viewport, profile_dir)
+            return
+        except RuntimeError as exc:
+            last_error = exc
+    assert last_error is not None
+    raise last_error
 
 
 def capture(browser: Path, site_dir: Path, output_dir: Path) -> list[ScreenshotRecord]:
@@ -171,9 +385,9 @@ def capture(browser: Path, site_dir: Path, output_dir: Path) -> list[ScreenshotR
                     filename = f"{route.name}-{viewport.name}.png"
                     output = (output_dir / filename).resolve()
                     url = base_url + route.path
-                    profile_dir = Path(tmp) / f"{route.name}-{viewport.name}"
+                    profile_root = Path(tmp) / f"{route.name}-{viewport.name}"
                     try:
-                        run_browser_capture(browser_command(browser, url, output, viewport, profile_dir), output)
+                        capture_with_retry(browser, url, output, viewport, profile_root)
                     except RuntimeError as exc:
                         raise RuntimeError(f"screenshot failed for {route.name}/{viewport.name}: {exc}") from exc
                     records.append(

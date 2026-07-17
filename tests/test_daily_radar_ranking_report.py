@@ -22,6 +22,7 @@ spec.loader.exec_module(ranking_report)
 def feed(**kwargs):
     defaults = {
         "id": "test-feed",
+        "publisher_id": "test-feed",
         "title": "Test Feed",
         "url": "https://example.com/feed.xml",
         "stream": "finance",
@@ -117,6 +118,7 @@ def ranking_row(index: int, *, stream: str, feed_id: str, score: float = 12.0, r
     return {
         "item_key": f"{feed_id}-{index}",
         "feed_id": feed_id,
+        "publisher_id": feed_id,
         "configured_stream": stream,
         "routed_stream": stream,
         "source_rule_status": "accepted_by_source_rules",
@@ -175,6 +177,43 @@ def test_weak_stream_selection_requires_relevance_threshold() -> None:
     assert "crypto-finance" in selected_streams
 
 
+def test_current_selection_spends_one_slot_per_cross_source_story() -> None:
+    rows = [
+        ranking_row(1, stream="finance", feed_id="rbc-finance", score=15.0),
+        ranking_row(2, stream="finance", feed_id="kommersant-finance", score=14.9),
+        ranking_row(3, stream="finance", feed_id="cbr-news", score=14.8),
+    ]
+    rows[0]["title"] = "Акции Газпрома обновили исторический минимум"
+    rows[1]["title"] = "Акции «Газпрома» обновили исторический минимум"
+    rows[2]["title"] = "Банк России обновил параметры денежно-кредитной политики"
+
+    diagnostics = ranking_report.apply_current_selection(rows, limit=3)
+    selected = [row for row in rows if row["selected"]]
+
+    assert len(selected) == 2
+    assert diagnostics["story_duplicate_skips"] >= 1
+    assert sum("Газпрома" in str(row["title"]) for row in selected) == 1
+
+
+def test_current_selection_caps_multiple_feeds_from_one_publisher() -> None:
+    rows = [
+        ranking_row(1, stream="moscow-city", feed_id="mskagency-transport", score=15.0),
+        ranking_row(2, stream="moscow-city", feed_id="mskagency-culture", score=14.9),
+        ranking_row(3, stream="moscow-city", feed_id="m24-moscow-news", score=14.8),
+    ]
+    rows[0]["publisher_id"] = "mskagency"
+    rows[1]["publisher_id"] = "mskagency"
+    rows[0]["title"] = "В Москве изменят схему движения на одной улице"
+    rows[1]["title"] = "В Москве откроется новая музейная экспозиция"
+    rows[2]["title"] = "Москва 24 сообщила о запуске городского сервиса"
+
+    diagnostics = ranking_report.apply_current_selection(rows, limit=3)
+    selected = [row for row in rows if row["selected"]]
+
+    assert sum(row["publisher_id"] == "mskagency" for row in selected) == 1
+    assert diagnostics["selection_capped_publishers"]["mskagency"] >= 1
+
+
 def test_crypto_regulatory_items_beat_forecasts_and_roundups_when_stream_is_capped() -> None:
     rows = [
         ranking_row(1, stream="crypto-finance", feed_id="coindesk", score=16.2),
@@ -226,6 +265,23 @@ def test_pure_crypto_price_target_is_labeled_and_downweighted() -> None:
     assert "market_forecast_downweighted" in adjustments
 
 
+def test_product_target_word_is_not_misclassified_as_market_forecast() -> None:
+    galaxy_feed = feed(
+        id="coindesk",
+        stream="crypto-finance",
+        source_class="specialized_media",
+        include_keywords=("stablecoin",),
+        exclude_keywords=(),
+        boost_keywords=(),
+        min_relevance_score=0.35,
+    )
+    title = "Galaxy targets institutional stablecoin yield with new DeFi vaults"
+    evidence = ranking_report.source_rule_evidence(galaxy_feed, title, "")
+    _score, adjustments = ranking_report.selection_score(galaxy_feed, title, evidence, 10.0)
+    assert "third_party_market_forecast_labeled" not in adjustments
+    assert "market_forecast_downweighted" not in adjustments
+
+
 def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
     node = ranking_report.ET.fromstring(
         """<item>
@@ -249,7 +305,8 @@ def test_ranking_row_preserves_source_excerpt_and_reader_fields() -> None:
     assert row["source_original_title"].startswith("FCA and the Bank of England")
     assert row["source_original_url"] == "https://example.com/stablecoin"
     assert row["reader_title_ru"] == "FCA и Банк Англии описали подход к системным стейблкоинам"
-    assert "Источник описывает тему" in str(row["reader_excerpt_ru"])
+    assert "FCA и Банк Англии представили совместный подход" in str(row["reader_excerpt_ru"])
+    assert "Источник описывает тему" not in str(row["reader_excerpt_ru"])
     assert "Криптофинансы" in str(row["reader_source_line_ru"])
 
 
@@ -303,8 +360,11 @@ def main() -> int:
     test_source_caps_limit_overfed_sources()
     test_current_selection_does_not_collapse_to_stale_reviewed_keys()
     test_weak_stream_selection_requires_relevance_threshold()
+    test_current_selection_spends_one_slot_per_cross_source_story()
+    test_current_selection_caps_multiple_feeds_from_one_publisher()
     test_crypto_regulatory_items_beat_forecasts_and_roundups_when_stream_is_capped()
     test_pure_crypto_price_target_is_labeled_and_downweighted()
+    test_product_target_word_is_not_misclassified_as_market_forecast()
     test_ranking_row_preserves_source_excerpt_and_reader_fields()
     test_ranking_row_rejects_undated_feed_entry()
     test_fractional_atom_date_does_not_fall_back_to_collection_time()

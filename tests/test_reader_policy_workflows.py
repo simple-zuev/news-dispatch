@@ -50,6 +50,7 @@ def test_validate_uses_deterministic_site_orchestrator() -> None:
 
 def test_pages_uses_live_site_orchestrator() -> None:
     text = read(PAGES_WORKFLOW)
+    assert 'cron: "0 1,7,13,19 * * *"' in text
     assert "run: python3 tools/build_site.py --ranking-mode live --media-mode skip" in text
     assert "uses: actions/configure-pages" in text
     assert "uses: actions/upload-pages-artifact" in text
@@ -58,6 +59,7 @@ def test_pages_uses_live_site_orchestrator() -> None:
     assert "run: python3 tools/validate_render_visibility.py" in text
     assert "run: python3 tools/privacy_scan.py" in text
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
+    assert "run: python3 tools/validate_public_reader_freshness.py" in text
     assert_ordered(
         text,
         [
@@ -66,6 +68,7 @@ def test_pages_uses_live_site_orchestrator() -> None:
             "run: python3 tools/validate_render_visibility.py",
             "run: python3 tools/privacy_scan.py",
             "run: python3 tools/validate_public_reader_content_quality.py",
+            "run: python3 tools/validate_public_reader_freshness.py",
             "uses: actions/configure-pages",
         ],
     )
