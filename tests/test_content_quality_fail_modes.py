@@ -36,10 +36,16 @@ def test_missing_source_action_blocks_critical_mode() -> None:
     assert content_quality.blocking_issues(issues, fail_on="critical") == issues
 
 
+def test_generic_summary_blocks_critical_mode() -> None:
+    issues = ["generic fallback copy is visible: опубликованы новые сведения по теме"]
+    assert content_quality.blocking_issues(issues, fail_on="critical") == issues
+
+
 def main() -> int:
     test_advisory_issues_do_not_block_critical_mode()
     test_comment_feed_issue_blocks_critical_mode()
     test_missing_source_action_blocks_critical_mode()
+    test_generic_summary_blocks_critical_mode()
     print("content quality fail mode tests passed")
     return 0
 

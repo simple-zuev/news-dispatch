@@ -25,6 +25,7 @@
 /dist/
 /build/
 /.cache/
+/validation/public-reader-history-latest.json
 
 # OS/editor noise
 .DS_Store

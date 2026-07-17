@@ -483,7 +483,7 @@ def test_today_diagnostics_remain_internal_not_public() -> None:
     assert "Криптофинансы" in html
     headings = card_headings(html)
     assert headings
-    assert any("FCA sets systemic stablecoin rules" in heading for heading in headings)
+    assert any("FCA представила правила для системных стейблкоинов" in heading for heading in headings)
 
 
 def test_forecast_flavored_crypto_card_is_not_presented_as_future_fact() -> None:

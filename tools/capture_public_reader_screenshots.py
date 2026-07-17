@@ -325,14 +325,40 @@ def run_browser_capture(
                     "returnByValue": True,
                 },
             )
+            layout_check = devtools.command(
+                "Runtime.evaluate",
+                {
+                    "expression": """JSON.stringify({
+                      documentWidth: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth),
+                      viewportWidth: window.innerWidth,
+                      topNavOverflow: Array.from(document.querySelectorAll('.top-nav')).some(
+                        el => el.scrollWidth > el.clientWidth + 1
+                      ),
+                      sourcesRubricsOverflow: Array.from(document.querySelectorAll('.sources-rubrics .home-rubric-list')).some(
+                        el => el.scrollWidth > el.clientWidth + 1
+                      )
+                    })""",
+                    "returnByValue": True,
+                },
+            )
+            layout_result = layout_check.get("result")
+            layout_raw = layout_result.get("value") if isinstance(layout_result, dict) else "{}"
+            layout_value = json.loads(str(layout_raw or "{}"))
+            if int(layout_value.get("documentWidth", 0)) > int(layout_value.get("viewportWidth", 0)) + 1:
+                raise RuntimeError("document overflows the viewport horizontally")
+            if layout_value.get("topNavOverflow"):
+                raise RuntimeError("top navigation overflows its mobile container")
+            if layout_value.get("sourcesRubricsOverflow"):
+                raise RuntimeError("source rubric navigation overflows its mobile container")
             metrics = devtools.command("Page.getLayoutMetrics")
             layout = metrics.get("cssLayoutViewport") or metrics.get("layoutViewport") or {}
             actual_width = round(float(layout.get("clientWidth", 0)))
             if actual_width != viewport.width:
                 raise RuntimeError(f"viewport mismatch: expected {viewport.width}px, got {actual_width}px")
+            capture_params = {"format": "png", "fromSurface": True, "captureBeyondViewport": False}
             screenshot = devtools.command(
                 "Page.captureScreenshot",
-                {"format": "png", "fromSurface": True, "captureBeyondViewport": False},
+                capture_params,
             )
             output.write_bytes(base64.b64decode(str(screenshot["data"])))
             if not complete_png(output):

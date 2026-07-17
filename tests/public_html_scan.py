@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 
 FORBIDDEN_PUBLIC_TERMS = [
-    "UTC",
     "Источник описывает тему",
     "Подробности и формулировки сохранены",
     "score=",
@@ -29,6 +28,7 @@ FORBIDDEN_PUBLIC_TERMS = [
 ]
 
 FORBIDDEN_PUBLIC_PATTERNS = [
+    r"\bUTC\b",
     r"\b20\d{2}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}\b",
     r"\b\d{1,2}:\d{2}:\d{2}\b",
     r"Источник сообщает:\s*.*\s+—\s+",

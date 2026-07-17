@@ -29,6 +29,9 @@ SOURCE_ROW_CAPS = {
     "mskagency-transport": 16,
     "mskagency-culture": 12,
     "nature-news": 16,
+    "core77-design": 12,
+    "ria-moscow-city": 12,
+    "big-city-moscow": 10,
 }
 
 RANKING_SELECTION_LIMIT = 18
@@ -44,6 +47,9 @@ RANKING_SELECTION_SOURCE_CAPS = {
     "nature-news": 2,
     "tomshardware": 2,
     "science-daily": 1,
+    "core77-design": 1,
+    "ria-moscow-city": 1,
+    "big-city-moscow": 1,
 }
 RANKING_SELECTION_PUBLISHER_CAPS = {
     "bank-of-canada": 1,

@@ -124,6 +124,26 @@ def test_reader_model_blocks_english_only_summary() -> None:
     assert "summary is not Russian" in issues
 
 
+def test_reader_model_blocks_english_only_title() -> None:
+    model = validate_reader_model.PublicReaderItem(
+        title="Company announces a platform update",
+        excerpt="Компания представила обновление платформы.",
+        summary="Компания представила обновление платформы.",
+        why_it_matters="Изменение может повлиять на пользователей.",
+        meta="Example · Технологии · 12:00 · компания",
+        time="12:00",
+        published_at="2026-07-02T09:00:00+00:00",
+        story_key="platform-update",
+        source="Example",
+        stream="Железо и софт",
+        reliability="компания",
+        url="https://example.com/platform-update",
+        original_title="Company announces a platform update",
+    )
+    issues = validate_reader_model.validate_model(model)
+    assert "title is not Russian" in issues
+
+
 def test_reader_model_validator_writes_report_and_returns_failure() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
@@ -151,6 +171,7 @@ def main() -> int:
     test_reader_model_allows_coverage_in_source_title_and_url()
     test_reader_model_blocks_raw_diagnostic_assignments()
     test_reader_model_blocks_english_only_summary()
+    test_reader_model_blocks_english_only_title()
     test_reader_model_validator_writes_report_and_returns_failure()
     print("reader model validator tests passed")
     return 0

@@ -18,8 +18,8 @@ EXEMPT_STREAMS = {
 
 TEMPORARILY_PAUSED_STREAMS: set[str] = set()
 MIN_ACTIVE_BY_STREAM = {
-    "gear-style-edc": 3,
-    "moscow-city": 5,
+    "gear-style-edc": 4,
+    "moscow-city": 7,
 }
 DEFAULT_MIN_ACTIVE = 5
 
@@ -63,11 +63,11 @@ def test_moscow_stream_has_multiple_russian_publishers() -> None:
         for feed in load_json(SOURCES_PATH).get("feeds", [])
         if feed.get("stream") == "moscow-city" and feed.get("enabled", True)
     ]
-    assert len(feeds) >= 5
+    assert len(feeds) >= 7
     assert all(feed.get("language") == "ru" for feed in feeds)
     assert len({str(feed.get("title")) for feed in feeds}) == len(feeds)
     publishers = {str(feed.get("publisher_id") or feed.get("id")) for feed in feeds}
-    assert len(publishers) >= 4
+    assert len(publishers) >= 6
 
 
 def test_high_volume_feeds_have_explicit_caps() -> None:
@@ -76,6 +76,9 @@ def test_high_volume_feeds_have_explicit_caps() -> None:
     assert SOURCE_ROW_CAPS["huggingface-blog"] <= 12
     assert SOURCE_ROW_CAPS["nature-news"] <= 16
     assert SOURCE_ROW_CAPS["mskagency-culture"] <= 12
+    assert SOURCE_ROW_CAPS["core77-design"] <= 12
+    assert SOURCE_ROW_CAPS["ria-moscow-city"] <= 12
+    assert SOURCE_ROW_CAPS["big-city-moscow"] <= 10
 
 
 def test_paused_streams_are_explicit_and_visible() -> None:

@@ -30,6 +30,7 @@ def test_build_site_keeps_public_filter_model_gate_before_rendering() -> None:
             "build_ranking(args)",
             'run_tool("filter_public_source_items.py")',
             "build_reader_policy()",
+            'run_tool("build_public_reader_history.py"',
             'run_tool("validate_reader_model.py")',
             'run_tool("render_site.py")',
             'run_tool("build_news_pages.py")',
@@ -60,6 +61,10 @@ def test_pages_uses_live_site_orchestrator() -> None:
     assert "run: python3 tools/privacy_scan.py" in text
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
     assert "run: python3 tools/validate_public_reader_freshness.py" in text
+    assert "uses: actions/cache/restore@v4" in text
+    assert "uses: actions/cache/save@v4" in text
+    assert "path: validation/public-reader-history-latest.json" in text
+    assert "public-reader-history-${{ github.run_id }}" in text
     assert_ordered(
         text,
         [
@@ -157,6 +162,7 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     assert "upload-pages-artifact" not in text
     for action in ["actions/checkout@v7", "actions/setup-python@v6", "actions/upload-artifact@v7"]:
         assert action in text
+    assert text.count("uses: actions/upload-artifact@v7") == 3
 
 
 def main() -> int:

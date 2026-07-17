@@ -9,7 +9,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from reader_text import clean_source_excerpt, has_cyrillic, public_excerpt_ru, public_why_it_matters_ru  # noqa: E402
+from reader_text import (  # noqa: E402
+    clean_source_excerpt,
+    has_cyrillic,
+    public_excerpt_ru,
+    public_title_ru,
+    public_why_it_matters_ru,
+)
 
 
 def item(title: str, excerpt: str, *, stream: str, source: str = "Example Source") -> dict[str, object]:
@@ -59,7 +65,9 @@ def test_unknown_english_item_gets_attributed_russian_summary() -> None:
     )
     summary = public_excerpt_ru(row, max_len=360)
     assert has_cyrillic(summary)
-    assert "По сообщению Example Source" in summary
+    assert "Кратко по сообщению Example Source" in summary
+    assert "availability and product capabilities" in summary
+    assert "опубликованы новые сведения" not in summary
     assert "Источник описывает тему" not in summary
     assert "Подробности и формулировки сохранены" not in summary
 
@@ -112,6 +120,12 @@ def test_compact_summary_does_not_cut_a_word() -> None:
     assert summary == "Регулятор опубликовал подробное сообщение об изменении…"
 
 
+def test_video_duration_prefix_is_removed_from_source_excerpt() -> None:
+    assert clean_source_excerpt("Video: 00:57:42 ESA experts explain eclipse science.") == (
+        "ESA experts explain eclipse science."
+    )
+
+
 def test_audio_product_gets_specific_russian_framing() -> None:
     row = item(
         "Native Instruments SuperStarSaw: a playground for supersaw synth sounds",
@@ -151,6 +165,83 @@ def test_second_wave_selected_items_get_specific_summaries() -> None:
         assert "опубликованы новые сведения" not in public_excerpt_ru(row, max_len=360)
 
 
+def test_live_reader_corpus_has_russian_titles_and_specific_summaries() -> None:
+    cases = (
+        (
+            "SEC vs CFTC: Who Regulates Crypto?",
+            "The SEC handles investment-like crypto assets, while the CFTC handles commodities and derivatives.",
+            "crypto-finance",
+            "The Block",
+            "разделяют надзор",
+            "SEC и CFTC",
+        ),
+        (
+            "Citadel Securities invests $400 million in Crypto.com, valuing exchange at $20 billion",
+            "The first institutional funding round will fund expansion into tokenized securities and derivatives.",
+            "crypto-finance",
+            "CoinDesk",
+            "$400 млн",
+            "$20 млрд",
+        ),
+        (
+            "AMD Ryzen 7 7700X3D is exclusive to Newegg in North America — $329 CPU won't be available at other vendors until at least Q4",
+            "The CPU is exclusive to Newegg in Canada and the United States until the end of Q3 2026.",
+            "tech-hardware-software",
+            "Tom's Hardware",
+            "доступен только",
+            "третьего квартала 2026 года",
+        ),
+        (
+            "Young Galaxy Cluster",
+            "James Webb looks 4.4 billion years into the past at two actively merging sub-clusters.",
+            "science-discovery",
+            "NASA News Releases",
+            "скопление сливающихся галактик",
+            "4,4 млрд лет назад",
+        ),
+        (
+            "Why teens deserve access to safe AI",
+            "OpenAI describes age-appropriate protections, learning tools and parental controls.",
+            "ai",
+            "OpenAI News",
+            "подростков к ИИ",
+            "родительский контроль",
+        ),
+        (
+            "Brain-inspired nanopore device uses current-induced heating for memory operations",
+            "A Nature Communications study describes a fluidic nanopore design for neuromorphic computing.",
+            "science-discovery",
+            "Phys.org",
+            "Нанопоровое устройство",
+            "Nature Communications",
+        ),
+        (
+            "How Balyasny Asset Management built an AI research engine",
+            "The system combines model evaluation, OpenAI platform use and agent workflows.",
+            "ai",
+            "OpenAI News",
+            "систему на основе ИИ",
+            "агентные рабочие процессы",
+        ),
+        (
+            "NASA Study Finds Near-Earth Asteroid Is Actually Comet",
+            "JPL scientists precisely tracked its motion and used observatories that image faint objects.",
+            "science-discovery",
+            "NASA News Releases",
+            "оказался кометой",
+            "отслеживанию движения",
+        ),
+    )
+    for title, excerpt, stream, source, title_fragment, summary_fragment in cases:
+        row = item(title, excerpt, stream=stream, source=source)
+        public_title = public_title_ru(row)
+        summary = public_excerpt_ru(row, max_len=360)
+        assert has_cyrillic(public_title), public_title
+        assert title_fragment in public_title
+        assert summary_fragment in summary
+        assert "опубликованы новые сведения" not in summary
+
+
 def main() -> int:
     test_stablecoin_summary_contains_event_and_regulators()
     test_bitcoin_wallet_summary_preserves_amount_and_uncertainty()
@@ -159,8 +250,10 @@ def main() -> int:
     test_why_it_matters_uses_event_context()
     test_nasa_summary_uses_source_facts_instead_of_generic_topic()
     test_compact_summary_does_not_cut_a_word()
+    test_video_duration_prefix_is_removed_from_source_excerpt()
     test_audio_product_gets_specific_russian_framing()
     test_second_wave_selected_items_get_specific_summaries()
+    test_live_reader_corpus_has_russian_titles_and_specific_summaries()
     print("reader summary quality tests passed")
     return 0
 
