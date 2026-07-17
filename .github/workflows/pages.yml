@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 1,7,13,19 * * *"
   workflow_dispatch:
 
 permissions:
@@ -61,6 +63,9 @@ jobs:
 
       - name: Run content quality check
         run: python3 tools/validate_public_reader_content_quality.py --fail-on critical
+
+      - name: Validate live reader freshness
+        run: python3 tools/validate_public_reader_freshness.py
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

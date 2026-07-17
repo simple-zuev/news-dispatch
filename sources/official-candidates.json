@@ -164,6 +164,94 @@
       "notes": "Promoted into sources/feeds.json with official science-agency framing."
     },
     {
+      "id": "bank-canada-news",
+      "stream": "finance",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "Bank of Canada News RSS Feed",
+      "candidate_url": "https://www.bankofcanada.ca/utility/news/feed/",
+      "candidate_url_status": "verified",
+      "rationale": "The official Bank of Canada RSS directory exposes a current news feed covering policy rates, monetary policy reports, financial stability and retail-payment oversight.",
+      "verification_requirements": [
+        "confirm stable RSS access in the production fetch environment",
+        "confirm official source ownership from bankofcanada.ca",
+        "define monetary-policy, financial-stability and payment keyword gates",
+        "exclude event and media-advisory announcements"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Official RSS directory lists News and Press Release feeds.",
+        "Live probe returned HTTP 200, valid RSS, 10 items and 2026-07-15 releases."
+      ],
+      "notes": "Promoted on probation with official central-bank framing."
+    },
+    {
+      "id": "cftc-general",
+      "stream": "finance",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "CFTC General Press Releases RSS Feed",
+      "candidate_url": "https://www.cftc.gov/RSS/RSSGP/rssgp.xml",
+      "candidate_url_status": "verified",
+      "rationale": "The official CFTC RSS directory exposes current press releases covering derivatives rules, margin, clearing and event-contract market infrastructure.",
+      "verification_requirements": [
+        "confirm stable RSS access in the production fetch environment",
+        "confirm official source ownership from cftc.gov",
+        "define derivatives, swaps, margin, clearing and market-structure gates",
+        "exclude advisory committee and speech-only announcements"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Official CFTC RSS page links the General Press Releases feed.",
+        "Live probe returned HTTP 200, valid RSS, 10 items and current 2026-07-15 releases."
+      ],
+      "notes": "Promoted on probation with publisher-level caps shared across CFTC feeds."
+    },
+    {
+      "id": "cftc-enforcement-crypto",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "CFTC Enforcement Press Releases RSS Feed",
+      "candidate_url": "https://www.cftc.gov/RSS/RSSENF/rssenf.xml",
+      "candidate_url_status": "verified",
+      "rationale": "The official CFTC enforcement feed adds primary-source digital-asset cases while strict crypto gates prevent unrelated commodity enforcement from entering the reader stream.",
+      "verification_requirements": [
+        "confirm stable RSS access in the production fetch environment",
+        "confirm official source ownership from cftc.gov",
+        "require explicit digital-asset, crypto, bitcoin, stablecoin or virtual-currency terms",
+        "exclude unrelated agriculture, metals and energy cases"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Official CFTC RSS page links the Enforcement Press Releases feed.",
+        "Live probe returned HTTP 200 and valid RSS with a recent Celsius enforcement item."
+      ],
+      "notes": "Promoted on probation with strict digital-asset relevance rules."
+    },
+    {
+      "id": "huggingface-blog",
+      "stream": "ai",
+      "source_class": "official_source",
+      "status": "promoted",
+      "title": "Hugging Face Blog RSS Feed",
+      "candidate_url": "https://huggingface.co/blog/feed.xml",
+      "candidate_url_status": "verified",
+      "rationale": "The official Hugging Face feed adds open-source model, dataset, inference, evaluation and platform-security signals that are underrepresented in the current corporate AI mix.",
+      "verification_requirements": [
+        "confirm stable RSS access in the production fetch environment",
+        "confirm official source ownership from huggingface.co",
+        "define model, dataset, inference, evaluation and security keyword gates",
+        "apply row and selection caps because the feed is high volume"
+      ],
+      "promotion_target": "sources/feeds.json",
+      "evidence": [
+        "Live probe returned HTTP 200, valid RSS and current 2026-07-16 items.",
+        "The feed exposes more than 800 entries and therefore requires explicit caps."
+      ],
+      "notes": "Promoted on probation with a 12-row report cap and one-item selection cap."
+    },
+    {
       "id": "crypto-finance-official-source-gap",
       "stream": "crypto-finance",
       "source_class": "official_source",
@@ -189,7 +277,7 @@
       "title": "Stable official Moscow city feed replacement or fallback",
       "candidate_url": "",
       "candidate_url_status": "missing",
-      "rationale": "mos-ru-news is disabled after repeated production timeouts, leaving moscow-city without enabled official-source coverage.",
+      "rationale": "mos-ru-news is disabled after repeated production timeouts. Moscow coverage now includes two additional stable city-media section feeds, but the stream still lacks enabled official-source coverage.",
       "verification_requirements": [
         "verify a stable official Moscow RSS or Atom endpoint",
         "confirm it does not timeout in production-like fetches",
@@ -200,14 +288,14 @@
       "notes": "A stable official fallback is preferable to re-enabling a timeout-prone feed."
     },
     {
-      "id": "science-discovery-research-source-gap",
+      "id": "nature-news",
       "stream": "science-discovery",
       "source_class": "research_media",
-      "status": "needs_verification",
-      "title": "Stable research journal or institutional science feed candidate",
-      "candidate_url": "",
-      "candidate_url_status": "missing",
-      "rationale": "nature-news is disabled after XML parse errors; NASA now adds official science-agency coverage, but a stable research-journal replacement remains useful.",
+      "status": "promoted",
+      "title": "Nature RSS Feed",
+      "candidate_url": "https://www.nature.com/nature.rss",
+      "candidate_url_status": "verified",
+      "rationale": "Nature's RSS endpoint recovered from the earlier parse failure and now provides current research, replication, science-policy and discovery coverage from a high-trust journal.",
       "verification_requirements": [
         "verify valid RSS or Atom XML",
         "confirm source is a research journal, institution or high-trust science publication",
@@ -215,7 +303,10 @@
         "confirm generated signals include source attribution suitable for pre-publication review"
       ],
       "promotion_target": "sources/feeds.json",
-      "notes": "Do not re-enable nature-news until its endpoint parses reliably."
+      "evidence": [
+        "Re-probe on 2026-07-16 returned HTTP 200, valid RSS, 75 items and current publication dates."
+      ],
+      "notes": "Re-enabled on probation with a 16-row report cap and research-focused filters."
     },
     {
       "id": "dj-audio-official-source-gap",

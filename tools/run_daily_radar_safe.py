@@ -25,6 +25,7 @@ def main() -> int:
     run([sys.executable, "tools/build_candidate_dispatch.py"])
     run([sys.executable, "tools/validate_candidate_dispatch.py"])
     run([sys.executable, "tools/build_auto_dispatches.py"])
+    run([sys.executable, "tools/prune_operational_history.py", "--apply"])
     run([sys.executable, "tools/validate_radar_artifacts.py"])
     return 0
 

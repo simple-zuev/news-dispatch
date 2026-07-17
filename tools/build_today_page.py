@@ -22,8 +22,9 @@ from reader_text import (
     build_public_item,
     compact_time_ru,
     public_excerpt_ru,
+    public_items_same_story,
     public_item_is_fresh,
-    public_story_key,
+    public_story_similarity,
     public_title_ru,
     reader_title_ru as shared_reader_title_ru,
     source_original_title as shared_source_original_title,
@@ -73,9 +74,16 @@ SOURCE_TODAY_CAPS = {
     "openai-news": 2,
     "arxiv-cs-ai": 1,
     "google-security-blog": 2,
+    "huggingface-blog": 1,
+    "nature-news": 2,
     "tomshardware": 2,
     "science-daily": 1,
     "sneaker-news": 1,
+}
+PUBLISHER_TODAY_CAPS = {
+    "bank-of-canada": 1,
+    "cftc": 2,
+    "mskagency": 1,
 }
 
 STREAM_TODAY_CAP = 4
@@ -85,11 +93,6 @@ TODAY_ITEM_LIMIT = 10
 TODAY_PRIMARY_TARGET = 7
 TODAY_SOURCE_CAP = 2
 SECONDARY_STREAM_CAP = 1
-
-STOPWORDS = {
-    "the", "and", "for", "from", "with", "this", "that", "into", "over", "after", "before", "about", "news", "update", "updates",
-    "как", "что", "это", "для", "или", "при", "над", "под", "после", "перед", "новости", "обновление", "сигнал",
-}
 
 FORBIDDEN_READER_PATTERNS = [
     r"\b(buy|sell|hold)\b",
@@ -445,6 +448,14 @@ def source_cap(item: dict[str, Any]) -> int:
     return min(SOURCE_TODAY_CAPS.get(str(item.get("feed_id") or ""), TODAY_SOURCE_CAP), TODAY_SOURCE_CAP)
 
 
+def publisher_id(item: dict[str, Any]) -> str:
+    return str(item.get("publisher_id") or item.get("feed_id") or item.get("feed_title") or "unknown")
+
+
+def publisher_cap(item: dict[str, Any]) -> int:
+    return min(PUBLISHER_TODAY_CAPS.get(publisher_id(item), TODAY_SOURCE_CAP), TODAY_SOURCE_CAP)
+
+
 def eligible_today_items(report: dict[str, Any], policy: dict[str, Any] | None) -> list[dict[str, Any]]:
     reference = report.get("date")
     items = [
@@ -475,26 +486,31 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
     candidates = sorted(eligible_today_items(report, policy), key=today_selection_priority, reverse=True)
     selected: list[dict[str, Any]] = []
     source_counts: Counter[str] = Counter()
+    publisher_counts: Counter[str] = Counter()
     stream_counts: Counter[str] = Counter()
     capped: Counter[str] = Counter()
+    capped_publishers: Counter[str] = Counter()
     skipped_stream: Counter[str] = Counter()
     skipped_story_duplicates = 0
 
     def can_add(item: dict[str, Any]) -> bool:
         nonlocal skipped_story_duplicates
         feed_id = str(item.get("feed_id") or item.get("feed_title") or "unknown")
+        item_publisher = publisher_id(item)
         stream = stream_slug(item)
-        story_key = public_story_key(item)
         matching_story = [
             existing
             for existing in selected
-            if public_story_key(existing) == story_key or topic_similarity(item, existing) >= 0.65
+            if public_items_same_story(item, existing, threshold=0.65)
         ]
         if any(str(existing.get("feed_id") or existing.get("feed_title") or "unknown") == feed_id for existing in matching_story):
             skipped_story_duplicates += 1
             return False
         if source_counts[feed_id] >= source_cap(item):
             capped[feed_id] += 1
+            return False
+        if publisher_counts[item_publisher] >= publisher_cap(item):
+            capped_publishers[item_publisher] += 1
             return False
         stream_cap = STREAM_TODAY_CAP if stream in PRIMARY_STREAMS else SECONDARY_STREAM_CAP
         if stream_counts[stream] >= stream_cap:
@@ -505,6 +521,7 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
     def add(item: dict[str, Any]) -> None:
         selected.append(item)
         source_counts[str(item.get("feed_id") or item.get("feed_title") or "unknown")] += 1
+        publisher_counts[publisher_id(item)] += 1
         stream_counts[stream_slug(item)] += 1
 
     seen_ids: set[str] = set()
@@ -554,12 +571,15 @@ def select_today_items(report: dict[str, Any], policy: dict[str, Any] | None = N
         "eligible_reader_safe_by_stream": dict(Counter(stream_slug(item) for item in candidates)),
         "selected_today_by_stream": dict(stream_counts),
         "selected_today_by_source": dict(source_counts),
+        "selected_today_by_publisher": dict(publisher_counts),
         "source_caps": SOURCE_TODAY_CAPS,
+        "publisher_caps": PUBLISHER_TODAY_CAPS,
         "stream_cap": STREAM_TODAY_CAP,
         "secondary_stream_cap": SECONDARY_STREAM_CAP,
         "primary_streams": list(PRIMARY_STREAMS),
         "primary_target": TODAY_PRIMARY_TARGET,
         "capped_sources": dict(capped),
+        "capped_publishers": dict(capped_publishers),
         "stream_cap_skips": dict(skipped_stream),
         "story_duplicate_skips": skipped_story_duplicates,
         "ranking_capped_rows": (report.get("ranking_diagnostics") or {}).get("capped_rows", {}),
@@ -633,28 +653,15 @@ def all_evidence_hits(item: dict[str, Any]) -> list[str]:
     return hits
 
 
-def topic_terms(item: dict[str, Any]) -> set[str]:
-    haystack = " ".join([str(item.get("title") or ""), " ".join(all_evidence_hits(item))]).lower()
-    terms = set(re.findall(r"[a-zа-я0-9]{3,}", haystack))
-    return {term for term in terms if term not in STOPWORDS}
-
-
 def topic_similarity(left: dict[str, Any], right: dict[str, Any]) -> float:
-    if stream_slug(left) != stream_slug(right):
-        return 0.0
-    left_terms = topic_terms(left)
-    right_terms = topic_terms(right)
-    if not left_terms or not right_terms:
-        return 0.0
-    overlap = len(left_terms & right_terms)
-    return overlap / min(len(left_terms), len(right_terms))
+    return public_story_similarity(left, right)
 
 
 def cluster_items(items: list[dict[str, Any]], limit: int = 12) -> list[list[dict[str, Any]]]:
     clusters: list[list[dict[str, Any]]] = []
     for item in items:
         for cluster in clusters:
-            if topic_similarity(item, cluster[0]) >= 0.5:
+            if public_items_same_story(item, cluster[0], threshold=0.58):
                 cluster.append(item)
                 break
         else:

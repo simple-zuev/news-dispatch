@@ -376,6 +376,11 @@ def test_today_selection_caps_overfed_source_and_keeps_crypto() -> None:
     assert diagnostics["capped_sources"].get("openai-news", 0) + diagnostics["story_duplicate_skips"] > 0
 
 
+def test_today_publisher_caps_group_related_feeds() -> None:
+    assert build_today_page.publisher_id({"feed_id": "mskagency-transport", "publisher_id": "mskagency"}) == "mskagency"
+    assert build_today_page.publisher_cap({"feed_id": "mskagency-culture", "publisher_id": "mskagency"}) == 1
+
+
 def test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags() -> None:
     report = mixed_accepted_report()
     policy = build_today_page.load_policy(report, path=ROOT / "missing-reader-policy.json")
@@ -533,6 +538,7 @@ def main() -> int:
     test_today_radar_css_has_cluster_materials_styles()
     test_card_stays_non_directive()
     test_today_selection_caps_overfed_source_and_keeps_crypto()
+    test_today_publisher_caps_group_related_feeds()
     test_today_selection_uses_safe_mixed_report_instead_of_only_preselected_flags()
     test_today_selection_prefers_crypto_regulatory_items_over_forecast_and_roundup()
     test_today_excludes_low_relevance_human_interest_from_finance()

@@ -102,6 +102,18 @@ GENERIC_SOURCE_TOPICS = {
     "движение крипторынка",
 }
 
+PUBLIC_STORY_STOPWORDS = {
+    "about", "after", "again", "against", "and", "announced", "announces", "before", "city", "crypto", "discovery",
+    "finance", "from", "hardware", "into", "item", "latest", "new", "news", "over", "published", "publishes",
+    "report", "reports", "says", "science", "software", "story", "technology", "that", "the", "their", "this",
+    "through", "update", "updated", "updates", "with",
+    "апреля", "августа", "будет", "были", "было", "декабря", "для", "изменения", "изменили", "июля", "июня",
+    "как", "марта", "мая", "метро", "москва", "москве", "московский", "на", "ноября",
+    "новая", "новое", "новости", "новый", "обновил", "обновила", "обновление", "опубликовал", "опубликовала",
+    "октября", "после", "при", "районе", "ремонт", "сентября", "сообщает", "сообщил", "сообщила", "станции",
+    "стало", "столице", "улице", "февраля", "через", "чтобы", "этого", "января", "закроют",
+}
+
 WHY_IT_MATTERS_BY_STREAM = {
     "finance": (
         "Материал помогает отслеживать изменения денежно-кредитной политики, "
@@ -248,10 +260,16 @@ def public_item_is_fresh(item: dict[str, Any], reference: object, max_age_hours:
 
 
 def clean_source_excerpt(value: object, max_len: int = 360) -> str:
-    text = clean_text(value, max_len=max_len)
+    text = clean_text(value, max_len=0)
     for pattern in BOILERPLATE_PATTERNS:
         text = re.sub(pattern, " ", text, flags=re.IGNORECASE)
-    return clean_text(text, max_len=max_len)
+    text = clean_text(text, max_len=0)
+    if max_len and len(text) > max_len:
+        shortened = text[: max_len - 1].rstrip()
+        if " " in shortened:
+            shortened = shortened.rsplit(" ", 1)[0]
+        return shortened.rstrip(" ,;:-") + "…"
+    return text
 
 
 def item_text(item: dict[str, Any]) -> str:
@@ -348,6 +366,17 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return public_text(title)
     text = item_text(item)
     source = source_name(item)
+    original_product = title.split(":", 1)[0].strip() if ":" in title else ""
+    if "galaxy" in text and "stablecoin yield" in text and "defi vault" in text:
+        return "Galaxy запускает DeFi-хранилища для институциональной доходности в стейблкоинах"
+    if "fatf" in text and "aml enforcement" in text and "stablecoin crime" in text:
+        return "FATF призывает ускорить применение AML-правил к крипторынку"
+    if "bank of canada" in text and "monetary policy report" in text:
+        return "Банк Канады опубликовал июльский доклад о денежно-кредитной политике"
+    if "bank of canada" in text and "maintains the policy rate" in text:
+        return "Банк Канады сохранил ключевую ставку на уровне 2,25%"
+    if "sec" in text and "e-delivery" in text:
+        return "SEC предложила новый порядок электронной доставки материалов инвесторам"
     if "bank of england" in text and "stablecoin" in text:
         return "FCA и Банк Англии описали подход к системным стейблкоинам"
     if "mica" in text:
@@ -366,6 +395,38 @@ def reader_title_ru(item: dict[str, Any]) -> str:
         return "Центральный банк обновил правила для цифровых активов"
     if "post-quantum" in text or ("quantum" in text and "android" in text):
         return "Google описывает постквантовую защиту Android"
+    if "ace studio 2" in text and "review" in text:
+        return "Обзор ACE Studio 2: функции ИИ сильнее рабочего процесса"
+    if "rtx 3060" in text and "palit" in text:
+        return "Palit возвращает GeForce RTX 3060 в версии Infinity 2 OC"
+    if "perseverance" in text and "ancient mars impacts" in text:
+        return "Perseverance нашёл на Марсе следы серии древних астероидных ударов"
+    if "perseverance" in text and "broom point" in text:
+        return "NASA показала маршрут Perseverance к древним породам Broom Point"
+    if "west africa" in text and "rainfall" in text:
+        return "Изменение климата повысило вероятность экстремальных осадков в Западной Африке"
+    if "astronaut" in text and "mitochondria" in text and "space station" in text:
+        return "Исследование МКС связало ухудшение состояния организма астронавтов с митохондриями"
+    if "reverse federalism" in text and "ai governance" in text:
+        return "OpenAI предложила объединять региональные и федеральные правила безопасности ИИ"
+    if "anise glide" in text:
+        return "Audio Spices выпустила ревербератор Anise Glide со сдвигом высоты тона"
+    if "gpt-red" in text:
+        return "OpenAI представила GPT-Red для поиска слабых мест моделей"
+    if "artemis iii" in text and "lander test" in text:
+        return "NASA готовит испытание посадочной системы Artemis III перед высадкой на Луну"
+    if "jetson thor" in text:
+        return "NVIDIA представила компьютеры Jetson Thor для робототехники"
+    if "music plugins" in text and ("week" in text or "weekly" in text):
+        return "Новые аудиоплагины недели: платные и бесплатные инструменты"
+    if "windup watch fair" in text:
+        return "Пять заметных новинок выставки Windup Watch Fair в Чикаго"
+    if "second-hand horology" in text or ("used gem" in text and "watch" in text):
+        return "Почему находки подержанных часов ценят сильнее обычной покупки"
+    if stream_slug(item) == "dj-audio-creative" and original_product and any(
+        term in text for term in ("synth", "synthesizer", "midi", "plugin", "pedal", "sampler", "sequencer", "audio interface")
+    ):
+        return f"Новый аудиоинструмент: {public_text(original_product)}"
     if "fca" in text and "crypto rules" in text:
         return "FCA описала новые правила для криптоактивов"
     if "financial crime" in text:
@@ -407,20 +468,200 @@ def reader_title_ru(item: dict[str, Any]) -> str:
     return f"{public_text(source)}: {russian_topic(item)}"
 
 
+def generated_factual_summary_ru(item: dict[str, Any], max_len: int = 360) -> str:
+    """Build a conservative Russian summary from attributable source text."""
+    text = item_text(item)
+    source = public_text(source_name(item))
+    topic = russian_topic(item)
+    original_title = source_original_title(item)
+    original_product = original_title.split(":", 1)[0].strip() if ":" in original_title else ""
+
+    if "galaxy" in text and "stablecoin yield" in text and "defi vault" in text:
+        summary = (
+            "Galaxy представила DeFi-хранилища, ориентированные на институциональные стратегии доходности в стейблкоинах. "
+            "Продукт связан с размещением цифровых активов в децентрализованной финансовой инфраструктуре."
+        )
+    elif "fatf" in text and "aml enforcement" in text and "stablecoin crime" in text:
+        summary = (
+            "FATF призвала страны быстрее применять требования против отмывания денег к криптосервисам. "
+            "Организация связывает срочность мер с ростом незаконного использования стейблкоинов."
+        )
+    elif "bank of canada" in text and "monetary policy report" in text:
+        summary = (
+            "Банк Канады опубликовал июльский доклад о денежно-кредитной политике. "
+            "Регулятор отмечает слабость экономики с признаками улучшения, ожидает ускорения роста и замедления инфляции примерно до 2%, сохраняя высокую неопределённость."
+        )
+    elif "bank of canada" in text and "maintains the policy rate" in text:
+        summary = (
+            "Банк Канады сохранил целевую ставку овернайт на уровне 2,25%. "
+            "Банковская ставка осталась на уровне 2,5%, ставка по депозитам — 2,2%."
+        )
+    elif "sec" in text and "e-delivery" in text:
+        summary = (
+            "SEC предложила изменить порядок электронной доставки документов инвесторам. "
+            "Инициатива направлена на более доступное получение обязательной информации; окончательный эффект зависит от обсуждения и статуса правила."
+        )
+    elif "bank of england" in text and "systemic stablecoin" in text:
+        summary = (
+            "FCA и Банк Англии представили совместный подход к надзору за системными эмитентами "
+            "стейблкоинов. По сообщению регуляторов, документ распределяет обязанности между ведомствами."
+        )
+    elif "bitcoin wallet" in text and "dormant" in text and "moved" in text:
+        amount_match = re.search(r"\$\s?[\d.,]+\s*(?:million|billion)?", text, flags=re.IGNORECASE)
+        amount = amount_match.group(0).replace("million", "млн").replace("billion", "млрд") if amount_match else "крупную сумму"
+        summary = f"По данным {source}, биткоин-кошелёк, неактивный с 2017 года, переместил активы на {amount}."
+        if "fresh address rather than an exchange" in text or "new address rather than an exchange" in text:
+            summary += " Средства поступили на новый адрес, а не на биржу; источник не сообщает о продаже."
+    elif "fca" in text and "crypto rules" in text:
+        summary = (
+            "FCA представила новый набор правил для британского рынка криптоактивов. "
+            "По сообщению регулятора, изменения затрагивают надзор и требования к участникам рынка."
+        )
+    elif "illegal promotions" in text and "market abuse" in text:
+        summary = (
+            "FCA отчиталась об усилении контроля незаконного продвижения криптопродуктов и рыночных злоупотреблений. "
+            "Сообщение относится к первому году новой надзорной стратегии."
+        )
+    elif "ace studio 2" in text and "review" in text:
+        summary = (
+            "MusicTech протестировал ACE Studio 2 — рабочую станцию с функциями генеративного аудио. "
+            "Обзор оценивает возможности ИИ и удобство повседневного творческого процесса."
+        )
+    elif "rtx 3060" in text and "palit" in text:
+        summary = (
+            "Palit анонсировала GeForce RTX 3060 Infinity 2 OC с 12 ГБ видеопамяти. "
+            "По данным источника, модель возвращает архитектуру поколения 2021 года как более доступный вариант на фоне спроса на ИИ-оборудование."
+        )
+    elif "west africa" in text and "rainfall" in text:
+        summary = (
+            "Исследование связывает изменение климата с ростом вероятности экстремальных осадков в Западной Африке. "
+            "По сообщению источника, подобные события стали вероятнее примерно в пять раз."
+        )
+    elif "gpt-red" in text:
+        summary = (
+            "OpenAI представила GPT-Red — исследовательский подход к самосовершенствованию устойчивости моделей. "
+            "Материал описывает работу над поиском слабых мест и повышением надёжности систем ИИ."
+        )
+    elif "jetson thor" in text:
+        summary = (
+            "NVIDIA представила компьютеры Jetson Thor для робототехники и периферийных систем ИИ. "
+            "Компания позиционирует платформу как основу для более производительных автономных устройств."
+        )
+    elif "gecko" in text and "cancer" in text:
+        summary = (
+            "Исследователи изучают особенности домашнего геккона как возможную модель для исследований рака. "
+            "Публикация описывает ранний научный результат, который ещё требует дальнейшей проверки."
+        )
+    elif "music plugins" in text and ("week" in text or "weekly" in text):
+        summary = (
+            "MusicTech собрал новые платные и бесплатные аудиоплагины недели. "
+            "Подборка помогает сравнить свежие инструменты для производства и обработки звука."
+        )
+    elif "fender" in text and "studio pro" in text and "ableton" in text:
+        summary = (
+            "MusicTech сравнил Fender Studio Pro 8.1 с Ableton Live в реальном рабочем сценарии. "
+            "Обзор оценивает удобство перехода, возможности станции и ограничения нового процесса."
+        )
+    elif "china" in text and "chip exports" in text:
+        summary = (
+            "По данным источника, стоимость экспорта китайских чипов заметно выросла в первой половине года. "
+            "На показатель повлияли рост цен на память и увеличение стоимости поставок."
+        )
+    elif "windup watch fair" in text:
+        summary = (
+            "Worn & Wound выбрал пять заметных новых моделей с выставки Windup Watch Fair в Чикаго. "
+            "Материал представляет редакционный обзор дизайна и практических особенностей часов."
+        )
+    elif "second-hand horology" in text or ("used gem" in text and "watch" in text):
+        summary = (
+            "Worn & Wound рассказывает о поиске подержанных часов в локальных магазинах, на барахолках и распродажах. "
+            "Материал рассматривает ценность случайной находки, состояние вещи и личную историю коллекционирования."
+        )
+    elif stream_slug(item) == "dj-audio-creative" and original_product and any(
+        term in text for term in ("synth", "synthesizer", "midi", "plugin", "pedal", "sampler", "sequencer", "audio interface")
+    ):
+        summary = (
+            f"По сообщению {source}, представлен аудиоинструмент {public_text(original_product)}. "
+            "Материал описывает его функции, совместимость и сценарии использования в музыкальном производстве."
+        )
+    elif "astronaut" in text and "mitochondria" in text and "space station" in text:
+        summary = (
+            "Исследование на Международной космической станции указывает на роль митохондрий в ухудшении состояния организма астронавтов. "
+            "Nature описывает научный результат, который требует оценки методики и дальнейшего подтверждения."
+        )
+    elif "perseverance" in text and "ancient mars impacts" in text:
+        summary = (
+            "Марсоход Perseverance обнаружил у кратера Езеро слой древних пород толщиной около 75 метров. "
+            "NASA связывает его формирование с повторными астероидными ударами более 3,9 млрд лет назад."
+        )
+    elif "perseverance" in text and "broom point" in text:
+        summary = (
+            "NASA показала маршрут марсохода Perseverance к участку Broom Point у кратера Езеро. "
+            "Там находится последовательность слоистых пород, возраст которых может превышать 3,9 млрд лет."
+        )
+    elif "reverse federalism" in text and "ai governance" in text:
+        summary = (
+            "OpenAI описала подход «обратного федерализма» к регулированию ИИ в США. "
+            "Предложение предполагает использовать законы штатов как основу общенациональной системы безопасного и демократического ИИ."
+        )
+    elif "anise glide" in text:
+        summary = (
+            "Audio Spices выпустила Anise Glide — ревербератор со сдвигом высоты тона. "
+            "Плагин плавно переходит к выбранной ноте и создаёт изменяющееся движение звука."
+        )
+    elif "artemis iii" in text and "lander test" in text:
+        summary = (
+            "NASA планирует демонстрационную миссию Artemis III на 2027 год перед высадкой астронавтов в 2028 году. "
+            "Испытание должно отработать сближение и стыковку посадочной системы с кораблём Orion."
+        )
+    elif "review" in text:
+        summary = (
+            f"{source} опубликовал практический обзор по теме «{topic}». "
+            "Материал оценивает заявленные возможности, ограничения и сценарии использования."
+        )
+    elif any(term in text for term in ("study finds", "researchers found", "study shows", "research shows")):
+        summary = (
+            f"По сообщению {source}, опубликован новый исследовательский результат по теме «{topic}». "
+            "Выводы основаны на данных авторов и требуют оценки методики и независимого подтверждения."
+        )
+    elif any(term in text for term in ("launches", "launched", "introduces", "introduced", "announces", "announced", "unveils")):
+        summary = (
+            f"По сообщению {source}, представлен новый продукт или обновление по теме «{topic}». "
+            "Источник описывает заявленные возможности; фактическая доступность и ограничения требуют проверки."
+        )
+    elif any(term in text for term in ("rules", "regulation", "regulatory", "supervision", "enforcement")):
+        summary = (
+            f"По сообщению {source}, опубликовано изменение правил или надзорного подхода по теме «{topic}». "
+            "Практический эффект зависит от статуса документа, сроков и круга затронутых участников."
+        )
+    else:
+        summary = (
+            f"По сообщению {source}, опубликованы новые сведения по теме «{topic}». "
+            "Материал передаёт позицию источника; ключевые детали и последствия требуют сверки с первоисточником."
+        )
+    return clean_source_excerpt(summary, max_len=max_len)
+
+
 def reader_excerpt_ru(item: dict[str, Any], max_len: int = 360) -> str:
     existing = str(item.get("reader_excerpt_ru") or "").strip()
     if existing:
-        return clean_source_excerpt(public_text(existing), max_len=max_len)
+        cleaned = clean_source_excerpt(public_text(existing), max_len=max_len)
+        if has_cyrillic(cleaned) and not any(
+            phrase in cleaned
+            for phrase in (
+                "Источник описывает тему",
+                "Подробности и формулировки сохранены",
+                "Короткое сообщение источника",
+            )
+        ):
+            return cleaned
     excerpt = clean_source_excerpt(item.get("source_excerpt") or item.get("summary") or "", max_len=max_len)
     if excerpt and has_cyrillic(excerpt):
         return public_text(excerpt)
-    title = reader_title_ru(item)
     if is_market_forecast_item(item):
         text = f"Источник сообщает об оценке участника рынка по теме «{russian_topic(item)}». Это не факт будущей цены и не рекомендация."
-    elif excerpt:
-        text = f"Источник описывает тему «{title}». Подробности и формулировки сохранены в оригинале источника."
     else:
-        text = f"Короткое сообщение источника по теме «{title}». Для выводов нужно открыть первичный материал и проверить контекст."
+        text = generated_factual_summary_ru(item, max_len=max_len)
     return clean_source_excerpt(text, max_len=max_len)
 
 
@@ -501,17 +742,73 @@ def public_title_ru(item: dict[str, Any]) -> str:
 def public_story_key(item: dict[str, Any], stream: object | None = None) -> str:
     """Return a stable reader-facing identity used to suppress visible repeats."""
     del stream
-    title = public_title_ru(item).lower()
+    title = source_original_title(item) or public_title_ru(item)
+    title = title.lower()
     normalized = re.sub(r"[^0-9a-zа-яё]+", " ", title).strip()
     return normalized or str(item.get("url") or item.get("item_key") or "").strip().lower()
+
+
+def public_story_terms(item: dict[str, Any]) -> set[str]:
+    """Return distinctive title terms for conservative cross-source clustering."""
+    titles = [source_original_title(item), str(item.get("reader_title_ru") or "").strip()]
+    text = " ".join(title for title in titles if title).lower().replace("ё", "е")
+    terms = set(re.findall(r"[0-9a-zа-я]{2,}", text))
+    return {
+        term
+        for term in terms
+        if term not in PUBLIC_STORY_STOPWORDS and len(term) >= 3
+    }
+
+
+def public_story_similarity(left: dict[str, Any], right: dict[str, Any]) -> float:
+    if stream_slug(left) != stream_slug(right):
+        return 0.0
+    left_terms = public_story_terms(left)
+    right_terms = public_story_terms(right)
+    if not left_terms or not right_terms:
+        return 0.0
+    overlap = len(left_terms & right_terms)
+    if overlap < 2:
+        return 0.0
+    return overlap / min(len(left_terms), len(right_terms))
+
+
+def public_items_same_story(left: dict[str, Any], right: dict[str, Any], threshold: float = 0.62) -> bool:
+    """Identify one public story without merging merely related publisher updates."""
+    left_url = str(left.get("url") or left.get("source_original_url") or "").strip().lower()
+    right_url = str(right.get("url") or right.get("source_original_url") or "").strip().lower()
+    if left_url and left_url == right_url:
+        return True
+    left_key = public_story_key(left)
+    right_key = public_story_key(right)
+    if left_key and left_key == right_key:
+        return True
+    if stream_slug(left) != stream_slug(right):
+        return False
+    left_source = str(left.get("publisher_id") or left.get("feed_id") or left.get("feed_title") or "").strip().lower()
+    right_source = str(right.get("publisher_id") or right.get("feed_id") or right.get("feed_title") or "").strip().lower()
+    if left_source and left_source == right_source:
+        return False
+    return public_story_similarity(left, right) >= threshold
 
 
 def public_why_it_matters_ru(item: dict[str, Any], stream: object | None = None, max_len: int = 280) -> str:
     existing = str(item.get("why_it_matters") or item.get("reader_why_it_matters_ru") or "").strip()
     if existing:
         return clean_source_excerpt(public_text(existing), max_len=max_len)
-    slug = str(stream or stream_slug(item)).strip()
-    return clean_source_excerpt(WHY_IT_MATTERS_BY_STREAM.get(slug, ""), max_len=max_len)
+    text = item_text(item)
+    if "stablecoin" in text or "crypto rules" in text or "regulation" in text:
+        value = "Изменения могут затронуть эмитентов, банки, биржи, кастодианов и платёжные сервисы; важны сроки и точный статус правил."
+    elif any(term in text for term in ("gpu", "chip", "jetson", "hardware", "rtx")):
+        value = "Изменение может повлиять на доступность оборудования, цены, совместимость и выбор технологической платформы."
+    elif any(term in text for term in ("study", "research", "scientists", "researchers")):
+        value = "Результат расширяет научную картину, но практические выводы зависят от методики, повторяемости и независимого подтверждения."
+    elif any(term in text for term in ("model", "gpt", "agent", "artificial intelligence", " ai ")):
+        value = "Новость может повлиять на доступность инструментов ИИ, требования к инфраструктуре и условия интеграции в продукты."
+    else:
+        slug = str(stream or stream_slug(item)).strip()
+        value = WHY_IT_MATTERS_BY_STREAM.get(slug, "")
+    return clean_source_excerpt(value, max_len=max_len)
 
 
 def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
@@ -529,13 +826,13 @@ def public_excerpt_ru(item: dict[str, Any], max_len: int = 240) -> str:
     existing = str(item.get("reader_excerpt_ru") or "").strip()
     if existing:
         text = public_text(reader_excerpt_ru(item, max_len=max_len))
-        if not any(phrase in text for phrase in forbidden):
+        if has_cyrillic(text) and not any(phrase in text for phrase in forbidden):
             return text
     excerpt = clean_source_excerpt(item.get("source_excerpt") or item.get("summary") or "", max_len=max_len)
-    if excerpt:
+    if excerpt and has_cyrillic(excerpt):
         text = public_text(excerpt)
         return "" if any(phrase in text for phrase in forbidden) else text
-    return ""
+    return generated_factual_summary_ru(item, max_len=max_len)
 
 
 def public_meta_ru(item: dict[str, Any], stream: object | None = None) -> str:

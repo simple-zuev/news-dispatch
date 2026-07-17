@@ -291,6 +291,7 @@ def test_homepage_template_matches_public_reader_blocks() -> None:
     assert "OpenAI" in html
     assert "Открыть источник" in html
     assert html.count("OpenAI опубликовала заметку о безопасности агентов") == 1
+    assert "обновлени</p>" not in html
     assert "Открыть сегодняшний обзор" in html
     assert "today.html" in html
     assert "news/index.html" in html
@@ -373,9 +374,10 @@ def test_public_stream_labels_are_exact_on_homepage_cards() -> None:
         assert title in html
 
 
-def test_homepage_keeps_source_excerpt_when_russian_summary_is_unavailable() -> None:
+def test_homepage_builds_russian_summary_when_source_excerpt_is_english() -> None:
     html = homepage_html()
-    assert "The source published a short English update" in html
+    assert "По сообщению" in html
+    assert "The source published a short English update" not in html
     assert "Короткое сообщение источника" not in html
     assert "Источник описывает тему" not in html
 
@@ -438,7 +440,12 @@ def test_mobile_homepage_keeps_reader_news_visible() -> None:
     selector = ".home-news-list > .home-news-row:nth-child(n + 3)"
     assert selector not in css
     assert "@media (max-width: 360px)" in css
-    assert "font-size: 0.78rem;" in css
+    assert ".home-header .home-nav" in css
+    assert "overflow-x: auto;" in css
+    assert "overscroll-behavior-x: contain;" in css
+    assert "white-space: nowrap;" in css
+    assert "width: min(100% - 32px, 1180px);" in css
+    assert "overflow-x: hidden;" not in css
 
 
 def test_reader_sections_accept_main_with_accessibility_id() -> None:
@@ -465,7 +472,7 @@ def main() -> int:
     test_homepage_template_matches_public_reader_blocks()
     test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
-    test_homepage_keeps_source_excerpt_when_russian_summary_is_unavailable()
+    test_homepage_builds_russian_summary_when_source_excerpt_is_english()
     test_old_home_hero_css_is_removed()
     test_public_builders_share_sources_navigation_and_skip_reader_css()
     test_enhancement_keeps_the_reader_brand()

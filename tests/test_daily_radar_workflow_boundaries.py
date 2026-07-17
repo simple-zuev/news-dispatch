@@ -7,6 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "daily-radar.yml"
+RUNNER = ROOT / "tools" / "run_daily_radar_safe.py"
 
 
 def test_daily_radar_does_not_push_to_main() -> None:
@@ -34,10 +35,22 @@ def test_daily_radar_uses_owner_qualified_pr_head() -> None:
     assert '--head "${DAILY_RADAR_PR_HEAD}"' in text
 
 
+def test_guarded_runner_prunes_only_after_building_drafts() -> None:
+    text = RUNNER.read_text(encoding="utf-8")
+    build = 'run([sys.executable, "tools/build_auto_dispatches.py"])'
+    prune = 'run([sys.executable, "tools/prune_operational_history.py", "--apply"])'
+    validate = 'run([sys.executable, "tools/validate_radar_artifacts.py"])'
+    assert build in text
+    assert prune in text
+    assert validate in text
+    assert text.index(build) < text.index(prune) < text.index(validate)
+
+
 def main() -> int:
     test_daily_radar_does_not_push_to_main()
     test_daily_radar_uses_automation_pr_branch()
     test_daily_radar_uses_owner_qualified_pr_head()
+    test_guarded_runner_prunes_only_after_building_drafts()
     print("daily radar workflow boundary tests passed")
     return 0
 

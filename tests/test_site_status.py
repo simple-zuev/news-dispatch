@@ -27,6 +27,8 @@ def test_payload_has_feed_health_counts() -> None:
     assert "feed_error" in payload
     assert isinstance(payload["feed_total"], int)
     assert payload["feed_total"] >= payload["feed_ok"]
+    assert "ranking_date" in payload
+    assert "latest_public_item_at" in payload
 
 
 def test_block_renders_feed_health_labels() -> None:

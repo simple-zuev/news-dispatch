@@ -107,6 +107,22 @@ EXPLICIT_STREAM_TERMS: dict[str, tuple[str, ...]] = {
         "sneaker",
         "sneakers",
     ),
+    "dj-audio-creative": (
+        "audio interface",
+        "audio plugin",
+        "daw",
+        "drum machine",
+        "instrument",
+        "midi controller",
+        "music production",
+        "pedal",
+        "plugin",
+        "reverb",
+        "sampler",
+        "sequencer",
+        "synth",
+        "synthesizer",
+    ),
     "science-discovery": (
         "alzheimer",
         "alzheimer s",
@@ -141,6 +157,7 @@ class FeedConfigError(NewsDispatchError):
 @dataclass(frozen=True)
 class Feed:
     id: str
+    publisher_id: str
     title: str
     url: str
     stream: str
@@ -268,6 +285,7 @@ def load_config(path: Path) -> tuple[list[Feed], dict[str, object]]:
         feeds.append(
             Feed(
                 id=feed_id,
+                publisher_id=str(raw.get("publisher_id") or feed_id),
                 title=title,
                 url=url,
                 stream=stream,
@@ -287,18 +305,45 @@ def load_config(path: Path) -> tuple[list[Feed], dict[str, object]]:
     return feeds, dict(data.get("defaults", {}))
 
 
-def download(url: str, timeout: int) -> bytes:
-    """Download a feed payload with a deterministic User-Agent."""
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+def ssl_contexts() -> list[ssl.SSLContext]:
+    """Return distinct trusted CA contexts for certificate-chain fallback."""
+    ca_files: list[str] = []
     try:
         import certifi  # type: ignore[import-not-found]
     except Exception:
-        ca_file = next((path for path in CA_FALLBACKS if Path(path).exists()), "")
-        context = ssl.create_default_context(cafile=ca_file or None)
+        pass
     else:
-        context = ssl.create_default_context(cafile=certifi.where())
-    with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
-        return response.read()
+        ca_files.append(certifi.where())
+    ca_files.extend(str(path) for path in CA_FALLBACKS if Path(path).exists())
+
+    contexts: list[ssl.SSLContext] = []
+    seen: set[str] = set()
+    for ca_file in ca_files:
+        if ca_file in seen:
+            continue
+        seen.add(ca_file)
+        contexts.append(ssl.create_default_context(cafile=ca_file))
+    contexts.append(ssl.create_default_context())
+    return contexts
+
+
+def download(url: str, timeout: int) -> bytes:
+    """Download a feed payload with a deterministic User-Agent."""
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    last_certificate_error: urllib.error.URLError | None = None
+    for context in ssl_contexts():
+        try:
+            with urllib.request.urlopen(request, timeout=timeout, context=context) as response:
+                return response.read()
+        except urllib.error.URLError as exc:
+            reason = getattr(exc, "reason", exc)
+            if isinstance(reason, ssl.SSLCertVerificationError) or "CERTIFICATE_VERIFY_FAILED" in str(reason):
+                last_certificate_error = exc
+                continue
+            raise
+    if last_certificate_error is not None:
+        raise last_certificate_error
+    raise urllib.error.URLError("no trusted SSL context available")
 
 
 def _local_name(tag: str) -> str:
@@ -428,12 +473,15 @@ def item_score(feed: Feed, title: str, summary: str, published: datetime, now: d
 
 
 def feed_nodes(root: ET.Element) -> list[ET.Element]:
-    """Return RSS item or Atom entry nodes from a parsed feed root."""
-    return (
+    """Return RSS 2.0, RSS 1.0/RDF or Atom item nodes."""
+    direct = (
         root.findall(".//item")
         or root.findall(".//{http://www.w3.org/2005/Atom}entry")
         or root.findall(".//entry")
     )
+    if direct:
+        return direct
+    return [node for node in root.iter() if _local_name(node.tag) in {"item", "entry"}]
 
 
 def parse_feed(feed: Feed, payload: bytes, now: datetime) -> list[Item]:

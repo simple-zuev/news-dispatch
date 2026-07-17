@@ -104,6 +104,26 @@ def test_reader_model_blocks_raw_diagnostic_assignments() -> None:
     assert "diagnostic text leaked into model: threshold" in str(report["blocking_issues"])
 
 
+def test_reader_model_blocks_english_only_summary() -> None:
+    model = validate_reader_model.PublicReaderItem(
+        title="FCA описала новые правила для криптоактивов",
+        excerpt="The regulator published a public update about crypto rules.",
+        summary="The regulator published a public update about crypto rules.",
+        why_it_matters="Изменения могут затронуть участников рынка.",
+        meta="FCA · Криптофинансы · 12:00 · регулятор",
+        time="12:00",
+        published_at="2026-07-02T09:00:00+00:00",
+        story_key="fca-rules",
+        source="FCA",
+        stream="Криптофинансы",
+        reliability="регулятор",
+        url="https://example.com/fca-crypto-rules",
+        original_title="FCA updates crypto rules",
+    )
+    issues = validate_reader_model.validate_model(model)
+    assert "summary is not Russian" in issues
+
+
 def test_reader_model_validator_writes_report_and_returns_failure() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         tmpdir = Path(tmp)
@@ -130,6 +150,7 @@ def main() -> int:
     test_reader_model_validation_falls_back_to_selected_when_policy_is_absent()
     test_reader_model_allows_coverage_in_source_title_and_url()
     test_reader_model_blocks_raw_diagnostic_assignments()
+    test_reader_model_blocks_english_only_summary()
     test_reader_model_validator_writes_report_and_returns_failure()
     print("reader model validator tests passed")
     return 0

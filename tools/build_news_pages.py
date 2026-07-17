@@ -26,8 +26,8 @@ from reader_text import (
     format_public_time_ru,
     public_meta_ru,
     public_excerpt_ru,
+    public_items_same_story,
     public_item_is_fresh,
-    public_story_key,
     stream_label,
 )
 from render_site import output_slug
@@ -124,17 +124,13 @@ def accepted_by_policy(item: dict[str, Any], safe_keys: set[str]) -> bool:
 
 def dedupe_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen_urls: set[str] = set()
-    seen_stories: set[str] = set()
     result: list[dict[str, Any]] = []
     for item in sorted(items, key=item_sort_key, reverse=True):
         url_key = str(item.get("url") or "").strip().lower()
-        story_key = public_story_key(item)
-        if (url_key and url_key in seen_urls) or (story_key and story_key in seen_stories):
+        if (url_key and url_key in seen_urls) or any(public_items_same_story(item, existing) for existing in result):
             continue
         if url_key:
             seen_urls.add(url_key)
-        if story_key:
-            seen_stories.add(story_key)
         result.append(item)
     return result
 

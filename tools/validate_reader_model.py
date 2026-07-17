@@ -13,6 +13,7 @@ from typing import Any
 from build_reader_policy import item_key
 from core import VALIDATION_DIR, repo_path, write_json
 from reader_model import FORBIDDEN_PUBLIC_KEYS, PublicReaderItem, from_ranking_item
+from reader_text import has_cyrillic
 
 RANKING_PATH = VALIDATION_DIR / "daily-radar-ranking-latest.json"
 POLICY_PATH = VALIDATION_DIR / "reader-policy-latest.json"
@@ -131,6 +132,10 @@ def validate_model(model: PublicReaderItem) -> list[str]:
         issues.append("title is empty")
     if norm(title) in GENERIC_TITLES or is_generic_source_topic(title):
         issues.append(f"title is generic: {title}")
+    if not model.summary.strip():
+        issues.append("summary is empty")
+    elif not has_cyrillic(model.summary):
+        issues.append("summary is not Russian")
     if not model.source.strip():
         issues.append("source is empty")
     if not model.stream.strip():
