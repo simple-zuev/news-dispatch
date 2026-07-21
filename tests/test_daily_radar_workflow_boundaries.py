@@ -7,6 +7,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "daily-radar.yml"
+VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
+REGRESSION_WORKFLOW = ROOT / ".github" / "workflows" / "regression-tests.yml"
 RUNNER = ROOT / "tools" / "run_daily_radar_safe.py"
 
 
@@ -35,6 +37,22 @@ def test_daily_radar_uses_owner_qualified_pr_head() -> None:
     assert '--head "${DAILY_RADAR_PR_HEAD}"' in text
 
 
+def test_generated_only_prs_use_explicit_workflow_dispatch() -> None:
+    radar = WORKFLOW.read_text(encoding="utf-8")
+    assert "actions: write" in radar
+    assert 'gh workflow run validate.yml --ref "${DAILY_RADAR_BRANCH}"' in radar
+    assert 'gh workflow run regression-tests.yml --ref "${DAILY_RADAR_BRANCH}"' in radar
+    assert radar.index("gh pr create") < radar.index("gh workflow run validate.yml")
+
+    for path in (VALIDATE_WORKFLOW, REGRESSION_WORKFLOW):
+        text = path.read_text(encoding="utf-8")
+        assert "pull_request:" in text
+        assert "workflow_dispatch:" in text
+        assert "paths-ignore:" in text
+        for generated_path in ('"signals/**"', '"data/**"', '"validation/**"'):
+            assert generated_path in text
+
+
 def test_guarded_runner_prunes_only_after_building_drafts() -> None:
     text = RUNNER.read_text(encoding="utf-8")
     build = 'run([sys.executable, "tools/build_auto_dispatches.py"])'
@@ -50,6 +68,7 @@ def main() -> int:
     test_daily_radar_does_not_push_to_main()
     test_daily_radar_uses_automation_pr_branch()
     test_daily_radar_uses_owner_qualified_pr_head()
+    test_generated_only_prs_use_explicit_workflow_dispatch()
     test_guarded_runner_prunes_only_after_building_drafts()
     print("daily radar workflow boundary tests passed")
     return 0
