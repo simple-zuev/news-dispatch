@@ -37,6 +37,14 @@ def test_daily_radar_uses_owner_qualified_pr_head() -> None:
     assert '--head "${DAILY_RADAR_PR_HEAD}"' in text
 
 
+def test_daily_radar_uses_current_node24_actions() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    assert "actions/checkout@v7" in text
+    assert "actions/setup-python@v6" in text
+    assert "actions/checkout@v4" not in text
+    assert "actions/setup-python@v5" not in text
+
+
 def test_generated_only_prs_use_explicit_workflow_dispatch() -> None:
     radar = WORKFLOW.read_text(encoding="utf-8")
     assert "actions: write" in radar
@@ -82,6 +90,7 @@ def main() -> int:
     test_daily_radar_does_not_push_to_main()
     test_daily_radar_uses_automation_pr_branch()
     test_daily_radar_uses_owner_qualified_pr_head()
+    test_daily_radar_uses_current_node24_actions()
     test_generated_only_prs_use_explicit_workflow_dispatch()
     test_dispatched_checks_report_status_on_automation_sha()
     test_guarded_runner_prunes_only_after_building_drafts()
