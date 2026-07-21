@@ -73,6 +73,11 @@ ALLOWLIST_PATTERNS = [
 URL_PATTERN = re.compile(r"https?://\S+", re.IGNORECASE)
 PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN = re.compile(r"\bprivate[-\s]+keys\b", re.IGNORECASE)
 PRIVATE_KEY_ASSIGNMENT_PATTERN = re.compile(r"(?i)private[_-]?key\s*[:=]")
+PUBLIC_PASSWORD_CRACKING_TOPIC_PATTERN = re.compile(
+    r"\bpassword(?:[-_\s]+)(?:cracker|cracking)\b",
+    re.IGNORECASE,
+)
+HASHCAT_TOPIC_PATTERN = re.compile(r"\bhashcat\b", re.IGNORECASE)
 PUBLIC_SECURITY_TERMS_PATTERN = re.compile(
     r"\b(cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)\b",
     re.IGNORECASE,
@@ -132,6 +137,16 @@ def is_public_private_keys_topic(line: str) -> bool:
     return bool(PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN.search(line))
 
 
+def is_public_password_cracking_topic(line: str) -> bool:
+    """Allow public Hashcat coverage without weakening password-value checks."""
+    if SECRET_VALUE_CONTEXT_PATTERN.search(line):
+        return False
+    return bool(
+        HASHCAT_TOPIC_PATTERN.search(line)
+        and PUBLIC_PASSWORD_CRACKING_TOPIC_PATTERN.search(line)
+    )
+
+
 def is_public_security_title_topic(line: str) -> bool:
     """Allow public security article titles without allowing secret values.
 
@@ -157,6 +172,8 @@ def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
     if name == "phone_like" and (rel.startswith("validation/") or rel.startswith("site/")) and GENERATED_ITEM_KEY_PATTERN.search(line):
         return True
     if name == "possible_secret_keyword" and is_public_private_keys_topic(line):
+        return True
+    if name == "possible_secret_keyword" and is_public_password_cracking_topic(line):
         return True
     if name == "possible_secret_keyword" and is_public_security_title_topic(line):
         return True

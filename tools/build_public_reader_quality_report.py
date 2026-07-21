@@ -56,6 +56,22 @@ def item_datetime(item: dict[str, Any]) -> datetime | None:
     return parsed.astimezone(timezone.utc) if parsed else None
 
 
+def successful_observation_dates(history: dict[str, Any], reference: datetime, window_days: int) -> list[str]:
+    raw_values = history.get("observation_dates")
+    if not isinstance(raw_values, list):
+        return []
+    earliest = reference.date() - timedelta(days=window_days - 1)
+    dates = set()
+    for value in raw_values:
+        try:
+            observed = datetime.fromisoformat(str(value).strip()[:10]).date()
+        except ValueError:
+            continue
+        if earliest <= observed <= reference.date():
+            dates.add(observed)
+    return [value.isoformat() for value in sorted(dates)]
+
+
 def window_items(
     history: dict[str, Any],
     *,
@@ -124,8 +140,16 @@ def build_report(
         )
 
     dated = [published for row in rows if (published := item_datetime(row)) is not None]
-    observed_days = len({published.date().isoformat() for published in dated})
-    observation_span_days = (max(dated).date() - min(dated).date()).days + 1 if dated else 0
+    item_days = len({published.date().isoformat() for published in dated})
+    build_dates = successful_observation_dates(history, reference, window_days)
+    if build_dates:
+        first_observed = datetime.fromisoformat(build_dates[0]).date()
+        last_observed = datetime.fromisoformat(build_dates[-1]).date()
+        observation_span_days = (last_observed - first_observed).days + 1
+        observation_days = len(build_dates)
+    else:
+        observation_span_days = (max(dated).date() - min(dated).date()).days + 1 if dated else 0
+        observation_days = item_days
     duplicate_count = duplicate_rows(rows)
     russian_titles = sum(1 for row in rows if has_cyrillic(public_title_ru(row)))
     useful_summaries = 0
@@ -136,12 +160,17 @@ def build_report(
 
     dominant_source, dominant_count = item_sources.most_common(1)[0] if item_sources else ("", 0)
     dominant_share = ratio(dominant_count, len(rows))
+    dominant_stream, dominant_stream_count = item_streams.most_common(1)[0] if item_streams else ("", 0)
+    dominant_stream_share = ratio(dominant_stream_count, len(rows))
     coverage_gaps = {
         stream: target_sources - count
         for stream, count in sorted(inventory.items())
         if count < target_sources
     }
     missing_streams = sorted(stream for stream in inventory if item_streams.get(stream, 0) == 0)
+    low_output_streams = sorted(
+        stream for stream in inventory if 0 < item_streams.get(stream, 0) < 3
+    ) if observation_span_days >= window_days else []
     mature_sample = observation_span_days >= min(window_days, 3) and len(rows) >= 8
 
     alerts: list[dict[str, str]] = []
@@ -153,12 +182,16 @@ def build_report(
         alerts.append({"severity": "advisory", "code": "duplicate_share", "message": "Related-story duplication exceeds 12%."})
     if mature_sample and dominant_share > 0.25:
         alerts.append({"severity": "advisory", "code": "source_concentration", "message": "One source supplies more than 25% of reader items."})
+    if mature_sample and dominant_stream_share > 0.32:
+        alerts.append({"severity": "advisory", "code": "stream_concentration", "message": "One stream supplies more than 32% of reader items."})
     if mature_sample and russian_titles / len(rows) < 0.9:
         alerts.append({"severity": "advisory", "code": "russian_title_coverage", "message": "Russian reader-title coverage is below 90%."})
     if mature_sample and useful_summaries / len(rows) < 0.95:
         alerts.append({"severity": "advisory", "code": "summary_coverage", "message": "Useful Russian summary coverage is below 95%."})
     if observation_span_days >= window_days and missing_streams:
         alerts.append({"severity": "advisory", "code": "missing_streams", "message": "Some configured streams produced no reader-safe items in seven days."})
+    if low_output_streams:
+        alerts.append({"severity": "advisory", "code": "low_stream_output", "message": "Some streams produced fewer than three reader-safe items in seven days."})
 
     if not rows:
         status = "attention"
@@ -178,9 +211,11 @@ def build_report(
         "alerts": alerts,
         "coverage_gaps": coverage_gaps,
         "missing_streams": missing_streams,
+        "low_output_streams": low_output_streams,
         "observed": {
             "items": len(rows),
-            "calendar_days_with_items": observed_days,
+            "calendar_days_with_items": item_days,
+            "successful_observation_days": observation_days,
             "observation_span_days": observation_span_days,
             "streams": len(item_streams),
             "sources": len(item_sources),
@@ -188,6 +223,8 @@ def build_report(
             "duplicate_share": ratio(duplicate_count, len(rows)),
             "dominant_source": dominant_source,
             "dominant_source_share": dominant_share,
+            "dominant_stream": dominant_stream,
+            "dominant_stream_share": dominant_stream_share,
             "russian_title_coverage": ratio(russian_titles, len(rows)),
             "useful_summary_coverage": ratio(useful_summaries, len(rows)),
         },
@@ -213,6 +250,7 @@ def markdown(report: dict[str, Any]) -> str:
         f"- Sources represented: {observed['sources']}",
         f"- Duplicate share: {observed['duplicate_share']:.1%}",
         f"- Dominant source share: {observed['dominant_source_share']:.1%}",
+        f"- Dominant stream share: {observed['dominant_stream_share']:.1%}",
         f"- Russian title coverage: {observed['russian_title_coverage']:.1%}",
         f"- Useful summary coverage: {observed['useful_summary_coverage']:.1%}",
         "",

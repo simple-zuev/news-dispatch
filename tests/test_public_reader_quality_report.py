@@ -54,6 +54,24 @@ def test_short_history_is_collecting() -> None:
     assert report["observed"]["items"] == 1
 
 
+def test_old_item_dates_do_not_mature_a_new_observation_window() -> None:
+    reference = datetime(2026, 7, 17, 12, tzinfo=timezone.utc)
+    rows = [
+        row(index, reference - timedelta(days=index), stream="science-discovery", source=f"science-{index}")
+        for index in range(7)
+    ]
+    report = quality.build_report(
+        {"observation_dates": ["2026-07-17"], "items": rows},
+        feeds(),
+        reference=reference,
+    )
+    assert report["status"] == "collecting"
+    assert report["observed"]["calendar_days_with_items"] == 7
+    assert report["observed"]["successful_observation_days"] == 1
+    assert report["observed"]["observation_span_days"] == 1
+    assert report["low_output_streams"] == []
+
+
 def test_full_window_reports_duplicates_and_concentration() -> None:
     reference = datetime(2026, 7, 17, 12, tzinfo=timezone.utc)
     rows = [
@@ -67,7 +85,12 @@ def test_full_window_reports_duplicates_and_concentration() -> None:
     assert report["status"] == "attention"
     assert report["observed"]["observation_span_days"] == 7
     assert report["observed"]["duplicate_rows"] == 1
-    assert {alert["code"] for alert in report["alerts"]} >= {"duplicate_share", "source_concentration"}
+    assert {alert["code"] for alert in report["alerts"]} >= {
+        "duplicate_share",
+        "source_concentration",
+        "stream_concentration",
+        "missing_streams",
+    }
 
 
 def test_source_inventory_gap_is_visible() -> None:
@@ -79,6 +102,18 @@ def test_source_inventory_gap_is_visible() -> None:
     )
     assert report["coverage_gaps"] == {"gear-style-edc": 3, "science-discovery": 3}
     assert "source_coverage" in {alert["code"] for alert in report["alerts"]}
+
+
+def test_full_window_reports_low_output_stream() -> None:
+    reference = datetime(2026, 7, 17, 12, tzinfo=timezone.utc)
+    rows = [
+        row(index, reference - timedelta(days=index), stream="science-discovery", source=f"science-{index}")
+        for index in range(7)
+    ]
+    rows.append(row(20, reference, stream="gear-style-edc", source="gear-a"))
+    report = quality.build_report({"items": rows}, feeds(), reference=reference)
+    assert report["low_output_streams"] == ["gear-style-edc"]
+    assert "low_stream_output" in {alert["code"] for alert in report["alerts"]}
 
 
 def test_multiple_feeds_from_one_publisher_count_once() -> None:
@@ -94,8 +129,10 @@ def test_multiple_feeds_from_one_publisher_count_once() -> None:
 
 def main() -> int:
     test_short_history_is_collecting()
+    test_old_item_dates_do_not_mature_a_new_observation_window()
     test_full_window_reports_duplicates_and_concentration()
     test_source_inventory_gap_is_visible()
+    test_full_window_reports_low_output_stream()
     test_multiple_feeds_from_one_publisher_count_once()
     print("public reader quality report tests passed")
     return 0

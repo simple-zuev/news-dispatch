@@ -165,7 +165,10 @@ def feed_items(
         stream = item_stream(item)
         if stream not in grouped:
             continue
-        if not retained and not accepted_by_policy(item, item_safe_keys):
+        if not retained and (
+            item.get("selected") is not True
+            or not accepted_by_policy(item, item_safe_keys)
+        ):
             continue
         if not public_item_is_fresh(item, reference, max_age_hours=24 * 14):
             continue

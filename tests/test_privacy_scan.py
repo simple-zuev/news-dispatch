@@ -60,6 +60,32 @@ def test_private_key_assignment_is_still_blocked() -> None:
     assert any("possible_secret_keyword" in item for item in blockers)
 
 
+def test_public_hashcat_password_cracking_topic_is_allowed() -> None:
+    title = '"title": "Security engineer ports password cracker hashcat to Gameboy Advance"'
+    blockers, warnings = scan_text(title + "\n")
+    assert blockers == []
+    assert warnings == []
+
+
+def test_public_hashcat_password_cracking_url_is_allowed() -> None:
+    url = "https://example.test/security-engineer-ports-password-cracker-hashcat"
+    blockers, warnings = scan_text(f'"url": "{url}"\n')
+    assert blockers == []
+    assert warnings == []
+
+
+def test_public_hashcat_signal_path_is_allowed() -> None:
+    path = "signals/2026-07-19/tech-hardware-software/item-password-cracker-hashcat.md"
+    blockers, warnings = scan_text(f"- Signal path: `{path}`\n")
+    assert blockers == []
+    assert warnings == []
+
+
+def test_password_assignment_with_hashcat_context_is_still_blocked() -> None:
+    blockers, _warnings = scan_text('password: "hashcat password cracking demo"\n')
+    assert any("possible_secret_keyword" in item for item in blockers)
+
+
 def test_public_security_title_with_cookies_and_credentials_is_allowed() -> None:
     title = '"title": "Protecting Cookies with Device Bound Session Credentials"'
     blockers, warnings = scan_text(title + "\n")
@@ -105,6 +131,10 @@ def main() -> int:
     test_public_private_keys_security_coverage_is_allowed()
     test_public_private_keys_url_is_allowed()
     test_private_key_assignment_is_still_blocked()
+    test_public_hashcat_password_cracking_topic_is_allowed()
+    test_public_hashcat_password_cracking_url_is_allowed()
+    test_public_hashcat_signal_path_is_allowed()
+    test_password_assignment_with_hashcat_context_is_still_blocked()
     test_public_security_title_with_cookies_and_credentials_is_allowed()
     test_public_security_source_original_title_is_allowed()
     test_public_security_news_original_metadata_is_allowed()

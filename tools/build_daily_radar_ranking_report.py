@@ -30,7 +30,15 @@ SOURCE_ROW_CAPS = {
     "mskagency-culture": 12,
     "nature-news": 16,
     "science-news": 12,
+    "google-research-blog": 12,
+    "bank-england-news": 12,
     "field-mag-gear": 12,
+    "gadgeteer-edc": 12,
+    "yanko-practical-design": 10,
+    "coolhunting-objects": 10,
+    "vm-moscow-infrastructure": 10,
+    "synthtopia": 12,
+    "moskvichmag": 10,
     "core77-design": 12,
     "ria-moscow-city": 12,
     "big-city-moscow": 10,
@@ -38,7 +46,9 @@ SOURCE_ROW_CAPS = {
 
 RANKING_SELECTION_LIMIT = 18
 RANKING_SELECTION_MIN_SCORE = 10.0
+RANKING_SELECTION_STREAM_FLOOR = 2
 RANKING_SELECTION_STREAM_CAP = 4
+RANKING_REPORT_STREAM_ROW_FLOOR = 8
 RANKING_SELECTION_DEFAULT_SOURCE_CAP = 3
 RANKING_SELECTION_DEFAULT_PUBLISHER_CAP = 3
 RANKING_SELECTION_SOURCE_CAPS = {
@@ -49,7 +59,15 @@ RANKING_SELECTION_SOURCE_CAPS = {
     "nature-news": 2,
     "science-news": 1,
     "quanta-magazine": 1,
+    "google-research-blog": 1,
+    "bank-england-news": 1,
     "field-mag-gear": 1,
+    "gadgeteer-edc": 2,
+    "yanko-practical-design": 1,
+    "coolhunting-objects": 1,
+    "vm-moscow-infrastructure": 1,
+    "synthtopia": 1,
+    "moskvichmag": 1,
     "tomshardware": 2,
     "science-daily": 1,
     "core77-design": 1,
@@ -59,7 +77,7 @@ RANKING_SELECTION_SOURCE_CAPS = {
 RANKING_SELECTION_PUBLISHER_CAPS = {
     "bank-of-canada": 1,
     "cftc": 2,
-    "mskagency": 1,
+    "mskagency": 2,
 }
 WEAK_STREAM_MIN_RELEVANCE = {
     "gear-style-edc": 0.5,
@@ -404,11 +422,28 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
         row["selection_reason"] = "selected_current_balanced_ranking"
 
     seen: set[str] = set()
-    for stream in sorted({row_stream(row) for row in candidates}):
-        stream_rows = [row for row in candidates if row_stream(row) == stream]
-        if stream_rows and len(selected) < limit and can_add(stream_rows[0]):
-            add(stream_rows[0])
-            seen.add(str(stream_rows[0].get("item_key") or ""))
+    streams = sorted({row_stream(row) for row in candidates})
+    for target_count in range(1, RANKING_SELECTION_STREAM_FLOOR + 1):
+        for stream in streams:
+            if len(selected) >= limit:
+                break
+            if stream_counts.get(stream, 0) >= target_count:
+                continue
+            stream_rows = [row for row in candidates if row_stream(row) == stream]
+            if target_count > 1:
+                stream_rows = sorted(
+                    stream_rows,
+                    key=lambda row: publisher_counts.get(row_publisher(row), 0) > 0,
+                )
+            for row in stream_rows:
+                key = str(row.get("item_key") or "")
+                if key and key in seen:
+                    continue
+                if can_add(row):
+                    add(row)
+                    if key:
+                        seen.add(key)
+                    break
 
     for row in candidates:
         if len(selected) >= limit:
@@ -420,9 +455,16 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
             add(row)
             seen.add(key)
 
+    floor_shortfalls = {
+        stream: RANKING_SELECTION_STREAM_FLOOR - stream_counts.get(stream, 0)
+        for stream in streams
+        if stream_counts.get(stream, 0) < RANKING_SELECTION_STREAM_FLOOR
+    }
+
     return {
         "selection_limit": limit,
         "selection_min_score": RANKING_SELECTION_MIN_SCORE,
+        "selection_stream_floor": RANKING_SELECTION_STREAM_FLOOR,
         "selection_stream_cap": RANKING_SELECTION_STREAM_CAP,
         "selection_source_caps": RANKING_SELECTION_SOURCE_CAPS,
         "selection_default_source_cap": RANKING_SELECTION_DEFAULT_SOURCE_CAP,
@@ -437,6 +479,7 @@ def apply_current_selection(rows: list[dict[str, object]], limit: int = RANKING_
         "selection_capped_sources": capped_sources,
         "selection_capped_publishers": capped_publishers,
         "selection_capped_streams": capped_streams,
+        "selection_floor_shortfalls": floor_shortfalls,
         "story_duplicate_skips": story_duplicate_skips,
     }
 
@@ -505,7 +548,7 @@ def row_for(feed: daily_radar.Feed, node: ET.Element, now: datetime, selected_ke
 
 
 def apply_source_caps(rows: list[dict[str, object]], max_rows: int) -> tuple[list[dict[str, object]], dict[str, object]]:
-    kept: list[dict[str, object]] = []
+    source_capped: list[dict[str, object]] = []
     source_counts: dict[str, int] = {}
     capped_counts: dict[str, int] = {}
 
@@ -516,14 +559,45 @@ def apply_source_caps(rows: list[dict[str, object]], max_rows: int) -> tuple[lis
         if cap is not None and source_counts[feed_id] > cap:
             capped_counts[feed_id] = capped_counts.get(feed_id, 0) + 1
             continue
-        kept.append(row)
-        if max_rows and len(kept) >= max_rows:
-            break
+        source_capped.append(row)
+
+    kept = source_capped
+    reserved_floor = 0
+    if max_rows and len(source_capped) > max_rows:
+        streams = sorted(
+            {
+                row_stream(row)
+                for row in source_capped
+                if row.get("source_rule_status") == "accepted_by_source_rules"
+                and row_stream(row) != GENERAL_SPECIAL_USE_STREAM
+            }
+        )
+        reserved_floor = min(
+            RANKING_REPORT_STREAM_ROW_FLOOR,
+            max_rows // len(streams) if streams else 0,
+        )
+        reserved_indices: set[int] = set()
+        for stream in streams:
+            stream_reserved = 0
+            for index, row in enumerate(source_capped):
+                if stream_reserved >= reserved_floor:
+                    break
+                if row_stream(row) == stream and row.get("source_rule_status") == "accepted_by_source_rules":
+                    reserved_indices.add(index)
+                    stream_reserved += 1
+        chosen_indices = set(reserved_indices)
+        for index in range(len(source_capped)):
+            if len(chosen_indices) >= max_rows:
+                break
+            chosen_indices.add(index)
+        kept = [row for index, row in enumerate(source_capped) if index in chosen_indices]
 
     return kept, {
         "source_row_caps": SOURCE_ROW_CAPS,
+        "report_stream_row_floor": reserved_floor,
         "capped_rows": capped_counts,
         "reported_rows_before_caps": len(rows),
+        "source_capped_rows": len(source_capped),
         "reported_rows_after_caps": len(kept),
     }
 
