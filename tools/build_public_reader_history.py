@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +18,8 @@ POLICY_PATH = ROOT / "validation" / "reader-policy-latest.json"
 HISTORY_PATH = ROOT / "validation" / "public-reader-history-latest.json"
 RETENTION_DAYS = 14
 MAX_ITEMS = 1200
+HISTORY_SCHEMA_VERSION = 2
+SELECTION_MODE = "balanced_reader_selection"
 
 RETAINED_KEYS = {
     "feed_id",
@@ -80,6 +83,10 @@ def is_reader_safe(item: dict[str, Any], safe_keys: set[str]) -> bool:
     return explicit in safe_keys or policy_key(item) in safe_keys
 
 
+def is_reader_selected(item: dict[str, Any]) -> bool:
+    return item.get("selected") is True
+
+
 def public_identity(item: dict[str, Any]) -> str:
     url = str(item.get("url") or item.get("source_original_url") or "").strip().lower()
     if url:
@@ -92,6 +99,29 @@ def public_identity(item: dict[str, Any]) -> str:
 
 def retained_row(item: dict[str, Any]) -> dict[str, Any]:
     return {key: item[key] for key in RETAINED_KEYS if key in item}
+
+
+def build_observation_dates(
+    previous: dict[str, Any],
+    reference: object,
+    *,
+    retention_days: int,
+    previous_is_compatible: bool,
+) -> list[str]:
+    text = str(reference or "").strip()[:10]
+    try:
+        reference_date = date.fromisoformat(text)
+    except ValueError:
+        return []
+    values = previous.get("observation_dates", []) if previous_is_compatible else []
+    observed: set[date] = {reference_date}
+    for value in values if isinstance(values, list) else []:
+        try:
+            observed.add(date.fromisoformat(str(value).strip()[:10]))
+        except ValueError:
+            continue
+    cutoff = reference_date - timedelta(days=retention_days - 1)
+    return [value.isoformat() for value in sorted(observed) if cutoff <= value <= reference_date]
 
 
 def build_history(
@@ -108,9 +138,20 @@ def build_history(
     current = [
         retained_row(item)
         for item in ranking.get("items", [])
-        if isinstance(item, dict) and is_reader_safe(item, safe_keys)
+        if isinstance(item, dict) and is_reader_safe(item, safe_keys) and is_reader_selected(item)
     ]
-    older = [item for item in previous.get("items", []) if isinstance(item, dict)]
+    previous_is_compatible = (
+        previous.get("schema_version") == HISTORY_SCHEMA_VERSION
+        and previous.get("selection_mode") == SELECTION_MODE
+    )
+    legacy_cache_reset = bool(previous.get("items")) and not previous_is_compatible
+    observation_dates = build_observation_dates(
+        previous,
+        reference,
+        retention_days=retention_days,
+        previous_is_compatible=previous_is_compatible,
+    )
+    older = [item for item in previous.get("items", []) if isinstance(item, dict)] if previous_is_compatible else []
     merged: list[dict[str, Any]] = []
     seen: set[str] = set()
     for item in sorted(current + older, key=lambda row: str(row.get("published") or row.get("date") or ""), reverse=True):
@@ -125,8 +166,13 @@ def build_history(
             break
     return {
         "report_type": "public_reader_history",
+        "schema_version": HISTORY_SCHEMA_VERSION,
+        "selection_mode": SELECTION_MODE,
         "date": reference,
         "retention_days": retention_days,
+        "current_selected_count": len(current),
+        "legacy_cache_reset": legacy_cache_reset,
+        "observation_dates": observation_dates,
         "item_count": len(merged),
         "items": merged,
     }

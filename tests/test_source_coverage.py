@@ -18,8 +18,11 @@ EXEMPT_STREAMS = {
 
 TEMPORARILY_PAUSED_STREAMS: set[str] = set()
 MIN_ACTIVE_BY_STREAM = {
-    "gear-style-edc": 5,
-    "moscow-city": 7,
+    "ai": 8,
+    "dj-audio-creative": 8,
+    "finance": 8,
+    "gear-style-edc": 8,
+    "moscow-city": 8,
     "science-discovery": 8,
 }
 DEFAULT_MIN_ACTIVE = 5
@@ -79,6 +82,14 @@ def test_high_volume_feeds_have_explicit_caps() -> None:
     assert SOURCE_ROW_CAPS["mskagency-culture"] <= 12
     assert SOURCE_ROW_CAPS["core77-design"] <= 12
     assert SOURCE_ROW_CAPS["field-mag-gear"] <= 12
+    assert SOURCE_ROW_CAPS["google-research-blog"] <= 12
+    assert SOURCE_ROW_CAPS["bank-england-news"] <= 12
+    assert SOURCE_ROW_CAPS["gadgeteer-edc"] <= 12
+    assert SOURCE_ROW_CAPS["yanko-practical-design"] <= 10
+    assert SOURCE_ROW_CAPS["coolhunting-objects"] <= 10
+    assert SOURCE_ROW_CAPS["vm-moscow-infrastructure"] <= 10
+    assert SOURCE_ROW_CAPS["synthtopia"] <= 12
+    assert SOURCE_ROW_CAPS["moskvichmag"] <= 10
     assert SOURCE_ROW_CAPS["science-news"] <= 12
     assert SOURCE_ROW_CAPS["ria-moscow-city"] <= 12
     assert SOURCE_ROW_CAPS["big-city-moscow"] <= 10

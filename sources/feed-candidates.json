@@ -367,6 +367,70 @@
       "stream": "science-discovery",
       "status": "promoted-to-live-source",
       "rationale": "The publisher documents its RSS feed; live probe returned HTTP 200, valid RSS and 20 current science items on 2026-07-17. Promoted on probation with puzzle, opinion and promotional exclusions."
+    },
+    {
+      "id": "gadgeteer-edc-candidate",
+      "title": "The Gadgeteer",
+      "url": "https://the-gadgeteer.com/feed/",
+      "stream": "gear-style-edc",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 25 current items on 2026-07-17. Promoted on probation with strict EDC, tools and materials filters plus consumer-electronics and deal exclusions."
+    },
+    {
+      "id": "synthtopia-candidate",
+      "title": "Synthtopia",
+      "url": "https://www.synthtopia.com/feed/",
+      "stream": "dj-audio-creative",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 15 current synthesizer, audio-tool and workflow items on 2026-07-17. Promoted on probation with music-release and promotion exclusions."
+    },
+    {
+      "id": "moskvichmag-revalidation-candidate",
+      "title": "Москвич Mag",
+      "url": "https://moskvichmag.ru/feed/",
+      "stream": "moscow-city",
+      "status": "revalidated-live-source",
+      "rationale": "The existing live source returned HTTP 200, valid RSS and 11 current items on 2026-07-17. Its rules were tightened to keep architecture, public-space and city-service items while excluding incidents, entertainment and food guides."
+    },
+    {
+      "id": "google-research-blog-candidate",
+      "title": "Google Research",
+      "url": "https://research.google/blog/rss/",
+      "stream": "ai",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 100 research posts on 2026-07-21. Promoted on probation with strict model, agent, evaluation and AI-safety filters."
+    },
+    {
+      "id": "bank-england-news-candidate",
+      "title": "Bank of England",
+      "url": "https://www.bankofengland.co.uk/rss/news",
+      "stream": "finance",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 50 current releases on 2026-07-21. Promoted on probation with monetary-policy, stability and payments filters plus administrative exclusions."
+    },
+    {
+      "id": "yanko-practical-design-candidate",
+      "title": "Yanko Design",
+      "url": "https://www.yankodesign.com/feed/",
+      "stream": "gear-style-edc",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 10 current design items on 2026-07-21. Promoted on probation with strict practical-object and material filters."
+    },
+    {
+      "id": "coolhunting-objects-candidate",
+      "title": "Cool Hunting",
+      "url": "https://coolhunting.com/feed/",
+      "stream": "gear-style-edc",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 10 current posts on 2026-07-21. Promoted on probation with strict object, craft and material filters plus culture and travel exclusions."
+    },
+    {
+      "id": "vm-moscow-infrastructure-candidate",
+      "title": "Вечерняя Москва",
+      "url": "https://vm.ru/rss",
+      "stream": "moscow-city",
+      "status": "promoted-to-live-source",
+      "rationale": "Live probe returned HTTP 200, valid RSS and 60 current posts on 2026-07-21. Promoted on probation only for Moscow transport, infrastructure and city-service signals with strict incident and regional exclusions."
     }
   ]
 }

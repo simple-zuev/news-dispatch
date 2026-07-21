@@ -131,6 +131,23 @@ def ranking_row(index: int, *, stream: str, feed_id: str, score: float = 12.0, r
     }
 
 
+def test_report_row_limit_reserves_weak_stream_candidates() -> None:
+    rows = [
+        ranking_row(index, stream="finance", feed_id=f"finance-{index}", score=20.0 - index)
+        for index in range(10)
+    ]
+    rows.extend(
+        ranking_row(index, stream="gear-style-edc", feed_id=f"gear-{index}", score=11.0 - index * 0.1)
+        for index in range(2)
+    )
+
+    kept, diagnostics = ranking_report.apply_source_caps(rows, max_rows=5)
+
+    assert len(kept) == 5
+    assert diagnostics["report_stream_row_floor"] == 2
+    assert sum(row["routed_stream"] == "gear-style-edc" for row in kept) == 2
+
+
 def test_current_selection_does_not_collapse_to_stale_reviewed_keys() -> None:
     rows: list[dict] = []
     fixture = [
@@ -160,6 +177,58 @@ def test_current_selection_does_not_collapse_to_stale_reviewed_keys() -> None:
     assert sum(1 for row in selected if row["feed_id"] == "openai-news") <= 2
     assert sum(1 for row in selected if row["feed_id"] == "google-security-blog") <= 2
     assert any(row["routed_stream"] == "crypto-finance" for row in selected)
+
+
+def test_current_selection_reserves_two_slots_for_each_reader_stream() -> None:
+    titles = {
+        "ai": ("New model evaluation", "Agent framework release", "AI safety benchmark"),
+        "crypto-finance": ("Stablecoin rules update", "Crypto custody licence", "Exchange enforcement action"),
+        "dj-audio-creative": ("Mixer firmware update", "Synthesizer plugin release", "MIDI controller workflow"),
+        "finance": ("Central bank rate decision", "Bank capital requirements", "Bond market infrastructure"),
+        "gear-style-edc": ("Titanium multitool design", "Backpack fabric repair", "Mechanical watch movement"),
+        "moscow-city": ("Metro station opening", "Public park renovation", "Street transit redesign"),
+        "science-discovery": ("Galaxy telescope result", "Ocean microbe study", "Quantum material discovery"),
+        "tech-hardware-software": ("CPU architecture launch", "Browser security update", "Operating system release"),
+    }
+    rows = [
+        ranking_row(
+            index,
+            stream=stream,
+            feed_id=f"{stream}-source-{index}",
+            score=(20.0 if stream == "finance" else 12.0) - index * 0.01,
+        )
+        for stream in titles
+        for index in range(3)
+    ]
+    for row in rows:
+        row["title"] = titles[str(row["routed_stream"])][int(str(row["item_key"]).rsplit("-", 1)[1])]
+
+    diagnostics = ranking_report.apply_current_selection(rows, limit=18)
+
+    assert diagnostics["selected_count"] == 18
+    assert diagnostics["selection_stream_floor"] == 2
+    assert diagnostics["selection_floor_shortfalls"] == {}
+    assert all(diagnostics["selected_by_stream"][stream] >= 2 for stream in titles)
+
+
+def test_second_stream_slot_prefers_another_publisher() -> None:
+    rows = [
+        ranking_row(1, stream="gear-style-edc", feed_id="gadgeteer-edc", score=15.0),
+        ranking_row(2, stream="gear-style-edc", feed_id="gadgeteer-edc", score=14.9),
+        ranking_row(3, stream="gear-style-edc", feed_id="yanko-practical-design", score=13.0),
+    ]
+    rows[0]["publisher_id"] = "the-gadgeteer"
+    rows[1]["publisher_id"] = "the-gadgeteer"
+    rows[2]["publisher_id"] = "yanko-design"
+    rows[0]["title"] = "Titanium everyday carry multitool"
+    rows[1]["title"] = "Damascus steel folding knife"
+    rows[2]["title"] = "Repairable modular backpack frame"
+
+    diagnostics = ranking_report.apply_current_selection(rows, limit=2)
+    selected_publishers = {row["publisher_id"] for row in rows if row["selected"]}
+
+    assert diagnostics["selection_floor_shortfalls"] == {}
+    assert selected_publishers == {"the-gadgeteer", "yanko-design"}
 
 
 def test_weak_stream_selection_requires_relevance_threshold() -> None:
@@ -199,18 +268,21 @@ def test_current_selection_caps_multiple_feeds_from_one_publisher() -> None:
     rows = [
         ranking_row(1, stream="moscow-city", feed_id="mskagency-transport", score=15.0),
         ranking_row(2, stream="moscow-city", feed_id="mskagency-culture", score=14.9),
-        ranking_row(3, stream="moscow-city", feed_id="m24-moscow-news", score=14.8),
+        ranking_row(3, stream="moscow-city", feed_id="mskagency-transport", score=14.8),
+        ranking_row(4, stream="moscow-city", feed_id="m24-moscow-news", score=14.7),
     ]
     rows[0]["publisher_id"] = "mskagency"
     rows[1]["publisher_id"] = "mskagency"
+    rows[2]["publisher_id"] = "mskagency"
     rows[0]["title"] = "В Москве изменят схему движения на одной улице"
     rows[1]["title"] = "В Москве откроется новая музейная экспозиция"
-    rows[2]["title"] = "Москва 24 сообщила о запуске городского сервиса"
+    rows[2]["title"] = "ЦОДД перенастроил светофоры на городском перекрестке"
+    rows[3]["title"] = "Москва 24 сообщила о запуске городского сервиса"
 
-    diagnostics = ranking_report.apply_current_selection(rows, limit=3)
+    diagnostics = ranking_report.apply_current_selection(rows, limit=4)
     selected = [row for row in rows if row["selected"]]
 
-    assert sum(row["publisher_id"] == "mskagency" for row in selected) == 1
+    assert sum(row["publisher_id"] == "mskagency" for row in selected) == 2
     assert diagnostics["selection_capped_publishers"]["mskagency"] >= 1
 
 
@@ -358,7 +430,10 @@ def main() -> int:
     test_arxiv_selection_score_is_downweighted()
     test_product_card_selection_score_is_downweighted()
     test_source_caps_limit_overfed_sources()
+    test_report_row_limit_reserves_weak_stream_candidates()
     test_current_selection_does_not_collapse_to_stale_reviewed_keys()
+    test_current_selection_reserves_two_slots_for_each_reader_stream()
+    test_second_stream_slot_prefers_another_publisher()
     test_weak_stream_selection_requires_relevance_threshold()
     test_current_selection_spends_one_slot_per_cross_source_story()
     test_current_selection_caps_multiple_feeds_from_one_publisher()

@@ -30,7 +30,7 @@ def ranking_item(
     stream: str = "crypto-finance",
     title: str = "FCA and the Bank of England publish stablecoin rules",
     source: str = "FCA",
-    selected: bool = False,
+    selected: bool = True,
     status: str = "accepted_by_source_rules",
     relevance: float = 0.82,
     minimum: float = 0.45,
@@ -131,16 +131,17 @@ def test_public_news_meta_is_reader_facing() -> None:
     assert_public_clean(meta)
 
 
-def test_feed_items_include_non_selected_safe_items() -> None:
+def test_feed_items_include_only_selected_safe_items() -> None:
     grouped = build_news_pages.feed_items(sample_report(), sample_policy())
     titles = [row["title"] for row in grouped["crypto-finance"]]
     assert "EU regulator updates crypto market supervision" in titles
-    assert "Taiwan regulator publishes crypto custody rules" in titles
+    assert "Taiwan regulator publishes crypto custody rules" not in titles
     assert grouped["finance"] == []
 
 
 def test_feed_items_accept_reader_policy_hash_keys() -> None:
     report = sample_report()
+    report["items"][1]["selected"] = True
     grouped = build_news_pages.feed_items(report, hashed_policy_for_report(report))
     titles = [row["title"] for row in grouped["crypto-finance"]]
     assert "Taiwan regulator publishes crypto custody rules" in titles
@@ -386,7 +387,7 @@ def main() -> int:
     test_public_scan_distinguishes_utc_from_dutch_text()
     test_public_time_formatter_uses_reader_dates()
     test_public_news_meta_is_reader_facing()
-    test_feed_items_include_non_selected_safe_items()
+    test_feed_items_include_only_selected_safe_items()
     test_feed_items_accept_reader_policy_hash_keys()
     test_news_stream_page_is_reader_first_and_public_clean()
     test_news_stream_replaces_non_useful_fallback_with_source_detail()

@@ -26,10 +26,11 @@ News, Today, Digests, Sources, the build timestamp, and the newest published
 reader item.
 
 News feeds keep a bounded 14-day reader archive. The Pages workflow restores a
-non-published workflow cache before rendering, merges only items that previously passed
-reader policy, removes duplicates and entries older than 14 days, and saves the
-cache only after all reader checks pass. The history file is neither committed
-to the repository nor included in the public Pages artifact.
+non-published workflow cache before rendering, merges only balanced-selection
+items that previously passed reader policy, removes duplicates and entries
+older than 14 days, and saves the cache only after all reader checks pass. The
+history file is neither committed to the repository nor included in the public
+Pages artifact.
 
 After a deploy, check the published reader:
 
