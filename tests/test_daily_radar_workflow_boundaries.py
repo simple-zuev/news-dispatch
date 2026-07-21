@@ -53,6 +53,20 @@ def test_generated_only_prs_use_explicit_workflow_dispatch() -> None:
             assert generated_path in text
 
 
+def test_dispatched_checks_report_status_on_automation_sha() -> None:
+    expected_contexts = {
+        VALIDATE_WORKFLOW: 'context="validate"',
+        REGRESSION_WORKFLOW: 'context="regression-tests"',
+    }
+    for path, context in expected_contexts.items():
+        text = path.read_text(encoding="utf-8")
+        assert "statuses: write" in text
+        assert "github.event_name == 'workflow_dispatch'" in text
+        assert "github.ref_name == 'automation/daily-radar'" in text
+        assert 'statuses/${GITHUB_SHA}' in text
+        assert context in text
+
+
 def test_guarded_runner_prunes_only_after_building_drafts() -> None:
     text = RUNNER.read_text(encoding="utf-8")
     build = 'run([sys.executable, "tools/build_auto_dispatches.py"])'
@@ -69,6 +83,7 @@ def main() -> int:
     test_daily_radar_uses_automation_pr_branch()
     test_daily_radar_uses_owner_qualified_pr_head()
     test_generated_only_prs_use_explicit_workflow_dispatch()
+    test_dispatched_checks_report_status_on_automation_sha()
     test_guarded_runner_prunes_only_after_building_drafts()
     print("daily radar workflow boundary tests passed")
     return 0

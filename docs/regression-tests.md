@@ -10,7 +10,9 @@ Daily Radar changes only `signals/`, `data/`, and `validation/`. Pull requests
 containing only those generated paths skip the normal `pull_request` trigger,
 because GitHub marks workflows created by `GITHUB_TOKEN` as approval-required.
 The Daily Radar workflow dispatches both regression and validation checks on
-the automation branch after it opens or updates the pull request.
+the automation branch after it opens or updates the pull request. Each
+dispatched workflow also publishes its final commit status on the automation
+SHA so the result remains visible in the pull request.
 
 Scope:
 - Daily Radar signal filtering checks.
