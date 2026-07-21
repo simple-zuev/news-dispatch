@@ -2,6 +2,11 @@ name: Validate News Dispatch
 
 on:
   pull_request:
+    paths-ignore:
+      - "signals/**"
+      - "data/**"
+      - "validation/**"
+  workflow_dispatch:
 
 jobs:
   validate:
