@@ -125,6 +125,13 @@ def test_generated_item_key_hash_is_not_phone_like() -> None:
     assert warnings == []
 
 
+def test_markdown_signal_path_hash_is_not_phone_like() -> None:
+    path = "signals/2026-07-21/gear-style-edc/ad41f85121645502-photo-report-tudor-and-red-bull-take-to-the-skies.md"
+    blockers, warnings = scan_text(f"- Signal path: `{path}`\n")
+    assert blockers == []
+    assert warnings == []
+
+
 def main() -> int:
     test_phone_like_ignores_url_digit_fragments()
     test_phone_like_still_blocks_visible_phone()
@@ -141,6 +148,7 @@ def main() -> int:
     test_cookie_secret_value_is_still_blocked()
     test_public_security_report_context_is_allowed()
     test_generated_item_key_hash_is_not_phone_like()
+    test_markdown_signal_path_hash_is_not_phone_like()
     print("privacy scan tests passed")
     return 0
 
