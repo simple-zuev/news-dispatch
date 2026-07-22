@@ -19,7 +19,7 @@ TEXT_EXTENSIONS = {".md", ".yml", ".yaml", ".json", ".txt", ".html", ".css", ".j
 SCAN_PREFIXES = ("dispatches/", "signals/", "issues/", "site/", "validation/", "streams/")
 POLICY_LIKE_FILES = {"README.md"}
 
-SECRET_KEYWORDS = [
+SECRET_KEY_NAMES = [
     r"api[_-]?key",
     r"access[_-]?token",
     r"refresh[_-]?token",
@@ -33,10 +33,37 @@ SECRET_KEYWORDS = [
     r"cookie",
     r"bearer",
 ]
-KEYWORD_PATTERN = "(?i)(" + "|".join(SECRET_KEYWORDS) + ")"
+SECRET_KEY_PATTERN = "(?:" + "|".join(SECRET_KEY_NAMES) + ")"
+
+STRUCTURED_SECRET_ASSIGNMENT_PATTERN = re.compile(
+    rf"(?ix)^\s*(?:export\s+)?[\"']?{SECRET_KEY_PATTERN}[\"']?\s*[:=]\s*(?:\"[^\"]+\"|'[^']+'|[^\s#]+)"
+)
+INLINE_JSON_SECRET_ASSIGNMENT_PATTERN = re.compile(
+    rf"(?ix)[{{,]\s*[\"']{SECRET_KEY_PATTERN}[\"']\s*:\s*(?:\"[^\"]+\"|'[^']+'|[^\s,}}\]]+)"
+)
+SECRET_IN_URL_PATTERN = re.compile(
+    rf"(?ix)https?://\S*[?&]{SECRET_KEY_PATTERN}=[^&\s]+"
+)
+AUTHORIZATION_HEADER_PATTERN = re.compile(r"(?i)^\s*authorization\s*:\s*bearer\s+\S+")
+SET_COOKIE_HEADER_PATTERN = re.compile(r"(?i)^\s*set-cookie\s*:\s*\S+")
+KNOWN_SECRET_TOKEN_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9])(?:"
+    r"sk-(?:proj-|svcacct-)[A-Za-z0-9_-]{20,}|"
+    r"sk-[A-Za-z0-9]{40,}|"
+    r"gh[pousr]_[A-Za-z0-9]{20,}|"
+    r"github_pat_[A-Za-z0-9_]{20,}|"
+    r"AKIA[0-9A-Z]{16}|"
+    r"xox[baprs]-[A-Za-z0-9-]{20,}"
+    r")(?![A-Za-z0-9])"
+)
 
 HARD_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
-    ("possible_secret_keyword", re.compile(KEYWORD_PATTERN)),
+    ("secret_value_assignment", STRUCTURED_SECRET_ASSIGNMENT_PATTERN),
+    ("secret_value_assignment", INLINE_JSON_SECRET_ASSIGNMENT_PATTERN),
+    ("secret_in_url", SECRET_IN_URL_PATTERN),
+    ("authorization_header", AUTHORIZATION_HEADER_PATTERN),
+    ("set_cookie_header", SET_COOKIE_HEADER_PATTERN),
+    ("known_secret_token", KNOWN_SECRET_TOKEN_PATTERN),
     ("private_key_block", re.compile("-----BEGIN [A-Z ]*PRIVATE KEY-----")),
     ("email_address", re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.IGNORECASE)),
     ("phone_like", re.compile(r"(?<!\d)(?:\+?7|8)[\s\-\(]*\d{3}[\s\-\)]*\d{3}[\s\-]*\d{2}[\s\-]*\d{2}(?!\d)")),
@@ -71,41 +98,15 @@ ALLOWLIST_PATTERNS = [
 ]
 
 URL_PATTERN = re.compile(r"https?://\S+", re.IGNORECASE)
-PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN = re.compile(r"\bprivate[-\s]+keys\b", re.IGNORECASE)
-PRIVATE_KEY_ASSIGNMENT_PATTERN = re.compile(r"(?i)private[_-]?key\s*[:=]")
-PUBLIC_PASSWORD_CRACKING_TOPIC_PATTERN = re.compile(
-    r"\bpassword(?:[-_\s]+)(?:cracker|cracking)\b",
-    re.IGNORECASE,
-)
-HASHCAT_TOPIC_PATTERN = re.compile(r"\bhashcat\b", re.IGNORECASE)
-PUBLIC_SECURITY_TERMS_PATTERN = re.compile(
-    r"\b(cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)\b",
-    re.IGNORECASE,
-)
-PUBLIC_SECURITY_CONTEXT_PATTERN = re.compile(
-    r"\b(security|chrome|android|google security|protecting|mitigating|credentialless|authentication)\b",
-    re.IGNORECASE,
-)
-PUBLIC_SECURITY_REPORT_CONTEXT_PATTERN = re.compile(
-    r"\b(google security blog|public google security|matched title|public article title|privacy false positive)\b",
-    re.IGNORECASE,
-)
-TITLE_LIKE_LINE_PATTERN = re.compile(
-    r'(?i)(["\'](?:title|first_title|source_original_title)["\']\s*:|class=["\'](?:news-original|signal-original-title)["\']|<h[1-6]\b|<a\b|<title>|<meta\b)',
-)
-QUOTED_PUBLIC_SECURITY_TOPIC_PATTERN = re.compile(
-    r"`[^`]*(?:cookies?|credentials?|tokens?|sessions?|oauth|bearer|device bound|bound session)[^`]*`",
-    re.IGNORECASE,
-)
-SECRET_VALUE_CONTEXT_PATTERN = re.compile(
-    r"(?i)([\"']?(?:api[_-]?key|access[_-]?token|refresh[_-]?token|auth[_-]?token|secret[_-]?key|client[_-]?secret|password|passwd|cookie|bearer)[\"']?\s*[:=]|authorization\s*:\s*bearer|set-cookie\s*:)"
-)
-
 REPO_SIGNAL_PATH_PATTERN = re.compile(
-    r"(?:^|[\"'`\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'`\s]+\.md(?:[\"'`\s,]|$)",
+    r"(?<![A-Za-z0-9_/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'`\s]+\.md(?![A-Za-z0-9_.-])",
     re.IGNORECASE,
 )
-GENERATED_ITEM_KEY_PATTERN = re.compile(r'^\s*"item_key"\s*:\s*"[a-f0-9]{16}"\s*,?\s*$', re.IGNORECASE)
+GENERATED_ITEM_KEY_PATTERN = re.compile(
+    r'[\"\']?(?:item_key|source_item_key)[\"\']?\s*:\s*[\"\'][a-f0-9]{16,64}[\"\']',
+    re.IGNORECASE,
+)
+PHONE_SAFE_MACHINE_PATTERNS = (URL_PATTERN, REPO_SIGNAL_PATH_PATTERN, GENERATED_ITEM_KEY_PATTERN)
 
 
 def should_scan(path: Path) -> bool:
@@ -121,74 +122,22 @@ def should_scan(path: Path) -> bool:
     return True
 
 
-def is_allowlisted(line: str) -> bool:
-    return any(pattern.search(line) for pattern in ALLOWLIST_PATTERNS)
-
-
-def is_public_private_keys_topic(line: str) -> bool:
-    """Allow public coverage of private-key security incidents, not secrets.
-
-    The scanner must block real private_key assignments and PEM private key
-    blocks, but public article titles and URLs often contain the plural phrase
-    "private keys" as a security topic.
-    """
-    if PRIVATE_KEY_ASSIGNMENT_PATTERN.search(line):
-        return False
-    return bool(PUBLIC_PRIVATE_KEYS_TOPIC_PATTERN.search(line))
-
-
-def is_public_password_cracking_topic(line: str) -> bool:
-    """Allow public Hashcat coverage without weakening password-value checks."""
-    if SECRET_VALUE_CONTEXT_PATTERN.search(line):
-        return False
-    return bool(
-        HASHCAT_TOPIC_PATTERN.search(line)
-        and PUBLIC_PASSWORD_CRACKING_TOPIC_PATTERN.search(line)
-    )
-
-
-def is_public_security_title_topic(line: str) -> bool:
-    """Allow public security article titles without allowing secret values.
-
-    Generated ranking JSON and Today pages can include titles like "Protecting
-    Cookies with Device Bound Session Credentials". Those words are security
-    terminology in a public-source headline, not a leaked credential. Real
-    assignments, headers and secret-like key/value lines remain hard blockers.
-    """
-    if SECRET_VALUE_CONTEXT_PATTERN.search(line):
-        return False
-    if TITLE_LIKE_LINE_PATTERN.search(line):
-        return bool(PUBLIC_SECURITY_TERMS_PATTERN.search(line) and PUBLIC_SECURITY_CONTEXT_PATTERN.search(line))
-    if QUOTED_PUBLIC_SECURITY_TOPIC_PATTERN.search(line):
-        return bool(PUBLIC_SECURITY_CONTEXT_PATTERN.search(line))
-    return bool(PUBLIC_SECURITY_TERMS_PATTERN.search(line) and PUBLIC_SECURITY_REPORT_CONTEXT_PATTERN.search(line))
-
-
-def should_skip_hard_pattern(path: Path, name: str, line: str) -> bool:
-    """Avoid known generated-report false positives while keeping hard checks strict."""
-    rel = path.relative_to(ROOT).as_posix()
-    if name == "phone_like" and rel.startswith("validation/") and REPO_SIGNAL_PATH_PATTERN.search(line):
-        return True
-    if name == "phone_like" and (rel.startswith("validation/") or rel.startswith("site/")) and GENERATED_ITEM_KEY_PATTERN.search(line):
-        return True
-    if name == "possible_secret_keyword" and is_public_private_keys_topic(line):
-        return True
-    if name == "possible_secret_keyword" and is_public_password_cracking_topic(line):
-        return True
-    if name == "possible_secret_keyword" and is_public_security_title_topic(line):
-        return True
-    return False
+def redact_patterns(line: str, patterns: tuple[re.Pattern[str], ...] | list[re.Pattern[str]]) -> str:
+    for pattern in patterns:
+        line = pattern.sub(" ", line)
+    return line
 
 
 def hard_scan_line(name: str, line: str) -> str:
     """Return the string to scan for a hard pattern.
 
-    URL path fragments can contain long digit groups that look like phone numbers.
-    Keep phone detection strict for visible text while removing URLs before the
-    phone-like check. Other hard blockers still scan the original line.
+    URL path fragments and generated identifiers can look like phone numbers.
+    Redact only those machine tokens so a real number elsewhere on the same line
+    remains visible to the phone-like check.
     """
+    line = redact_patterns(line, ALLOWLIST_PATTERNS)
     if name == "phone_like":
-        return URL_PATTERN.sub("", line)
+        return redact_patterns(line, PHONE_SAFE_MACHINE_PATTERNS)
     return line
 
 
@@ -204,15 +153,14 @@ def scan_file(path: Path) -> tuple[list[str], list[str]]:
     except UnicodeDecodeError:
         return blockers, warnings
     for line_no, line in enumerate(text.splitlines(), start=1):
-        if is_allowlisted(line):
-            continue
+        matched_hard_names: set[str] = set()
         for name, pattern in HARD_PATTERNS:
-            if should_skip_hard_pattern(path, name, line):
-                continue
-            if pattern.search(hard_scan_line(name, line)):
+            if name not in matched_hard_names and pattern.search(hard_scan_line(name, line)):
                 blockers.append(format_finding(path, line_no, name, line))
+                matched_hard_names.add(name)
+        soft_scan_line = redact_patterns(line, ALLOWLIST_PATTERNS)
         for name, pattern in SOFT_PATTERNS:
-            if pattern.search(line):
+            if pattern.search(soft_scan_line):
                 warnings.append(format_finding(path, line_no, name, line))
     return blockers, warnings
 
