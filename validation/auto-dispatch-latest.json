@@ -1,45 +1,59 @@
 {
-  "date": "2026-06-30",
+  "date": "2026-07-22",
   "generated": [
     {
       "stream": "ai",
-      "signals": 1,
-      "path": "validation/auto-dispatches/ai/2026-06-30-auto-radar-draft.md",
+      "signals": 6,
+      "path": "validation/auto-dispatches/ai/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "crypto-finance",
       "signals": 6,
-      "path": "validation/auto-dispatches/crypto-finance/2026-06-30-auto-radar-draft.md",
+      "path": "validation/auto-dispatches/crypto-finance/2026-07-22-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "dj-audio-creative",
+      "signals": 6,
+      "path": "validation/auto-dispatches/dj-audio-creative/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "finance",
       "signals": 6,
-      "path": "validation/auto-dispatches/finance/2026-06-30-auto-radar-draft.md",
+      "path": "validation/auto-dispatches/finance/2026-07-22-auto-radar-draft.md",
+      "publication_mode": "draft_only",
+      "status": "draft"
+    },
+    {
+      "stream": "gear-style-edc",
+      "signals": 2,
+      "path": "validation/auto-dispatches/gear-style-edc/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "moscow-city",
-      "signals": 1,
-      "path": "validation/auto-dispatches/moscow-city/2026-06-30-auto-radar-draft.md",
+      "signals": 6,
+      "path": "validation/auto-dispatches/moscow-city/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "science-discovery",
-      "signals": 3,
-      "path": "validation/auto-dispatches/science-discovery/2026-06-30-auto-radar-draft.md",
+      "signals": 6,
+      "path": "validation/auto-dispatches/science-discovery/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     },
     {
       "stream": "tech-hardware-software",
-      "signals": 4,
-      "path": "validation/auto-dispatches/tech-hardware-software/2026-06-30-auto-radar-draft.md",
+      "signals": 6,
+      "path": "validation/auto-dispatches/tech-hardware-software/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
     }

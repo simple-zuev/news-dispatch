@@ -1,97 +1,101 @@
 {
   "status": "pre-publication source governance artifact",
-  "total_sources": 26,
-  "enabled_sources": 22,
-  "disabled_sources": 4,
+  "total_sources": 70,
+  "enabled_sources": 65,
+  "disabled_sources": 5,
   "class_counts": {
-    "official_source": 7,
-    "public_media": 7,
-    "research_media": 2,
-    "specialized_media": 10
+    "official_source": 27,
+    "public_media": 14,
+    "research_media": 6,
+    "specialized_media": 23
   },
   "enabled_class_counts": {
-    "official_source": 6,
-    "public_media": 5,
-    "research_media": 1,
-    "specialized_media": 10
+    "official_source": 26,
+    "public_media": 12,
+    "research_media": 6,
+    "specialized_media": 21
   },
   "streams": [
     {
       "stream": "ai",
-      "total_sources": 4,
-      "enabled_sources": 3,
+      "total_sources": 9,
+      "enabled_sources": 8,
       "disabled_sources": 1,
       "class_counts": {
+        "official_source": 5,
+        "public_media": 2,
+        "research_media": 2
+      },
+      "enabled_class_counts": {
+        "official_source": 5,
+        "public_media": 1,
+        "research_media": 2
+      },
+      "enabled_official_sources": 5,
+      "enabled_high_trust_sources": 7,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "crypto-finance",
+      "total_sources": 8,
+      "enabled_sources": 8,
+      "disabled_sources": 0,
+      "class_counts": {
+        "official_source": 5,
+        "specialized_media": 3
+      },
+      "enabled_class_counts": {
+        "official_source": 5,
+        "specialized_media": 3
+      },
+      "enabled_official_sources": 5,
+      "enabled_high_trust_sources": 5,
+      "enabled_fetch_errors": 0
+    },
+    {
+      "stream": "dj-audio-creative",
+      "total_sources": 8,
+      "enabled_sources": 8,
+      "disabled_sources": 0,
+      "class_counts": {
         "official_source": 2,
-        "public_media": 2
+        "specialized_media": 6
       },
       "enabled_class_counts": {
         "official_source": 2,
-        "public_media": 1
+        "specialized_media": 6
       },
       "enabled_official_sources": 2,
       "enabled_high_trust_sources": 2,
       "enabled_fetch_errors": 0
     },
     {
-      "stream": "crypto-finance",
-      "total_sources": 4,
-      "enabled_sources": 4,
-      "disabled_sources": 0,
-      "class_counts": {
-        "official_source": 1,
-        "specialized_media": 3
-      },
-      "enabled_class_counts": {
-        "official_source": 1,
-        "specialized_media": 3
-      },
-      "enabled_official_sources": 1,
-      "enabled_high_trust_sources": 1,
-      "enabled_fetch_errors": 0
-    },
-    {
-      "stream": "dj-audio-creative",
-      "total_sources": 2,
-      "enabled_sources": 2,
-      "disabled_sources": 0,
-      "class_counts": {
-        "specialized_media": 2
-      },
-      "enabled_class_counts": {
-        "specialized_media": 2
-      },
-      "enabled_official_sources": 0,
-      "enabled_high_trust_sources": 0,
-      "enabled_fetch_errors": 0
-    },
-    {
       "stream": "finance",
-      "total_sources": 3,
-      "enabled_sources": 3,
+      "total_sources": 8,
+      "enabled_sources": 8,
       "disabled_sources": 0,
       "class_counts": {
-        "official_source": 1,
+        "official_source": 6,
         "public_media": 2
       },
       "enabled_class_counts": {
-        "official_source": 1,
+        "official_source": 6,
         "public_media": 2
       },
-      "enabled_official_sources": 1,
-      "enabled_high_trust_sources": 1,
+      "enabled_official_sources": 6,
+      "enabled_high_trust_sources": 6,
       "enabled_fetch_errors": 0
     },
     {
       "stream": "gear-style-edc",
-      "total_sources": 2,
-      "enabled_sources": 2,
-      "disabled_sources": 0,
+      "total_sources": 10,
+      "enabled_sources": 8,
+      "disabled_sources": 2,
       "class_counts": {
-        "specialized_media": 2
+        "specialized_media": 10
       },
       "enabled_class_counts": {
-        "specialized_media": 2
+        "specialized_media": 8
       },
       "enabled_official_sources": 0,
       "enabled_high_trust_sources": 0,
@@ -99,15 +103,15 @@
     },
     {
       "stream": "moscow-city",
-      "total_sources": 3,
-      "enabled_sources": 1,
+      "total_sources": 10,
+      "enabled_sources": 8,
       "disabled_sources": 2,
       "class_counts": {
         "official_source": 1,
-        "public_media": 2
+        "public_media": 9
       },
       "enabled_class_counts": {
-        "public_media": 1
+        "public_media": 8
       },
       "enabled_official_sources": 0,
       "enabled_high_trust_sources": 0,
@@ -115,42 +119,59 @@
     },
     {
       "stream": "science-discovery",
-      "total_sources": 3,
-      "enabled_sources": 2,
-      "disabled_sources": 1,
+      "total_sources": 8,
+      "enabled_sources": 8,
+      "disabled_sources": 0,
       "class_counts": {
-        "research_media": 2,
-        "specialized_media": 1
+        "official_source": 2,
+        "research_media": 4,
+        "specialized_media": 2
       },
       "enabled_class_counts": {
-        "research_media": 1,
-        "specialized_media": 1
+        "official_source": 2,
+        "research_media": 4,
+        "specialized_media": 2
       },
-      "enabled_official_sources": 0,
-      "enabled_high_trust_sources": 1,
+      "enabled_official_sources": 2,
+      "enabled_high_trust_sources": 6,
       "enabled_fetch_errors": 0
     },
     {
       "stream": "tech-hardware-software",
-      "total_sources": 5,
-      "enabled_sources": 5,
+      "total_sources": 9,
+      "enabled_sources": 9,
       "disabled_sources": 0,
       "class_counts": {
-        "official_source": 2,
+        "official_source": 6,
         "public_media": 1,
         "specialized_media": 2
       },
       "enabled_class_counts": {
-        "official_source": 2,
+        "official_source": 6,
         "public_media": 1,
         "specialized_media": 2
       },
-      "enabled_official_sources": 2,
-      "enabled_high_trust_sources": 2,
+      "enabled_official_sources": 6,
+      "enabled_high_trust_sources": 6,
       "enabled_fetch_errors": 0
     }
   ],
   "feeds": [
+    {
+      "id": "arxiv-cs-ai",
+      "title": "arXiv cs.AI",
+      "stream": "ai",
+      "source_class": "research_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.62,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 6,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
     {
       "id": "github-blog-ai",
       "title": "GitHub Blog",
@@ -161,6 +182,45 @@
       "priority": 0.84,
       "include_keyword_count": 7,
       "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "google-ai-blog",
+      "title": "Google AI Blog",
+      "stream": "ai",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.8,
+      "include_keyword_count": 10,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "google-research-blog",
+      "title": "Google Research",
+      "stream": "ai",
+      "source_class": "research_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.77,
+      "include_keyword_count": 17,
+      "exclude_keyword_count": 6,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "huggingface-blog",
+      "title": "Hugging Face Blog",
+      "stream": "ai",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.79,
+      "include_keyword_count": 16,
+      "exclude_keyword_count": 5,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -193,6 +253,19 @@
       "disabled_reason": ""
     },
     {
+      "id": "openai-news",
+      "title": "OpenAI News",
+      "stream": "ai",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 2,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
       "id": "the-verge-ai",
       "title": "The Verge",
       "stream": "ai",
@@ -206,6 +279,19 @@
         "disabled"
       ],
       "disabled_reason": "Broad feed produced cross-topic noise in Daily Radar; keep disabled until per-section filtering exists."
+    },
+    {
+      "id": "cftc-enforcement-crypto",
+      "title": "CFTC Enforcement",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.85,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
     },
     {
       "id": "coindesk",
@@ -229,7 +315,7 @@
       "health_status": "ok",
       "priority": 0.72,
       "include_keyword_count": 8,
-      "exclude_keyword_count": 3,
+      "exclude_keyword_count": 4,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -241,8 +327,47 @@
       "enabled": true,
       "health_status": "ok",
       "priority": 0.88,
-      "include_keyword_count": 19,
+      "include_keyword_count": 16,
       "exclude_keyword_count": 11,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "eba-news",
+      "title": "European Banking Authority",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.82,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 6,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "esma-news",
+      "title": "ESMA",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.82,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 5,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "fca-news",
+      "title": "Financial Conduct Authority",
+      "stream": "crypto-finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.82,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 4,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -254,8 +379,34 @@
       "enabled": true,
       "health_status": "ok",
       "priority": 0.78,
-      "include_keyword_count": 9,
+      "include_keyword_count": 13,
       "exclude_keyword_count": 5,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "ableton-blog",
+      "title": "Ableton Blog",
+      "stream": "dj-audio-creative",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.74,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 2,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "attack-magazine",
+      "title": "Attack Magazine",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.7,
+      "include_keyword_count": 15,
+      "exclude_keyword_count": 6,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -267,7 +418,7 @@
       "enabled": true,
       "health_status": "ok",
       "priority": 0.76,
-      "include_keyword_count": 9,
+      "include_keyword_count": 18,
       "exclude_keyword_count": 3,
       "risk_flags": [],
       "disabled_reason": ""
@@ -280,8 +431,86 @@
       "enabled": true,
       "health_status": "ok",
       "priority": 0.78,
-      "include_keyword_count": 9,
+      "include_keyword_count": 19,
       "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "musictech",
+      "title": "MusicTech",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.74,
+      "include_keyword_count": 16,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "native-instruments-blog",
+      "title": "Native Instruments Blog",
+      "stream": "dj-audio-creative",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.72,
+      "include_keyword_count": 15,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "synth-anatomy",
+      "title": "SYNTH ANATOMY",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.66,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 6,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "synthtopia",
+      "title": "Synthtopia",
+      "stream": "dj-audio-creative",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.65,
+      "include_keyword_count": 13,
+      "exclude_keyword_count": 10,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "bank-canada-news",
+      "title": "Bank of Canada",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.86,
+      "include_keyword_count": 13,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "bank-england-news",
+      "title": "Bank of England",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.85,
+      "include_keyword_count": 13,
+      "exclude_keyword_count": 10,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -295,6 +524,45 @@
       "priority": 0.94,
       "include_keyword_count": 0,
       "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "cftc-general",
+      "title": "CFTC Press Releases",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 13,
+      "exclude_keyword_count": 5,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "ecb-press",
+      "title": "European Central Bank",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 10,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "federal-reserve-press",
+      "title": "Federal Reserve",
+      "stream": "finance",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.86,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 4,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -329,29 +597,181 @@
       "disabled_reason": ""
     },
     {
-      "id": "hypebeast",
-      "title": "Hypebeast",
+      "id": "carryology",
+      "title": "Carryology",
       "stream": "gear-style-edc",
       "source_class": "specialized_media",
       "enabled": true,
       "health_status": "ok",
+      "priority": 0.68,
+      "include_keyword_count": 15,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "coolhunting-objects",
+      "title": "Cool Hunting",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.55,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 16,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "core77-design",
+      "title": "Core77",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.63,
+      "include_keyword_count": 21,
+      "exclude_keyword_count": 13,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "field-mag-gear",
+      "title": "Field Mag",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.62,
+      "include_keyword_count": 17,
+      "exclude_keyword_count": 14,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "gadgeteer-edc",
+      "title": "The Gadgeteer",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.58,
+      "include_keyword_count": 15,
+      "exclude_keyword_count": 20,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "gearjunkie-edc",
+      "title": "GearJunkie",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.62,
+      "include_keyword_count": 20,
+      "exclude_keyword_count": 20,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "hypebeast",
+      "title": "Hypebeast",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": false,
+      "health_status": "disabled",
       "priority": 0.66,
       "include_keyword_count": 8,
       "exclude_keyword_count": 6,
-      "risk_flags": [],
-      "disabled_reason": ""
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Live probe on 2026-07-01 returned HTTP 202 with empty/unparseable XML; keep disabled until a stable feed and stricter style/product filters are available."
     },
     {
       "id": "sneaker-news",
       "title": "Sneaker News",
       "stream": "gear-style-edc",
       "source_class": "specialized_media",
-      "enabled": true,
-      "health_status": "ok",
+      "enabled": false,
+      "health_status": "disabled",
       "priority": 0.68,
       "include_keyword_count": 7,
       "exclude_keyword_count": 3,
+      "risk_flags": [
+        "disabled"
+      ],
+      "disabled_reason": "Live probe on 2026-07-01 returned parseable RSS, but the sample was pure sneaker product/drop/card headlines without broader design, material or industry relevance."
+    },
+    {
+      "id": "worn-and-wound",
+      "title": "Worn & Wound",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.68,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 4,
       "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "yanko-practical-design",
+      "title": "Yanko Design",
+      "stream": "gear-style-edc",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.57,
+      "include_keyword_count": 16,
+      "exclude_keyword_count": 14,
+      "risk_flags": [
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "big-city-moscow",
+      "title": "Большой город: Город",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.6,
+      "include_keyword_count": 21,
+      "exclude_keyword_count": 16,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "govorit-moskva-city",
+      "title": "Говорит Москва: Москва",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.61,
+      "include_keyword_count": 35,
+      "exclude_keyword_count": 22,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
       "disabled_reason": ""
     },
     {
@@ -362,8 +782,8 @@
       "enabled": true,
       "health_status": "ok",
       "priority": 0.66,
-      "include_keyword_count": 19,
-      "exclude_keyword_count": 9,
+      "include_keyword_count": 28,
+      "exclude_keyword_count": 21,
       "risk_flags": [
         "public_media_needs_corroboration"
       ],
@@ -385,6 +805,69 @@
       "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until a stable official Moscow feed or fallback source is added."
     },
     {
+      "id": "moskvichmag",
+      "title": "Москвич Mag",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.61,
+      "include_keyword_count": 17,
+      "exclude_keyword_count": 32,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "mskagency-culture",
+      "title": "Агентство Москва: культура",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.63,
+      "include_keyword_count": 22,
+      "exclude_keyword_count": 10,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "mskagency-transport",
+      "title": "Агентство Москва: транспорт",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.67,
+      "include_keyword_count": 38,
+      "exclude_keyword_count": 57,
+      "risk_flags": [
+        "public_media_needs_corroboration"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "ria-moscow-city",
+      "title": "РИА.Москва",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.62,
+      "include_keyword_count": 31,
+      "exclude_keyword_count": 15,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
       "id": "the-village",
       "title": "The Village",
       "stream": "moscow-city",
@@ -400,19 +883,59 @@
       "disabled_reason": "Repeated timeout during production Daily Radar run; keep paused until the feed is stable or replaced."
     },
     {
+      "id": "vm-moscow-infrastructure",
+      "title": "Вечерняя Москва",
+      "stream": "moscow-city",
+      "source_class": "public_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.58,
+      "include_keyword_count": 18,
+      "exclude_keyword_count": 35,
+      "risk_flags": [
+        "public_media_needs_corroboration",
+        "low_priority_enabled"
+      ],
+      "disabled_reason": ""
+    },
+    {
+      "id": "esa-space-science",
+      "title": "ESA Space Science",
+      "stream": "science-discovery",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.74,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "nasa-news-releases",
+      "title": "NASA News Releases",
+      "stream": "science-discovery",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.76,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
       "id": "nature-news",
       "title": "Nature",
       "stream": "science-discovery",
       "source_class": "research_media",
-      "enabled": false,
-      "health_status": "disabled",
-      "priority": 0.88,
-      "include_keyword_count": 8,
-      "exclude_keyword_count": 0,
-      "risk_flags": [
-        "disabled"
-      ],
-      "disabled_reason": "Feed produced XML parse errors during production Daily Radar run; keep paused until replaced by a valid feed endpoint."
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.84,
+      "include_keyword_count": 14,
+      "exclude_keyword_count": 5,
+      "risk_flags": [],
+      "disabled_reason": ""
     },
     {
       "id": "nplus1",
@@ -428,6 +951,32 @@
       "disabled_reason": ""
     },
     {
+      "id": "phys-org",
+      "title": "Phys.org",
+      "stream": "science-discovery",
+      "source_class": "specialized_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.7,
+      "include_keyword_count": 11,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "quanta-magazine",
+      "title": "Quanta Magazine",
+      "stream": "science-discovery",
+      "source_class": "research_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 0,
+      "exclude_keyword_count": 4,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
       "id": "science-daily",
       "title": "ScienceDaily",
       "stream": "science-discovery",
@@ -437,6 +986,19 @@
       "priority": 0.72,
       "include_keyword_count": 9,
       "exclude_keyword_count": 2,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "science-news",
+      "title": "Science News",
+      "stream": "science-discovery",
+      "source_class": "research_media",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.77,
+      "include_keyword_count": 18,
+      "exclude_keyword_count": 6,
       "risk_flags": [],
       "disabled_reason": ""
     },
@@ -482,6 +1044,58 @@
       "disabled_reason": ""
     },
     {
+      "id": "cloudflare-blog",
+      "title": "Cloudflare Blog",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 12,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "github-security-blog",
+      "title": "GitHub Security Blog",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.78,
+      "include_keyword_count": 10,
+      "exclude_keyword_count": 2,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "google-security-blog",
+      "title": "Google Security Blog",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.8,
+      "include_keyword_count": 10,
+      "exclude_keyword_count": 3,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
+      "id": "kernel-releases",
+      "title": "kernel.org releases",
+      "stream": "tech-hardware-software",
+      "source_class": "official_source",
+      "enabled": true,
+      "health_status": "ok",
+      "priority": 0.72,
+      "include_keyword_count": 5,
+      "exclude_keyword_count": 0,
+      "risk_flags": [],
+      "disabled_reason": ""
+    },
+    {
       "id": "nvidia-blog-tech",
       "title": "NVIDIA Blog",
       "stream": "tech-hardware-software",
@@ -503,21 +1117,20 @@
       "health_status": "ok",
       "priority": 0.78,
       "include_keyword_count": 11,
-      "exclude_keyword_count": 5,
+      "exclude_keyword_count": 9,
       "risk_flags": [],
       "disabled_reason": ""
     }
   ],
   "risk_counts": {
-    "disabled": 4,
-    "public_media_needs_corroboration": 5
+    "disabled": 5,
+    "low_priority_enabled": 13,
+    "public_media_needs_corroboration": 12
   },
   "recommendations": [
-    "dj-audio-creative: add or restore official-source coverage for stronger confirmation.",
     "gear-style-edc: add or restore official-source coverage for stronger confirmation.",
     "moscow-city: add or restore official-source coverage for stronger confirmation.",
-    "science-discovery: add or restore official-source coverage for stronger confirmation.",
     "Disabled official sources require replacement or a stable fallback: mos-ru-news.",
-    "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, kommersant-finance, m24-moscow-news, mit-tech-review-ai, rbc-finance."
+    "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, big-city-moscow, govorit-moskva-city, kommersant-finance, m24-moscow-news, mit-tech-review-ai, moskvichmag, mskagency-culture, mskagency-transport, rbc-finance, ria-moscow-city, vm-moscow-infrastructure."
   ]
 }
