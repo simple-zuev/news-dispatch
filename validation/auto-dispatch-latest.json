@@ -3,7 +3,7 @@
   "generated": [
     {
       "stream": "ai",
-      "signals": 6,
+      "signals": 4,
       "path": "validation/auto-dispatches/ai/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"
@@ -17,7 +17,7 @@
     },
     {
       "stream": "dj-audio-creative",
-      "signals": 6,
+      "signals": 3,
       "path": "validation/auto-dispatches/dj-audio-creative/2026-07-22-auto-radar-draft.md",
       "publication_mode": "draft_only",
       "status": "draft"

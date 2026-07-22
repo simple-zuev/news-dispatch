@@ -32,32 +32,33 @@ tags:
   - "auto-draft"
   - "radar"
 claim_types:
+  - "confirmed_fact"
   - "source_reported_claim"
   - "editorial_inference"
 confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://phys.org/news/2026-07-gig-platforms-simply-workers-slash.html"
-  - "https://phys.org/news/2026-07-birds-flying-formation-energy-flatter.html"
-  - "https://phys.org/news/2026-07-rapid-bacterial-community-profiling-equine.html"
-  - "https://www.sciencedaily.com/releases/2026/07/260718010151.htm"
-  - "https://www.sciencedaily.com/releases/2026/07/260721000818.htm"
-  - "https://www.sciencedaily.com/releases/2026/07/260721000816.htm"
+  - "https://phys.org/news/2026-07-urgent-global-greenhouse-gas-emissions.html"
+  - "https://phys.org/news/2026-07-private-mission-life-gas-communication.html"
+  - "https://www.sciencedaily.com/releases/2026/07/260718010149.htm"
+  - "https://phys.org/news/2026-07-factors-affect-spininess.html"
+  - "https://www.nasa.gov/directorates/stmd/niac/robotically-assembled-electromagnetic-metamaterials-for-long-range-space-situational-awareness/"
+  - "https://www.nature.com/articles/d41586-026-02281-2"
 source_titles:
-  - "Phys.org: Gig platforms can simply 'wait out' workers to slash wages, research reveals"
-  - "Phys.org: Birds flying in 'V' formation save energy with flatter flaps, new research shows"
-  - "Phys.org: Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing"
-  - "ScienceDaily: New antibody drug stops aggressive prostate cancer from spreading"
-  - "ScienceDaily: A hidden “switch-off” signal could predict solar storms seven years early"
-  - "ScienceDaily: New molecular map reveals how the flu virus hijacks human cells"
+  - "Phys.org: Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows"
+  - "Phys.org: Private mission launches to extend life of out-of-gas communication satellites"
+  - "ScienceDaily: New programmable photonic chip can control how fast light moves"
+  - "Phys.org: Factors that affect the spininess of plants in different locations"
+  - "NASA News Releases: Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness"
+  - "Nature: Does China’s latest AI model finally equal US rivals? What scientists think"
 source_types:
   - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
   - "Научное медиа"
-  - "Научное медиа"
-  - "Научное медиа"
+  - "Официальный источник / science agency"
+  - "Научный журнал"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
@@ -66,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://phys.org/news/2026-07-gig-platforms-simply-workers-slash.html"
-  - "https://phys.org/news/2026-07-birds-flying-formation-energy-flatter.html"
-  - "https://phys.org/news/2026-07-rapid-bacterial-community-profiling-equine.html"
-  - "https://www.sciencedaily.com/releases/2026/07/260718010151.htm"
+  - "https://phys.org/news/2026-07-urgent-global-greenhouse-gas-emissions.html"
+  - "https://phys.org/news/2026-07-private-mission-life-gas-communication.html"
+  - "https://www.sciencedaily.com/releases/2026/07/260718010149.htm"
+  - "https://phys.org/news/2026-07-factors-affect-spininess.html"
 media_titles:
-  - "Phys.org: Gig platforms can simply 'wait out' workers to slash wages, research reveals"
-  - "Phys.org: Birds flying in 'V' formation save energy with flatter flaps, new research shows"
-  - "Phys.org: Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing"
-  - "ScienceDaily: New antibody drug stops aggressive prostate cancer from spreading"
+  - "Phys.org: Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows"
+  - "Phys.org: Private mission launches to extend life of out-of-gas communication satellites"
+  - "ScienceDaily: New programmable photonic chip can control how fast light moves"
+  - "Phys.org: Factors that affect the spininess of plants in different locations"
 media_types:
   - "Научное медиа"
   - "Научное медиа"
@@ -100,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Gig platforms can simply 'wait out' workers to slash wages, research reveals — сообщение источника «Phys.org: Gig platforms can simply 'wait out' workers to slash wages, research reveals»; требует проверки перед выводами.
-2. Birds flying in 'V' formation save energy with flatter flaps, new research shows — сообщение источника «Phys.org: Birds flying in 'V' formation save energy with flatter flaps, new research shows»; требует проверки перед выводами.
-3. Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing — сообщение источника «Phys.org: Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing»; требует проверки перед выводами.
-4. New antibody drug stops aggressive prostate cancer from spreading — сообщение источника «ScienceDaily: New antibody drug stops aggressive prostate cancer from spreading»; требует проверки перед выводами.
-5. A hidden “switch-off” signal could predict solar storms seven years early — сообщение источника «ScienceDaily: A hidden “switch-off” signal could predict solar storms seven years early»; требует проверки перед выводами.
+1. Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows — сообщение источника «Phys.org: Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows»; требует проверки перед выводами.
+2. Private mission launches to extend life of out-of-gas communication satellites — сообщение источника «Phys.org: Private mission launches to extend life of out-of-gas communication satellites»; требует проверки перед выводами.
+3. New programmable photonic chip can control how fast light moves — сообщение источника «ScienceDaily: New programmable photonic chip can control how fast light moves»; требует проверки перед выводами.
+4. Factors that affect the spininess of plants in different locations — сообщение источника «Phys.org: Factors that affect the spininess of plants in different locations»; требует проверки перед выводами.
+5. Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness — сообщение источника «NASA News Releases: Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Gig platforms can simply 'wait out' workers to slash wages, research reveals. Источник: Phys.org: Gig platforms can simply 'wait out' workers to slash wages, research reveals. URL: https://phys.org/news/2026-07-gig-platforms-simply-workers-slash.html
-- Birds flying in 'V' formation save energy with flatter flaps, new research shows. Источник: Phys.org: Birds flying in 'V' formation save energy with flatter flaps, new research shows. URL: https://phys.org/news/2026-07-birds-flying-formation-energy-flatter.html
-- Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing. Источник: Phys.org: Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing. URL: https://phys.org/news/2026-07-rapid-bacterial-community-profiling-equine.html
-- New antibody drug stops aggressive prostate cancer from spreading. Источник: ScienceDaily: New antibody drug stops aggressive prostate cancer from spreading. URL: https://www.sciencedaily.com/releases/2026/07/260718010151.htm
-- A hidden “switch-off” signal could predict solar storms seven years early. Источник: ScienceDaily: A hidden “switch-off” signal could predict solar storms seven years early. URL: https://www.sciencedaily.com/releases/2026/07/260721000818.htm
-- New molecular map reveals how the flu virus hijacks human cells. Источник: ScienceDaily: New molecular map reveals how the flu virus hijacks human cells. URL: https://www.sciencedaily.com/releases/2026/07/260721000816.htm
+- Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows. Источник: Phys.org: Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows. URL: https://phys.org/news/2026-07-urgent-global-greenhouse-gas-emissions.html
+- Private mission launches to extend life of out-of-gas communication satellites. Источник: Phys.org: Private mission launches to extend life of out-of-gas communication satellites. URL: https://phys.org/news/2026-07-private-mission-life-gas-communication.html
+- New programmable photonic chip can control how fast light moves. Источник: ScienceDaily: New programmable photonic chip can control how fast light moves. URL: https://www.sciencedaily.com/releases/2026/07/260718010149.htm
+- Factors that affect the spininess of plants in different locations. Источник: Phys.org: Factors that affect the spininess of plants in different locations. URL: https://phys.org/news/2026-07-factors-affect-spininess.html
+- Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness. Источник: NASA News Releases: Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness. URL: https://www.nasa.gov/directorates/stmd/niac/robotically-assembled-electromagnetic-metamaterials-for-long-range-space-situational-awareness/
+- Does China’s latest AI model finally equal US rivals? What scientists think. Источник: Nature: Does China’s latest AI model finally equal US rivals? What scientists think. URL: https://www.nature.com/articles/d41586-026-02281-2
 
 ## Почему это важно
 
@@ -123,7 +124,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: research_media: 3, specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: official_source: 1, research_media: 2, specialized_media: 3. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -131,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Gig platforms can simply 'wait out' workers to slash wages, research reveals | source_reported_claim | Phys.org: Gig platforms can simply 'wait out' workers to slash wages, research reveals | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Birds flying in 'V' formation save energy with flatter flaps, new research shows | source_reported_claim | Phys.org: Birds flying in 'V' formation save energy with flatter flaps, new research shows | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing | source_reported_claim | Phys.org: Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| New antibody drug stops aggressive prostate cancer from spreading | source_reported_claim | ScienceDaily: New antibody drug stops aggressive prostate cancer from spreading | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| A hidden “switch-off” signal could predict solar storms seven years early | source_reported_claim | ScienceDaily: A hidden “switch-off” signal could predict solar storms seven years early | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| New molecular map reveals how the flu virus hijacks human cells | source_reported_claim | ScienceDaily: New molecular map reveals how the flu virus hijacks human cells | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows | source_reported_claim | Phys.org: Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Private mission launches to extend life of out-of-gas communication satellites | source_reported_claim | Phys.org: Private mission launches to extend life of out-of-gas communication satellites | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| New programmable photonic chip can control how fast light moves | source_reported_claim | ScienceDaily: New programmable photonic chip can control how fast light moves | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Factors that affect the spininess of plants in different locations | source_reported_claim | Phys.org: Factors that affect the spininess of plants in different locations | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness | source_reported_claim | NASA News Releases: Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Does China’s latest AI model finally equal US rivals? What scientists think | source_reported_claim | Nature: Does China’s latest AI model finally equal US rivals? What scientists think | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

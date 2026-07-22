@@ -26,7 +26,7 @@ contains_legal_advice: false
 contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
-summary: "Автоматически подготовленный черновик по теме «Искусственный интеллект»: 6 публичных сигналов для редакционной проверки."
+summary: "Автоматически подготовленный черновик по теме «Искусственный интеллект»: 4 публичных сигналов для редакционной проверки."
 tags:
   - "ai"
   - "product-platform"
@@ -40,48 +40,40 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://openai.com/index/hugging-face-model-evaluation-security-incident"
-  - "https://arxiv.org/abs/2510.22087"
-  - "https://arxiv.org/abs/2607.18806"
-  - "https://arxiv.org/abs/2607.19336"
-  - "https://www.tomshardware.com/tech-industry/google-reportedly-developing-frozen-v2-chip-with-geminis-architecture-etched-into-the-silicon"
-  - "https://openai.com/index/introducing-chatgpt-small-business-program"
+  - "https://arxiv.org/abs/2607.18310"
+  - "https://arxiv.org/abs/2606.30219"
+  - "https://arxiv.org/abs/2607.05462"
+  - "https://openai.com/index/david-velez-robin-vince-join-openai-boards"
 source_titles:
-  - "OpenAI News: OpenAI and Hugging Face partner to address security incident during model evaluation"
-  - "arXiv cs.AI: QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture"
-  - "arXiv cs.AI: AI Tour Meeting: Group Travel Planning by LLM Agents"
-  - "arXiv cs.AI: Agents in the Wild: Where Research Meets Deployment"
-  - "Tom's Hardware: Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs"
-  - "OpenAI News: Introducing the ChatGPT for small business program"
+  - "arXiv cs.AI: Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling"
+  - "arXiv cs.AI: EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures"
+  - "arXiv cs.AI: BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment"
+  - "OpenAI News: David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC"
 source_types:
-  - "Официальный блог / AI lab"
   - "Препринты / исследовательская лента"
   - "Препринты / исследовательская лента"
   - "Препринты / исследовательская лента"
-  - "Технологическое медиа"
   - "Официальный блог / AI lab"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
-  - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://openai.com/index/hugging-face-model-evaluation-security-incident"
-  - "https://arxiv.org/abs/2510.22087"
-  - "https://arxiv.org/abs/2607.18806"
-  - "https://arxiv.org/abs/2607.19336"
+  - "https://arxiv.org/abs/2607.18310"
+  - "https://arxiv.org/abs/2606.30219"
+  - "https://arxiv.org/abs/2607.05462"
+  - "https://openai.com/index/david-velez-robin-vince-join-openai-boards"
 media_titles:
-  - "OpenAI News: OpenAI and Hugging Face partner to address security incident during model evaluation"
-  - "arXiv cs.AI: QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture"
-  - "arXiv cs.AI: AI Tour Meeting: Group Travel Planning by LLM Agents"
-  - "arXiv cs.AI: Agents in the Wild: Where Research Meets Deployment"
+  - "arXiv cs.AI: Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling"
+  - "arXiv cs.AI: EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures"
+  - "arXiv cs.AI: BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment"
+  - "OpenAI News: David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC"
 media_types:
+  - "Препринты / исследовательская лента"
+  - "Препринты / исследовательская лента"
+  - "Препринты / исследовательская лента"
   - "Официальный блог / AI lab"
-  - "Препринты / исследовательская лента"
-  - "Препринты / исследовательская лента"
-  - "Препринты / исследовательская лента"
 media_notes:
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -102,20 +94,17 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. OpenAI and Hugging Face partner to address security incident during model evaluation — сообщение источника «OpenAI News: OpenAI and Hugging Face partner to address security incident during model evaluation»; требует проверки перед выводами.
-2. QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture — сообщение источника «arXiv cs.AI: QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture»; требует проверки перед выводами.
-3. AI Tour Meeting: Group Travel Planning by LLM Agents — сообщение источника «arXiv cs.AI: AI Tour Meeting: Group Travel Planning by LLM Agents»; требует проверки перед выводами.
-4. Agents in the Wild: Where Research Meets Deployment — сообщение источника «arXiv cs.AI: Agents in the Wild: Where Research Meets Deployment»; требует проверки перед выводами.
-5. Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs — сообщение источника «Tom's Hardware: Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs»; требует проверки перед выводами.
+1. Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling — сообщение источника «arXiv cs.AI: Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling»; требует проверки перед выводами.
+2. EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures — сообщение источника «arXiv cs.AI: EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures»; требует проверки перед выводами.
+3. BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment — сообщение источника «arXiv cs.AI: BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment»; требует проверки перед выводами.
+4. David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC — сообщение источника «OpenAI News: David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC»; требует проверки перед выводами.
 
 ## Что произошло
 
-- OpenAI and Hugging Face partner to address security incident during model evaluation. Источник: OpenAI News: OpenAI and Hugging Face partner to address security incident during model evaluation. URL: https://openai.com/index/hugging-face-model-evaluation-security-incident
-- QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture. Источник: arXiv cs.AI: QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture. URL: https://arxiv.org/abs/2510.22087
-- AI Tour Meeting: Group Travel Planning by LLM Agents. Источник: arXiv cs.AI: AI Tour Meeting: Group Travel Planning by LLM Agents. URL: https://arxiv.org/abs/2607.18806
-- Agents in the Wild: Where Research Meets Deployment. Источник: arXiv cs.AI: Agents in the Wild: Where Research Meets Deployment. URL: https://arxiv.org/abs/2607.19336
-- Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs. Источник: Tom's Hardware: Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs. URL: https://www.tomshardware.com/tech-industry/google-reportedly-developing-frozen-v2-chip-with-geminis-architecture-etched-into-the-silicon
-- Introducing the ChatGPT for small business program. Источник: OpenAI News: Introducing the ChatGPT for small business program. URL: https://openai.com/index/introducing-chatgpt-small-business-program
+- Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling. Источник: arXiv cs.AI: Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling. URL: https://arxiv.org/abs/2607.18310
+- EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures. Источник: arXiv cs.AI: EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures. URL: https://arxiv.org/abs/2606.30219
+- BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment. Источник: arXiv cs.AI: BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment. URL: https://arxiv.org/abs/2607.05462
+- David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC. Источник: OpenAI News: David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC. URL: https://openai.com/index/david-velez-robin-vince-join-openai-boards
 
 ## Почему это важно
 
@@ -125,7 +114,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: official_source: 2, research_media: 3, specialized_media: 1. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: official_source: 1, research_media: 3. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -133,12 +122,10 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| OpenAI and Hugging Face partner to address security incident during model evaluation | source_reported_claim | OpenAI News: OpenAI and Hugging Face partner to address security incident during model evaluation | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture | source_reported_claim | arXiv cs.AI: QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| AI Tour Meeting: Group Travel Planning by LLM Agents | source_reported_claim | arXiv cs.AI: AI Tour Meeting: Group Travel Planning by LLM Agents | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Agents in the Wild: Where Research Meets Deployment | source_reported_claim | arXiv cs.AI: Agents in the Wild: Where Research Meets Deployment | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs | source_reported_claim | Tom's Hardware: Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Introducing the ChatGPT for small business program | source_reported_claim | OpenAI News: Introducing the ChatGPT for small business program | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling | source_reported_claim | arXiv cs.AI: Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures | source_reported_claim | arXiv cs.AI: EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment | source_reported_claim | arXiv cs.AI: BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC | source_reported_claim | OpenAI News: David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
