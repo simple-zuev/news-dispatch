@@ -1,27 +1,54 @@
 {
-  "date": "2026-06-30",
+  "date": "2026-07-22",
   "generated": [
     {
       "stream": "ai",
       "status": "signals-only",
-      "count": 1,
+      "count": 10,
       "signals": [
-        "signals/2026-06-30/ai/a107d0aeb9abd179-building-tech-in-the-world-s-secret-r-d-hub.md"
+        "signals/2026-07-22/ai/d925d8c91f460a44-openai-and-hugging-face-partner-to-address-security-incident-during-mode.md",
+        "signals/2026-07-22/ai/fc2e2e6331dc5dd8-quarch-a-benchmark-for-evaluating-llm-reasoning-in-computer-architecture.md",
+        "signals/2026-07-22/ai/72ed1498936ec58e-ai-tour-meeting-group-travel-planning-by-llm-agents.md",
+        "signals/2026-07-22/ai/ea8da3f436bb3c49-agents-in-the-wild-where-research-meets-deployment.md",
+        "signals/2026-07-22/ai/6dd00ca6612c915d-google-reportedly-developing-frozen-v2-chip-with-gemini-s-architecture-e.md",
+        "signals/2026-07-22/ai/3064e426d18ccd85-introducing-the-chatgpt-for-small-business-program.md",
+        "signals/2026-07-22/ai/3ac65a5d9987462d-how-to-build-interactive-experiences-with-canvases.md",
+        "signals/2026-07-22/ai/86fb1717cf3f39b6-behind-the-scenes-at-nvidia-s-engineering-superlab-vera-rubin-nvl72-runn.md",
+        "signals/2026-07-22/ai/df45f6b149050e80-advancing-next-gen-ai-with-materials-science-innovation.md",
+        "signals/2026-07-22/ai/e376453ccfb604ad-the-download-chinese-ai-divides-the-white-house-and-a-record-copyright-p.md"
       ],
-      "media_count": 1,
-      "routing": "feed_owned"
+      "media_count": 4,
+      "routing": "content_owned"
     },
     {
       "stream": "crypto-finance",
       "status": "signals-only",
+      "count": 9,
+      "signals": [
+        "signals/2026-07-22/crypto-finance/4b4f45632c37656c-galaxy-sets-up-5-million-fund-to-help-shield-bitcoin-against-quantum-com.md",
+        "signals/2026-07-22/crypto-finance/7332cda9dfed536d-htx-keeps-rotating-wallets-to-evade-uk-sanctions-screening-trm-labs.md",
+        "signals/2026-07-22/crypto-finance/e5691fd38740fc3a-movement-labs-files-for-chapter-11-bankruptcy-after-months-of-move-token.md",
+        "signals/2026-07-22/crypto-finance/225d95aa89a07960-russia-s-parliament-passes-crypto-market-law-with-3-800-annual-cap-for-r.md",
+        "signals/2026-07-22/crypto-finance/c4f8633210493610-bitcoin-rally-faces-key-test-at-68-000-as-summer-slumber-grips-crypto-an.md",
+        "signals/2026-07-22/crypto-finance/230f2cf01f05e494-bitget-plans-us-expansion-with-or-without-clarity-act-ceo-says.md",
+        "signals/2026-07-22/crypto-finance/8dd2d19621c138b4-crypto-market-breakout-could-accelerate-as-ai-trade-cools-analyst-says.md",
+        "signals/2026-07-22/crypto-finance/943f21854760c5fa-pakistan-launches-crypto-investigation-unit-to-crack-down-on-digital-ass.md",
+        "signals/2026-07-22/crypto-finance/50860937c115cf77-bitcoin-nears-seven-week-high-as-stocks-ignore-iran-strikes-trump-10-tar.md"
+      ],
+      "media_count": 4,
+      "routing": "feed_owned"
+    },
+    {
+      "stream": "dj-audio-creative",
+      "status": "signals-only",
       "count": 6,
       "signals": [
-        "signals/2026-06-30/crypto-finance/9a97ad19a41d155b-bitcoin-nears-2024-lows-as-options-traders-pay-up-for-downside-protectio.md",
-        "signals/2026-06-30/crypto-finance/c9260eadc38a72ec-uk-to-lower-stablecoin-capital-buffers-undercutting-eu-s-mica-requiremen.md",
-        "signals/2026-06-30/crypto-finance/36466c5cb96059b0-sec-wins-5-5-million-default-judgment-over-alleged-fake-crypto-platform.md",
-        "signals/2026-06-30/crypto-finance/45ee597662acba17-hollywood-director-carl-rinsch-sentenced-to-30-months-for-diverting-11-m.md",
-        "signals/2026-06-30/crypto-finance/de354c698bee8882-esma-mica-warning-puts-binance-eu-service-changes-under-scrutiny.md",
-        "signals/2026-06-30/crypto-finance/1e23c197b88301bf-solana-company-to-back-kazakhstan-s-6b-crypto-megacity-ambition.md"
+        "signals/2026-07-22/dj-audio-creative/3ec5940656ededd9-addictive-drums-2-vs-ezdrummer-3-vs-superior-drummer-3-which-drum-plugin.md",
+        "signals/2026-07-22/dj-audio-creative/2cf6815938cc718a-rsjb-tonic-a-multi-layer-multi-engine-synthesizer-ios-macos-major-update.md",
+        "signals/2026-07-22/dj-audio-creative/a558e86dc9160ff6-vdmx-6-3-adds-expressions-plugin-templates-to-beloved-mac-visual-tool.md",
+        "signals/2026-07-22/dj-audio-creative/0889aa3765528504-audio-damage-tessera-a-resonator-plugin-mac-win-linux-ios-that-is-musica.md",
+        "signals/2026-07-22/dj-audio-creative/677af27c7bff8206-ujam-symphonic-elements-delivers-the-hans-zimmer-sound-straight-to-your.md",
+        "signals/2026-07-22/dj-audio-creative/345aae1cd8ae2ba6-jamstik-introduces-loon-expressive-software-instrument.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -29,66 +56,79 @@
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 7,
+      "count": 6,
       "signals": [
-        "signals/2026-06-30/finance/aedf9414a6f19d32-rbc-finance.md",
-        "signals/2026-06-30/finance/38e7469e38a0d32c-euroclear.md",
-        "signals/2026-06-30/finance/88d76b7a6629c8a8-rbc-finance.md",
-        "signals/2026-06-30/finance/b71edf9da8058bb1-euroclear.md",
-        "signals/2026-06-30/finance/fbeda2895caa651f-13-29.md",
-        "signals/2026-06-30/finance/4062c5df89230184-14-01-2026-7284.md",
-        "signals/2026-06-30/finance/6ac1ba348848f834-50.md"
+        "signals/2026-07-22/finance/8992f3ffd455e7e9-kommersant-finance.md",
+        "signals/2026-07-22/finance/9841c9f899be622d-rbc-finance.md",
+        "signals/2026-07-22/finance/259539a71a6c22b0-1986.md",
+        "signals/2026-07-22/finance/7206b9cc938379b4-kommersant-finance.md",
+        "signals/2026-07-22/finance/ee98a9c25ee531af-cbr-news.md",
+        "signals/2026-07-22/finance/9c44f3d2bae335a1-july-2026-euro-area-bank-lending-survey.md"
       ],
       "media_count": 4,
+      "routing": "feed_owned"
+    },
+    {
+      "stream": "gear-style-edc",
+      "status": "signals-only",
+      "count": 2,
+      "signals": [
+        "signals/2026-07-22/gear-style-edc/bffa3e97ed7ab854-edc-knife-of-the-week-the-slim-benchmade-that-hides-a-super-steel.md",
+        "signals/2026-07-22/gear-style-edc/ad41f85121645502-photo-report-tudor-and-red-bull-take-to-the-skies.md"
+      ],
+      "media_count": 2,
       "routing": "feed_owned"
     },
     {
       "stream": "moscow-city",
       "status": "signals-only",
-      "count": 1,
+      "count": 8,
       "signals": [
-        "signals/2026-06-30/moscow-city/bdcce80fc15abfab-m24-moscow-news.md"
+        "signals/2026-07-22/moscow-city/7b82b0282c35a9b9-mskagency-transport.md",
+        "signals/2026-07-22/moscow-city/b08be2386b29cf65-11.md",
+        "signals/2026-07-22/moscow-city/7855ac2205ae7c07-1-2------4-0.md",
+        "signals/2026-07-22/moscow-city/0231d741fb19037a-23.md",
+        "signals/2026-07-22/moscow-city/52748a7f623ab885-90.md",
+        "signals/2026-07-22/moscow-city/cae28840e2cad34a-ria-moscow-city.md",
+        "signals/2026-07-22/moscow-city/6923fc638c7e0d52-5.md",
+        "signals/2026-07-22/moscow-city/058c353eaea37f50-m24-moscow-news.md"
       ],
-      "media_count": 1,
+      "media_count": 4,
       "routing": "feed_owned"
     },
     {
       "stream": "science-discovery",
       "status": "signals-only",
-      "count": 3,
+      "count": 8,
       "signals": [
-        "signals/2026-06-30/science-discovery/948ba7a42e9639de-scientists-say-creatine-may-help-fight-depression.md",
-        "signals/2026-06-30/science-discovery/d1e98df7e9d62d72-a-massive-asteroid-slammed-into-the-north-sea-and-triggered-a-330-foot-t.md",
-        "signals/2026-06-30/science-discovery/e75f4237604737f8-why-scientists-fear-we-re-missing-evidence-of-extraterrestrial-life.md"
+        "signals/2026-07-22/science-discovery/60fe8f64adfb3def-gig-platforms-can-simply-wait-out-workers-to-slash-wages-research-reveal.md",
+        "signals/2026-07-22/science-discovery/ae79a64c8acef25e-birds-flying-in-v-formation-save-energy-with-flatter-flaps-new-research.md",
+        "signals/2026-07-22/science-discovery/7723400e8d34350e-rapid-bacterial-community-profiling-of-equine-microbiomes-using-oxford-n.md",
+        "signals/2026-07-22/science-discovery/6bd6e792ff108b83-new-antibody-drug-stops-aggressive-prostate-cancer-from-spreading.md",
+        "signals/2026-07-22/science-discovery/7e83ee294ad55f04-a-hidden-switch-off-signal-could-predict-solar-storms-seven-years-early.md",
+        "signals/2026-07-22/science-discovery/21f63e71d12d3f46-new-molecular-map-reveals-how-the-flu-virus-hijacks-human-cells.md",
+        "signals/2026-07-22/science-discovery/dacbd28515402981-precision-astrometry-using-optically-independent-spacecraft-for-graviati.md",
+        "signals/2026-07-22/science-discovery/e2e073fc7509310b-mapping-alien-continents-achieving-optical-vlbi-for-exoplanet-imaging.md"
       ],
-      "media_count": 3,
+      "media_count": 4,
       "routing": "feed_owned"
     },
     {
       "stream": "tech-hardware-software",
       "status": "signals-only",
-      "count": 4,
+      "count": 7,
       "signals": [
-        "signals/2026-06-30/tech-hardware-software/6d94c29ecb568a98-meta-fights-soaring-hardware-costs-by-reusing-old-ddr4-server-memory-in.md",
-        "signals/2026-06-30/tech-hardware-software/2c10798f07311885-hamsteros-jams-a-32-bit-gui-operating-system-in-a-single-1-44-mb-floppy.md",
-        "signals/2026-06-30/tech-hardware-software/9b4f93f2db744cca-gmail----chrome.md",
-        "signals/2026-06-30/tech-hardware-software/0169805bfffc0505-taiwan-raids-supermicro-and-two-supply-chain-partners-in-widening-nvidia.md"
+        "signals/2026-07-22/tech-hardware-software/170e96bfb6829836-nvidia-has-shipped-hundreds-of-thousands-of-grace-standalone-servers-gpu.md",
+        "signals/2026-07-22/tech-hardware-software/540f90446a941654-cloudflare-internal-dns-is-now-generally-available.md",
+        "signals/2026-07-22/tech-hardware-software/f7fd200f1bb8202b-nvidia----vera-88-arm--olympus-176----lpddr5x----1-2.md",
+        "signals/2026-07-22/tech-hardware-software/62509fad4fafc1c1-microsoft----dell----windows.md",
+        "signals/2026-07-22/tech-hardware-software/724f07d33cc1f431-gpu-nvidia-----cpu.md",
+        "signals/2026-07-22/tech-hardware-software/68f01cf2e705cf4d-built-in-fort-worth-wistron-opens-advanced-manufacturing-plant-to-produc.md",
+        "signals/2026-07-22/tech-hardware-software/0f95fa90b7a83e35-built-for-vera-rubin-nvidia-spectrum-6-arrives-in-gigascale-ai-factories.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     }
   ],
-  "fetch_errors": [],
-  "filtered_signals": [
-    {
-      "path": "signals/2026-06-30/crypto-finance/5996816c4be71d3d-sovereign-funds-see-bitcoin-discount-as-entry-point-midchains-ceo.md",
-      "reason": "deal_or_discount",
-      "stream": "crypto-finance"
-    },
-    {
-      "path": "signals/2026-06-30/finance/17b7bf4d69284e8c-cbr-news.md",
-      "reason": "low_information_title",
-      "stream": "finance"
-    }
-  ]
+  "fetch_errors": []
 }

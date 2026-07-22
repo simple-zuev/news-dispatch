@@ -1,5 +1,5 @@
 {
-  "total": 26,
+  "total": 70,
   "feeds": [
     {
       "id": "rbc-finance",
@@ -18,6 +18,34 @@
     {
       "id": "cbr-news",
       "title": "Банк России",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "federal-reserve-press",
+      "title": "Federal Reserve",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "ecb-press",
+      "title": "European Central Bank",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "bank-canada-news",
+      "title": "Bank of Canada",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "bank-england-news",
+      "title": "Bank of England",
       "stream": "finance",
       "enabled": true,
       "status": "ok"
@@ -51,6 +79,41 @@
       "status": "ok"
     },
     {
+      "id": "eba-news",
+      "title": "European Banking Authority",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "esma-news",
+      "title": "ESMA",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "fca-news",
+      "title": "Financial Conduct Authority",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "cftc-general",
+      "title": "CFTC Press Releases",
+      "stream": "finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "cftc-enforcement-crypto",
+      "title": "CFTC Enforcement",
+      "stream": "crypto-finance",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
       "id": "the-verge-ai",
       "title": "The Verge",
       "stream": "ai",
@@ -67,6 +130,41 @@
     {
       "id": "microsoft-blog-ai",
       "title": "Microsoft Blog",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "openai-news",
+      "title": "OpenAI News",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "google-ai-blog",
+      "title": "Google AI Blog",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "google-research-blog",
+      "title": "Google Research",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "huggingface-blog",
+      "title": "Hugging Face Blog",
+      "stream": "ai",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "arxiv-cs-ai",
+      "title": "arXiv cs.AI",
       "stream": "ai",
       "enabled": true,
       "status": "ok"
@@ -114,15 +212,99 @@
       "status": "ok"
     },
     {
+      "id": "cloudflare-blog",
+      "title": "Cloudflare Blog",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "google-security-blog",
+      "title": "Google Security Blog",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "github-security-blog",
+      "title": "GitHub Security Blog",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "kernel-releases",
+      "title": "kernel.org releases",
+      "stream": "tech-hardware-software",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
       "id": "sneaker-news",
       "title": "Sneaker News",
+      "stream": "gear-style-edc",
+      "enabled": false,
+      "status": "disabled"
+    },
+    {
+      "id": "hypebeast",
+      "title": "Hypebeast",
+      "stream": "gear-style-edc",
+      "enabled": false,
+      "status": "disabled"
+    },
+    {
+      "id": "worn-and-wound",
+      "title": "Worn & Wound",
       "stream": "gear-style-edc",
       "enabled": true,
       "status": "ok"
     },
     {
-      "id": "hypebeast",
-      "title": "Hypebeast",
+      "id": "carryology",
+      "title": "Carryology",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "gearjunkie-edc",
+      "title": "GearJunkie",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "core77-design",
+      "title": "Core77",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "field-mag-gear",
+      "title": "Field Mag",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "yanko-practical-design",
+      "title": "Yanko Design",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "coolhunting-objects",
+      "title": "Cool Hunting",
+      "stream": "gear-style-edc",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "gadgeteer-edc",
+      "title": "The Gadgeteer",
       "stream": "gear-style-edc",
       "enabled": true,
       "status": "ok"
@@ -149,6 +331,55 @@
       "status": "ok"
     },
     {
+      "id": "vm-moscow-infrastructure",
+      "title": "Вечерняя Москва",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "mskagency-transport",
+      "title": "Агентство Москва: транспорт",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "mskagency-culture",
+      "title": "Агентство Москва: культура",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "govorit-moskva-city",
+      "title": "Говорит Москва: Москва",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "moskvichmag",
+      "title": "Москвич Mag",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "ria-moscow-city",
+      "title": "РИА.Москва",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "big-city-moscow",
+      "title": "Большой город: Город",
+      "stream": "moscow-city",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
       "id": "dj-techtools",
       "title": "DJ TechTools",
       "stream": "dj-audio-creative",
@@ -163,11 +394,67 @@
       "status": "ok"
     },
     {
+      "id": "musictech",
+      "title": "MusicTech",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "attack-magazine",
+      "title": "Attack Magazine",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "synth-anatomy",
+      "title": "SYNTH ANATOMY",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "synthtopia",
+      "title": "Synthtopia",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "native-instruments-blog",
+      "title": "Native Instruments Blog",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "ableton-blog",
+      "title": "Ableton Blog",
+      "stream": "dj-audio-creative",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
       "id": "nature-news",
       "title": "Nature",
       "stream": "science-discovery",
-      "enabled": false,
-      "status": "disabled"
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "quanta-magazine",
+      "title": "Quanta Magazine",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "science-news",
+      "title": "Science News",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
     },
     {
       "id": "science-daily",
@@ -179,6 +466,27 @@
     {
       "id": "nplus1",
       "title": "N+1",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "nasa-news-releases",
+      "title": "NASA News Releases",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "esa-space-science",
+      "title": "ESA Space Science",
+      "stream": "science-discovery",
+      "enabled": true,
+      "status": "ok"
+    },
+    {
+      "id": "phys-org",
+      "title": "Phys.org",
       "stream": "science-discovery",
       "enabled": true,
       "status": "ok"
