@@ -33,33 +33,32 @@ tags:
   - "auto-draft"
   - "radar"
 claim_types:
-  - "confirmed_fact"
   - "source_reported_claim"
   - "editorial_inference"
 confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.tomshardware.com/pc-components/cpus/nvidia-has-shipped-hundreds-of-thousands-of-grace-standalone-servers-gpu-firm-pivots-messaging-as-cpus-take-center-stage-in-agentic-data-centers"
-  - "https://blog.cloudflare.com/internal-dns/"
-  - "https://3dnews.ru/1145496"
-  - "https://3dnews.ru/1145486"
-  - "https://3dnews.ru/1145491"
-  - "https://blogs.nvidia.com/blog/wistron-manufacturing-texas/"
+  - "https://www.tomshardware.com/pc-components/gpus/nvidia-details-rubin-architectural-optimizations-for-inference-improvements-target-better-performance-and-efficiency-from-the-gpu-to-the-rack"
+  - "https://www.tomshardware.com/pc-components/cpus/nvidia-spills-the-beans-on-vera-cpu-spec-benchmarks-revealed-olympus-architecture-detailed-and-more"
+  - "https://www.tomshardware.com/pc-components/gpus/local-ai-clustering-with-dells-pro-max-gb10-connecting-two-nvidia-grace-blackwell-to-scale-out-ai-compute-at-home"
+  - "https://3dnews.ru/1145500"
+  - "https://3dnews.ru/1145524"
+  - "https://3dnews.ru/1145522"
 source_titles:
-  - "Tom's Hardware: Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers"
-  - "Cloudflare Blog: Cloudflare Internal DNS is now generally available"
-  - "3DNews: Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с"
-  - "3DNews: Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows"
-  - "3DNews: Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов"
-  - "NVIDIA Blog: Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems"
+  - "Tom's Hardware: Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack"
+  - "Tom's Hardware: Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more"
+  - "Tom's Hardware: Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home"
+  - "3DNews: Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel"
+  - "3DNews: Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 %"
+  - "3DNews: Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google"
 source_types:
   - "Технологическое медиа"
-  - "Официальный блог / infrastructure platform"
   - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
-  - "Официальный блог"
+  - "Технологическое медиа"
+  - "Технологическое медиа"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
@@ -68,18 +67,18 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.tomshardware.com/pc-components/cpus/nvidia-has-shipped-hundreds-of-thousands-of-grace-standalone-servers-gpu-firm-pivots-messaging-as-cpus-take-center-stage-in-agentic-data-centers"
-  - "https://blog.cloudflare.com/internal-dns/"
-  - "https://3dnews.ru/1145496"
-  - "https://3dnews.ru/1145486"
+  - "https://www.tomshardware.com/pc-components/gpus/nvidia-details-rubin-architectural-optimizations-for-inference-improvements-target-better-performance-and-efficiency-from-the-gpu-to-the-rack"
+  - "https://www.tomshardware.com/pc-components/cpus/nvidia-spills-the-beans-on-vera-cpu-spec-benchmarks-revealed-olympus-architecture-detailed-and-more"
+  - "https://www.tomshardware.com/pc-components/gpus/local-ai-clustering-with-dells-pro-max-gb10-connecting-two-nvidia-grace-blackwell-to-scale-out-ai-compute-at-home"
+  - "https://3dnews.ru/1145500"
 media_titles:
-  - "Tom's Hardware: Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers"
-  - "Cloudflare Blog: Cloudflare Internal DNS is now generally available"
-  - "3DNews: Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с"
-  - "3DNews: Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows"
+  - "Tom's Hardware: Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack"
+  - "Tom's Hardware: Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more"
+  - "Tom's Hardware: Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home"
+  - "3DNews: Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel"
 media_types:
   - "Технологическое медиа"
-  - "Официальный блог / infrastructure platform"
+  - "Технологическое медиа"
   - "Технологическое медиа"
   - "Технологическое медиа"
 media_notes:
@@ -102,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers — сообщение источника «Tom's Hardware: Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers»; требует проверки перед выводами.
-2. Cloudflare Internal DNS is now generally available — сообщение источника «Cloudflare Blog: Cloudflare Internal DNS is now generally available»; требует проверки перед выводами.
-3. Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с — сообщение источника «3DNews: Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с»; требует проверки перед выводами.
-4. Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows — сообщение источника «3DNews: Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows»; требует проверки перед выводами.
-5. Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов — сообщение источника «3DNews: Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов»; требует проверки перед выводами.
+1. Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack — сообщение источника «Tom's Hardware: Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack»; требует проверки перед выводами.
+2. Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more — сообщение источника «Tom's Hardware: Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more»; требует проверки перед выводами.
+3. Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home — сообщение источника «Tom's Hardware: Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home»; требует проверки перед выводами.
+4. Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel — сообщение источника «3DNews: Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel»; требует проверки перед выводами.
+5. Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 % — сообщение источника «3DNews: Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 %»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers. Источник: Tom's Hardware: Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers. URL: https://www.tomshardware.com/pc-components/cpus/nvidia-has-shipped-hundreds-of-thousands-of-grace-standalone-servers-gpu-firm-pivots-messaging-as-cpus-take-center-stage-in-agentic-data-centers
-- Cloudflare Internal DNS is now generally available. Источник: Cloudflare Blog: Cloudflare Internal DNS is now generally available. URL: https://blog.cloudflare.com/internal-dns/
-- Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с. Источник: 3DNews: Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с. URL: https://3dnews.ru/1145496
-- Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows. Источник: 3DNews: Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows. URL: https://3dnews.ru/1145486
-- Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов. Источник: 3DNews: Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов. URL: https://3dnews.ru/1145491
-- Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems. Источник: NVIDIA Blog: Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems. URL: https://blogs.nvidia.com/blog/wistron-manufacturing-texas/
+- Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack. Источник: Tom's Hardware: Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack. URL: https://www.tomshardware.com/pc-components/gpus/nvidia-details-rubin-architectural-optimizations-for-inference-improvements-target-better-performance-and-efficiency-from-the-gpu-to-the-rack
+- Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more. Источник: Tom's Hardware: Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more. URL: https://www.tomshardware.com/pc-components/cpus/nvidia-spills-the-beans-on-vera-cpu-spec-benchmarks-revealed-olympus-architecture-detailed-and-more
+- Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home. Источник: Tom's Hardware: Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home. URL: https://www.tomshardware.com/pc-components/gpus/local-ai-clustering-with-dells-pro-max-gb10-connecting-two-nvidia-grace-blackwell-to-scale-out-ai-compute-at-home
+- Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel. Источник: 3DNews: Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel. URL: https://3dnews.ru/1145500
+- Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 %. Источник: 3DNews: Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 %. URL: https://3dnews.ru/1145524
+- Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google. Источник: 3DNews: Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google. URL: https://3dnews.ru/1145522
 
 ## Почему это важно
 
@@ -125,7 +124,7 @@ editorial_review: "automatic_draft_needs_human_review"
 
 Тезис: подборка показывает область для наблюдения, а не готовый вывод.
 
-Аргумент: в черновик попали источники классов: official_source: 2, specialized_media: 4. Разные классы источников дают разный уровень подтверждения.
+Аргумент: в черновик попали источники классов: specialized_media: 6. Разные классы источников дают разный уровень подтверждения.
 
 Следствие/риск: публикационная версия должна отдельно указать, что подтверждено первичным источником, что является сообщением медиа и что остаётся редакционной гипотезой.
 
@@ -133,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers | source_reported_claim | Tom's Hardware: Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Cloudflare Internal DNS is now generally available | source_reported_claim | Cloudflare Blog: Cloudflare Internal DNS is now generally available | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с | source_reported_claim | 3DNews: Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows | source_reported_claim | 3DNews: Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов | source_reported_claim | 3DNews: Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems | source_reported_claim | NVIDIA Blog: Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack | source_reported_claim | Tom's Hardware: Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more | source_reported_claim | Tom's Hardware: Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home | source_reported_claim | Tom's Hardware: Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel | source_reported_claim | 3DNews: Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 % | source_reported_claim | 3DNews: Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 % | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google | source_reported_claim | 3DNews: Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

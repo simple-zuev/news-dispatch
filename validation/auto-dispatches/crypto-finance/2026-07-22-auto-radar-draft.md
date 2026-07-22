@@ -39,19 +39,19 @@ confidence: "low"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://www.coindesk.com/tech/2026/07/21/galaxy-sets-up-usd5-million-fund-to-help-shield-bitcoin-against-quantum-computing-threats"
-  - "https://www.theblock.co/post/409187/htx-rotates-wallets-uk-sanctions-screening?utm_source=rss&utm_medium=rss"
-  - "https://cointelegraph.com/news/movement-labs-files-chapter-11-bankruptcy-move-token-turmoil?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-  - "https://www.coindesk.com/policy/2026/07/21/russia-s-parliament-passes-crypto-market-law-rules-to-take-effect-sept-1"
-  - "https://www.coindesk.com/markets/2026/07/21/bitcoin-rally-faces-key-test-at-usd68-000-as-summer-slumber-grips-crypto-analysts-say"
-  - "https://www.theblock.co/post/409100/bitget-plans-us-expansion-with-without-clarity-act-ceo-says?utm_source=rss&utm_medium=rss"
+  - "https://www.coindesk.com/tech/2026/07/22/balance-stablecoin-collapses-99-after-usd1-million-exploit-drains-its-bitcoin-vaults"
+  - "https://www.coindesk.com/markets/2026/07/22/ai-models-escaped-openai-s-sandbox-and-hit-hugging-face-crypto-is-where-that-gets-dangerous"
+  - "https://www.coindesk.com/tech/2026/07/22/live-updates-bitcoin-under-usd66-000-as-traders-await-alphabet-earnings-to-gauge-ai-trade"
+  - "https://www.theblock.co/post/409160/the-digital-chamber-sues-illinois-over-incoming-crypto-transaction-tax?utm_source=rss&utm_medium=rss"
+  - "https://cointelegraph.com/news/london-stock-exchange-plans-round-the-clock-trading-in-2027-ft?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
+  - "https://www.theblock.co/post/409194/us-seeks-forfeiture-25-million-crypto?utm_source=rss&utm_medium=rss"
 source_titles:
-  - "CoinDesk: Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats"
-  - "The Block: HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs"
-  - "Cointelegraph: Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil"
-  - "CoinDesk: Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors"
-  - "CoinDesk: Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say"
-  - "The Block: Bitget plans US expansion ‘with or without’ Clarity Act, CEO says"
+  - "CoinDesk: Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults"
+  - "CoinDesk: AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous"
+  - "CoinDesk: Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade"
+  - "The Block: The Digital Chamber sues Illinois over incoming crypto transaction tax"
+  - "Cointelegraph: London Stock Exchange eyes overnight trading launch in 2027: FT"
+  - "The Block: US seeks forfeiture of $25 million in crypto tied to global fraud investigations"
 source_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -67,15 +67,15 @@ source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://www.coindesk.com/tech/2026/07/21/galaxy-sets-up-usd5-million-fund-to-help-shield-bitcoin-against-quantum-computing-threats"
-  - "https://www.theblock.co/post/409187/htx-rotates-wallets-uk-sanctions-screening?utm_source=rss&utm_medium=rss"
-  - "https://cointelegraph.com/news/movement-labs-files-chapter-11-bankruptcy-move-token-turmoil?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound"
-  - "https://www.coindesk.com/policy/2026/07/21/russia-s-parliament-passes-crypto-market-law-rules-to-take-effect-sept-1"
+  - "https://www.coindesk.com/tech/2026/07/22/balance-stablecoin-collapses-99-after-usd1-million-exploit-drains-its-bitcoin-vaults"
+  - "https://www.coindesk.com/markets/2026/07/22/ai-models-escaped-openai-s-sandbox-and-hit-hugging-face-crypto-is-where-that-gets-dangerous"
+  - "https://www.coindesk.com/tech/2026/07/22/live-updates-bitcoin-under-usd66-000-as-traders-await-alphabet-earnings-to-gauge-ai-trade"
+  - "https://www.theblock.co/post/409160/the-digital-chamber-sues-illinois-over-incoming-crypto-transaction-tax?utm_source=rss&utm_medium=rss"
 media_titles:
-  - "CoinDesk: Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats"
-  - "The Block: HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs"
-  - "Cointelegraph: Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil"
-  - "CoinDesk: Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors"
+  - "CoinDesk: Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults"
+  - "CoinDesk: AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous"
+  - "CoinDesk: Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade"
+  - "The Block: The Digital Chamber sues Illinois over incoming crypto transaction tax"
 media_types:
   - "Криптофинансовое медиа"
   - "Криптофинансовое медиа"
@@ -101,20 +101,20 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats — сообщение источника «CoinDesk: Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats»; требует проверки перед выводами.
-2. HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs — сообщение источника «The Block: HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs»; требует проверки перед выводами.
-3. Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil — сообщение источника «Cointelegraph: Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil»; требует проверки перед выводами.
-4. Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors — сообщение источника «CoinDesk: Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors»; требует проверки перед выводами.
-5. Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say — сообщение источника «CoinDesk: Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say»; требует проверки перед выводами.
+1. Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults — сообщение источника «CoinDesk: Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults»; требует проверки перед выводами.
+2. AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous — сообщение источника «CoinDesk: AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous»; требует проверки перед выводами.
+3. Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade — сообщение источника «CoinDesk: Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade»; требует проверки перед выводами.
+4. The Digital Chamber sues Illinois over incoming crypto transaction tax — сообщение источника «The Block: The Digital Chamber sues Illinois over incoming crypto transaction tax»; требует проверки перед выводами.
+5. London Stock Exchange eyes overnight trading launch in 2027: FT — сообщение источника «Cointelegraph: London Stock Exchange eyes overnight trading launch in 2027: FT»; требует проверки перед выводами.
 
 ## Что произошло
 
-- Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats. Источник: CoinDesk: Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats. URL: https://www.coindesk.com/tech/2026/07/21/galaxy-sets-up-usd5-million-fund-to-help-shield-bitcoin-against-quantum-computing-threats
-- HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs. Источник: The Block: HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs. URL: https://www.theblock.co/post/409187/htx-rotates-wallets-uk-sanctions-screening?utm_source=rss&utm_medium=rss
-- Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil. Источник: Cointelegraph: Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil. URL: https://cointelegraph.com/news/movement-labs-files-chapter-11-bankruptcy-move-token-turmoil?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
-- Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors. Источник: CoinDesk: Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors. URL: https://www.coindesk.com/policy/2026/07/21/russia-s-parliament-passes-crypto-market-law-rules-to-take-effect-sept-1
-- Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say. Источник: CoinDesk: Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say. URL: https://www.coindesk.com/markets/2026/07/21/bitcoin-rally-faces-key-test-at-usd68-000-as-summer-slumber-grips-crypto-analysts-say
-- Bitget plans US expansion ‘with or without’ Clarity Act, CEO says. Источник: The Block: Bitget plans US expansion ‘with or without’ Clarity Act, CEO says. URL: https://www.theblock.co/post/409100/bitget-plans-us-expansion-with-without-clarity-act-ceo-says?utm_source=rss&utm_medium=rss
+- Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults. Источник: CoinDesk: Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults. URL: https://www.coindesk.com/tech/2026/07/22/balance-stablecoin-collapses-99-after-usd1-million-exploit-drains-its-bitcoin-vaults
+- AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous. Источник: CoinDesk: AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous. URL: https://www.coindesk.com/markets/2026/07/22/ai-models-escaped-openai-s-sandbox-and-hit-hugging-face-crypto-is-where-that-gets-dangerous
+- Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade. Источник: CoinDesk: Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade. URL: https://www.coindesk.com/tech/2026/07/22/live-updates-bitcoin-under-usd66-000-as-traders-await-alphabet-earnings-to-gauge-ai-trade
+- The Digital Chamber sues Illinois over incoming crypto transaction tax. Источник: The Block: The Digital Chamber sues Illinois over incoming crypto transaction tax. URL: https://www.theblock.co/post/409160/the-digital-chamber-sues-illinois-over-incoming-crypto-transaction-tax?utm_source=rss&utm_medium=rss
+- London Stock Exchange eyes overnight trading launch in 2027: FT. Источник: Cointelegraph: London Stock Exchange eyes overnight trading launch in 2027: FT. URL: https://cointelegraph.com/news/london-stock-exchange-plans-round-the-clock-trading-in-2027-ft?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound
+- US seeks forfeiture of $25 million in crypto tied to global fraud investigations. Источник: The Block: US seeks forfeiture of $25 million in crypto tied to global fraud investigations. URL: https://www.theblock.co/post/409194/us-seeks-forfeiture-25-million-crypto?utm_source=rss&utm_medium=rss
 
 ## Почему это важно
 
@@ -132,12 +132,12 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats | source_reported_claim | CoinDesk: Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs | source_reported_claim | The Block: HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil | source_reported_claim | Cointelegraph: Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors | source_reported_claim | CoinDesk: Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say | source_reported_claim | CoinDesk: Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Bitget plans US expansion ‘with or without’ Clarity Act, CEO says | source_reported_claim | The Block: Bitget plans US expansion ‘with or without’ Clarity Act, CEO says | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults | source_reported_claim | CoinDesk: Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous | source_reported_claim | CoinDesk: AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade | source_reported_claim | CoinDesk: Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Digital Chamber sues Illinois over incoming crypto transaction tax | source_reported_claim | The Block: The Digital Chamber sues Illinois over incoming crypto transaction tax | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| London Stock Exchange eyes overnight trading launch in 2027: FT | source_reported_claim | Cointelegraph: London Stock Exchange eyes overnight trading launch in 2027: FT | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| US seeks forfeiture of $25 million in crypto tied to global fraud investigations | source_reported_claim | The Block: US seeks forfeiture of $25 million in crypto tied to global fraud investigations | low | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 

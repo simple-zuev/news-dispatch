@@ -6,422 +6,415 @@ This file is generated from Daily Radar signals. It is not a published dispatch.
 
 ## Summary
 
-- Retained signals: 56
+- Retained signals: 55
 - Streams with retained signals: 8
 - Fetch warnings: 0
 
 ## ai
 
-- **OpenAI and Hugging Face partner to address security incident during model evaluation**
+- **Distribution-First Population Simulation: Collapse, Calibration, and Recall in Non-WEIRD LLM Persona Modeling**
+  - Topic: `ai-platforms`
+  - Source: `arxiv-cs-ai` / `research_media`
+  - Signal path: `signals/2026-07-22/ai/6a44feadb04120b4-distribution-first-population-simulation-collapse-calibration-and-recall.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **EvalSafetyGap: A Hybrid Survey and Conceptual Framework for LLM Evaluation-Safety Failures**
+  - Topic: `ai-platforms`
+  - Source: `arxiv-cs-ai` / `research_media`
+  - Signal path: `signals/2026-07-22/ai/33effa85de6a2bbc-evalsafetygap-a-hybrid-survey-and-conceptual-framework-for-llm-evaluatio.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **BioSecBench-Refusal: A paired metric for performance and alignment in agentic biosecurity risk assessment**
+  - Topic: `ai-platforms`
+  - Source: `arxiv-cs-ai` / `research_media`
+  - Signal path: `signals/2026-07-22/ai/0eee0ac233d13462-biosecbench-refusal-a-paired-metric-for-performance-and-alignment-in-age.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **David Vélez and Robin Vince join the boards of the OpenAI Foundation and OpenAI Group PBC**
   - Topic: `ai-platforms`
   - Source: `openai-news` / `official_source`
-  - Signal path: `signals/2026-07-22/ai/d925d8c91f460a44-openai-and-hugging-face-partner-to-address-security-incident-during-mode.md`
+  - Signal path: `signals/2026-07-22/ai/69e481323262afa1-david-v-lez-and-robin-vince-join-the-boards-of-the-openai-foundation-and.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **QuArch: A Benchmark for Evaluating LLM Reasoning in Computer Architecture**
-  - Topic: `ai-platforms`
-  - Source: `arxiv-cs-ai` / `research_media`
-  - Signal path: `signals/2026-07-22/ai/fc2e2e6331dc5dd8-quarch-a-benchmark-for-evaluating-llm-reasoning-in-computer-architecture.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **AI Tour Meeting: Group Travel Planning by LLM Agents**
-  - Topic: `ai-platforms`
-  - Source: `arxiv-cs-ai` / `research_media`
-  - Signal path: `signals/2026-07-22/ai/72ed1498936ec58e-ai-tour-meeting-group-travel-planning-by-llm-agents.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Agents in the Wild: Where Research Meets Deployment**
-  - Topic: `general-monitoring`
-  - Source: `arxiv-cs-ai` / `research_media`
-  - Signal path: `signals/2026-07-22/ai/ea8da3f436bb3c49-agents-in-the-wild-where-research-meets-deployment.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Google reportedly developing 'Frozen v2' chip with Gemini's architecture etched into the silicon — engineers project 6 to 10 times more tokens per watt than latest TPUs**
-  - Topic: `infrastructure`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-07-22/ai/6dd00ca6612c915d-google-reportedly-developing-frozen-v2-chip-with-gemini-s-architecture-e.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Introducing the ChatGPT for small business program**
-  - Topic: `ai-platforms`
-  - Source: `openai-news` / `official_source`
-  - Signal path: `signals/2026-07-22/ai/3064e426d18ccd85-introducing-the-chatgpt-for-small-business-program.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **How to build interactive experiences with canvases**
-  - Topic: `general-monitoring`
-  - Source: `github-blog-ai` / `official_source`
-  - Signal path: `signals/2026-07-22/ai/3ac65a5d9987462d-how-to-build-interactive-experiences-with-canvases.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Behind the scenes at Nvidia's Engineering SuperLab — Vera Rubin NVL72 running OpenAI workloads, 800VDC demonstrated, and more**
-  - Topic: `ai-platforms`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-07-22/ai/86fb1717cf3f39b6-behind-the-scenes-at-nvidia-s-engineering-superlab-vera-rubin-nvl72-runn.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Advancing next-gen AI with materials science innovation**
-  - Topic: `ai-platforms`
-  - Source: `mit-tech-review-ai` / `public_media`
-  - Signal path: `signals/2026-07-22/ai/df45f6b149050e80-advancing-next-gen-ai-with-materials-science-innovation.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **The Download: Chinese AI divides the White House, and a record copyright payout**
-  - Topic: `ai-platforms`
-  - Source: `mit-tech-review-ai` / `public_media`
-  - Signal path: `signals/2026-07-22/ai/e376453ccfb604ad-the-download-chinese-ai-divides-the-white-house-and-a-record-copyright-p.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## crypto-finance
 
-- **Galaxy sets up $5 million fund to help shield Bitcoin against quantum computing threats**
+- **Balance stablecoin collapses 99% after $1 million exploit drains its bitcoin vaults**
   - Topic: `market`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/4b4f45632c37656c-galaxy-sets-up-5-million-fund-to-help-shield-bitcoin-against-quantum-com.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/5c0d198f7c44f467-balance-stablecoin-collapses-99-after-1-million-exploit-drains-its-bitco.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **HTX keeps rotating wallets to evade UK sanctions screening: TRM Labs**
-  - Topic: `general-monitoring`
-  - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/7332cda9dfed536d-htx-keeps-rotating-wallets-to-evade-uk-sanctions-screening-trm-labs.md`
+- **AI models escaped OpenAI’s sandbox and hit Hugging Face. Crypto is where that gets dangerous**
+  - Topic: `ai-platforms`
+  - Source: `coindesk` / `specialized_media`
+  - Signal path: `signals/2026-07-22/crypto-finance/ea72fb03aa3f6ac0-ai-models-escaped-openai-s-sandbox-and-hit-hugging-face-crypto-is-where.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Movement Labs files for Chapter 11 bankruptcy after months of MOVE token turmoil**
-  - Topic: `general-monitoring`
-  - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/e5691fd38740fc3a-movement-labs-files-for-chapter-11-bankruptcy-after-months-of-move-token.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Russia’s parliament passes crypto market law with $3,800 annual cap for retail investors**
+- **Live updates: Bitcoin under $66,000 as traders await Alphabet earnings to gauge AI trade**
   - Topic: `market`
   - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/225d95aa89a07960-russia-s-parliament-passes-crypto-market-law-with-3-800-annual-cap-for-r.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/ac8d16bddb8bd4be-live-updates-bitcoin-under-66-000-as-traders-await-alphabet-earnings-to.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Bitcoin rally faces key test at $68,000 as 'summer slumber' grips crypto, analysts say**
-  - Topic: `market`
-  - Source: `coindesk` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/c4f8633210493610-bitcoin-rally-faces-key-test-at-68-000-as-summer-slumber-grips-crypto-an.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Bitget plans US expansion ‘with or without’ Clarity Act, CEO says**
+- **The Digital Chamber sues Illinois over incoming crypto transaction tax**
   - Topic: `general-monitoring`
   - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/230f2cf01f05e494-bitget-plans-us-expansion-with-or-without-clarity-act-ceo-says.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/aee111903288429c-the-digital-chamber-sues-illinois-over-incoming-crypto-transaction-tax.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Crypto market breakout could accelerate as AI trade cools, analyst says**
-  - Topic: `market`
+- **London Stock Exchange eyes overnight trading launch in 2027: FT**
+  - Topic: `general-monitoring`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/8dd2d19621c138b4-crypto-market-breakout-could-accelerate-as-ai-trade-cools-analyst-says.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/0191d2fb31addb2d-london-stock-exchange-eyes-overnight-trading-launch-in-2027-ft.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Pakistan launches crypto investigation unit to crack down on digital asset crimes: report**
-  - Topic: `security`
+- **US seeks forfeiture of $25 million in crypto tied to global fraud investigations**
+  - Topic: `general-monitoring`
   - Source: `the-block` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/943f21854760c5fa-pakistan-launches-crypto-investigation-unit-to-crack-down-on-digital-ass.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/c484160da32e0fc7-us-seeks-forfeiture-of-25-million-in-crypto-tied-to-global-fraud-investi.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Bitcoin nears seven-week high as stocks ignore Iran strikes, Trump 10% tariff plans**
+- **BIS warns USD stablecoins can evade capital controls, challenging traditional market regulations**
+  - Topic: `regulation`
+  - Source: `the-block` / `specialized_media`
+  - Signal path: `signals/2026-07-22/crypto-finance/d05b2528ceb35940-bis-warns-usd-stablecoins-can-evade-capital-controls-challenging-traditi.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Bitcoin ETFs extend inflow streak to 6 days with $203M added**
   - Topic: `market`
   - Source: `cointelegraph` / `specialized_media`
-  - Signal path: `signals/2026-07-22/crypto-finance/50860937c115cf77-bitcoin-nears-seven-week-high-as-stocks-ignore-iran-strikes-trump-10-tar.md`
+  - Signal path: `signals/2026-07-22/crypto-finance/9e173afabfc679c9-bitcoin-etfs-extend-inflow-streak-to-6-days-with-203m-added.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Pakistan steps up crypto enforcement with dedicated federal unit**
+  - Topic: `general-monitoring`
+  - Source: `cointelegraph` / `specialized_media`
+  - Signal path: `signals/2026-07-22/crypto-finance/a0b19b8ea4b93b11-pakistan-steps-up-crypto-enforcement-with-dedicated-federal-unit.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
 
 ## dj-audio-creative
 
-- **Addictive Drums 2 vs EZdrummer 3 vs Superior Drummer 3: Which drum plugin is best?**
-  - Topic: `general-monitoring`
-  - Source: `musictech` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/3ec5940656ededd9-addictive-drums-2-vs-ezdrummer-3-vs-superior-drummer-3-which-drum-plugin.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **RSJB Tonic: a multi-layer multi-engine Synthesizer (iOS/macOS): major update 2.0**
+- **Jasmine & Olive Trees Doppler: a multi-functional module with smart overlays**
   - Topic: `general-monitoring`
   - Source: `synth-anatomy` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/2cf6815938cc718a-rsjb-tonic-a-multi-layer-multi-engine-synthesizer-ios-macos-major-update.md`
+  - Signal path: `signals/2026-07-22/dj-audio-creative/393a8610d434a3d1-jasmine-olive-trees-doppler-a-multi-functional-module-with-smart-overlay.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **VDMX 6.3 adds expressions, plugin templates to beloved Mac visual tool**
+- **Can Jamstik finally make MIDI guitar stick?**
+  - Topic: `general-monitoring`
+  - Source: `musictech` / `specialized_media`
+  - Signal path: `signals/2026-07-22/dj-audio-creative/bf45a9a7b06d6b4e-can-jamstik-finally-make-midi-guitar-stick.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Let’s enjoy some Square Enix game soundtracks in acoustic covers**
   - Topic: `general-monitoring`
   - Source: `create-digital-music` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/a558e86dc9160ff6-vdmx-6-3-adds-expressions-plugin-templates-to-beloved-mac-visual-tool.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Audio Damage Tessera: a resonator plugin (mac, win, Linux, & iOS) that is musical and in motion**
-  - Topic: `general-monitoring`
-  - Source: `synth-anatomy` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/0889aa3765528504-audio-damage-tessera-a-resonator-plugin-mac-win-linux-ios-that-is-musica.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **UJAM Symphonic Elements delivers the Hans Zimmer sound straight to your DAW but there are strings attached**
-  - Topic: `ai-platforms`
-  - Source: `musictech` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/677af27c7bff8206-ujam-symphonic-elements-delivers-the-hans-zimmer-sound-straight-to-your.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Jamstik Introduces LOON Expressive Software Instrument**
-  - Topic: `general-monitoring`
-  - Source: `synthtopia` / `specialized_media`
-  - Signal path: `signals/2026-07-22/dj-audio-creative/345aae1cd8ae2ba6-jamstik-introduces-loon-expressive-software-instrument.md`
+  - Signal path: `signals/2026-07-22/dj-audio-creative/8c9901f6a419ff81-let-s-enjoy-some-square-enix-game-soundtracks-in-acoustic-covers.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## finance
 
-- **ЦБ поднял официальный курс доллара до максимума за три месяца**
-  - Topic: `general-monitoring`
-  - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-07-22/finance/8992f3ffd455e7e9-kommersant-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **РСПП увидел угрозу банкротств компаний при сохранении ставки ЦБ**
-  - Topic: `market`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-07-22/finance/9841c9f899be622d-rbc-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Курс японской иены обрушился до минимума с 1986 года**
-  - Topic: `general-monitoring`
-  - Source: `rbc-finance` / `public_media`
-  - Signal path: `signals/2026-07-22/finance/259539a71a6c22b0-1986.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Шохин заявил о риске «осенних банкротств» при отказе ЦБ снижать ключевую ставку**
-  - Topic: `market`
-  - Source: `kommersant-finance` / `public_media`
-  - Signal path: `signals/2026-07-22/finance/7206b9cc938379b4-kommersant-finance.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
-- **Проекты нормативных документов Банка России для публичного обсуждения**
+- **Перечень кредитных потребительских кооперативов и сельскохозяйственных кредитных потребительских кооперативов, соответствующих требованиям пункта 3 части 7 статьи 10 Федерального закона от 29 декабря 2006 года № 256-ФЗ**
   - Topic: `general-monitoring`
   - Source: `cbr-news` / `official_source`
-  - Signal path: `signals/2026-07-22/finance/ee98a9c25ee531af-cbr-news.md`
+  - Signal path: `signals/2026-07-22/finance/99e3cce98e0dbf90-3--7--10----29--2006--256.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **July 2026 euro area bank lending survey**
+- **ГПБ запустил накопительный счет «Доходный» со ставкой до 14% годовых**
+  - Topic: `market`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/deac6855ac0f5804-14.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Минфин назвал условие возобновления аукционов по размещению ОФЗ**
+  - Topic: `general-monitoring`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/ef979b803f077aa6-rbc-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Акции Ozon обвалились на 8%**
+  - Topic: `general-monitoring`
+  - Source: `rbc-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/f9232d79d882d001-ozon---8.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Акции Ozon упали на 8% после атак БПЛА на склады Wildberries**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/4242449682e2495f-ozon---8------wildberries.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Бывший глава МИД РФ Игорь Иванов награжден орденом «За заслуги перед Отечеством» I степени**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/e5811aae4efe8680-i.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **ECB appoints Boris Kisselevsky as Director General Secretariat**
   - Topic: `general-monitoring`
   - Source: `ecb-press` / `official_source`
-  - Signal path: `signals/2026-07-22/finance/9c44f3d2bae335a1-july-2026-euro-area-bank-lending-survey.md`
+  - Signal path: `signals/2026-07-22/finance/1ec0f8ea6fa931f9-ecb-appoints-boris-kisselevsky-as-director-general-secretariat.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **«Фармасинтез» выведет на рынок оригинальный препарат от рака крови**
+  - Topic: `general-monitoring`
+  - Source: `kommersant-finance` / `public_media`
+  - Signal path: `signals/2026-07-22/finance/2386c6e4388646b4-kommersant-finance.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Find primary-source confirmation and separate market movement from regulatory or infrastructure impact.
+- **Указание Банка России от 10.06.2026 № 7368-У**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-07-22/finance/8bfbc930eaaa9cd9-10-06-2026-7368.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Указание Банка России от 08.06.2026 № 7366-У**
+  - Topic: `general-monitoring`
+  - Source: `cbr-news` / `official_source`
+  - Signal path: `signals/2026-07-22/finance/7df7e22bc2dc5e5e-08-06-2026-7366.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
 
 ## gear-style-edc
 
-- **EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel**
+- **Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289**
   - Topic: `general-monitoring`
   - Source: `gadgeteer-edc` / `specialized_media`
-  - Signal path: `signals/2026-07-22/gear-style-edc/bffa3e97ed7ab854-edc-knife-of-the-week-the-slim-benchmade-that-hides-a-super-steel.md`
+  - Signal path: `signals/2026-07-22/gear-style-edc/97d20f78842ce52f-timex-brings-a-fly-back-chronograph-to-the-waterbury-ace-starting-at-289.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Photo Report: Tudor and Red Bull Take to the Skies**
+- **The Black Whale Might Be the Cheapest Way Into the M390 Club**
   - Topic: `general-monitoring`
-  - Source: `worn-and-wound` / `specialized_media`
-  - Signal path: `signals/2026-07-22/gear-style-edc/ad41f85121645502-photo-report-tudor-and-red-bull-take-to-the-skies.md`
+  - Source: `gadgeteer-edc` / `specialized_media`
+  - Signal path: `signals/2026-07-22/gear-style-edc/60eb344891f732bc-the-black-whale-might-be-the-cheapest-way-into-the-m390-club.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## moscow-city
 
-- **Внуково станет совладельцем аэропорта Домодедово вместе с Шереметьево**
+- **ЦОДД реализовал 755 проектов улучшения движения в Москве с марта**
   - Topic: `general-monitoring`
   - Source: `mskagency-transport` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/7b82b0282c35a9b9-mskagency-transport.md`
+  - Signal path: `signals/2026-07-22/moscow-city/42236d2ad199ed0f-755.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **«Вафельная» разметка появилась еще на 11 перекрестках в Москве**
+- **Более 50 диагональных пешеходных переходов обустроили в Москве по проектам ЦОДД**
   - Topic: `general-monitoring`
   - Source: `mskagency-transport` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/b08be2386b29cf65-11.md`
+  - Signal path: `signals/2026-07-22/moscow-city/a5f171a58777b38f-50.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Более 1,2 млн км проехали поезда «Иволга 4.0» на Ярославском направлении МЖД**
+- **Собянин объявил о решении продлить Арбатско-Покровскую линию метро в район Восточный**
   - Topic: `general-monitoring`
-  - Source: `mskagency-transport` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/7855ac2205ae7c07-1-2------4-0.md`
+  - Source: `govorit-moskva-city` / `public_media`
+  - Signal path: `signals/2026-07-22/moscow-city/f7e991bbac87063c-govorit-moskva-city.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Малый театр 23 июля покажет онлайн спектакль «Вишневый сад»**
+- **На участке Арбатско-Покровской линии метро между станциями «Щелковская» и «Гольяново» завершили проходку тоннелей**
   - Topic: `general-monitoring`
-  - Source: `mskagency-culture` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/0231d741fb19037a-23.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Программа о кино пройдет в рамках выставки к 90-летию Станислава Говорухина**
-  - Topic: `market`
-  - Source: `mskagency-culture` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/52748a7f623ab885-90.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **На ВДНХ открывается выставка, посвященная победителям конкурса «Московские мастера»**
-  - Topic: `market`
   - Source: `ria-moscow-city` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/cae28840e2cad34a-ria-moscow-city.md`
+  - Signal path: `signals/2026-07-22/moscow-city/b1e125fc3b265527-ria-moscow-city.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Рекордная проходка тоннеля за 5 месяцев: как Москва строит метро будущего**
+- **Дизайнеры сделали новую схему развития московского метро до 2050 года**
   - Topic: `general-monitoring`
-  - Source: `vm-moscow-infrastructure` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/6923fc638c7e0d52-5.md`
+  - Source: `moskvichmag` / `public_media`
+  - Signal path: `signals/2026-07-22/moscow-city/b127aa3ec11dd579-2050.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Мотоциклист погиб в ДТП на Филатовском шоссе**
+- **Укладка рельсовых плит выполнена на испытательном полигоне ВСМ**
+  - Topic: `general-monitoring`
+  - Source: `mskagency-transport` / `public_media`
+  - Signal path: `signals/2026-07-22/moscow-city/b8e21f82f077e128-mskagency-transport.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Собянин поблагодарил всех, кто стоит на защите столичного неба**
   - Topic: `general-monitoring`
   - Source: `m24-moscow-news` / `public_media`
-  - Signal path: `signals/2026-07-22/moscow-city/058c353eaea37f50-m24-moscow-news.md`
+  - Signal path: `signals/2026-07-22/moscow-city/4e2219aff4ff76a9-m24-moscow-news.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Международный фестиваль музыки пройдет в столице с 6 по 16 августа**
+  - Topic: `general-monitoring`
+  - Source: `mskagency-culture` / `public_media`
+  - Signal path: `signals/2026-07-22/moscow-city/892cc0be2846cd73-6--16.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
 
 ## science-discovery
 
-- **Gig platforms can simply 'wait out' workers to slash wages, research reveals**
+- **Urgent cuts to global greenhouse gas emissions needed to avoid worst sea-level rise flooding in the UK, study shows**
+  - Topic: `general-monitoring`
+  - Source: `phys-org` / `specialized_media`
+  - Signal path: `signals/2026-07-22/science-discovery/e96d9577172878b1-urgent-cuts-to-global-greenhouse-gas-emissions-needed-to-avoid-worst-sea.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Private mission launches to extend life of out-of-gas communication satellites**
+  - Topic: `general-monitoring`
+  - Source: `phys-org` / `specialized_media`
+  - Signal path: `signals/2026-07-22/science-discovery/c947357f9d9867ce-private-mission-launches-to-extend-life-of-out-of-gas-communication-sate.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **New programmable photonic chip can control how fast light moves**
+  - Topic: `infrastructure`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-07-22/science-discovery/5dd9f9f02bd7899f-new-programmable-photonic-chip-can-control-how-fast-light-moves.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Factors that affect the spininess of plants in different locations**
+  - Topic: `general-monitoring`
+  - Source: `phys-org` / `specialized_media`
+  - Signal path: `signals/2026-07-22/science-discovery/e0afbee96079ec29-factors-that-affect-the-spininess-of-plants-in-different-locations.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Robotically Assembled Electromagnetic Metamaterials for Long-Range Space Situational Awareness**
+  - Topic: `general-monitoring`
+  - Source: `nasa-news-releases` / `official_source`
+  - Signal path: `signals/2026-07-22/science-discovery/9f508d57744c957e-robotically-assembled-electromagnetic-metamaterials-for-long-range-space.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
+- **Does China’s latest AI model finally equal US rivals? What scientists think**
   - Topic: `ai-platforms`
-  - Source: `phys-org` / `specialized_media`
-  - Signal path: `signals/2026-07-22/science-discovery/60fe8f64adfb3def-gig-platforms-can-simply-wait-out-workers-to-slash-wages-research-reveal.md`
+  - Source: `nature-news` / `research_media`
+  - Signal path: `signals/2026-07-22/science-discovery/8d16958f66fbf917-does-china-s-latest-ai-model-finally-equal-us-rivals-what-scientists-thi.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Birds flying in 'V' formation save energy with flatter flaps, new research shows**
+- **New hope in the fight against cachexia — cancer’s deadly co-conspirator**
+  - Topic: `ai-platforms`
+  - Source: `nature-news` / `research_media`
+  - Signal path: `signals/2026-07-22/science-discovery/fc5d5dca1621ffb9-new-hope-in-the-fight-against-cachexia-cancer-s-deadly-co-conspirator.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Доисторические балканцы изготовили подвеску из человеческого клыка**
   - Topic: `general-monitoring`
-  - Source: `phys-org` / `specialized_media`
-  - Signal path: `signals/2026-07-22/science-discovery/ae79a64c8acef25e-birds-flying-in-v-formation-save-energy-with-flatter-flaps-new-research.md`
+  - Source: `nplus1` / `specialized_media`
+  - Signal path: `signals/2026-07-22/science-discovery/7c0e1ab1decdf976-nplus1.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Rapid bacterial community profiling of equine microbiomes using Oxford Nanopore sequencing**
-  - Topic: `general-monitoring`
-  - Source: `phys-org` / `specialized_media`
-  - Signal path: `signals/2026-07-22/science-discovery/7723400e8d34350e-rapid-bacterial-community-profiling-of-equine-microbiomes-using-oxford-n.md`
+- **Don’t let AI steal all the joy: what scientists won’t give up to chatbots**
+  - Topic: `ai-platforms`
+  - Source: `nature-news` / `research_media`
+  - Signal path: `signals/2026-07-22/science-discovery/05cb1d69e6486b77-don-t-let-ai-steal-all-the-joy-what-scientists-won-t-give-up-to-chatbots.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **New antibody drug stops aggressive prostate cancer from spreading**
+- **Ancient mystery on K’gari as world’s largest sand island lakes dried up during rainy era**
+  - Topic: `ai-platforms`
+  - Source: `science-daily` / `research_media`
+  - Signal path: `signals/2026-07-22/science-discovery/4d602c36e67bf055-ancient-mystery-on-k-gari-as-world-s-largest-sand-island-lakes-dried-up.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
+- **Astronomers find the first atmosphere on a rocky world in the habitable zone**
   - Topic: `general-monitoring`
   - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-07-22/science-discovery/6bd6e792ff108b83-new-antibody-drug-stops-aggressive-prostate-cancer-from-spreading.md`
+  - Signal path: `signals/2026-07-22/science-discovery/e1426305a9b401d0-astronomers-find-the-first-atmosphere-on-a-rocky-world-in-the-habitable.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **A hidden “switch-off” signal could predict solar storms seven years early**
-  - Topic: `general-monitoring`
-  - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-07-22/science-discovery/7e83ee294ad55f04-a-hidden-switch-off-signal-could-predict-solar-storms-seven-years-early.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **New molecular map reveals how the flu virus hijacks human cells**
-  - Topic: `general-monitoring`
-  - Source: `science-daily` / `research_media`
-  - Signal path: `signals/2026-07-22/science-discovery/21f63e71d12d3f46-new-molecular-map-reveals-how-the-flu-virus-hijacks-human-cells.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check source reliability, duplicates and whether the item affects the stream agenda.
-- **Precision Astrometry Using Optically Independent Spacecraft for Graviational Wave Detection**
-  - Topic: `general-monitoring`
-  - Source: `nasa-news-releases` / `official_source`
-  - Signal path: `signals/2026-07-22/science-discovery/dacbd28515402981-precision-astrometry-using-optically-independent-spacecraft-for-graviati.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Mapping Alien Continents: Achieving Optical VLBI for Exoplanet Imaging**
-  - Topic: `general-monitoring`
-  - Source: `nasa-news-releases` / `official_source`
-  - Signal path: `signals/2026-07-22/science-discovery/e2e073fc7509310b-mapping-alien-continents-achieving-optical-vlbi-for-exoplanet-imaging.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
 
 ## tech-hardware-software
 
-- **Nvidia has shipped 'hundreds of thousands of Grace standalone servers’ — GPU firm pivots messaging as CPUs take center stage in agentic data centers**
-  - Topic: `infrastructure`
-  - Source: `tomshardware` / `specialized_media`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/170e96bfb6829836-nvidia-has-shipped-hundreds-of-thousands-of-grace-standalone-servers-gpu.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Cloudflare Internal DNS is now generally available**
+- **Nvidia details Rubin architectural optimizations for inference – improvements target better performance and efficiency from the GPU to the rack**
   - Topic: `ai-platforms`
-  - Source: `cloudflare-blog` / `official_source`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/540f90446a941654-cloudflare-internal-dns-is-now-generally-available.md`
-  - Confirmation: source-reported RSS/Atom appearance.
-  - Editorial status: needs grouping, context check and impact assessment.
-  - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Nvidia раскрыла детали процессора Vera: 88 Arm-ядер Olympus, 176 потоков и память LPDDR5X с пропускной способностью 1,2 Тбайт/с**
-  - Topic: `infrastructure`
-  - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/f7fd200f1bb8202b-nvidia----vera-88-arm--olympus-176----lpddr5x----1-2.md`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/685566bfc6e1df46-nvidia-details-rubin-architectural-optimizations-for-inference-improveme.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Microsoft устранила несовместимость компьютеров Dell с последним обновлением Windows**
+- **Nvidia deep dives Vera CPU for AI data centers — SPEC CPU 2026 benchmarks revealed, Olympus architecture specifics, and more**
+  - Topic: `ai-platforms`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/460090b9c71947ed-nvidia-deep-dives-vera-cpu-for-ai-data-centers-spec-cpu-2026-benchmarks.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **Local AI clustering with Dell's Pro Max GB10 — connecting two Nvidia Grace Blackwell to scale out AI compute at home**
+  - Topic: `ai-platforms`
+  - Source: `tomshardware` / `specialized_media`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/dc4f4055cfc6f9ca-local-ai-clustering-with-dell-s-pro-max-gb10-connecting-two-nvidia-grace.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **Сделано в США: сетевые ASIC Fortinet SP6 будут выпускаться на американских фабриках Intel**
   - Topic: `general-monitoring`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/62509fad4fafc1c1-microsoft----dell----windows.md`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/44e39375cc1761ea-asic-fortinet-sp6------intel.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Не только GPU: Nvidia всерьёз взялась за рынок CPU и уже отгрузила сотни тысяч серверов**
-  - Topic: `infrastructure`
+- **Новости о предстоящих сокращениях в Intel подстегнули акции к росту почти на 9 %**
+  - Topic: `general-monitoring`
   - Source: `3dnews` / `specialized_media`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/724f07d33cc1f431-gpu-nvidia-----cpu.md`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/1a3e3071c1fbb246-intel-------9.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check vendor/source material and identify product, infrastructure or security impact.
-- **Built in Fort Worth: Wistron Opens Advanced Manufacturing Plant to Produce NVIDIA AI Systems**
-  - Topic: `ai-platforms`
-  - Source: `nvidia-blog-tech` / `official_source`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/68f01cf2e705cf4d-built-in-fort-worth-wistron-opens-advanced-manufacturing-plant-to-produc.md`
+- **Переписки пользователей с DeepSeek оказалась общедоступны в поиске Google**
+  - Topic: `general-monitoring`
+  - Source: `3dnews` / `specialized_media`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/306518fae20a5717-deepseek-----google.md`
+  - Confirmation: source-reported RSS/Atom appearance.
+  - Editorial status: needs grouping, context check and impact assessment.
+  - Next check: Check vendor/source material and identify product, infrastructure or security impact.
+- **next-20260721: linux-next**
+  - Topic: `general-monitoring`
+  - Source: `kernel-releases` / `official_source`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/46ba6ee5935bd715-next-20260721-linux-next.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.
-- **Built for Vera Rubin, NVIDIA Spectrum-6 Arrives in Gigascale AI Factories**
-  - Topic: `ai-platforms`
+- **NVIDIA Vera Rubin Driving Performance Per Watt, Lowest Token Cost for Partners Worldwide**
+  - Topic: `infrastructure`
   - Source: `nvidia-blog-tech` / `official_source`
-  - Signal path: `signals/2026-07-22/tech-hardware-software/0f95fa90b7a83e35-built-for-vera-rubin-nvidia-spectrum-6-arrives-in-gigascale-ai-factories.md`
+  - Signal path: `signals/2026-07-22/tech-hardware-software/e16a6a31aff5e708-nvidia-vera-rubin-driving-performance-per-watt-lowest-token-cost-for-par.md`
   - Confirmation: source-reported RSS/Atom appearance.
   - Editorial status: needs grouping, context check and impact assessment.
   - Next check: Check whether the notice changes rules, dates, registers, participants or reporting obligations.

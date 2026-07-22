@@ -39,26 +39,26 @@ confidence: "medium"
 evidence_status: "automatic_draft_source_reported_signals"
 verification_gap: "Автоматическая сборка не подтверждает факты за пределами самих публичных сообщений источников; перед публикацией нужна проверка первичных документов, статусов, дат и контекста."
 sources:
-  - "https://the-gadgeteer.com/2026/07/21/benchmade-lowden-491bk-02/"
-  - "https://wornandwound.com/photo-report-tudor-and-red-bull-take-to-the-skies/"
+  - "https://the-gadgeteer.com/2026/07/20/timex-waterbury-ace-fly-back-chronograph/"
+  - "https://the-gadgeteer.com/2026/07/21/black-whale-m390-titanium-folding-knife/"
 source_titles:
-  - "The Gadgeteer: EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel"
-  - "Worn & Wound: Photo Report: Tudor and Red Bull Take to the Skies"
+  - "The Gadgeteer: Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289"
+  - "The Gadgeteer: The Black Whale Might Be the Cheapest Way Into the M390 Club"
 source_types:
   - "Специализированное медиа / EDC and practical gear"
-  - "Специализированное медиа / часы и снаряжение"
+  - "Специализированное медиа / EDC and practical gear"
 source_notes:
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
   - "Сигнал из автоматического радара; требует редакционной проверки перед публикацией."
 media:
-  - "https://the-gadgeteer.com/2026/07/21/benchmade-lowden-491bk-02/"
-  - "https://wornandwound.com/photo-report-tudor-and-red-bull-take-to-the-skies/"
+  - "https://the-gadgeteer.com/2026/07/20/timex-waterbury-ace-fly-back-chronograph/"
+  - "https://the-gadgeteer.com/2026/07/21/black-whale-m390-titanium-folding-knife/"
 media_titles:
-  - "The Gadgeteer: EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel"
-  - "Worn & Wound: Photo Report: Tudor and Red Bull Take to the Skies"
+  - "The Gadgeteer: Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289"
+  - "The Gadgeteer: The Black Whale Might Be the Cheapest Way Into the M390 Club"
 media_types:
   - "Специализированное медиа / EDC and practical gear"
-  - "Специализированное медиа / часы и снаряжение"
+  - "Специализированное медиа / EDC and practical gear"
 media_notes:
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
   - "Внешний публичный материал; визуальное превью берётся из метаданных источника при наличии."
@@ -77,13 +77,13 @@ editorial_review: "automatic_draft_needs_human_review"
 
 ## Главное
 
-1. EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel — сообщение источника «The Gadgeteer: EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel»; требует проверки перед выводами.
-2. Photo Report: Tudor and Red Bull Take to the Skies — сообщение источника «Worn & Wound: Photo Report: Tudor and Red Bull Take to the Skies»; требует проверки перед выводами.
+1. Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289 — сообщение источника «The Gadgeteer: Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289»; требует проверки перед выводами.
+2. The Black Whale Might Be the Cheapest Way Into the M390 Club — сообщение источника «The Gadgeteer: The Black Whale Might Be the Cheapest Way Into the M390 Club»; требует проверки перед выводами.
 
 ## Что произошло
 
-- EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel. Источник: The Gadgeteer: EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel. URL: https://the-gadgeteer.com/2026/07/21/benchmade-lowden-491bk-02/
-- Photo Report: Tudor and Red Bull Take to the Skies. Источник: Worn & Wound: Photo Report: Tudor and Red Bull Take to the Skies. URL: https://wornandwound.com/photo-report-tudor-and-red-bull-take-to-the-skies/
+- Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289. Источник: The Gadgeteer: Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289. URL: https://the-gadgeteer.com/2026/07/20/timex-waterbury-ace-fly-back-chronograph/
+- The Black Whale Might Be the Cheapest Way Into the M390 Club. Источник: The Gadgeteer: The Black Whale Might Be the Cheapest Way Into the M390 Club. URL: https://the-gadgeteer.com/2026/07/21/black-whale-m390-titanium-folding-knife/
 
 ## Почему это важно
 
@@ -101,8 +101,8 @@ editorial_review: "automatic_draft_needs_human_review"
 
 | Сигнал | Тип | Источник | Уверенность | Что проверить |
 |---|---|---|---|---|
-| EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel | source_reported_claim | The Gadgeteer: EDC Knife of the Week: The Slim Benchmade That Hides a Super Steel | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
-| Photo Report: Tudor and Red Bull Take to the Skies | source_reported_claim | Worn & Wound: Photo Report: Tudor and Red Bull Take to the Skies | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289 | source_reported_claim | The Gadgeteer: Timex Brings a Fly-Back Chronograph to the Waterbury Ace, Starting at $289 | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
+| The Black Whale Might Be the Cheapest Way Into the M390 Club | source_reported_claim | The Gadgeteer: The Black Whale Might Be the Cheapest Way Into the M390 Club | medium | Первичный источник, дата, статус, контекст и независимые подтверждения. |
 
 ## Что проверять дальше
 
