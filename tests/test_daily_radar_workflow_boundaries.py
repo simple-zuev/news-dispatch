@@ -10,6 +10,7 @@ WORKFLOW = ROOT / ".github" / "workflows" / "daily-radar.yml"
 VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
 REGRESSION_WORKFLOW = ROOT / ".github" / "workflows" / "regression-tests.yml"
 RUNNER = ROOT / "tools" / "run_daily_radar_safe.py"
+CHANGE_SET_GUARD = ROOT / "tools" / "validate_daily_radar_change_set.py"
 
 
 def test_daily_radar_does_not_push_to_main() -> None:
@@ -86,6 +87,19 @@ def test_guarded_runner_prunes_only_after_building_drafts() -> None:
     assert text.index(build) < text.index(prune) < text.index(validate)
 
 
+def test_daily_radar_validates_staged_change_set_before_push() -> None:
+    text = WORKFLOW.read_text(encoding="utf-8")
+    stage = "git add signals data validation"
+    guard = "python tools/validate_daily_radar_change_set.py"
+    checkout = 'git checkout -B "${DAILY_RADAR_BRANCH}"'
+    push = "git push --force-with-lease origin HEAD:${DAILY_RADAR_BRANCH}"
+    assert CHANGE_SET_GUARD.exists()
+    assert all(marker in text for marker in (stage, guard, checkout, push))
+    assert text.index(stage) < text.index(guard) < text.index(checkout) < text.index(push)
+    assert "cat /tmp/daily-radar-change-set.md >> \"$GITHUB_STEP_SUMMARY\"" in text
+    assert "cat /tmp/daily-radar-change-set.md >> \"$body_file\"" in text
+
+
 def main() -> int:
     test_daily_radar_does_not_push_to_main()
     test_daily_radar_uses_automation_pr_branch()
@@ -94,6 +108,7 @@ def main() -> int:
     test_generated_only_prs_use_explicit_workflow_dispatch()
     test_dispatched_checks_report_status_on_automation_sha()
     test_guarded_runner_prunes_only_after_building_drafts()
+    test_daily_radar_validates_staged_change_set_before_push()
     print("daily radar workflow boundary tests passed")
     return 0
 

@@ -68,6 +68,9 @@ jobs:
             git reset --hard HEAD
             exit 0
           fi
+          python tools/validate_daily_radar_change_set.py \
+            --markdown-output /tmp/daily-radar-change-set.md
+          cat /tmp/daily-radar-change-set.md >> "$GITHUB_STEP_SUMMARY"
           git checkout -B "${DAILY_RADAR_BRANCH}"
           git commit -m "dispatch: update daily radar content"
           git push --force-with-lease origin HEAD:${DAILY_RADAR_BRANCH}
@@ -90,6 +93,8 @@ jobs:
           - auto-radar draft outputs belong under validation/auto-dispatches/;
           - publication to dispatches/ remains a separate policy-gated step.
           EOF
+          printf '\n' >> "$body_file"
+          cat /tmp/daily-radar-change-set.md >> "$body_file"
 
           pr_number="$(gh pr list --head "${DAILY_RADAR_BRANCH}" --base main --state open --json number --jq '.[0].number // empty')"
           if [ -n "$pr_number" ]; then
