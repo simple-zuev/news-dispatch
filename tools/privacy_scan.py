@@ -102,7 +102,7 @@ SECRET_VALUE_CONTEXT_PATTERN = re.compile(
 )
 
 REPO_SIGNAL_PATH_PATTERN = re.compile(
-    r"(?:^|[\"'\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'\s]+\.md(?:[\"'\s,]|$)",
+    r"(?:^|[\"'`\s/])signals/\d{4}-\d{2}-\d{2}/[a-z0-9-]+/[a-f0-9]{16}-[^\"'`\s]+\.md(?:[\"'`\s,]|$)",
     re.IGNORECASE,
 )
 GENERATED_ITEM_KEY_PATTERN = re.compile(r'^\s*"item_key"\s*:\s*"[a-f0-9]{16}"\s*,?\s*$', re.IGNORECASE)
