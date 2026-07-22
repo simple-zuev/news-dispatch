@@ -35,3 +35,10 @@ Every run writes `validation/operational-retention-latest.json` with the cutoff,
 candidate paths, deleted paths, and errors. The Daily Radar guarded runner
 applies retention after building automatic drafts and before final artifact
 validation.
+
+Before the automation branch is updated, the staged change-set guard checks
+that only the expected `signals/`, Daily Radar state, and known validation
+artifacts changed. It also rejects fresh-data deletions, non-current writes,
+unexpected paths, more than 80 signal writes, more than 300 deletions, or more
+than 400 changed files in one run. The resulting summary is included in both
+the GitHub Actions job summary and the Daily Radar pull request body.
