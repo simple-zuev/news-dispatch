@@ -142,6 +142,7 @@ def build(args: argparse.Namespace) -> int:
     history_args = ("--reset",) if args.ranking_mode == "fixture" else ()
     run_tool("build_public_reader_history.py", *history_args)
     if not args.skip_validation:
+        run_tool("validate_public_digests.py")
         run_tool("validate_reader_model.py")
     run_tool("render_site.py")
     run_tool("build_radar_pages.py")

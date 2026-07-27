@@ -19,6 +19,7 @@ from build_today_page import (
     public_href,
 )
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from digest_policy import digest_issue_title, is_public_digest
 from reader_shell import public_nav, public_skip_link
 from reader_text import (
     PUBLIC_TZ,
@@ -331,20 +332,11 @@ def news_stream_page(stream: str, rows: list[dict[str, Any]]) -> str:
 </html>"""
 
 
-def dispatch_summary(path: Path, body: str) -> str:
-    doc = parse_front_matter_file(path)
-    summary = coalesce(doc.metadata.get("summary"))
-    if summary:
-        return summary
-    cleaned = " ".join(line.strip() for line in body.splitlines() if line.strip() and not line.startswith("#"))
-    return cleaned[:240]
-
-
 def collect_digests() -> list[dict[str, str]]:
     digests: list[dict[str, str]] = []
     for path in sorted(DISPATCH_DIR.rglob("*.md")):
         doc = parse_front_matter_file(path)
-        if doc.errors or coalesce(doc.metadata.get("status"), default="draft") != "published":
+        if doc.errors or not is_public_digest(doc.metadata, doc.body):
             continue
         stream = coalesce(doc.metadata.get("stream"), default=GENERAL_SPECIAL_USE_STREAM)
         digests.append(
@@ -353,7 +345,9 @@ def collect_digests() -> list[dict[str, str]]:
                 "date": coalesce(doc.metadata.get("date")),
                 "stream": stream,
                 "stream_title": stream_label(stream),
-                "summary": dispatch_summary(path, doc.body),
+                "issue_title": digest_issue_title(doc.metadata),
+                "thesis": coalesce(doc.metadata.get("digest_thesis")),
+                "reader_value": coalesce(doc.metadata.get("reader_value")),
                 "url": f"../dispatches/{output_slug(path)}.html",
             }
         )
@@ -361,11 +355,11 @@ def collect_digests() -> list[dict[str, str]]:
 
 
 def digest_card(item: dict[str, str]) -> str:
-    summary = item["summary"].strip()
-    summary_line = f"\n  <p>{esc(summary)}</p>" if summary else ""
     return f"""<article class="digest-list-card">
-  <p class="news-meta">{esc(item["date"])} · {esc(item["stream_title"])}</p>
-  <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>{summary_line}
+  <p class="news-meta">{esc(item["date"])} · {esc(item["stream_title"])} · {esc(item["issue_title"])}</p>
+  <h3><a href="{esc(item["url"])}">{esc(item["title"])}</a></h3>
+  <p class="digest-thesis"><strong>Главный вывод:</strong> {esc(item["thesis"])}</p>
+  <p class="digest-reader-value"><strong>Зачем читать:</strong> {esc(item["reader_value"])}</p>
   <p class="news-source-link"><a href="{esc(item["url"])}">Открыть выпуск</a></p>
 </article>"""
 

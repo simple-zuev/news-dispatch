@@ -4,10 +4,19 @@ date: "2026-06-25"
 period: "2026-06-25"
 stream: "crypto-finance"
 type: "daily"
+primary_rubric: "market-structure"
+rubrics:
+  - "market-structure"
+  - "reg-watch"
+issue_type: "market-structure-note"
 language: "ru"
 status: "published"
 review_level: "strict_publication_review"
 publication_scope: "public"
+publication_mode: "limited_publication"
+reader_collection: "digests"
+digest_thesis: "Стейблкоины переходят из крипторынка в расчётную и валютную инфраструктуру, поэтому главный вопрос — не цена токена, а правила резервов, посредников и контроля операций."
+reader_value: "Понять, какие элементы будущего режима уже вынесены в официальный контур Банка России и какие рыночные сценарии пока остаются гипотезами."
 public_safe: true
 private_context_used: false
 contains_personal_data: false
@@ -20,6 +29,13 @@ contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
 summary: "Банк России вынес тему стейблкоинов в официальный консультационный контур, а отраслевые сообщения о stablecoin FX и corporate settlement показывают, какие рыночные сценарии стоит проверять дальше."
+claim_types:
+  - "confirmed_fact"
+  - "source_reported_claim"
+  - "editorial_inference"
+confidence: "medium"
+evidence_status: "limited_publication_primary_source_present"
+verification_gap: "Рыночные сценарии stablecoin FX и corporate settlement представлены отраслевыми медиа; детали инициатив, требования к посредникам и итоговая позиция Банка России требуют первичных подтверждений."
 tags:
   - "stablecoins"
   - "fx"

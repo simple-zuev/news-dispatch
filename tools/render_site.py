@@ -18,13 +18,23 @@ import json
 import re
 from collections import Counter
 from dataclasses import dataclass
+from datetime import datetime
 from email.utils import formatdate
 from pathlib import Path
 
 from build_today_page import public_href as safe_href
 from core import DISPATCH_DIR, ROOT, SITE_DIR, coalesce, parse_front_matter_file
+from digest_policy import DIGEST_COLLECTION, is_public_digest
 from reader_shell import public_nav, public_skip_link
-from reader_text import build_public_item, clean_source_excerpt, format_public_time_ru, public_excerpt_ru, public_item_is_fresh, public_items_same_story
+from reader_text import (
+    PUBLIC_TZ,
+    build_public_item,
+    clean_source_excerpt,
+    format_public_time_ru,
+    public_excerpt_ru,
+    public_item_is_fresh,
+    public_items_same_story,
+)
 from newsroom_visuals import stream_visual
 from stream_registry import streams as registry_streams
 
@@ -82,6 +92,9 @@ class Dispatch:
     primary_rubric: str = ""
     issue_type: str = ""
     publication_mode: str = ""
+    reader_collection: str = ""
+    digest_thesis: str = ""
+    reader_value: str = ""
 
     @property
     def url(self) -> str:
@@ -309,6 +322,9 @@ def load_dispatch(path: Path) -> Dispatch | None:
         primary_rubric=coalesce(meta.get("primary_rubric")),
         issue_type=coalesce(meta.get("issue_type")),
         publication_mode=coalesce(meta.get("publication_mode")),
+        reader_collection=DIGEST_COLLECTION if is_public_digest(meta, doc.body) else "",
+        digest_thesis=coalesce(meta.get("digest_thesis")),
+        reader_value=coalesce(meta.get("reader_value")),
     )
 
 
@@ -783,19 +799,26 @@ def home_rubric_links(stream_order: list[str]) -> str:
     )
 
 
-def home_digest_links(dispatches: list[Dispatch]) -> str:
+def home_digest_links(dispatches: list[Dispatch], reference: object) -> str:
     rows = []
-    for dispatch in ordered_dispatches(dispatches)[:4]:
+    recent_dispatches = [
+        dispatch
+        for dispatch in ordered_dispatches(dispatches)
+        if dispatch.reader_collection == DIGEST_COLLECTION
+        and public_item_is_fresh({"date": dispatch.date}, reference, max_age_hours=24 * 14)
+    ]
+    for dispatch in recent_dispatches[:4]:
         rows.append(
             f"""<article class="home-digest-row">
   <p>{html.escape(dispatch.date)} · {html.escape(stream_title(dispatch.stream))}</p>
   <h3><a href="{html.escape(dispatch.relative_url)}">{html.escape(dispatch.title)}</a></h3>
+  <p class="home-digest-thesis">{html.escape(dispatch.digest_thesis)}</p>
 </article>"""
         )
     if not rows:
         rows.append(
             """<article class="home-digest-row empty-state">
-  <h3>Дайджесты пока не опубликованы.</h3>
+  <h3>Свежих дайджестов пока нет.</h3>
 </article>"""
         )
     return "\n".join(rows)
@@ -822,7 +845,8 @@ def homepage_template(dispatches: list[Dispatch], signals: dict[str, list[Signal
     stream_lookup = {stream.slug: stream for stream in STREAMS}
     public_streams = [slug for slug in stream_order if slug in stream_lookup]
     rubric_links = home_rubric_links(public_streams)
-    digest_links = home_digest_links(dispatches)
+    digest_reference = datetime.now(PUBLIC_TZ).isoformat()
+    digest_links = home_digest_links(dispatches, digest_reference)
     return f"""<!doctype html>
 <html lang="ru">
 {head("News Dispatch — новости и дайджесты", "Новости и аналитические дайджесты по рубрикам.")}

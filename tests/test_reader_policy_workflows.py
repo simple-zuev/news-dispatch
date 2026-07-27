@@ -31,6 +31,7 @@ def test_build_site_keeps_public_filter_model_gate_before_rendering() -> None:
             'run_tool("filter_public_source_items.py")',
             "build_reader_policy()",
             'run_tool("build_public_reader_history.py"',
+            'run_tool("validate_public_digests.py")',
             'run_tool("validate_reader_model.py")',
             'run_tool("render_site.py")',
             'run_tool("build_news_pages.py")',

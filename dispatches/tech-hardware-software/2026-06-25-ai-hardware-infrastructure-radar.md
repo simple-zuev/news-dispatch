@@ -4,10 +4,19 @@ date: "2026-06-25"
 period: "2026-06-25"
 stream: "tech-hardware-software"
 type: "daily"
+primary_rubric: "infrastructure"
+rubrics:
+  - "infrastructure"
+  - "security-abuse"
+issue_type: "infrastructure-radar"
 language: "ru"
 status: "published"
 review_level: "strict_publication_review"
 publication_scope: "public"
+publication_mode: "limited_publication"
+reader_collection: "digests"
+digest_thesis: "Конкуренция в ИИ определяется не только качеством моделей: доступ к производству чипов, экспортным режимам и API становится частью продуктовой стратегии."
+reader_value: "Отделить лабораторные и медийные сигналы от подтверждённых ограничений, которые действительно влияют на доступность вычислений и моделей."
 public_safe: true
 private_context_used: false
 contains_personal_data: false
@@ -20,6 +29,13 @@ contains_advertising: false
 contains_paid_promotion: false
 source_mode: "public_sources_only"
 summary: "Сигналы по IBM, Qualcomm и Anthropic показывают, что AI-конкуренция всё сильнее упирается в чипы, экспортные ограничения и контроль доступа к моделям."
+claim_types:
+  - "source_reported_claim"
+  - "research_result"
+  - "editorial_inference"
+confidence: "medium"
+evidence_status: "limited_publication_mixed_source_evidence"
+verification_gap: "Производственный горизонт IBM, конфигурация экспортно-совместимых продуктов Qualcomm и обвинения Anthropic требуют первичных документов, независимого подтверждения и проверки сроков."
 tags:
   - "ai"
   - "hardware"

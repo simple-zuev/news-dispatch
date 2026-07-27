@@ -993,6 +993,10 @@ main {
   line-height: 1.45;
 }
 
+.digest-list-card p strong {
+  color: var(--ink);
+}
+
 .news-list--preview {
   padding-top: 0;
 }

@@ -321,6 +321,37 @@ def test_homepage_template_matches_public_reader_blocks() -> None:
     assert_public_html_clean(html)
 
 
+def test_homepage_shows_only_digests_from_recent_reader_window() -> None:
+    dispatches = [
+        render_site.Dispatch(
+            source_path=ROOT / "dispatches" / "recent.md",
+            title="Свежий дайджест",
+            date="2026-07-15",
+            stream="finance",
+            summary="",
+            body="",
+            output_name="recent.html",
+            reader_collection="digests",
+            digest_thesis="Свежий аналитический вывод.",
+        ),
+        render_site.Dispatch(
+            source_path=ROOT / "dispatches" / "old.md",
+            title="Старый дайджест",
+            date="2026-06-07",
+            stream="general",
+            summary="",
+            body="",
+            output_name="old.html",
+            reader_collection="digests",
+            digest_thesis="Устаревший аналитический вывод.",
+        ),
+    ]
+    html = render_site.home_digest_links(dispatches, "2026-07-22T12:00:00+03:00")
+    assert "Свежий дайджест" in html
+    assert "Свежий аналитический вывод." in html
+    assert "Старый дайджест" not in html
+
+
 def test_public_generated_page_scan_checks_reader_pages() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         site_dir = Path(tmp)
@@ -486,6 +517,7 @@ def main() -> int:
     test_build_orchestrator_writes_sources_page()
     test_sources_page_is_grouped_public_transparency()
     test_homepage_template_matches_public_reader_blocks()
+    test_homepage_shows_only_digests_from_recent_reader_window()
     test_public_generated_page_scan_checks_reader_pages()
     test_public_stream_labels_are_exact_on_homepage_cards()
     test_homepage_attributes_english_source_detail_in_russian()

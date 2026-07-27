@@ -82,7 +82,7 @@ def test_unresolved_security_source_topic_gets_clean_public_title() -> None:
     assert "регуляторика и надзор" not in title.lower()
 
 
-def test_english_title_with_model_word_is_not_mistaken_for_russian() -> None:
+def test_english_title_keeps_original_words_instead_of_mixing_languages() -> None:
     item = {
         "feed_title": "OpenAI News",
         "configured_stream": "ai",
@@ -93,7 +93,14 @@ def test_english_title_with_model_word_is_not_mistaken_for_russian() -> None:
     }
     title = reader_text.public_title_ru(item)
     assert title.startswith("OpenAI News представил материал о развитии ИИ:")
-    assert "Previewing a next-generation модель" in title
+    assert "Previewing a next-generation model" in title
+    assert "next-generation модель" not in title
+
+    item["title"] = "MOVE token turmoil"
+    item["source_original_title"] = "MOVE token turmoil"
+    title = reader_text.public_title_ru(item)
+    assert "MOVE token turmoil" in title
+    assert "MOVE токены turmoil" not in title
 
 
 def main() -> int:
@@ -101,7 +108,7 @@ def main() -> int:
     test_sec_regulator_token_still_maps_to_regulatory_topic()
     test_source_topic_fallback_stays_reader_facing_and_russian()
     test_unresolved_security_source_topic_gets_clean_public_title()
-    test_english_title_with_model_word_is_not_mistaken_for_russian()
+    test_english_title_keeps_original_words_instead_of_mixing_languages()
     print("reader title quality tests passed")
     return 0
 
