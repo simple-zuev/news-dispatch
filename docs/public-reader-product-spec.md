@@ -262,6 +262,12 @@ Digest rules:
 
 - A digest is an analytical issue, not a chronological feed page.
 - A digest must have a clear thesis or synthesis reason.
+- Public digest membership is explicit (`reader_collection: digests`), never
+  inferred from `status: published`.
+- A public digest must state both its analytical thesis and the concrete value
+  for the reader before it can appear in the collection.
+- Automatic daily radars, broad mixed-topic roundups and short notes do not
+  become digests without a separate non-automated editorial review.
 - Weak signals and public reaction must be separated from confirmed facts.
 - Finance, regulation, legal, compliance and crypto-finance topics require
   especially cautious wording and source support.

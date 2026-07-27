@@ -368,6 +368,13 @@ def test_news_and_digest_pages_are_written_to_configured_output() -> None:
             assert "Дайджесты" in digest_html
             assert "digest-list-card" in digest_html
             assert "Открыть выпуск" in digest_html
+            assert "Главный вывод:" in digest_html
+            assert "Зачем читать:" in digest_html
+            assert "Стейблкоины как FX-инфраструктура" in digest_html
+            assert "AI-инфраструктура" in digest_html
+            assert "Автоматический ежедневный радар" not in digest_html
+            assert "Общий выпуск" not in digest_html
+            assert "Банк России: публичные проекты" not in digest_html
             assert "stream-visual" not in digest_html
             assert "stream-visual--tile" not in digest_html
             assert "PUBLIC-SAFE EDITORIAL BRIEFING SYSTEM" not in digest_html

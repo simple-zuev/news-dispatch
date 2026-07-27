@@ -331,6 +331,8 @@ def test_homepage_shows_only_digests_from_recent_reader_window() -> None:
             summary="",
             body="",
             output_name="recent.html",
+            reader_collection="digests",
+            digest_thesis="Свежий аналитический вывод.",
         ),
         render_site.Dispatch(
             source_path=ROOT / "dispatches" / "old.md",
@@ -340,10 +342,13 @@ def test_homepage_shows_only_digests_from_recent_reader_window() -> None:
             summary="",
             body="",
             output_name="old.html",
+            reader_collection="digests",
+            digest_thesis="Устаревший аналитический вывод.",
         ),
     ]
     html = render_site.home_digest_links(dispatches, "2026-07-22T12:00:00+03:00")
     assert "Свежий дайджест" in html
+    assert "Свежий аналитический вывод." in html
     assert "Старый дайджест" not in html
 
 
