@@ -272,7 +272,7 @@
       "title": "GearJunkie",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "core77-design",
@@ -307,7 +307,7 @@
       "title": "The Gadgeteer",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "mos-ru-news",
