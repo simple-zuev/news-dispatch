@@ -1,22 +1,18 @@
 {
-  "date": "2026-07-22",
+  "date": "2026-09-10",
   "generated_count": 56,
-  "kept_count": 55,
-  "filtered_count": 1,
-  "filtered_by_reason": {
-    "review_or_buying_guide": 1
-  },
-  "filtered_by_stream": {
-    "gear-style-edc": 1
-  },
+  "kept_count": 56,
+  "filtered_count": 0,
+  "filtered_by_reason": {},
+  "filtered_by_stream": {},
   "remaining_by_stream": {
-    "ai": 4,
+    "ai": 11,
     "crypto-finance": 9,
     "dj-audio-creative": 3,
-    "finance": 10,
-    "gear-style-edc": 2,
-    "moscow-city": 8,
-    "science-discovery": 11,
-    "tech-hardware-software": 8
+    "finance": 8,
+    "gear-style-edc": 1,
+    "moscow-city": 6,
+    "science-discovery": 7,
+    "tech-hardware-software": 11
   }
 }
