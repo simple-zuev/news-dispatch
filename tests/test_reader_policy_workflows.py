@@ -10,6 +10,14 @@ VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
 PAGES_WORKFLOW = ROOT / ".github" / "workflows" / "pages.yml"
 PUBLIC_READER_PREVIEW_WORKFLOW = ROOT / ".github" / "workflows" / "public-reader-preview.yml"
 BUILD_SITE = ROOT / "tools" / "build_site.py"
+CHECKOUT_ACTION = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1"
+SETUP_PYTHON_ACTION = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0"
+CACHE_RESTORE_ACTION = "actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0"
+CACHE_SAVE_ACTION = "actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0"
+UPLOAD_ARTIFACT_ACTION = "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1"
+CONFIGURE_PAGES_ACTION = "actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0"
+UPLOAD_PAGES_ACTION = "actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0"
+DEPLOY_PAGES_ACTION = "actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1"
 
 
 def read(path: Path) -> str:
@@ -63,8 +71,8 @@ def test_pages_uses_live_site_orchestrator() -> None:
     assert "run: python3 tools/validate_public_reader_content_quality.py" in text
     assert "run: python3 tools/validate_public_reader_freshness.py" in text
     assert "run: python3 tools/build_public_reader_quality_report.py" in text
-    assert "uses: actions/cache/restore@v6" in text
-    assert "uses: actions/cache/save@v6" in text
+    assert f"uses: {CACHE_RESTORE_ACTION}" in text
+    assert f"uses: {CACHE_SAVE_ACTION}" in text
     assert "name: public-reader-quality-report" in text
     assert "path: validation/public-reader-history-latest.json" in text
     assert "public-reader-history-${{ github.run_id }}" in text
@@ -83,11 +91,11 @@ def test_pages_uses_live_site_orchestrator() -> None:
     )
     assert "path: site/" in text
     for action in [
-        "actions/checkout@v7",
-        "actions/setup-python@v6",
-        "actions/configure-pages@v6",
-        "actions/upload-pages-artifact@v5",
-        "actions/deploy-pages@v5",
+        CHECKOUT_ACTION,
+        SETUP_PYTHON_ACTION,
+        CONFIGURE_PAGES_ACTION,
+        UPLOAD_PAGES_ACTION,
+        DEPLOY_PAGES_ACTION,
     ]:
         assert action in text
 
@@ -168,9 +176,9 @@ def test_public_reader_preview_uploads_pr_artifacts_without_deploying() -> None:
     )
     assert "actions/deploy-pages" not in text
     assert "upload-pages-artifact" not in text
-    for action in ["actions/checkout@v7", "actions/setup-python@v6", "actions/upload-artifact@v7"]:
+    for action in [CHECKOUT_ACTION, SETUP_PYTHON_ACTION, UPLOAD_ARTIFACT_ACTION]:
         assert action in text
-    assert text.count("uses: actions/upload-artifact@v7") == 3
+    assert text.count(f"uses: {UPLOAD_ARTIFACT_ACTION}") == 3
 
 
 def main() -> int:
