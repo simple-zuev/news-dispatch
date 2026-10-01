@@ -11,6 +11,8 @@ VALIDATE_WORKFLOW = ROOT / ".github" / "workflows" / "validate.yml"
 REGRESSION_WORKFLOW = ROOT / ".github" / "workflows" / "regression-tests.yml"
 RUNNER = ROOT / "tools" / "run_daily_radar_safe.py"
 CHANGE_SET_GUARD = ROOT / "tools" / "validate_daily_radar_change_set.py"
+CHECKOUT_ACTION = "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1"
+SETUP_PYTHON_ACTION = "actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0"
 
 
 def test_daily_radar_does_not_push_to_main() -> None:
@@ -40,10 +42,10 @@ def test_daily_radar_uses_owner_qualified_pr_head() -> None:
 
 def test_daily_radar_uses_current_node24_actions() -> None:
     text = WORKFLOW.read_text(encoding="utf-8")
-    assert "actions/checkout@v7" in text
-    assert "actions/setup-python@v6" in text
-    assert "actions/checkout@v4" not in text
-    assert "actions/setup-python@v5" not in text
+    assert CHECKOUT_ACTION in text
+    assert SETUP_PYTHON_ACTION in text
+    assert "actions/checkout@v" not in text
+    assert "actions/setup-python@v" not in text
 
 
 def test_generated_only_prs_use_explicit_workflow_dispatch() -> None:
