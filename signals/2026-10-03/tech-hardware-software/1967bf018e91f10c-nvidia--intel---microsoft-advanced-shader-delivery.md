@@ -1,0 +1,29 @@
+---
+title: "Игры будут загружаться быстрее: видеокарты Nvidia и Intel получат поддержку Microsoft Advanced Shader Delivery"
+date: "2026-10-03"
+status: "draft"
+signal_type: "fact"
+confidence: "source_reported"
+source_class: "specialized_media"
+streams:
+  - "tech-hardware-software"
+domains:
+  - "3dnews"
+sources:
+  - "https://3dnews.ru/1149392"
+source_titles:
+  - "3DNews: Игры будут загружаться быстрее: видеокарты Nvidia и Intel получат поддержку Microsoft Advanced Shader Delivery"
+source_types:
+  - "Технологическое медиа"
+---
+
+# Игры будут загружаться быстрее: видеокарты Nvidia и Intel получат поддержку Microsoft Advanced Shader Delivery
+
+## Что произошло
+
+3DNews опубликовал материал в публичной RSS/Atom-ленте.
+
+## Статус проверки
+
+- Подтверждено: факт появления материала в публичной ленте.
+- Не подтверждено: полнота контекста, последствия и интерпретации.
