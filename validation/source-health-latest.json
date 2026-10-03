@@ -160,7 +160,7 @@
       "title": "Hugging Face Blog",
       "stream": "ai",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "arxiv-cs-ai",
@@ -272,7 +272,7 @@
       "title": "GearJunkie",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "core77-design",
@@ -391,7 +391,7 @@
       "title": "Create Digital Music",
       "stream": "dj-audio-creative",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "musictech",
