@@ -272,7 +272,7 @@
       "title": "GearJunkie",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "core77-design",
@@ -300,7 +300,7 @@
       "title": "Cool Hunting",
       "stream": "gear-style-edc",
       "enabled": true,
-      "status": "ok"
+      "status": "error"
     },
     {
       "id": "gadgeteer-edc",

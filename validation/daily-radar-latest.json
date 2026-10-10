@@ -1,33 +1,44 @@
 {
-  "date": "2026-07-22",
+  "date": "2026-10-10",
   "generated": [
     {
       "stream": "ai",
       "status": "signals-only",
-      "count": 4,
+      "count": 11,
       "signals": [
-        "signals/2026-07-22/ai/6a44feadb04120b4-distribution-first-population-simulation-collapse-calibration-and-recall.md",
-        "signals/2026-07-22/ai/33effa85de6a2bbc-evalsafetygap-a-hybrid-survey-and-conceptual-framework-for-llm-evaluatio.md",
-        "signals/2026-07-22/ai/0eee0ac233d13462-biosecbench-refusal-a-paired-metric-for-performance-and-alignment-in-age.md",
-        "signals/2026-07-22/ai/69e481323262afa1-david-v-lez-and-robin-vince-join-the-boards-of-the-openai-foundation-and.md"
+        "signals/2026-10-10/ai/9bf93d58cc35db99-asana-cuts-model-costs-76x-in-browser-tests-with-gpt-6-1-sol.md",
+        "signals/2026-10-10/ai/0da244394cd8fed8-from-reactive-containment-to-proactive-assurance-lessons-from-openai-ant.md",
+        "signals/2026-10-10/ai/ca8503637a23988e-beyond-direct-access-resource-hijacking-in-llm-agents.md",
+        "signals/2026-10-10/ai/a27bc4f60085aeda-neural-architecture-discovery-via-autonomous-evolution.md",
+        "signals/2026-10-10/ai/13a86554d2a39789-ai-coding-agents-generate-more-code-but-not-more-software.md",
+        "signals/2026-10-10/ai/80a06c93dc383836-google---gemini-4-carbon-----claude-opus-5-5.md",
+        "signals/2026-10-10/ai/2b5bee13006e92b5-the-download-ai-s-refusal-problem-and-weight-loss-drug-side-effects.md",
+        "signals/2026-10-10/ai/835ab57e0c2f1edd-we-re-still-figuring-out-the-side-effects-of-glp-1-weight-loss-drugs.md",
+        "signals/2026-10-10/ai/85c11fca4aa44ff1-hack-the-world-why-hackathons-are-still-the-best-place-to-learn-to-build.md",
+        "signals/2026-10-10/ai/570fe3204556675e-sophos-cuts-threat-investigation-time-by-96-with-openai-daybreak.md",
+        "signals/2026-10-10/ai/56b2964b69beea5b-we-re-putting-too-much-faith-in-ai-s-ability-to-say-no.md"
       ],
       "media_count": 4,
-      "routing": "feed_owned"
+      "routing": "content_owned"
     },
     {
       "stream": "crypto-finance",
       "status": "signals-only",
-      "count": 9,
+      "count": 13,
       "signals": [
-        "signals/2026-07-22/crypto-finance/5c0d198f7c44f467-balance-stablecoin-collapses-99-after-1-million-exploit-drains-its-bitco.md",
-        "signals/2026-07-22/crypto-finance/ea72fb03aa3f6ac0-ai-models-escaped-openai-s-sandbox-and-hit-hugging-face-crypto-is-where.md",
-        "signals/2026-07-22/crypto-finance/ac8d16bddb8bd4be-live-updates-bitcoin-under-66-000-as-traders-await-alphabet-earnings-to.md",
-        "signals/2026-07-22/crypto-finance/aee111903288429c-the-digital-chamber-sues-illinois-over-incoming-crypto-transaction-tax.md",
-        "signals/2026-07-22/crypto-finance/0191d2fb31addb2d-london-stock-exchange-eyes-overnight-trading-launch-in-2027-ft.md",
-        "signals/2026-07-22/crypto-finance/c484160da32e0fc7-us-seeks-forfeiture-of-25-million-in-crypto-tied-to-global-fraud-investi.md",
-        "signals/2026-07-22/crypto-finance/d05b2528ceb35940-bis-warns-usd-stablecoins-can-evade-capital-controls-challenging-traditi.md",
-        "signals/2026-07-22/crypto-finance/9e173afabfc679c9-bitcoin-etfs-extend-inflow-streak-to-6-days-with-203m-added.md",
-        "signals/2026-07-22/crypto-finance/a0b19b8ea4b93b11-pakistan-steps-up-crypto-enforcement-with-dedicated-federal-unit.md"
+        "signals/2026-10-10/crypto-finance/d2713b9dc676ca6f-ledger-investigates-potential-wallet-tampering-after-reports-of-86-milli.md",
+        "signals/2026-10-10/crypto-finance/d9930b8465915146-thailand-opens-door-to-locally-listed-bitcoin-and-ether-etfs.md",
+        "signals/2026-10-10/crypto-finance/44a79edc0af59e94-bitcoin-s-volatility-has-plunged-but-extreme-price-swings-are-more-frequ.md",
+        "signals/2026-10-10/crypto-finance/de8a3eb4531939f9-fca-opens-the-gateway-to-regulated-crypto.md",
+        "signals/2026-10-10/crypto-finance/1d71dbdc27abd9a7-thailand-sec-issues-bitcoin-and-ether-etf-rules-set-to-take-effect-oct-1.md",
+        "signals/2026-10-10/crypto-finance/f45d13b074bf8ab4-bitcoin-consolidates-near-82-5k-as-crypto-weathers-ledger-theft-reports.md",
+        "signals/2026-10-10/crypto-finance/63029bac2883e82c-blockchain-com-seeks-cftc-greenlight-for-us-prediction-markets-crypto-de.md",
+        "signals/2026-10-10/crypto-finance/10543d7729698e4f-uk-sanctions-three-crypto-exchanges-tied-to-russian-illicit-funds.md",
+        "signals/2026-10-10/crypto-finance/55525cc75205aa85-sam-altman-backed-bitcoin-life-insurer-meanwhile-raises-37-5-million-rou.md",
+        "signals/2026-10-10/crypto-finance/273a95872f5afb9c-fca-secures-money-back-for-victims-of-crypto-fraud.md",
+        "signals/2026-10-10/crypto-finance/cb0ade008f364788-french-lawmakers-back-stablecoin-swap-tax-in-2027-budget-bill.md",
+        "signals/2026-10-10/crypto-finance/db3c7c5d9860c29b-esma-calls-for-changes-to-make-mica-clearer-safer-and-ready-for-emerging.md",
+        "signals/2026-10-10/crypto-finance/6f447f0c71f54087-esma-sets-out-supervisory-expectations-on-services-related-to-unauthoris.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -35,30 +46,24 @@
     {
       "stream": "dj-audio-creative",
       "status": "signals-only",
-      "count": 3,
+      "count": 2,
       "signals": [
-        "signals/2026-07-22/dj-audio-creative/393a8610d434a3d1-jasmine-olive-trees-doppler-a-multi-functional-module-with-smart-overlay.md",
-        "signals/2026-07-22/dj-audio-creative/bf45a9a7b06d6b4e-can-jamstik-finally-make-midi-guitar-stick.md",
-        "signals/2026-07-22/dj-audio-creative/8c9901f6a419ff81-let-s-enjoy-some-square-enix-game-soundtracks-in-acoustic-covers.md"
+        "signals/2026-10-10/dj-audio-creative/c06853f611f6ee9a-superfreaker-a-custom-firmware-for-the-arturia-microfreak-with-effects-a.md",
+        "signals/2026-10-10/dj-audio-creative/9f86188896352f85-hampshire-electronics-apollo-and-janus-polyphonic-multi-engine-synth-voi.md"
       ],
-      "media_count": 3,
+      "media_count": 2,
       "routing": "feed_owned"
     },
     {
       "stream": "finance",
       "status": "signals-only",
-      "count": 10,
+      "count": 5,
       "signals": [
-        "signals/2026-07-22/finance/99e3cce98e0dbf90-3--7--10----29--2006--256.md",
-        "signals/2026-07-22/finance/deac6855ac0f5804-14.md",
-        "signals/2026-07-22/finance/ef979b803f077aa6-rbc-finance.md",
-        "signals/2026-07-22/finance/f9232d79d882d001-ozon---8.md",
-        "signals/2026-07-22/finance/4242449682e2495f-ozon---8------wildberries.md",
-        "signals/2026-07-22/finance/e5811aae4efe8680-i.md",
-        "signals/2026-07-22/finance/1ec0f8ea6fa931f9-ecb-appoints-boris-kisselevsky-as-director-general-secretariat.md",
-        "signals/2026-07-22/finance/2386c6e4388646b4-kommersant-finance.md",
-        "signals/2026-07-22/finance/8bfbc930eaaa9cd9-10-06-2026-7368.md",
-        "signals/2026-07-22/finance/7df7e22bc2dc5e5e-08-06-2026-7366.md"
+        "signals/2026-10-10/finance/8759aaa76d2d8a0a-cftc-seeks-public-comment-on-notice-of-proposed-rulemaking-concerning-th.md",
+        "signals/2026-10-10/finance/f53ffaaf0919f599-cftc-issues-interim-final-rule-excluding-certain-activity-from-the-defin.md",
+        "signals/2026-10-10/finance/838d53afc5daf286-rbc-finance.md",
+        "signals/2026-10-10/finance/7a04b5bf4f8eac89-kommersant-finance.md",
+        "signals/2026-10-10/finance/2b68ef93a5d8b686-kommersant-finance.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -66,27 +71,27 @@
     {
       "stream": "gear-style-edc",
       "status": "signals-only",
-      "count": 2,
+      "count": 3,
       "signals": [
-        "signals/2026-07-22/gear-style-edc/97d20f78842ce52f-timex-brings-a-fly-back-chronograph-to-the-waterbury-ace-starting-at-289.md",
-        "signals/2026-07-22/gear-style-edc/60eb344891f732bc-the-black-whale-might-be-the-cheapest-way-into-the-m390-club.md"
+        "signals/2026-10-10/gear-style-edc/f20107ff1b41015c-watches-stories-gear-a-new-kuoe-watch-coming-to-new-york-s-wind-up-a-toy.md",
+        "signals/2026-10-10/gear-style-edc/e6f0631b149aa230-kizer-s-199-durandal-puts-two-blade-grinds-in-one-pocket-knife.md",
+        "signals/2026-10-10/gear-style-edc/225a02597386c65d-inside-the-release-party-omega-s-new-bond-and-spectre-edition-seamasters.md"
       ],
-      "media_count": 2,
+      "media_count": 3,
       "routing": "feed_owned"
     },
     {
       "stream": "moscow-city",
       "status": "signals-only",
-      "count": 8,
+      "count": 7,
       "signals": [
-        "signals/2026-07-22/moscow-city/42236d2ad199ed0f-755.md",
-        "signals/2026-07-22/moscow-city/a5f171a58777b38f-50.md",
-        "signals/2026-07-22/moscow-city/f7e991bbac87063c-govorit-moskva-city.md",
-        "signals/2026-07-22/moscow-city/b1e125fc3b265527-ria-moscow-city.md",
-        "signals/2026-07-22/moscow-city/b127aa3ec11dd579-2050.md",
-        "signals/2026-07-22/moscow-city/b8e21f82f077e128-mskagency-transport.md",
-        "signals/2026-07-22/moscow-city/4e2219aff4ff76a9-m24-moscow-news.md",
-        "signals/2026-07-22/moscow-city/892cc0be2846cd73-6--16.md"
+        "signals/2026-10-10/moscow-city/372a44685edb3480-255--5-5.md",
+        "signals/2026-10-10/moscow-city/ca44e0f445497eb4-mskagency-transport.md",
+        "signals/2026-10-10/moscow-city/de1ad8c567dd38a7-mskagency-transport.md",
+        "signals/2026-10-10/moscow-city/03674d867240ce55-m24-moscow-news.md",
+        "signals/2026-10-10/moscow-city/3b87179985301dc7-ria-moscow-city.md",
+        "signals/2026-10-10/moscow-city/2f00739653be2975-m24-moscow-news.md",
+        "signals/2026-10-10/moscow-city/b790e4de5073d418-ria-moscow-city.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -94,19 +99,14 @@
     {
       "stream": "science-discovery",
       "status": "signals-only",
-      "count": 11,
+      "count": 6,
       "signals": [
-        "signals/2026-07-22/science-discovery/e96d9577172878b1-urgent-cuts-to-global-greenhouse-gas-emissions-needed-to-avoid-worst-sea.md",
-        "signals/2026-07-22/science-discovery/c947357f9d9867ce-private-mission-launches-to-extend-life-of-out-of-gas-communication-sate.md",
-        "signals/2026-07-22/science-discovery/5dd9f9f02bd7899f-new-programmable-photonic-chip-can-control-how-fast-light-moves.md",
-        "signals/2026-07-22/science-discovery/e0afbee96079ec29-factors-that-affect-the-spininess-of-plants-in-different-locations.md",
-        "signals/2026-07-22/science-discovery/9f508d57744c957e-robotically-assembled-electromagnetic-metamaterials-for-long-range-space.md",
-        "signals/2026-07-22/science-discovery/8d16958f66fbf917-does-china-s-latest-ai-model-finally-equal-us-rivals-what-scientists-thi.md",
-        "signals/2026-07-22/science-discovery/fc5d5dca1621ffb9-new-hope-in-the-fight-against-cachexia-cancer-s-deadly-co-conspirator.md",
-        "signals/2026-07-22/science-discovery/7c0e1ab1decdf976-nplus1.md",
-        "signals/2026-07-22/science-discovery/05cb1d69e6486b77-don-t-let-ai-steal-all-the-joy-what-scientists-won-t-give-up-to-chatbots.md",
-        "signals/2026-07-22/science-discovery/4d602c36e67bf055-ancient-mystery-on-k-gari-as-world-s-largest-sand-island-lakes-dried-up.md",
-        "signals/2026-07-22/science-discovery/e1426305a9b401d0-astronomers-find-the-first-atmosphere-on-a-rocky-world-in-the-habitable.md"
+        "signals/2026-10-10/science-discovery/b85427f614ddb37d-nasa-demonstrates-next-generation-heat-shield-technologies.md",
+        "signals/2026-10-10/science-discovery/ad1fdecb2580d52b-cosmic-house-of-mirrors.md",
+        "signals/2026-10-10/science-discovery/658c8221b53431bb-hybrid-quantum-computer-observes-foundational-quantum-effect-in-a-new-se.md",
+        "signals/2026-10-10/science-discovery/998b2180c13460e3-plant-bacteria-partnership-reveals-how-roots-access-iron-locked-in-soil.md",
+        "signals/2026-10-10/science-discovery/a4106c4b8a33ca37-nasa-seeks-us-industry-plans-for-commercial-space-stations.md",
+        "signals/2026-10-10/science-discovery/d953346adf34121f-mix-and-match-material-s-properties-can-be-tuned-by-changing-its-metalli.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
@@ -116,25 +116,28 @@
       "status": "signals-only",
       "count": 8,
       "signals": [
-        "signals/2026-07-22/tech-hardware-software/685566bfc6e1df46-nvidia-details-rubin-architectural-optimizations-for-inference-improveme.md",
-        "signals/2026-07-22/tech-hardware-software/460090b9c71947ed-nvidia-deep-dives-vera-cpu-for-ai-data-centers-spec-cpu-2026-benchmarks.md",
-        "signals/2026-07-22/tech-hardware-software/dc4f4055cfc6f9ca-local-ai-clustering-with-dell-s-pro-max-gb10-connecting-two-nvidia-grace.md",
-        "signals/2026-07-22/tech-hardware-software/44e39375cc1761ea-asic-fortinet-sp6------intel.md",
-        "signals/2026-07-22/tech-hardware-software/1a3e3071c1fbb246-intel-------9.md",
-        "signals/2026-07-22/tech-hardware-software/306518fae20a5717-deepseek-----google.md",
-        "signals/2026-07-22/tech-hardware-software/46ba6ee5935bd715-next-20260721-linux-next.md",
-        "signals/2026-07-22/tech-hardware-software/e16a6a31aff5e708-nvidia-vera-rubin-driving-performance-per-watt-lowest-token-cost-for-par.md"
+        "signals/2026-10-10/tech-hardware-software/8dba27644c15f3e4-this-week-on-tom-s-hardware-premium-october-10-2026.md",
+        "signals/2026-10-10/tech-hardware-software/a62cdcba0cce03c7-anyps5-project-reaches-critical-gpu-milestone-in-race-to-enable-running.md",
+        "signals/2026-10-10/tech-hardware-software/5fd257bd78bab207-pc-shipments-tumble-over-20-in-3q26-as-chip-shortages-bite.md",
+        "signals/2026-10-10/tech-hardware-software/38bfcb4310c98b8d-introducing-on-demand-cpu-and-memory-profiling-with-flamegraphs-for-work.md",
+        "signals/2026-10-10/tech-hardware-software/41c626e7775e6537-3dnews.md",
+        "signals/2026-10-10/tech-hardware-software/04d749cef8d376d7-your-artwork-could-be-featured-in-the-next-debian-release.md",
+        "signals/2026-10-10/tech-hardware-software/68f11a0e2ed03a4f-gears-of-war-e-day---230---------game-pass.md",
+        "signals/2026-10-10/tech-hardware-software/3854715ee3f870a4-deno-is-joining-cloudflare.md"
       ],
       "media_count": 4,
       "routing": "feed_owned"
     }
   ],
-  "fetch_errors": [],
+  "fetch_errors": [
+    "gearjunkie-edc: HTTPError: HTTP Error 403: Forbidden",
+    "coolhunting-objects: HTTPError: HTTP Error 403: Forbidden"
+  ],
   "filtered_signals": [
     {
-      "path": "signals/2026-07-22/gear-style-edc/6b80435ce1e3ceb3-the-75-vest-that-runs-like-an-elite-pack-kiprun-5l-trail-running-bag-rev.md",
-      "reason": "review_or_buying_guide",
-      "stream": "gear-style-edc"
+      "path": "signals/2026-10-10/dj-audio-creative/b9390d4cd974cccc-wanna-give-your-mixes-a-little-analogue-flavour-we-ve-rounded-up-the-bes.md",
+      "reason": "deal_or_discount",
+      "stream": "dj-audio-creative"
     }
   ]
 }
