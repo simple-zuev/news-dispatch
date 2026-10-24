@@ -50,7 +50,7 @@
       },
       "enabled_official_sources": 5,
       "enabled_high_trust_sources": 5,
-      "enabled_fetch_errors": 0
+      "enabled_fetch_errors": 1
     },
     {
       "stream": "dj-audio-creative",
@@ -67,7 +67,7 @@
       },
       "enabled_official_sources": 2,
       "enabled_high_trust_sources": 2,
-      "enabled_fetch_errors": 0
+      "enabled_fetch_errors": 1
     },
     {
       "stream": "finance",
@@ -99,7 +99,7 @@
       },
       "enabled_official_sources": 0,
       "enabled_high_trust_sources": 0,
-      "enabled_fetch_errors": 0
+      "enabled_fetch_errors": 2
     },
     {
       "stream": "moscow-city",
@@ -134,7 +134,7 @@
       },
       "enabled_official_sources": 2,
       "enabled_high_trust_sources": 6,
-      "enabled_fetch_errors": 0
+      "enabled_fetch_errors": 1
     },
     {
       "stream": "tech-hardware-software",
@@ -351,11 +351,13 @@
       "stream": "crypto-finance",
       "source_class": "official_source",
       "enabled": true,
-      "health_status": "ok",
+      "health_status": "error",
       "priority": 0.82,
       "include_keyword_count": 12,
       "exclude_keyword_count": 5,
-      "risk_flags": [],
+      "risk_flags": [
+        "fetch_error"
+      ],
       "disabled_reason": ""
     },
     {
@@ -455,11 +457,13 @@
       "stream": "dj-audio-creative",
       "source_class": "official_source",
       "enabled": true,
-      "health_status": "ok",
+      "health_status": "error",
       "priority": 0.72,
       "include_keyword_count": 15,
       "exclude_keyword_count": 4,
-      "risk_flags": [],
+      "risk_flags": [
+        "fetch_error"
+      ],
       "disabled_reason": ""
     },
     {
@@ -615,11 +619,12 @@
       "stream": "gear-style-edc",
       "source_class": "specialized_media",
       "enabled": true,
-      "health_status": "ok",
+      "health_status": "error",
       "priority": 0.55,
       "include_keyword_count": 14,
       "exclude_keyword_count": 16,
       "risk_flags": [
+        "fetch_error",
         "low_priority_enabled"
       ],
       "disabled_reason": ""
@@ -675,11 +680,12 @@
       "stream": "gear-style-edc",
       "source_class": "specialized_media",
       "enabled": true,
-      "health_status": "ok",
+      "health_status": "error",
       "priority": 0.62,
       "include_keyword_count": 20,
       "exclude_keyword_count": 20,
       "risk_flags": [
+        "fetch_error",
         "low_priority_enabled"
       ],
       "disabled_reason": ""
@@ -982,11 +988,13 @@
       "stream": "science-discovery",
       "source_class": "research_media",
       "enabled": true,
-      "health_status": "ok",
+      "health_status": "error",
       "priority": 0.72,
       "include_keyword_count": 9,
       "exclude_keyword_count": 2,
-      "risk_flags": [],
+      "risk_flags": [
+        "fetch_error"
+      ],
       "disabled_reason": ""
     },
     {
@@ -1124,12 +1132,17 @@
   ],
   "risk_counts": {
     "disabled": 5,
+    "fetch_error": 5,
     "low_priority_enabled": 13,
     "public_media_needs_corroboration": 12
   },
   "recommendations": [
+    "crypto-finance: review feeds with current fetch errors before promotion decisions.",
+    "dj-audio-creative: review feeds with current fetch errors before promotion decisions.",
     "gear-style-edc: add or restore official-source coverage for stronger confirmation.",
+    "gear-style-edc: review feeds with current fetch errors before promotion decisions.",
     "moscow-city: add or restore official-source coverage for stronger confirmation.",
+    "science-discovery: review feeds with current fetch errors before promotion decisions.",
     "Disabled official sources require replacement or a stable fallback: mos-ru-news.",
     "Public-media signals should be corroborated before editorial promotion: ars-technica-tech, big-city-moscow, govorit-moskva-city, kommersant-finance, m24-moscow-news, mit-tech-review-ai, moskvichmag, mskagency-culture, mskagency-transport, rbc-finance, ria-moscow-city, vm-moscow-infrastructure."
   ]
